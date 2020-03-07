@@ -16,7 +16,7 @@ public enum FileType {
     JPEG("图片文件格式：jpeg", "jpeg", ".jpeg"),
     IMG("图片文件格式：img", "img", ".img"),
     BMP("图片文件格式：bmp", "bmp", ".bmp"),
-    PDF("PDF文件格式：", "pdf", ".pdf");
+    PDF("PDF文件格式：pdf", "pdf", ".pdf");
 
 
 
