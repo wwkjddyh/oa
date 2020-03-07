@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 8082
   tomcat:
     uri-encoding: UTF-8
     max-http-post-size: 20MB
