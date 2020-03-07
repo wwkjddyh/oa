@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oa.platform.repository.LogRepository" >
+
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"
+         eviction="LRU"
+         flushInterval="3600000"
+         size="1024"
+         readOnly="true"
+         blocking="true"
+  />
+
+  <resultMap id="loginLog" type="com.oa.platform.entity.LoginLog">
+    <result column="log_id" property="logId" jdbcType="VARCHAR"/>
+    <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+    <result column="ip_addr" property="ipAddr" jdbcType="VARCHAR"/>
+    <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
+    <result column="space_id" property="spaceId" jdbcType="VARCHAR"/>
+    <result column="space_name" property="spaceName" jdbcType="VARCHAR"/>
+    <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <resultMap id="operateLog" type="com.oa.platform.entity.OperateLog">
+    <result column="log_id" property="logId" jdbcType="VARCHAR"/>
+    <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+    <result column="ip_addr" property="ipAddr" jdbcType="VARCHAR"/>
+    <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
+    <result column="operate_desc" property="operateDesc" jdbcType="VARCHAR"/>
+    <result column="operate_type" property="operateType" jdbcType="VARCHAR"/>
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
+    <result column="update_user_id" property="updateUserId" jdbcType="VARCHAR"/>
+    <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
+  </resultMap>
+
+  <!--插入登录日志-->
+  <insert id="insertLoginLog" parameterType="loginLog">
+    INSERT INTO t_login_log(log_id,user_id,ip_addr,record_time,space_id)
+    VALUES (#{logId},#{userId},#{ipAddr},NOW(),#{spaceId})
+  </insert>
+
+  <insert id="insertOperateLog" parameterType="operateLog">
+    INSERT INTO t_operate_log(log_id,user_id,ip_addr,record_time,operate_desc,operate_type,update_time,update_user_id,record_flag)
+    VALUES (#{logId},#{userId},#{ipAddr},NOW(),#{operateDesc},#{operateType},#{updateTime},#{updateUserId},#{recordFlag})
+  </insert>
+
+  <!--根据logId查询操作日志-->
+  <select id="findOperateLogById" resultMap="operateLog" parameterType="java.lang.String">
+    SELECT  log_id,user_id,ip_addr,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+            operate_desc,operate_type,DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,
+            update_user_id,record_flag
+    FROM t_operate_log WHERE log_id = #{logId} AND record_flag = 1
+  </select>
+
+  <!--查询登录日志-->
+  <select id="findLoginLog" resultMap="loginLog" parameterType="loginLog">
+    SELECT
+        log_id,user_id,ip_addr,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,space_id,space_name,user_name
+    FROM (
+      select t1.*, t2.user_name, t3.space_name FROM t_login_log t1
+      LEFT JOIN t_user t2 ON t1.user_id = t2.user_id
+      LEFT JOIN t_space t3 ON t1.space_id = t3.space_id
+    ) t
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="logId != null and logId != ''">
+        AND log_id = #{logId}
+      </if>
+      <if test="userId != null and userId != ''">
+        AND user_id = #{userId}
+      </if>
+      <if test="ipAddr != null and ipAddr != ''">
+        AND ip_addr = #{ipAddr}
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
+      </if>
+      <if test="spaceId != null and spaceId != ''">
+        AND space_id = #{spaceId}
+      </if>
+      <if test="key != null and key != ''">
+        AND (UPPER(`space_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        OR UPPER(`user_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        )
+      </if>
+    </trim>
+  </select>
+
+  <!--查询操作日志-->
+  <select id="findOperateLog" resultMap="operateLog" parameterType="operateLog">
+    SELECT log_id,user_id,ip_addr,
+      DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,operate_desc,operate_type,
+      DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag
+    FROM t_operate_log
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="logId != null and logId != ''">
+        AND log_id = #{logId}
+      </if>
+      <if test="userId != null and userId != ''">
+        AND user_id = #{userId}
+      </if>
+      <if test="ipAddr != null and ipAddr != ''">
+        AND ip_addr = #{ipAddr}
+      </if>
+      <if test="operateDesc != null and operateDesc != ''">
+        AND operate_desc = #{operateDesc}
+      </if>
+      <if test="operateType != null and operateType != ''">
+        AND operate_type = #{operateType}
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        AND DATE_FORMAT(update_time,'%Y-%m-%d') = #{updateTime}
+      </if>
+      <if test="updateUserId != null and updateUserId != ''">
+        AND update_user_id = #{updateUserId}
+      </if>
+      <if test="recordFlag != null">
+        AND record_flag = #{recordFlag}
+      </if>
+    </trim>
+  </select>
+
+  <!--更新操作日志-->
+  <update id="updateOperateLog" parameterType="operateLog">
+    UPDATE t_operate_log
+    <trim prefix="SET" suffixOverrides="," suffix=" WHERE log_id = #{logId}">
+      <if test="ipAddr != null and ipAddr != ''">
+        ip_addr = #{ipAddr},
+      </if>
+      <if test="operateDesc != null and operateDesc != ''">
+        operate_desc = #{operateDesc},
+      </if>
+      <if test="operateType != null and operateType != ''">
+        operate_type = #{operateType},
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        update_time = STR_TO_DATE(#{updateTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+      <if test="updateUserId != null and updateUserId != ''">
+        update_user_id = #{updateUserId},
+      </if>
+      <if test="recordFlag != null">
+        record_flag = #{recordFlag},
+      </if>
+    </trim>
+  </update>
+</mapper>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>系统管理平台</title>
+    <link rel="stylesheet" href="/css/element-ui/index.css" th:href="@{~/css/element-ui/index.css}"/>
+</head>
+<body style="margin:0; padding:0; width:100%; height:100%;">
+    <div id="admin" style="margin:0 auto; width:500px;height:auto;margin-top: 200px;">
+        <div style="width: 500px;text-align: center;font-weight: bolder;">系统管理平台</div>
+        <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
+        <div th:if="${loginError}" style="font-size:14px;color:red;">用户名或密码错误</div>
+        <el-form ref="formLogon" :rules="rules" :model="formLogon" label-width="100px">
+            <el-form-item label="用户名" prop="username" required>
+                <el-input v-model="formLogon.username" size="medium" auto-complete="off" maxlength="64" style="width: 300px" placeholder="登录用户名"></el-input>
+                <el-tooltip class="item" effect="dark" placement="top"><div slot="content">管理系统登录用户名</div><i class="el-icon-question"></i></el-tooltip>
+            </el-form-item>
+            <el-form-item label="用户密码" prop="password" required>
+                <el-input v-model="formLogon.password" size="medium" auto-complete="off" maxlength="128" style="width: 300px" placeholder="登录用户密码"></el-input>
+                <el-tooltip class="item" effect="dark" placement="top"><div slot="content">管理系统登录用户密码</div><i class="el-icon-question"></i></el-tooltip>
+            </el-form-item>
+            <el-form-item>
+                <el-button @click="resetForm('formLogon')" plain>取消</el-button>
+                <el-button @click="submitForm('formLogon')" type="primary" plain>登录</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
+</body>
+<script src="/js/vue/vue.min.js" th:src="@{~/js/vue/vue.min.js}"></script>
+<script src="/js/axios/axios.min.js" th:src="@{~/js/axios/axios.min.js}"></script>
+<script src="/js/element-ui/index.js" th:src="@{~/js/element-ui/index.js}"></script>
+<script src="/js/mock/mock-min.js" th:src="@{~/js/mock/mock-min.js}"></script>
+<script src="/js/data/struct-admin.js" th:src="@{~/js/data/struct-admin.js}"></script>
+<script src="/js/custom/admin.js" th:src="@{~/js/custom/admin.js}"></script>
+</html>

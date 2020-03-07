@@ -1,10 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-首页
-</body>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+    <head>
+        <meta charset="UTF-8">
+        <title>系统管理平台</title>
+        <link rel="stylesheet" href="/css/element-ui/index.css" th:href="@{~/css/element-ui/index.css}"/>
+        <style style="text/css">
+            .button {
+                background-color: #97a8be; /* Green */
+                border: none;
+                color: #3300aa;
+                padding: 5px 15px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                cursor: pointer;
+                border-radius: 5px;
+            }
+        </style>
+    </head>
+    <body style="margin:0; padding:0; width:100%; height:100%;">
+        <div style="margin:0 auto; width:500px;height:auto;margin-top: 200px;">
+            <div style="width: 500px;text-align: center;color: #fab6b6;font-size: 50px;">
+                系统管理平台
+            </div>
+            <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
+            <div style="margin-top: 10px;" th:fragment="logout"  sec:authorize="isAuthenticated()" >
+                <div>
+                    <form action="#" th:action="@{/logout}" method="post">
+                        <input type="submit" value="登出" class="button"/>
+                    </form>
+                </div>
+            </div>
+            <div style="margin-top: 10px;">
+                <a href="/admin/main" th:href="@{/admin/main}">进入系统管理</a>
+            </div>
+        </div>
+        <div style="position:absolute;bottom:20px;width:100%;text-align: center;height: 30px;line-height: 30px;font-size: 12px;">
+            <a href="http://www.miitbeian.gov.cn" target="_blank" style="text-decoration:none;background-color:white;">沪ICP备18035716号-1</a>
+        </div>
+    </body>
+    <script src="/js/vue/vue.min.js" th:src="@{~/js/vue/vue.min.js}"></script>
+    <script src="/js/element-ui/index.js" th:src="@{~/js/element-ui/index.js}"></script>
 </html>

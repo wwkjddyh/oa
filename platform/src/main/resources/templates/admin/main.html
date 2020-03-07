@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>系统管理平台</title>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
+    <META HTTP-EQUIV="Expires" CONTENT="0"/>
+    <link rel="stylesheet" href="/css/custom/sys-style.css" th:href="@{~/css/custom/sys-style.css}"/>
+    <link rel="stylesheet" href="/css/element-ui/index.css" th:href="@{~/css/element-ui/index.css}"/>
+    <!--<link rel="stylesheet" href="https://unpkg.com/element-ui@2.4.11/lib/theme-chalk/index.css"/>-->
+</head>
+<body>
+<div id="admin-main">
+    <el-container class="el-container">
+        <el-header style=" text-align: left;font-size: 12px;">
+            <div th:include="/common/admin/header :: header"></div>
+        </el-header>
+        <el-container>
+            <el-aside width="auto" height="100%" style="background-color: rgb(238, 241, 246);min-width: 64px">
+                <div th:replace="/common/admin/menu :: menu"></div>
+            </el-aside>
+            <el-container>
+                <el-main stype="height:100%">
+                    <div>
+                        <el-card shadow="never" v-if="showContent == 'modules'" key="modules">
+                            <div th:replace="/common/admin/user/modules :: content"/>
+                        </el-card>
+                        <el-card shadow="never" v-if="showContent == 'roles'" key="roles">
+                            <div th:replace="/common/admin/user/roles :: content"/>
+                        </el-card>
+                        <el-card shadow="never" v-if="showContent == 'memberUsers'" key="memberUsersformArticle">
+                            <div th:replace="/common/admin/user/memberUsers :: content"/>
+                        </el-card>
+                        <el-card shadow="never" v-if="showContent == 'sysUsers'" key="sysUsers">
+                            <div th:replace="/common/admin/user/sysUsers :: content"/>
+                        </el-card>
+
+                        <el-card shadow="never" v-if="showContent == 'categories'" key="categories">
+                            <div th:replace="/common/admin/category/categories :: content"/>
+                        </el-card>
+                        <el-card shadow="never" v-if="showContent == 'categoryTypes'" key="categoryTypes">
+                            <div th:replace="/common/admin/category/categoryTypes :: content"/>
+                        </el-card>
+                    </div>
+                </el-main>
+                <el-footer style="background-color:#eee;margin-top:20px">
+                    <div th:replace="/common/admin/footer :: footer"></div>
+                </el-footer>
+            </el-container>
+        </el-container>
+    </el-container>
+</div>
+</body>
+<script type="text/javascript" charset="utf-8" src="/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/js/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="/js/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script src="/js/yaml/yaml.min.js" th:src="@{~/js/yaml/yaml.min.js}"></script>
+<!--<script src="https://unpkg.com/vue@2.5.22/dist/vue.js"></script>-->
+<!--<script src="https://unpkg.com/element-ui@2.4.11/lib/index.js"></script>-->
+<script src="/js/vue/vue.min.js" th:src="@{~/js/vue/vue.min.js}"></script>
+<script src="/js/axios/axios.min.js" th:src="@{~/js/axios/axios.min.js}"></script>
+<script src="/js/element-ui/index.js" th:src="@{~/js/element-ui/index.js}"></script>
+<script src="/js/mock/mock-min.js" th:src="@{~/js/mock/mock-min.js}"></script>
+<script src="/js/data/struct-admin-main.js" th:src="@{~/js/data/struct-admin-main.js}"></script>
+<script src="/js/custom/admin-main.js" th:src="@{~/js/custom/admin-main.js}"></script>
+<script src="/js/highcharts/highcharts.js" th:src="@{~/js/highcharts/highcharts.js}"></script>
+</html>

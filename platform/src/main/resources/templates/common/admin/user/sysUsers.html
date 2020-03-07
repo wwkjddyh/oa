@@ -1,0 +1,111 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <el-tabs v-model="activeTabName" type="card">
+        <el-tab-pane label="系统用户" name="first">
+            <el-button plain @click="edit('sysUser','','',true)">新增</el-button>
+            <div style="margin-top: 20px">
+                <el-table
+                        :data="sysUsers"
+                        border
+                        style="width: 100%">
+                    <el-table-column
+                            align="center"
+                            width="50"
+                            label="序号">
+                        <template slot-scope="scope">
+                            {{scope.$index+1}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="userName"
+                            label="名称"
+                            width="200">
+                    </el-table-column>
+                    <el-table-column
+                            prop="userNickname"
+                            label="昵称">
+                    </el-table-column>
+                    <!--
+                    <el-table-column
+                            prop="roleName"
+                            label="角色名称"
+                            width="200">
+                    </el-table-column>
+                    -->
+                    <el-table-column
+                            align="center"
+                            width="230"
+                            label="操作">
+                        <template slot-scope="scope">
+                            <div style="display: flex;width:100%">
+                                <el-button size="mini" @click="handleSetUserRole(scope.row,true)">角色设置</el-button>
+                                <!--
+                                <el-button size="mini" @click="edit('sysUser',scope.$index,scope.row,false)">修改</el-button>
+                                <el-button size="mini" type="danger" @click="handleDel(scope.$index,'sysUser')">删除</el-button>-->
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <div align="center">
+                    <el-pagination
+                            @size-change="handleSysUserSizeChange"
+                            @current-change="handleSysUserCurrentChange"
+                            :current-page="pager.sysUser.currentPage"
+                            :page-sizes="[10, 20, 30, 40]"
+                            :page-size="pager.sysUser.pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="pager.sysUser.totalCount">
+                    </el-pagination>
+                </div>
+            </div>
+            <el-dialog title="系统管理员" :visible.sync="dialogShow.sysUser" lock-scroll="true" width="800px">
+                <el-card shadow="never" style="width: 100%;" type="card">
+                    <el-form ref="formSysUser" :rules="rules" :model="formSysUser" label-width="100px">
+                        <el-form-item label="名称" prop="name">
+                            <el-input v-model="formSysUser.name" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="昵称" prop="nickname">
+                            <el-input v-model="formSysUser.nickname" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="昵称"></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">昵称</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="原始密码" prop="oldPassword" v-if="currAction === 'edit'">
+                            <el-input v-model="formSysUser.oldPassword" type="password" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="原始密码"></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">原始密码</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="密码" prop="password">
+                            <el-input v-model="formSysUser.password" type="password" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="密码"></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">密码</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="重复密码" prop="passwordOrgi">
+                            <el-input v-model="formSysUser.passwordOrgi" type="password" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="重复密码"></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">重复密码</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item>
+                            <el-button @click="resetForm('formSysUser')" plain>取消</el-button>
+                            <el-button @click="submitForm('formSysUser')" type="primary" plain>保存</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-card>
+            </el-dialog>
+            <el-dialog title="用户-角色配置" :visible.sync="dialogShow.userRole" lock-scroll="true" width="800px">
+                <el-card shadow="never" style="width: 100%;" type="card">
+                    <el-checkbox :indeterminate="isIndeterminate.sysUserRole" v-model="checkBoxAll.sysUserRole" @change="handleSysUserRoleCheckAllChange">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkBoxOptions.sysUserRole" @change="handleSysUserRoleCheckedChange">
+                        <el-checkbox v-for="module in allRoles" :label="module.roleId" :key="module.roleId">{{module.roleName}}</el-checkbox>
+                    </el-checkbox-group>
+                    <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
+                    <el-button @click="handleCheckBoxSave('sysUserRole');" type="primary" size="small" plain style="margin-top:10px;">保存</el-button>
+                </el-card>
+            </el-dialog>
+        </el-tab-pane>
+    </el-tabs>
+</div>
+</html>

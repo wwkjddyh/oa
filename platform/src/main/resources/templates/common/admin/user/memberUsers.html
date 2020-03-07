@@ -1,0 +1,193 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <el-tabs v-model="activeTabName" type="card">
+        <el-tab-pane label="会员/用户" name="first">
+            <el-form ref="formSearchMemberUser" :model="formSearchMemberUser" label-width="100px">
+                <el-form-item label="名称" prop="name">
+                    <el-input v-model="formSearchMemberUser.name" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <!--<el-form-item label="昵称" prop="nickname">-->
+                    <!--<el-input v-model="formSearchMemberUser.nickname" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="昵称"></el-input>-->
+                    <!--<el-tooltip class="item" effect="dark" placement="top">-->
+                        <!--<div slot="content">昵称</div><i class="el-icon-question"></i></el-tooltip>-->
+                <!--</el-form-item>-->
+                <el-form-item label="会员类型" prop="typeId">
+                    <el-select v-model="formSearchMemberUser.typeId" style="width: 300px;" >
+                        <el-option label="全部" value="">全部</el-option>
+                        <el-option label="个人" value="3">个人</el-option>
+                        <el-option label="企业会员" value="2">企业会员</el-option>
+                    </el-select>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">用户类型</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <!--<el-form-item label="是否为猎头" prop="isHeadhunting">-->
+                    <!--<el-select v-model="formSearchMemberUser.isHeadhunting" style="width: 300px;" >-->
+                        <!--<el-option label="是" value="1">是</el-option>-->
+                        <!--<el-option label="否" value="0">否</el-option>-->
+                    <!--</el-select>-->
+                    <!--<el-tooltip class="item" effect="dark" placement="top">-->
+                        <!--<div slot="content">是否为猎头</div><i class="el-icon-question"></i></el-tooltip>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="会员等级" prop="memberId" v-if="formSearchMemberUser.typeId==='0003'">-->
+                    <!--<el-select v-model="formSearchMemberUser.memberId" style="width: 300px;" >-->
+                        <!--<el-option label="请选择" value="">请选择</el-option>-->
+                    <!--</el-select>-->
+                    <!--<el-tooltip class="item" effect="dark" placement="top">-->
+                        <!--<div slot="content">会员等级</div><i class="el-icon-question"></i></el-tooltip>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="用户状态" prop="status">-->
+                    <!--<el-select v-model="formSearchMemberUser.status" style="width: 300px;" >-->
+                        <!--<el-option label="请选择" value="">请选择</el-option>-->
+                        <!--<el-option label="请选择" value="-1">冻结</el-option>-->
+                        <!--<el-option label="请选择" value="0">正常</el-option>-->
+                        <!--<el-option label="请选择" value="1">逻辑删除</el-option>-->
+                    <!--</el-select>-->
+                    <!--<el-tooltip class="item" effect="dark" placement="top">-->
+                        <!--<div slot="content">用户状态</div><i class="el-icon-question"></i></el-tooltip>-->
+                <!--</el-form-item>-->
+                <el-form-item>
+                    <el-button @click="searchForm('formSearchMemberUser')" type="primary" plain>检索</el-button>
+                </el-form-item>
+            </el-form>
+            <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
+            <el-button plain @click="edit('memberUser','','',true)">新增</el-button>
+            <div style="margin-top: 20px">
+                <el-table
+                        :data="memberUsers"
+                        border
+                        style="width: 100%">
+                    <el-table-column
+                            align="center"
+                            width="50"
+                            label="序号">
+                        <template slot-scope="scope">
+                            {{scope.$index+1}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="userName"
+                            label="名称"
+                            width="150">
+                    </el-table-column>
+                    <el-table-column
+                            prop="userNickname"
+                            label="昵称">
+                    </el-table-column>
+                    <el-table-column
+                            prop="typeName"
+                            label="会员类型"
+                            width="100">
+                    </el-table-column>
+                    <el-table-column
+                        prop="statusName"
+                        label="状态"
+                        width="100">
+                    </el-table-column>
+                    <!--<el-table-column-->
+                            <!--prop="memberName"-->
+                            <!--label="会员级别"-->
+                            <!--width="120">-->
+                    <!--</el-table-column>-->
+                    <el-table-column
+                            align="center"
+                            width="230"
+                            label="操作">
+                        <template slot-scope="scope">
+                            <div style="display: flex;width:100%">
+                                <el-button size="mini" @click="handleSetUserRole(scope.row,false)">角色设置</el-button>
+                                <!--
+                                <el-button size="mini" @click="edit('memberUser',scope.$index,scope.row,false)">修改</el-button>
+                                <el-button size="mini" type="danger" @click="handleDel(scope.$index,'memberUser')">删除</el-button>-->
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <div align="center">
+                    <el-pagination
+                            @size-change="handleMemberUserSizeChange"
+                            @current-change="handleMemberUserCurrentChange"
+                            :current-page="pager.user.currentPage"
+                            :page-sizes="[10, 20, 30, 40]"
+                            :page-size="pager.user.pageSize"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="pager.user.totalCount">
+                    </el-pagination>
+                </div>
+            </div>
+            <el-dialog title="会员/用户" :visible.sync="dialogShow.memberUser" lock-scroll="true" width="800px">
+                <el-card shadow="never" style="width: 100%;" type="card">
+                    <el-form ref="formUser" :rules="rules" :model="formUser" label-width="100px">
+                        <el-form-item label="名称" prop="name">
+                            <el-input v-model="formUser.name" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="昵称" prop="nickname">
+                            <el-input v-model="formUser.nickname" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="昵称"></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">昵称</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="原始密码" prop="oldPassword" v-if="currAction === 'edit'">
+                            <el-input v-model="formUser.oldPassword" type="password" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="原始密码"></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">原始密码</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="密码" prop="password">
+                            <el-input v-model="formUser.password" type="password" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="密码"></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">密码</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="重复密码" prop="passwordOrgi">
+                            <el-input v-model="formUser.passwordOrgi" type="password" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="重复密码"></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">重复密码</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="用户类型" prop="typeId">
+                            <el-select v-model="formUser.typeId" style="width: 300px;" >
+                                <el-option label="一般用户" value="0002">一般用户</el-option>
+                                <el-option label="一般会员" value="0003">一般会员</el-option>
+                                <el-option label="企业会员" value="0008">企业会员</el-option>
+                            </el-select>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">用户类型</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="是否为猎头" prop="isHeadhunting">
+                            <el-select v-model="formUser.isHeadhunting" style="width: 300px;" >
+                                <el-option label="是" value="1">是</el-option>
+                                <el-option label="否" value="0">否</el-option>
+                            </el-select>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">是否为猎头</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <!--<el-form-item label="会员等级" prop="memberId" v-if="formUser.typeId==='0003'">-->
+                            <!--<el-select v-model="formUser.memberId" style="width: 300px;" >-->
+                                <!--<el-option label="请选择" value="">请选择</el-option>-->
+                            <!--</el-select>-->
+                            <!--<el-tooltip class="item" effect="dark" placement="top">-->
+                                <!--<div slot="content">会员等级</div><i class="el-icon-question"></i></el-tooltip>-->
+                        <!--</el-form-item>-->
+                        <el-form-item>
+                            <el-button @click="resetForm('formUser')" plain>取消</el-button>
+                            <el-button @click="submitForm('formUser')" type="primary" plain>保存</el-button>
+                        </el-form-item>
+                    </el-form>
+                </el-card>
+            </el-dialog>
+            <el-dialog title="用户-角色配置" :visible.sync="dialogShow.userRole" lock-scroll="true" width="800px">
+                <el-card shadow="never" style="width: 100%;" type="card">
+                    <el-checkbox :indeterminate="isIndeterminate.userRole" v-model="checkBoxAll.userRole" @change="handleUserRoleCheckAllChange">全选</el-checkbox>
+                    <div style="margin: 15px 0;"></div>
+                    <el-checkbox-group v-model="checkBoxOptions.userRole" @change="handleUserRoleCheckedChange">
+                        <el-checkbox v-for="module in allRoles" :label="module.roleId" :key="module.roleId" v-if="module.roleName != 'ROLE_ADMIN'">{{module.roleName}}</el-checkbox>
+                    </el-checkbox-group>
+                    <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
+                    <el-button @click="handleCheckBoxSave('userRole');" type="primary" size="small" plain style="margin-top:10px;">保存</el-button>
+                </el-card>
+            </el-dialog>
+        </el-tab-pane>
+    </el-tabs>
+</div>
+</html>

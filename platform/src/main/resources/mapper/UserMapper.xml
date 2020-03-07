@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oa.platform.repository.UserRepository" >
+
+  <resultMap id="user" type="com.oa.platform.entity.User">
+    <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+    <result column="user_type" property="userType" jdbcType="INTEGER"/>
+    <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+    <result column="user_pwd" property="userPwd" jdbcType="VARCHAR"/>
+    <result column="user_pwd_origi" property="userPwdOrigi" jdbcType="VARCHAR"/>
+    <result column="user_nickname" property="userNickname" jdbcType="VARCHAR"/>
+    <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
+    <result column="last_login_time" property="lastLoginTime" jdbcType="VARCHAR"/>
+    <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
+    <result column="lang_conf_id" property="langConfId" jdbcType="VARCHAR"/>
+    <result column="third_party_type" property="thirdPartyType" jdbcType="VARCHAR"/>
+    <result column="third_party_id" property="thirdPartyId" jdbcType="VARCHAR"/>
+    <result column="user_sex" property="userSex" jdbcType="VARCHAR"/>
+    <result column="lang_name" property="langName" jdbcType="VARCHAR"/>
+    <result column="lang_code" property="langCode" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <resultMap id="userDtl" type="com.oa.platform.entity.UserDtl">
+    <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+    <result column="user_addr" property="userAddr" jdbcType="VARCHAR"/>
+    <result column="user_phone" property="userPhone" jdbcType="VARCHAR"/>
+    <result column="user_mobile" property="userMobile" jdbcType="VARCHAR"/>
+    <result column="user_email" property="userEmail" jdbcType="VARCHAR"/>
+    <result column="user_wechat" property="userWechat" jdbcType="VARCHAR"/>
+    <result column="user_alipay" property="userAlipay" jdbcType="VARCHAR"/>
+    <result column="user_weibo" property="userWeibo" jdbcType="VARCHAR"/>
+    <result column="user_blog" property="userBlog" jdbcType="VARCHAR"/>
+    <result column="user_qq" property="userQq" jdbcType="VARCHAR"/>
+    <result column="user_site" property="userSite" jdbcType="VARCHAR"/>
+    <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <insert id="insert" parameterType="user">
+    INSERT INTO t_user(user_id,user_type,user_name,user_pwd,user_pwd_origi,user_nickname,record_flag,record_time,
+        lang_conf_id,third_party_type,third_party_id,user_sex)
+    VALUES (#{userId},#{userType},#{userName},#{userPwd},#{userPwdOrigi},#{userNickname},#{recordFlag},NOW(),
+        #{langConfId},#{thirdPartyType},#{thirdPartyId},#{userSex})
+  </insert>
+
+  <insert id="insertUserDtl" parameterType="user">
+    INSERT INTO t_user_dtl(user_id,user_addr,user_phone,user_mobile,user_email,user_wechat,user_alipay,user_weibo,user_blog,user_qq,user_site,record_time)
+    VALUES (#{userId},#{userAddr},#{userPhone},#{userMobile},#{userEmail},#{userWechat},#{userAlipay},#{userWeibo},#{userBlog},#{userQq},#{userSite},NOW())
+  </insert>
+
+  <select id="selectUsers" resultMap="user">
+      SELECT t1.user_id, t1.user_type, t1.user_name, t1.user_pwd, t1.user_nickname, t1.record_flag,
+        DATE_FORMAT(t1.last_login_time,'%Y-%m-%d %H:%i:%s') last_login_time,
+        DATE_FORMAT(t1.record_time,'%Y-%m-%d %H:%i:%s') record_time,
+        DATE_FORMAT(t1.update_time,'%Y-%m-%d %H:%i:%s') update_time,
+        t1.lang_conf_id, t1.third_party_type,t1.third_party_id,t1.user_sex,
+				t2.`name` lang_name, t2.`code` lang_code
+      FROM t_user t1 LEFT JOIN t_lang_conf t2 ON t1.lang_conf_id = t2.record_id
+  </select>
+
+  <select id="findById" parameterType="java.lang.String" resultMap="user">
+    SELECT t1.user_id, t1.user_type, t1.user_name, t1.user_pwd, t1.user_nickname, t1.record_flag,
+        DATE_FORMAT(t1.last_login_time,'%Y-%m-%d %H:%i:%s') last_login_time,
+        DATE_FORMAT(t1.record_time,'%Y-%m-%d %H:%i:%s') record_time,
+        DATE_FORMAT(t1.update_time,'%Y-%m-%d %H:%i:%s') update_time,
+        t1.lang_conf_id, t1.third_party_type,t1.third_party_id,t1.user_sex,
+				t2.`name` lang_name, t2.`code` lang_code
+      FROM (select * FROM t_user WHERE user_id = #{userId}) t1 LEFT JOIN t_lang_conf t2 ON t1.lang_conf_id = t2.record_id
+  </select>
+
+  <select id="findDetailByUserId" parameterType="java.lang.String" resultMap="userDtl">
+    SELECT user_id,user_addr,user_phone,user_mobile,user_email,user_wechat,user_alipay,user_weibo,user_blog,user_qq,user_site,
+        DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+        DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time
+    FROM t_user_dtl WHERE user_id = #{userId}
+  </select>
+
+  <select id="findDetailByUserIds" parameterType="java.util.List" resultMap="userDtl">
+    SELECT user_id,user_addr,user_phone,user_mobile,user_email,user_wechat,user_alipay,user_weibo,user_blog,user_qq,user_site,
+        DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+        DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time
+    FROM t_user_dtl WHERE user_id IN
+    <foreach collection="userIds" index="index" item="itemId" open="(" separator="," close=")">
+      #{itemId}
+    </foreach>
+  </select>
+
+  <!--根据用户名查询用户信息-->
+  <select id="findUserByName" parameterType="java.lang.String" resultMap="user">
+    SELECT t1.user_id, t1.user_type, t1.user_name, t1.user_pwd, t1.user_nickname, t1.record_flag,
+        DATE_FORMAT(t1.last_login_time,'%Y-%m-%d %H:%i:%s') last_login_time,
+        DATE_FORMAT(t1.record_time,'%Y-%m-%d %H:%i:%s') record_time,
+        DATE_FORMAT(t1.update_time,'%Y-%m-%d %H:%i:%s') update_time,
+        t1.lang_conf_id, t1.third_party_type,t1.third_party_id,t1.user_sex,
+				t2.`name` lang_name, t2.`code` lang_code
+      FROM (select * FROM t_user WHERE user_name = #{userName}) t1 LEFT JOIN t_lang_conf t2 ON t1.lang_conf_id = t2.record_id
+  </select>
+
+  <!--根据用户名和密码查询用户信息-->
+  <select id="findUserByNameAndPwd" parameterType="java.util.Map" resultMap="user">
+    SELECT t1.user_id, t1.user_type, t1.user_name, t1.user_pwd, t1.user_nickname, t1.record_flag,
+        DATE_FORMAT(t1.last_login_time,'%Y-%m-%d %H:%i:%s') last_login_time,
+        DATE_FORMAT(t1.record_time,'%Y-%m-%d %H:%i:%s') record_time,
+        DATE_FORMAT(t1.update_time,'%Y-%m-%d %H:%i:%s') update_time,
+        t1.lang_conf_id, t1.third_party_type,t1.third_party_id,t1.user_sex,
+				t2.`name` lang_name, t2.`code` lang_code
+      FROM (select * FROM t_user WHERE user_name = #{userName} AND user_pwd = #{userPwd}) t1
+      LEFT JOIN t_lang_conf t2 ON t1.lang_conf_id = t2.record_id
+  </select>
+
+  <!--更新用户基本信息-->
+  <update id="update" parameterType="user">
+    UPDATE t_user
+    <trim prefix="SET" suffixOverrides="," suffix=" WHERE user_id = #{userId}">
+      <if test="userType != null and userType != ''">
+        `user_type` = #{userType},
+      </if>
+      <if test="userName != null and userName != ''">
+        `user_name` = #{userName},
+      </if>
+      <if test="userNickname != null and userNickname != ''">
+        `user_nickname` = #{userNickname},
+      </if>
+      <if test="thirdPartyType != null and thirdPartyType != ''">
+        `third_party_type` = #{thirdPartyType},
+      </if>
+      <if test="langConfId != null and langConfId != ''">
+        `lang_conf_id` = #{langConfId},
+      </if>
+      <if test="thirdPartyType != null and thirdPartyType != ''">
+        `third_party_type` = #{thirdPartyType},
+      </if>
+      <if test="thirdPartyId != null and thirdPartyId != ''">
+        `third_party_id` = #{thirdPartyId},
+      </if>
+      <if test="userSex != null and userSex != ''">
+        `user_sex` = #{userSex},
+      </if>
+      <if test="userPwdOrigi != null and userPwdOrigi != ''">
+        user_pwd_origi = #{userPwdOrigi},
+      </if>
+      <if test="userPwd != null and userPwd != ''">
+        user_pwd = #{userPwd},
+      </if>
+      <if test="lastLoginTime != null and lastLoginTime != ''">
+        last_login_time = STR_TO_DATE(#{lastLoginTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+      <if test="recordFlag != null">
+        record_flag = #{recordFlag},
+      </if>
+    </trim>
+  </update>
+
+  <!--更新用户详细信息-->
+  <update id="updateUserDtl" parameterType="userDtl">
+    UPDATE t_user_dtl
+    <trim prefix="SET" suffixOverrides="," suffix=" WHERE user_id = #{userId}">
+      <if test="userAddr != null and userAddr != ''">
+        `user_addr` = #{userAddr},
+      </if>
+      <if test="userPhone != null and userPhone != ''">
+        `user_phone` = #{userPhone},
+      </if>
+      <if test="userMobile != null and userMobile != ''">
+        user_mobile = #{userMobile},
+      </if>
+      <if test="userEmail != null and userEmail != ''">
+        user_email = #{userEmail},
+      </if>
+      <if test="userWechat != null and userWechat != ''">
+        user_wechat = #{userWechat},
+      </if>
+      <if test="userAlipay != null and userAlipay != ''">
+        user_alipay = #{userAlipay},
+      </if>
+      <if test="userWeibo != null and userWeibo != ''">
+        user_weibo = #{userWeibo},
+      </if>
+      <if test="userBlog != null and userBlog != ''">
+        user_blog = #{userBlog},
+      </if>
+      <if test="userQq != null and userQq != ''">
+        user_qq = #{userQq},
+      </if>
+      <if test="userSite != null and userSite != ''">
+        user_site = #{userSite},
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        update_time = STR_TO_DATE(#{updateTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+    </trim>
+  </update>
+
+  <!--查询用户信息(分页)-->
+  <select id="find" parameterType="user" resultMap="user">
+    SELECT t.user_id, t.user_type, t.user_name, t.user_pwd, t.user_nickname, t.record_flag,
+        DATE_FORMAT(t.last_login_time,'%Y-%m-%d %H:%i:%s') last_login_time,
+        DATE_FORMAT(t.record_time,'%Y-%m-%d %H:%i:%s') record_time,
+        DATE_FORMAT(t.update_time,'%Y-%m-%d %H:%i:%s') update_time,
+        t.lang_conf_id, t.third_party_type,t.third_party_id,t.user_sex,
+        t.lang_name, t.lang_code
+    FROM (
+      SELECT t1.user_id, t1.user_type, t1.user_name, t1.user_pwd, t1.user_nickname, t1.record_flag,
+        t1.last_login_time,t1.record_time,t1.update_time,
+        t1.lang_conf_id, t1.third_party_type,t1.third_party_id,t1.user_sex,
+        t2.`name` lang_name, t2.`code` lang_code
+      FROM t_user t1 LEFT JOIN t_lang_conf t2 ON t1.lang_conf_id = t2.record_id
+    )t
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="userId != null and userId != ''">
+        AND user_id = #{userId}
+      </if>
+      <choose>
+        <when test="isAdmin == '1'">
+          AND user_type = 1
+        </when>
+        <otherwise>
+          <choose>
+            <when test="userType != null">
+              AND user_type = #{userType}
+            </when>
+            <otherwise>
+              AND user_type != 1
+            </otherwise>
+          </choose>
+        </otherwise>
+      </choose>
+      <if test="key != null and key != ''">
+        AND (UPPER(user_name) LIKE CONCAT('%',UPPER(#{key}),'%') OR UPPER(user_nickname) LIKE CONCAT('%',UPPER(#{key}),'%'))
+      </if>
+      <if test="userPwd != null and userPwd != ''">
+        AND user_pwd = #{userPwd}
+      </if>
+      <if test="userName != null and userName != ''">
+        AND `user_name` = #{userName}
+      </if>
+      <if test="userNickname != null and userNickname != ''">
+        AND `user_nickname` = #{userNickname}
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
+      </if>
+      <if test="lastLoginTime != null and lastLoginTime != ''">
+        AND DATE_FORMAT(last_login_time,'%Y-%m-%d') = #{lastLoginTime}
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        AND DATE_FORMAT(update_time,'%Y-%m-%d') = #{updateTime}
+      </if>
+      <if test="recordFlag != null">
+        AND record_flag = #{recordFlag}
+      </if>
+      <if test="langConfId != null">
+        AND lang_conf_id = #{langConfId}
+      </if>
+      <if test="thirdPartyType != null and thirdPartyType != ''">
+        AND third_party_type = #{thirdPartyType}
+      </if>
+      <if test="thirdPartyId != null and thirdPartyId != ''">
+        AND third_party_id = #{thirdPartyId}
+      </if>
+      <if test="userSex != null and userSex != ''">
+        AND user_sex = #{userSex}
+      </if>
+      <if test="ids != null and ids.size() > 0">
+        AND user_id IN
+        <foreach collection="ids" index="index" item="itemId" open="(" separator="," close=")">
+          #{itemId}
+        </foreach>
+      </if>
+    </trim>
+  </select>
+</mapper>

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oa.platform.repository.CategoryRepository" >
+
+  <resultMap id="category" type="com.oa.platform.entity.Category">
+    <result column="record_id" property="recordId" jdbcType="VARCHAR"/>
+    <result column="type_id" property="typeId" jdbcType="VARCHAR"/>
+    <result column="type_name" property="typeName" jdbcType="VARCHAR"/>
+    <result column="name" property="name" jdbcType="VARCHAR"/>
+    <result column="desc" property="desc" jdbcType="VARCHAR"/>
+    <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
+    <result column="flag" property="flag" jdbcType="INTEGER"/>
+  </resultMap>
+
+  <resultMap id="categoryType" type="com.oa.platform.entity.CategoryType">
+    <result column="record_id" property="recordId" jdbcType="VARCHAR"/>
+    <result column="name" property="name" jdbcType="VARCHAR"/>
+    <result column="desc" property="desc" jdbcType="VARCHAR"/>
+    <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
+    <result column="flag" property="flag" jdbcType="INTEGER"/>
+  </resultMap>
+
+  <!--插入类别信息-->
+  <insert id="insert" parameterType="category">
+    INSERT INTO t_category (record_id,type_id,`name`,`desc`,record_time,flag)
+    VALUES (#{recordId},#{typeId},#{name},#{desc},NOW(),#{flag})
+  </insert>
+
+  <!--插入类别分类信息-->
+  <insert id="insertCategoryType" parameterType="categoryType">
+    INSERT INTO t_category_type (record_id,`name`,`desc`,record_time,flag)
+    VALUES (#{recordId},#{name},#{desc},NOW(),#{flag})
+  </insert>
+
+  <!--更新类别信息-->
+  <update id="update" parameterType="category">
+    UPDATE t_category
+    <trim prefix="SET" suffixOverrides="," suffix=" WHERE record_id = #{recordId}">
+      <if test="typeId != null and typeId != ''">
+        type_id = #{typeId},
+      </if>
+      <if test="name != null and name != ''">
+        `name` = #{name},
+      </if>
+      <if test="desc != null and desc != ''">
+        `desc` = #{desc},
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        record_time = STR_TO_DATE(#{recordTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+      <if test="flag != null">
+        flag = #{flag},
+      </if>
+    </trim>
+  </update>
+
+  <update id="updateCategoryType" parameterType="categoryType">
+    UPDATE t_category_type
+    <trim prefix="SET" suffixOverrides="," suffix=" WHERE record_id = #{recordId}">
+      <if test="name != null and name != ''">
+        `name` = #{name},
+      </if>
+      <if test="desc != null and desc != ''">
+        `desc` = #{desc},
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        record_time = STR_TO_DATE(#{recordTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+      <if test="flag != null">
+        flag = #{flag},
+      </if>
+    </trim>
+  </update>
+
+  <!--根据dictId查询字典信息-->
+  <select id="findById" resultMap="category" parameterType="java.lang.String">
+    SELECT
+      record_id,type_id,`name`,`desc`,record_time,flag
+    FROM t_category WHERE record_id = #{recordId} AND flag = 1
+  </select>
+
+  <delete id="delete" parameterType="category">
+    DELETE FROM t_category
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="typeId != null and typeId != ''">
+        AND type_id = #{typeId}
+      </if>
+      <if test="name != null and name != ''">
+        AND `name` = #{name}
+      </if>
+      <if test="desc != null and desc != ''">
+        AND `desc` = #{desc}
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
+      </if>
+      <if test="flag != null">
+        AND flag = #{flag}
+      </if>
+    </trim>
+  </delete>
+
+  <delete id="deleteCategoryType" parameterType="categoryType">
+    DELETE FROM t_category_type
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="name != null and name != ''">
+        AND `name` = #{name}
+      </if>
+      <if test="desc != null and desc != ''">
+        AND `desc` = #{desc}
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
+      </if>
+      <if test="flag != null">
+        AND flag = #{flag}
+      </if>
+    </trim>
+  </delete>
+
+  <!--查询-->
+  <select id="find" parameterType="category" resultMap="category">
+    SELECT
+      record_id,type_id,type_name,`name`,`desc`,
+      DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+      flag
+     FROM (
+      SELECT t1.record_id,t1.type_id,t2.`name` type_name,t1.`name`,t1.`desc`,t1.record_time,t1.flag
+      FROM t_category t1 LEFT JOIN (SELECT * FROM t_category_type WHERE flag=1) t2
+      ON t1.type_id=t2.record_id
+    ) T
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="typeId != null and typeId != ''">
+        AND type_id = #{typeId}
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
+      </if>
+      <if test="flag != null">
+        AND flag = #{flag}
+      </if>
+      <if test="name != null and name != ''">
+        AND `name` = #{name}
+      </if>
+      <if test="desc != null and desc != ''">
+        AND `desc` = #{desc}
+      </if>
+      <if test="key != null and key != ''">
+        AND (UPPER(`name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+          OR UPPER(`desc`) LIKE CONCAT('%',UPPER(#{key}),'%')
+          OR UPPER(`type_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        )
+      </if>
+      <if test="typeName != null and typeName != ''">
+        AND `type_name` = #{typeName}
+      </if>
+    </trim>
+  </select>
+
+  <select id="findCategoryType" parameterType="categoryType" resultMap="categoryType">
+    SELECT record_id,`name`,`desc`,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,flag
+    FROM t_category_type
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
+      </if>
+      <if test="flag != null">
+        AND flag = #{flag}
+      </if>
+      <if test="name != null and name != ''">
+        AND `name` = #{name}
+      </if>
+      <if test="desc != null and desc != ''">
+        AND `desc` = #{desc}
+      </if>
+      <if test="key != null and key != ''">
+        AND (UPPER(`name`) LIKE CONCAT('%',UPPER(#{key}),'%') OR UPPER(`desc`) LIKE CONCAT('%',UPPER(#{key}),'%'))
+      </if>
+    </trim>
+  </select>
+</mapper>

@@ -1,0 +1,31 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="menu">
+    <!-- # el-menu 中，default-active不能和:default-openeds；否则，default-active不起作用-->
+    <el-menu :default-active="def_menu_id"
+             class="el-menu-vertical-demo"
+             @open="handleOpen"
+             @close="handleClose"
+             :collapse="isCollapse"
+             @select="handleNavMenu">
+        <el-submenu index="user">
+            <template slot="title">
+                <i class="el-icon-location"></i>
+                <span slot="title">用户管理</span>
+            </template>
+            <el-menu-item index="modules">权限管理</el-menu-item>
+            <el-menu-item index="roles">角色管理</el-menu-item>
+            <el-menu-item index="sysUsers">系统用户</el-menu-item>
+            <el-menu-item index="memberUsers">会员/用户</el-menu-item>
+        </el-submenu>
+        <el-submenu index="category">
+            <template slot="title">
+                <i class="el-icon-location"></i>
+                <span slot="title">分类信息</span>
+            </template>
+            <el-menu-item index="categories">分类管理</el-menu-item>
+            <el-menu-item index="categoryTypes">分类类别管理</el-menu-item>
+        </el-submenu>
+    </el-menu>
+</div>
+</html>

@@ -1,0 +1,27 @@
+.el-header {
+    background-color: #B3C0D1;
+    color: #333;
+    line-height: 60px;
+    width: 100%;
+}
+
+.el-aside {
+    color: #333;
+}
+
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+}
+.el-menu-vertical-demo {
+    width: auto;
+    height: 100%;
+}
+.el-container {
+    height:100%;
+    border: 1px solid #eee;
+}
+
+.el-tag + .el-tag {
+    margin-left: 10px;
+}

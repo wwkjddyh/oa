@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oa.platform.repository.DictRepository" >
+
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"
+         eviction="LRU"
+         flushInterval="3600000"
+         size="1024"
+         readOnly="true"
+         blocking="true"
+  />
+
+  <resultMap id="dict" type="com.oa.platform.entity.Dict">
+    <result column="dict_id" property="dictId" jdbcType="VARCHAR"/>
+    <result column="dict_type" property="dictType" jdbcType="VARCHAR"/>
+    <result column="dict_name" property="dictName" jdbcType="VARCHAR"/>
+    <result column="dict_remark" property="dictRemark" jdbcType="VARCHAR"/>
+    <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
+    <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
+  </resultMap>
+
+  <!--插入字典信息-->
+  <insert id="insert" parameterType="dict">
+    INSERT INTO t_dict (dict_id,dict_type,dict_name,dict_remark,record_time,record_flag)
+    VALUES (#{dictId},#{dictType},#{dictName},#{dictRemark},NOW(),#{recordFlag})
+  </insert>
+
+  <!--更新字典信息-->
+  <update id="update" parameterType="dict">
+    UPDATE t_dict
+    <trim prefix="SET" suffixOverrides="," suffix=" WHERE dict_id = #{dictId}">
+      <if test="dictType != null and dictType != ''">
+        dict_type = #{dictType},
+      </if>
+      <if test="dictName != null and dictName != ''">
+        dict_name = #{dictName},
+      </if>
+      <if test="dictRemark != null and dictRemark != ''">
+        dict_remark = #{dictRemark},
+      </if>
+      <if test="recordFlag != null">
+        record_flag = #{recordFlag},
+      </if>
+    </trim>
+  </update>
+
+  <!--根据dictId查询字典信息-->
+  <select id="findById" resultMap="dict" parameterType="java.lang.String">
+    SELECT  dict_id,dict_type,dict_name,dict_remark,
+      DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,record_flag
+    FROM t_dict WHERE dict_id = #{dictId} AND record_flag = 1
+  </select>
+
+  <delete id="delete" parameterType="dict">
+    DELETE FROM t_dict
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="dictId != null and dictId != ''">
+        AND dict_id = #{dictId}
+      </if>
+      <if test="dictType != null and dictType != ''">
+        AND dict_type = #{dictType}
+      </if>
+      <if test="dictName != null and dictName != ''">
+        AND dict_name = #{dictName}
+      </if>
+      <if test="dictRemark != null and dictRemark != ''">
+        AND dict_remark = #{dictRemark}
+      </if>
+      <if test="recordFlag != null">
+        AND record_flag = #{recordFlag}
+      </if>
+    </trim>
+  </delete>
+
+  <!--查询-->
+  <select id="find" parameterType="dict" resultMap="dict">
+    SELECT dict_id,dict_type,dict_name,dict_remark,
+      DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,record_flag
+    FROM t_dict
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="dictId != null and dictId != ''">
+        AND dict_id = #{dictId}
+      </if>
+      <if test="dictType != null and dictType != ''">
+        AND dict_type = #{dictType}
+      </if>
+      <if test="dictName != null and dictName != ''">
+        AND dict_name = #{dictName}
+      </if>
+      <if test="key != null and key != ''">
+        AND (UPPER(dict_name) LIKE CONCAT('%',UPPER(#{key}),'%') OR UPPER(dict_remark) LIKE CONCAT('%',UPPER(#{key}),'%'))
+      </if>
+      <if test="dictRemark != null and dictRemark != ''">
+        AND dict_remark LIKE CONCAT('%',#{dictRemark},'%')
+      </if>
+      <if test="recordFlag != null">
+        AND record_flag = #{recordFlag}
+      </if>
+    </trim>
+  </select>
+</mapper>

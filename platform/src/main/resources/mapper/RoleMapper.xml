@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oa.platform.repository.RoleRepository" >
+
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"
+         eviction="LRU"
+         flushInterval="3600000"
+         size="1024"
+         readOnly="true"
+         blocking="true"
+  />
+
+  <resultMap id="role" type="com.oa.platform.entity.Role">
+    <result column="role_id" property="roleId" jdbcType="VARCHAR"/>
+    <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+    <result column="role_desc" property="roleDesc" jdbcType="VARCHAR"/>
+    <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
+    <result column="update_user_id" property="updateUserId" jdbcType="VARCHAR"/>
+    <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
+  </resultMap>
+
+  <resultMap id="userRole" type="com.oa.platform.entity.UserRole">
+    <result column="record_id" property="recordId" jdbcType="VARCHAR"/>
+    <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+    <result column="role_Id" property="roleId" jdbcType="VARCHAR"/>
+    <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
+    <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+    <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <resultMap id="roleModule" type="com.oa.platform.entity.RoleModule">
+    <result column="record_id" property="recordId" jdbcType="VARCHAR"/>
+    <result column="role_id" property="roleId" jdbcType="VARCHAR"/>
+    <result column="module_id" property="moduleId" jdbcType="VARCHAR"/>
+    <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
+    <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+    <result column="module_name" property="moduleName" jdbcType="VARCHAR"/>
+    <result column="full_module_name" property="fullModuleName" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <resultMap id="module" type="com.oa.platform.entity.Module">
+    <result column="module_id" property="moduleId" jdbcType="VARCHAR"/>
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR"/>
+    <result column="module_name" property="moduleName" jdbcType="VARCHAR"/>
+    <result column="module_desc" property="moduleDesc" jdbcType="VARCHAR"/>
+    <result column="module_url" property="moduleUrl" jdbcType="VARCHAR"/>
+    <result column="is_leaf" property="isLeaf" jdbcType="VARCHAR"/>
+    <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
+    <result column="update_user_id" property="updateUserId" jdbcType="VARCHAR"/>
+    <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
+    <result column="full_module_name" property="fullModuleName" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <resultMap id="userRoleModule" type="com.oa.platform.entity.UserRoleModule">
+    <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+    <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+    <result column="user_nickname" property="userNickname" jdbcType="VARCHAR"/>
+    <result column="role_Id" property="roleId" jdbcType="VARCHAR"/>
+    <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+    <result column="module_id" property="moduleId" jdbcType="VARCHAR"/>
+    <result column="parent_module_id" property="parentModuleId" jdbcType="VARCHAR"/>
+    <result column="module_name" property="moduleName" jdbcType="VARCHAR"/>
+    <result column="full_module_name" property="fullModuleName" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <insert id="insertRole" parameterType="role">
+    INSERT INTO t_role(role_id,role_name,role_desc,record_time,record_flag)
+    VALUES(#{roleId},#{roleName},#{roleDesc},NOW(),#{recordFlag})
+  </insert>
+
+  <update id="updateRoleFlagById" parameterType="java.util.Map">
+    UPDATE t_role SET record_flag = #{recordFlag} WHERE role_id = #{roleId}
+  </update>
+  
+  <insert id="batchInsertUserRole" parameterType="java.util.List">
+    INSERT INTO t_user_role(record_id,user_id,role_Id,record_time) VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.recordId},#{item.userId},#{item.roleId},NOW())
+    </foreach>
+  </insert>
+
+  <delete id="deleteUserRoleById" parameterType="java.lang.String">
+    DELETE FROM t_user_role WHERE record_id = #{recordId}
+  </delete>
+
+  <delete id="batchDeleteUserRoleByIds" parameterType="java.util.List">
+    DELETE FROM t_user_role WHERE record_id IN 
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+  <delete id="deleteUserRoleByUserId" parameterType="java.lang.String">
+    DELETE FROM t_user_role WHERE user_id = #{userId}
+  </delete>
+
+  <insert id="insertModule" parameterType="module">
+    INSERT INTO t_module(module_id,parent_id,module_name,module_desc,module_url,is_leaf,record_time,record_flag)
+    VALUES(#{moduleId},#{parentId},#{moduleName},#{moduleDesc},#{moduleUrl},#{isLeaf},NOW(),#{recordFlag})
+  </insert>
+
+  <update id="updateModuleFlagById" parameterType="java.util.Map">
+    UPDATE t_module SET record_flag = #{recordFlag} WHERE module_id = #{moduleId}
+  </update>
+
+  <select id="findModuleById" parameterType="java.lang.String" resultMap="module">
+    SELECT module_id,parent_id,module_name,module_url,is_leaf,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+      DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag
+    FROM t_module WHERE module_id = #{moduleId} AND record_flag = 1
+  </select>
+
+  <insert id="batchInsertRoleModule" parameterType="java.util.List">
+    INSERT INTO t_role_module(record_id,role_id,module_id,record_time) VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.recordId},#{item.roleId},#{item.moduleId},NOW())
+    </foreach>
+  </insert>
+
+  <delete id="deleteRoleModuleById" parameterType="java.lang.String">
+    DELETE FROM t_role_module WHERE record_id = #{recordId}
+  </delete>
+
+  <delete id="batchDeleteRoleModuleByIds" parameterType="java.util.List">
+    DELETE FROM t_role_module WHERE record_id IN
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+  <delete id="deleteRoleModuleByRoleId" parameterType="java.lang.String">
+    DELETE FROM t_role_module WHERE role_id = #{roleId}
+  </delete>
+
+  <select id="findRoleByUserId" resultMap="role" parameterType="java.lang.String">
+    SELECT role_id,role_name,role_desc,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+      DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag
+    FROM t_role WHERE record_flag = 1
+    AND role_id IN (SELECT role_id FROM t_user_role where user_id = #{userId})
+  </select>
+
+  <select id="findRoleByRoleName" resultMap="role" parameterType="java.lang.String">
+    SELECT role_id,role_name,role_desc,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+      DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag
+    FROM t_role WHERE record_flag = 1 AND role_name = #{roleName}
+  </select>
+
+  <!--更新角色信息-->
+  <update id="updateRole" parameterType="role">
+    UPDATE t_role
+    <trim prefix="SET" suffixOverrides="," suffix=" WHERE role_id = #{roleId}">
+      <if test="roleName != null and roleName != ''">
+        role_name = #{roleName},
+      </if>
+      <if test="roleDesc != null and roleDesc != ''">
+        role_desc = #{roleDesc},
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        update_time = STR_TO_DATE(#{updateTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+      <if test="updateUserId != null and updateUserId != ''">
+        update_user_id = #{updateUserId},
+      </if>
+      <if test="recordFlag != null">
+        record_flag = #{recordFlag},
+      </if>
+    </trim>
+  </update>
+
+  <!--更新模块信息-->
+  <update id="updateModule" parameterType="module">
+    UPDATE t_module
+    <trim prefix="SET" suffixOverrides="," suffix=" WHERE module_id = #{moduleId}">
+      <if test="parentId != null and parentId != ''">
+        parent_id = #{parentId},
+      </if>
+      <if test="moduleName != null and moduleName != ''">
+        module_name = #{moduleName},
+      </if>
+      <if test="moduleDesc != null and moduleDesc != ''">
+        module_desc = #{moduleDesc},
+      </if>
+      <if test="moduleUrl != null and moduleUrl != ''">
+        module_url = #{moduleUrl},
+      </if>
+      <if test="isLeaf != null">
+        is_leaf = #{isLeaf},
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        update_time = STR_TO_DATE(#{updateTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+      <if test="updateUserId != null and updateUserId != ''">
+        update_user_id = #{updateUserId},
+      </if>
+      <if test="recordFlag != null">
+        record_flag = #{recordFlag},
+      </if>
+    </trim>
+  </update>
+
+  <!-- 查询角色信息 -->
+  <select id="findRole" parameterType="role" resultMap="role">
+    SELECT role_id,role_name,role_desc,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+          DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag
+    FROM t_role
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="roleId != null and roleId != ''">
+        AND role_id = #{roleId}
+      </if>
+      <if test="roleName != null and roleName != ''">
+        AND role_name = #{roleName}
+      </if>
+      <if test="roleDesc != null and roleDesc != ''">
+        AND role_desc = #{roleDesc}
+      </if>
+      <if test="recordFlag != null">
+        AND record_flag = #{recordFlag}
+      </if>
+      <if test="key != null and key != ''">
+        AND (
+        UPPER(`role_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        OR UPPER(`role_desc`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        )
+      </if>
+    </trim>
+  </select>
+
+  <!-- 查询用户-角色信息 -->
+  <select id="findUserRole" parameterType="userRole" resultMap="userRole">
+    SELECT record_id,user_id,role_Id, DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,user_name,role_name
+    FROM (
+        SELECT
+            t1.*,
+            t2.role_name,
+            t3.user_name
+        FROM
+            t_user_role t1
+            LEFT JOIN (SELECT * FROM t_role WHERE record_flag = 1) t2 ON t1.role_id = t2.role_id
+            LEFT JOIN t_user t3 ON t1.user_id = t3.user_id
+    )t
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="roleId != null and roleId != ''">
+        AND role_id = #{roleId}
+      </if>
+      <if test="userId != null and userId != ''">
+        AND user_id = #{userId}
+      </if>
+      <if test="userName != null and userName != ''">
+        AND user_name = #{userName}
+      </if>
+      <if test="roleName != null and roleName != ''">
+        AND role_name = #{roleName}
+      </if>
+      <if test="key != null and key != ''">
+        AND (
+        UPPER(`user_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        OR UPPER(`role_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        )
+      </if>
+    </trim>
+  </select>
+
+  <!-- 查询角色-模块信息 -->
+  <select id="findRoleModule" parameterType="roleModule" resultMap="roleModule">
+    SELECT record_id,role_id,module_id,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+          role_name,module_name,full_module_name
+    FROM (
+        SELECT
+            t1.*,
+            t2.role_name,
+            t6.module_name,
+            t6.full_module_name
+        FROM
+            t_role_module t1
+            LEFT JOIN t_role t2 ON t1.role_id = t2.role_id
+            LEFT JOIN (
+              WITH RECURSIVE cte AS
+                (
+                SELECT a.module_id, module_name
+                    FROM t_module a WHERE a.record_flag = 1 and (a.parent_id is null or a.parent_id = '')
+                UNION ALL
+                SELECT k.module_id,CONCAT(c.module_name, '>', k.module_name) as module_name
+                    FROM (SELECT * FROM t_module WHERE record_flag = 1) k INNER JOIN cte c ON c.module_id = k.parent_id
+                )
+                SELECT t10.*, c.module_name full_module_name
+                FROM cte c, t_module t10
+                WHERE c.module_id = t10.module_id
+                ORDER BY c.module_name ASC
+            ) t6 ON t1.module_id = t6.module_id
+    )t
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="roleId != null and roleId != ''">
+        AND role_id = #{roleId}
+      </if>
+      <if test="moduleId != null and moduleId != ''">
+        AND module_id = #{moduleId}
+      </if>
+      <if test="moduleName != null and moduleName != ''">
+        AND user_name = #{userName}
+      </if>
+      <if test="roleName != null and roleName != ''">
+        AND role_name = #{roleName}
+      </if>
+      <if test="key != null and key != ''">
+        AND (
+        UPPER(`moduleName`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        OR UPPER(`role_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        OR UPPER(`full_module_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        )
+      </if>
+    </trim>
+  </select>
+
+  <!-- 查询用户-角色-模块信息 -->
+  <select id="findUserRoleModule" parameterType="userRoleModule" resultMap="userRoleModule">
+    WITH RECURSIVE cte AS
+    (
+    SELECT a.module_id, module_name
+        FROM t_module a WHERE a.record_flag = 1 and (a.parent_id is null or a.parent_id = '')
+    UNION ALL
+    SELECT k.module_id,CONCAT(c.module_name, '>', k.module_name) as module_name
+        FROM (SELECT * FROM t_module WHERE record_flag = 1) k INNER JOIN cte c ON c.module_id = k.parent_id
+    )
+    SELECT t.module_id,t.parent_module_id,t.module_name, t.full_module_name,
+            t.user_id,t.user_name,t.user_nickname,t.role_id,t.role_name FROM (
+        SELECT
+            t10.module_id,t10.parent_id parent_module_id,t10.module_name, c.module_name full_module_name,
+            t12.user_id,t12.user_name,t12.user_nickname,t12.role_id,t12.role_name
+        FROM cte c, t_module t10, t_role_module t11,
+                (SELECT t31.*,t32.role_name,t30.user_name,t30.user_nickname
+                    FROM t_user_role t31
+                    LEFT JOIN t_role t32 ON t31.role_id = t32.role_id
+                    LEFT JOIN t_user t30 ON t30.user_id = t31.user_id
+                ) t12
+        WHERE
+            c.module_id = t10.module_id
+            AND t10.module_id = t11.module_id
+            AND t11.role_id = t12.role_id
+        ORDER BY c.module_name ASC
+    ) t
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="userId != null and userId != ''">
+        AND user_id = #{userId}
+      </if>
+      <if test="moduleId != null and moduleId != ''">
+        AND module_id = #{moduleId}
+      </if>
+      <if test="parentModuleId != null and parentModuleId != ''">
+        AND parent_module_id = #{parentModuleId}
+      </if>
+      <if test="moduleName != null and moduleName != ''">
+        AND module_name = #{moduleName}
+      </if>
+      <if test="userName != null and userName != ''">
+        AND user_name = #{userName}
+      </if>
+      <if test="userNickname != null and userNickname != ''">
+        AND user_nickname = #{userNickname}
+      </if>
+      <if test="roleId != null and roleId != ''">
+        AND role_Id = #{roleId}
+      </if>
+      <if test="roleName != null and roleName != ''">
+        AND role_name = #{roleName}
+      </if>
+      <if test="key != null and key != ''">
+        AND (
+        UPPER(t.`user_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        OR UPPER(t.`user_nickname`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        OR UPPER(t.`role_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        OR UPPER(t.`module_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        OR UPPER(t.`full_module_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        )
+      </if>
+    </trim>
+  </select>
+
+  <!-- 模块信息查询 -->
+  <select id="findModule" parameterType="module" resultMap="module">
+    SELECT
+      module_id,parent_id,module_name,module_desc,module_url,is_leaf,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+      DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag,full_module_name
+      FROM (
+        WITH RECURSIVE cte AS
+        (
+        SELECT a.module_id, module_name
+            FROM t_module a WHERE a.record_flag = 1 and (a.parent_id is null or a.parent_id = '')
+        UNION ALL
+        SELECT k.module_id,CONCAT(c.module_name, '>', k.module_name) as module_name
+            FROM (SELECT * FROM t_module WHERE record_flag = 1) k INNER JOIN cte c ON c.module_id = k.parent_id
+        )
+        SELECT t10.*, c.module_name full_module_name
+        FROM cte c, t_module t10
+        WHERE c.module_id = t10.module_id
+        ORDER BY c.module_name ASC
+    ) t
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="moduleId != null and moduleId != ''">
+        AND module_id = #{moduleId}
+      </if>
+      <if test="parentId != null and parentId != ''">
+        AND parent_id = #{parentId}
+      </if>
+      <if test="moduleName != null and moduleName != ''">
+        AND module_name = #{moduleName}
+      </if>
+      <if test="moduleDesc != null and moduleDesc != ''">
+        AND module_desc = #{moduleDesc}
+      </if>
+      <if test="moduleUrl != null and moduleUrl != ''">
+        AND module_url = #{moduleUrl}
+      </if>
+      <if test="isLeaf != null">
+        AND is_leaf = #{isLeaf}
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        AND update_time = STR_TO_DATE(#{updateTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+      <if test="updateUserId != null and updateUserId != ''">
+        AND update_user_id = #{updateUserId}
+      </if>
+      <if test="recordFlag != null">
+        AND record_flag = #{recordFlag}
+      </if>
+      <if test="key != null and key != ''">
+        AND (
+        UPPER(t.`module_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        OR UPPER(t.`module_desc`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        OR UPPER(t.`full_module_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+        )
+      </if>
+    </trim>
+  </select>
+</mapper>

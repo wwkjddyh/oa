@@ -1,0 +1,24 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+    <div th:fragment="header">
+        <span style="font-size:20px;margin-right:20px;font-weight: bold;">系统管理平台</span>
+        <el-radio-group v-model="isCollapse" style="margin-right: 60%;">
+            <el-radio-button :label="false">展开</el-radio-button>
+            <el-radio-button :label="true">收起</el-radio-button>
+        </el-radio-group>
+        <!--<el-dropdown style="font-size: 12px;float:right;">
+            <i class="el-icon-setting" style="margin-right: 15px"></i>
+            <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>查看</el-dropdown-item>
+                <el-dropdown-item>新增</el-dropdown-item>
+                <el-dropdown-item>删除</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>-->
+        <span style="float:right;font-size:14px;font-weight: bold;display: flex;">
+            <a href="#">超级管理员</a>
+            <form id="logoutForm" action="#" th:action="@{/logout}" method="post">
+                <a onclick="document.getElementById('logoutForm').submit();"><img src="/images/exit-red.png" style="width: 30px;height: 30px;margin-bottom:-10px;margin-left:5px;cursor: pointer;"/></a>
+            </form>
+        </span>
+    </div>
+</html>
