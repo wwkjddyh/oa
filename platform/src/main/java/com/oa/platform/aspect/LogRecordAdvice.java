@@ -34,7 +34,7 @@ public class LogRecordAdvice {
      */
     @Before("@annotation(logRecord)")
     public void before(JoinPoint point, LogRecord logRecord){
-        log.info("前置增强");
+    	logger.info("前置增强");
         startTime.set(System.currentTimeMillis());
 
         // 接收到请求，记录请求内容
@@ -55,7 +55,7 @@ public class LogRecordAdvice {
     @AfterReturning(returning = "obj", pointcut="@annotation(logRecord)")
     public void after(JoinPoint point, Object obj, LogRecord logRecord){
         // obj 为接口的返回值（用于记录操作对象）, logRecord 为接口上打得注解
-        log.info("后置增强");
+    	logger.info("后置增强");
         String name = logRecord.name();
         String type = logRecord.type();
         String desc = logRecord.desc();
@@ -63,8 +63,8 @@ public class LogRecordAdvice {
         data.put("type", type);
         data.put("name", name);
         data.put("desc", desc);
-        log.info("LogRecordAdvice.after()=> obj ：" + JSON.toJSONString(obj));
-        log.info("data to json => " + JSON.toJSONString(data));
+        logger.info("LogRecordAdvice.after()=> obj ：" + JSON.toJSONString(obj));
+        logger.info("data to json => " + JSON.toJSONString(data));
 
         // 处理完请求，返回内容
         logger.info("RESPONSE : " + obj);
@@ -87,7 +87,7 @@ public class LogRecordAdvice {
 
     @Before("adminValidatePointcut()")
     public void adminValidateBefore(){
-        log.info("Pointcut的方式，前置增强");
+    	logger.info("Pointcut的方式，前置增强");
     }
 
 }

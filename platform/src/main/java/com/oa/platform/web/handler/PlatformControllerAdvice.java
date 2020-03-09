@@ -4,6 +4,9 @@ import com.oa.platform.common.StatusCode;
 import com.oa.platform.exception.PlatformException;
 import com.oa.platform.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +21,7 @@ import java.util.Map;
 @Slf4j
 @ControllerAdvice
 public class PlatformControllerAdvice {
-
+	private final Logger log = LoggerFactory.getLogger(PlatformControllerAdvice.class);	
     /**
      * 应用到所有@RequestMapping注解方法，在其执行之前初始化数据绑定器
      * @param binder

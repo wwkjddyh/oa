@@ -1,7 +1,11 @@
 package com.oa.platform.biz;
 
+import com.oa.platform.aspect.LogRecordAdvice;
 import com.oa.platform.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +28,7 @@ import java.util.UUID;
 @Slf4j
 @Component
 public class FileBiz extends BaseBiz {
+    private final Logger log = LoggerFactory.getLogger(FileBiz.class);
 
     /**
      * 上传文件保存目录
