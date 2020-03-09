@@ -44,6 +44,21 @@
                         <el-card shadow="never" v-if="showContent == 'categoryTypes'" key="categoryTypes">
                             <div th:replace="/common/admin/category/categoryTypes :: content"/>
                         </el-card>
+                        <el-card shadow="never" v-if="showContent == 'firstPage'" key="firstPage">
+                            <div th:replace="/common/admin/firstPage :: content"/>
+                        </el-card>
+                        <el-card shadow="never" v-if="showContent == 'dyfgzd'" key="dyfgzd">
+                            <div th:replace="/common/admin/dygl/dyfgzd :: content"/>
+                        </el-card>
+                        <el-card shadow="never" v-if="showContent == 'dzzfgzd'" key="dzzfgzd">
+                            <div th:replace="/common/admin/dzz/dzzfgzd :: content"/>
+                        </el-card>
+                        <el-card shadow="never" v-if="showContent == 'dffgzd'" key="dffgzd">
+                            <div th:replace="/common/admin/dfgl/dffgzd :: content"/>
+                        </el-card>
+                        <el-card shadow="never" v-if="showContent == 'hjfgzd'" key="hjfgzd">
+                            <div th:replace="/common/admin/hjgl/hjfgzd :: content"/>
+                        </el-card>
                     </div>
                 </el-main>
                 <el-footer style="background-color:#eee;margin-top:20px">

@@ -8,6 +8,67 @@
              @close="handleClose"
              :collapse="isCollapse"
              @select="handleNavMenu">
+      
+        <el-menu-item index="firstPage" >
+        		<i class="el-icon-location"></i>
+                <span slot="title">首页</span>
+        </el-menu-item>
+        <el-menu-item index="announce" >
+        		<i class="el-icon-location"></i>
+                <span slot="title">通知通告</span>
+        </el-menu-item>
+        <el-menu-item index="mail" >
+        		<i class="el-icon-location"></i>
+                <span slot="title">邮箱</span>
+        </el-menu-item>
+        <el-menu-item index="faceMeet" >
+        		<i class="el-icon-location"></i>
+                <span slot="title">视频会议</span>
+        </el-menu-item>
+        <el-menu-item index="bigData" >
+        		<i class="el-icon-location"></i>
+                <span slot="title">大数据</span>
+        </el-menu-item>
+        <el-submenu index="dzz">
+            <template slot="title">
+                <i class="el-icon-location"></i>
+                <span slot="title">党组织</span>
+            </template>
+            <el-menu-item index="dzzfgzd">相关法规制度</el-menu-item>
+            <el-menu-item index="dwjbxx">党委基本信息</el-menu-item>
+            <el-menu-item index="ssdzzqk">所属党组织情况</el-menu-item>
+        </el-submenu>
+        <el-submenu index="dygl">
+            <template slot="title">
+                <i class="el-icon-location"></i>
+                <span slot="title">党员管理</span>
+            </template>
+            <el-menu-item index="dyfgzd">相关法规制度</el-menu-item>
+            <el-menu-item index="nddyxxcj">年度党员信息采集</el-menu-item>
+            <el-menu-item index="fzdy">发展党员</el-menu-item>
+            <el-menu-item index="zlxz">资料下载</el-menu-item>
+        </el-submenu>
+        <el-submenu index="dfgl">
+            <template slot="title">
+                <i class="el-icon-location"></i>
+                <span slot="title">党费管理</span>
+            </template>
+            <el-menu-item index="dffgzd">相关法规制度</el-menu-item>
+            <el-menu-item index="nddfszqkgs">年度党费收支情况公示</el-menu-item>
+            <el-menu-item index="nddfszjcqk">年度党费收支结存情况</el-menu-item>
+            <el-menu-item index="ndsjdfqk">年度上缴党费情况</el-menu-item>
+            <el-menu-item index="zlxz">资料下载</el-menu-item>
+        </el-submenu>
+        <el-submenu index="hjgl">
+            <template slot="title">
+                <i class="el-icon-location"></i>
+                <span slot="title">换届管理</span>
+            </template>
+            <el-menu-item index="hjfgzd">相关法规制度</el-menu-item>
+            <el-menu-item index="ndhjgzjh">年度换届工作计划</el-menu-item>
+            <el-menu-item index="hjgztz">换届工作台账</el-menu-item>
+            <el-menu-item index="zlxz">资料下载</el-menu-item>
+        </el-submenu>
         <el-submenu index="user">
             <template slot="title">
                 <i class="el-icon-location"></i>
@@ -18,6 +79,7 @@
             <el-menu-item index="sysUsers">系统用户</el-menu-item>
             <el-menu-item index="memberUsers">会员/用户</el-menu-item>
         </el-submenu>
+        
         <el-submenu index="category">
             <template slot="title">
                 <i class="el-icon-location"></i>
@@ -26,6 +88,7 @@
             <el-menu-item index="categories">分类管理</el-menu-item>
             <el-menu-item index="categoryTypes">分类类别管理</el-menu-item>
         </el-submenu>
+        
     </el-menu>
 </div>
 </html>

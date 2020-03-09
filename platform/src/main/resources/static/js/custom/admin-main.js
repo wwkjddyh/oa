@@ -53,6 +53,7 @@ new Vue({
                     that.getAllAuthRole();
                     that.loadSysUsers('',1, that.pager.sysUser.pageSize);
                     break;
+      
             }
         },
 
@@ -67,12 +68,12 @@ new Vue({
 
     },
     data: {
-        def_menu_id: 'memberUsers',
+        def_menu_id: 'firstPage',
         currAction: 'append',
         isCollapse: false,
         activeTabName: 'first',
         cronTabActiveName: 'second',    /*cron表达式tabs设置*/
-        showContent: 'memberUsers',
+        showContent: 'firstPage',
         chartIds: {
             statUser: 'statUserChartId',
         },
