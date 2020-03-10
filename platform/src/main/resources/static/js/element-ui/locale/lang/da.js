@@ -1,7 +1,4 @@
-'use strict';
-
-exports.__esModule = true;
-exports.default = {
+export default {
   el: {
     colorpicker: {
       confirm: 'OK',
@@ -19,7 +16,11 @@ exports.default = {
       startTime: 'Starttidspunkt',
       endDate: 'Slutdato',
       endTime: 'Sluttidspunkt',
-      year: 'År',
+      prevYear: 'Forrige år',
+      nextYear: 'Næste år',
+      prevMonth: 'Forrige måned',
+      nextMonth: 'Næste måned',
+      year: '',
       month1: 'Januar',
       month2: 'Februar',
       month3: 'Marts',
@@ -65,7 +66,9 @@ exports.default = {
     },
     cascader: {
       noMatch: 'Ingen matchende data',
-      placeholder: 'Vælg'
+      loading: 'Henter',
+      placeholder: 'Vælg',
+      noData: 'Ingen data'
     },
     pagination: {
       goto: 'Gå til',
@@ -79,6 +82,7 @@ exports.default = {
       error: 'Ugyldig input'
     },
     upload: {
+      deleteTip: 'tryk slet for at fjerne',
       delete: 'Slet',
       preview: 'Forhåndsvisning',
       continue: 'Fortsæt'
@@ -87,10 +91,29 @@ exports.default = {
       emptyText: 'Ingen data',
       confirmFilter: 'Bekræft',
       resetFilter: 'Nulstil',
-      clearFilter: 'Alle'
+      clearFilter: 'Alle',
+      sumText: 'Sum'
     },
     tree: {
       emptyText: 'Ingen data'
+    },
+    transfer: {
+      noMatch: 'Ingen matchende data',
+      noData: 'Ingen data',
+      titles: ['Liste 1', 'Liste 2'],
+      filterPlaceholder: 'Indtast søgeord',
+      noCheckedFormat: '{total} emner',
+      hasCheckedFormat: '{checked}/{total} valgt'
+    },
+    image: {
+      error: 'FAILED' // to be translated
+    },
+    pageHeader: {
+      title: 'Back' // to be translated
+    },
+    popconfirm: {
+      confirmButtonText: 'Yes', // to be translated
+      cancelButtonText: 'No' // to be translated
     }
   }
 };

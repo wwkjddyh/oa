@@ -1,11 +1,8 @@
-'use strict';
-
-exports.__esModule = true;
-exports.default = {
+export default {
   el: {
     colorpicker: {
       confirm: 'Bevestig',
-      clear: 'Legen'
+      clear: 'Wissen'
     },
     datepicker: {
       now: 'Nu',
@@ -19,7 +16,11 @@ exports.default = {
       startTime: 'Starttijd',
       endDate: 'Einddatum',
       endTime: 'Eindtijd',
-      year: 'Jaar',
+      prevYear: 'Vorig jaar',
+      nextYear: 'Volgend jaar',
+      prevMonth: 'Vorige maand',
+      nextMonth: 'Volgende maand',
+      year: '',
       month1: 'januari',
       month2: 'februari',
       month3: 'maart',
@@ -65,11 +66,13 @@ exports.default = {
     },
     cascader: {
       noMatch: 'Geen overeenkomende resultaten',
-      placeholder: 'Selecteer'
+      loading: 'Laden',
+      placeholder: 'Selecteer',
+      noData: 'Geen data'
     },
     pagination: {
       goto: 'Ga naar',
-      pagesize: '/page',
+      pagesize: '/pagina',
       total: 'Totaal {total}',
       pageClassifier: ''
     },
@@ -80,6 +83,7 @@ exports.default = {
       error: 'Ongeldige invoer'
     },
     upload: {
+      deleteTip: 'Kies verwijder om te wissen',
       delete: 'Verwijder',
       preview: 'Voorbeeld',
       continue: 'Doorgaan'
@@ -88,10 +92,29 @@ exports.default = {
       emptyText: 'Geen data',
       confirmFilter: 'Bevestigen',
       resetFilter: 'Reset',
-      clearFilter: 'Alles'
+      clearFilter: 'Alles',
+      sumText: 'Som'
     },
     tree: {
       emptyText: 'Geen data'
+    },
+    transfer: {
+      noMatch: 'Geen overeenkomende resultaten',
+      noData: 'Geen data',
+      titles: ['Lijst 1', 'Lijst 2'],
+      filterPlaceholder: 'Geef zoekwoerd',
+      noCheckedFormat: '{total} items',
+      hasCheckedFormat: '{checked}/{total} geselecteerd'
+    },
+    image: {
+      error: 'FAILED' // to be translated
+    },
+    pageHeader: {
+      title: 'Back' // to be translated
+    },
+    popconfirm: {
+      confirmButtonText: 'Yes', // to be translated
+      cancelButtonText: 'No' // to be translated
     }
   }
 };

@@ -1,7 +1,4 @@
-'use strict';
-
-exports.__esModule = true;
-exports.default = {
+export default {
   el: {
     colorpicker: {
       confirm: 'OK',
@@ -19,20 +16,24 @@ exports.default = {
       startTime: 'Start Time',
       endDate: 'End Date',
       endTime: 'End Time',
+      prevYear: 'Previous Year',
+      nextYear: 'Next Year',
+      prevMonth: 'Previous Month',
+      nextMonth: 'Next Month',
       year: '',
-      month1: 'Jan',
-      month2: 'Feb',
-      month3: 'Mar',
-      month4: 'Apr',
+      month1: 'January',
+      month2: 'February',
+      month3: 'March',
+      month4: 'April',
       month5: 'May',
-      month6: 'Jun',
-      month7: 'Jul',
-      month8: 'Aug',
-      month9: 'Sep',
-      month10: 'Oct',
-      month11: 'Nov',
-      month12: 'Dec',
-      // week: 'week',
+      month6: 'June',
+      month7: 'July',
+      month8: 'August',
+      month9: 'September',
+      month10: 'October',
+      month11: 'November',
+      month12: 'December',
+      week: 'week',
       weeks: {
         sun: 'Sun',
         mon: 'Mon',
@@ -65,7 +66,9 @@ exports.default = {
     },
     cascader: {
       noMatch: 'No matching data',
-      placeholder: 'Select'
+      loading: 'Loading',
+      placeholder: 'Select',
+      noData: 'No data'
     },
     pagination: {
       goto: 'Go to',
@@ -80,6 +83,7 @@ exports.default = {
       error: 'Illegal input'
     },
     upload: {
+      deleteTip: 'press delete to remove',
       delete: 'Delete',
       preview: 'Preview',
       continue: 'Continue'
@@ -88,10 +92,29 @@ exports.default = {
       emptyText: 'No Data',
       confirmFilter: 'Confirm',
       resetFilter: 'Reset',
-      clearFilter: 'All'
+      clearFilter: 'All',
+      sumText: 'Sum'
     },
     tree: {
       emptyText: 'No Data'
+    },
+    transfer: {
+      noMatch: 'No matching data',
+      noData: 'No data',
+      titles: ['List 1', 'List 2'], // to be translated
+      filterPlaceholder: 'Enter keyword', // to be translated
+      noCheckedFormat: '{total} items', // to be translated
+      hasCheckedFormat: '{checked}/{total} checked' // to be translated
+    },
+    image: {
+      error: 'FAILED'
+    },
+    pageHeader: {
+      title: 'Back' // to be translated
+    },
+    popconfirm: {
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
     }
   }
 };

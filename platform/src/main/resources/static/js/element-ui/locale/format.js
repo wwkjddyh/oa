@@ -1,10 +1,12 @@
-'use strict';
+import { hasOwn } from 'element-ui/src/utils/util';
 
-exports.__esModule = true;
-
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-exports.default = function (Vue) {
+const RE_NARGS = /(%|)\{([0-9a-zA-Z_]+)\}/g;
+/**
+ *  String format template
+ *  - Inspired:
+ *    https://github.com/Matt-Esch/string-template/index.js
+ */
+export default function(Vue) {
 
   /**
    * template
@@ -14,12 +16,8 @@ exports.default = function (Vue) {
    * @return {String}
    */
 
-  function template(string) {
-    for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    if (args.length === 1 && _typeof(args[0]) === 'object') {
+  function template(string, ...args) {
+    if (args.length === 1 && typeof args[0] === 'object') {
       args = args[0];
     }
 
@@ -27,13 +25,14 @@ exports.default = function (Vue) {
       args = {};
     }
 
-    return string.replace(RE_NARGS, function (match, prefix, i, index) {
-      var result = void 0;
+    return string.replace(RE_NARGS, (match, prefix, i, index) => {
+      let result;
 
-      if (string[index - 1] === '{' && string[index + match.length] === '}') {
+      if (string[index - 1] === '{' &&
+        string[index + match.length] === '}') {
         return i;
       } else {
-        result = (0, _util.hasOwn)(args, i) ? args[i] : null;
+        result = hasOwn(args, i) ? args[i] : null;
         if (result === null || result === undefined) {
           return '';
         }
@@ -44,13 +43,4 @@ exports.default = function (Vue) {
   }
 
   return template;
-};
-
-var _util = require('element-ui/lib/utils/util');
-
-var RE_NARGS = /(%|)\{([0-9a-zA-Z_]+)\}/g;
-/**
- *  String format template
- *  - Inspired:
- *    https://github.com/Matt-Esch/string-template/index.js
- */
+}

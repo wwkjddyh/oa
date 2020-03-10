@@ -1,10 +1,7 @@
-'use strict';
-
-exports.__esModule = true;
-exports.default = {
+export default {
   el: {
     colorpicker: {
-      confirm: 'OK',
+      confirm: 'Εντάξει',
       clear: 'Καθαρισμός'
     },
     datepicker: {
@@ -12,13 +9,17 @@ exports.default = {
       today: 'Σήμερα',
       cancel: 'Ακύρωση',
       clear: 'Καθαρισμός',
-      confirm: 'OK',
+      confirm: 'Εντάξει',
       selectDate: 'Επιλέξτε ημέρα',
       selectTime: 'Επιλέξτε ώρα',
       startDate: 'Ημερομηνία Έναρξης',
       startTime: 'Ωρα Έναρξης',
       endDate: 'Ημερομηνία Λήξης',
       endTime: 'Ωρα Λήξης',
+      prevYear: 'Προηγούμενο Έτος',
+      nextYear: 'Επόμενο Έτος',
+      prevMonth: 'Προηγούμενος Μήνας',
+      nextMonth: 'Επόμενος Μήνας',
       year: 'Έτος',
       month1: 'Ιανουάριος',
       month2: 'Φεβρουάριος',
@@ -63,6 +64,12 @@ exports.default = {
       noData: 'Χωρίς δεδομένα',
       placeholder: 'Επιλογή'
     },
+    cascader: {
+      noMatch: 'Δεν βρέθηκαν αποτελέσματα',
+      loading: 'Φόρτωση',
+      placeholder: 'Επιλογή',
+      noData: 'Χωρίς δεδομένα'
+    },
     pagination: {
       goto: 'Μετάβαση σε',
       pagesize: '/σελίδα',
@@ -71,11 +78,12 @@ exports.default = {
     },
     messagebox: {
       title: 'Μήνυμα',
-      confirm: 'OK',
+      confirm: 'Εντάξει',
       cancel: 'Ακύρωση',
       error: 'Άκυρη εισαγωγή'
     },
     upload: {
+      deleteTip: 'Πάτησε Διαγραφή για αφαίρεση',
       delete: 'Διαγραφή',
       preview: 'Προεπισκόπηση',
       continue: 'Συνέχεια'
@@ -84,10 +92,29 @@ exports.default = {
       emptyText: 'Χωρίς Δεδομένα',
       confirmFilter: 'Επιβεβαίωση',
       resetFilter: 'Επαναφορά',
-      clearFilter: 'Όλα'
+      clearFilter: 'Όλα',
+      sumText: 'Σύνολο'
     },
     tree: {
       emptyText: 'Χωρίς Δεδομένα'
+    },
+    transfer: {
+      noMatch: 'Δεν βρέθηκαν αποτελέσματα',
+      noData: 'Χωρίς δεδομένα',
+      titles: ['Λίστα 1', 'Λίστα 2'],
+      filterPlaceholder: 'Αναζήτηση',
+      noCheckedFormat: '{total} Αντικείμενα',
+      hasCheckedFormat: '{checked}/{total} επιλεγμένα'
+    },
+    image: {
+      error: 'FAILED' // to be translated
+    },
+    pageHeader: {
+      title: 'Back' // to be translated
+    },
+    popconfirm: {
+      confirmButtonText: 'Yes', // to be translated
+      cancelButtonText: 'No' // to be translated
     }
   }
 };

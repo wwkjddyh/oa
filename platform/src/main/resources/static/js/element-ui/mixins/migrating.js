@@ -1,6 +1,4 @@
-'use strict';
-
-exports.__esModule = true;
+import { kebabCase } from 'element-ui/src/utils/util';
 /**
  * Show migrating guide in browser console.
  *
@@ -22,37 +20,31 @@ exports.__esModule = true;
  *    };
  *  },
  */
-exports.default = {
-  mounted: function mounted() {
+export default {
+  mounted() {
     if (process.env.NODE_ENV === 'production') return;
     if (!this.$vnode) return;
+    const { props = {}, events = {} } = this.getMigratingConfig();
+    const { data, componentOptions } = this.$vnode;
+    const definedProps = data.attrs || {};
+    const definedEvents = componentOptions.listeners || {};
 
-    var _getMigratingConfig = this.getMigratingConfig(),
-        props = _getMigratingConfig.props,
-        events = _getMigratingConfig.events;
-
-    var _$vnode = this.$vnode,
-        data = _$vnode.data,
-        componentOptions = _$vnode.componentOptions;
-
-    var definedProps = data.attrs || {};
-    var definedEvents = componentOptions.listeners || {};
-
-    for (var propName in definedProps) {
-      if (definedProps.hasOwnProperty(propName) && props[propName]) {
-        console.warn('[Element Migrating][Attribute]: ' + props[propName]);
+    for (let propName in definedProps) {
+      propName = kebabCase(propName); // compatible with camel case
+      if (props[propName]) {
+        console.warn(`[Element Migrating][${this.$options.name}][Attribute]: ${props[propName]}`);
       }
     }
 
-    for (var eventName in definedEvents) {
-      if (definedEvents.hasOwnProperty(eventName) && events[eventName]) {
-        console.warn('[Element Migrating][Event]: ' + events[eventName]);
+    for (let eventName in definedEvents) {
+      eventName = kebabCase(eventName); // compatible with camel case
+      if (events[eventName]) {
+        console.warn(`[Element Migrating][${this.$options.name}][Event]: ${events[eventName]}`);
       }
     }
   },
-
   methods: {
-    getMigratingConfig: function getMigratingConfig() {
+    getMigratingConfig() {
       return {
         props: {},
         events: {}

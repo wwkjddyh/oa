@@ -1,7 +1,4 @@
-'use strict';
-
-exports.__esModule = true;
-exports.default = {
+export default {
   el: {
     colorpicker: {
       confirm: 'OK',
@@ -19,7 +16,11 @@ exports.default = {
       startTime: 'Starttid',
       endDate: 'Slutdatum',
       endTime: 'Sluttid',
-      year: 'År',
+      prevYear: 'Föregående år',
+      nextYear: 'Nästa år',
+      prevMonth: 'Föregående månad',
+      nextMonth: 'Nästa månad',
+      year: '',
       month1: 'Januari',
       month2: 'Februari',
       month3: 'Mars',
@@ -63,10 +64,16 @@ exports.default = {
       noData: 'Ingen data',
       placeholder: 'Välj'
     },
+    cascader: {
+      noMatch: 'Hittade inget',
+      loading: 'Laddar',
+      placeholder: 'Välj',
+      noData: 'Ingen data'
+    },
     pagination: {
       goto: 'Gå till',
       pagesize: '/sida',
-      total: 'Total {total}',
+      total: 'Totalt {total}',
       pageClassifier: ''
     },
     messagebox: {
@@ -76,6 +83,7 @@ exports.default = {
       error: 'Felaktig inmatning'
     },
     upload: {
+      deleteTip: 'press delete to remove', // to be translated
       delete: 'Radera',
       preview: 'Förhandsvisa',
       continue: 'Fortsätt'
@@ -84,10 +92,29 @@ exports.default = {
       emptyText: 'Inga Data',
       confirmFilter: 'Bekräfta',
       resetFilter: 'Återställ',
-      clearFilter: 'Alla'
+      clearFilter: 'Alla',
+      sumText: 'Summa'
     },
     tree: {
-      emptyText: 'Inga Data'
+      emptyText: 'Ingen data'
+    },
+    transfer: {
+      noMatch: 'Hittade inget',
+      noData: 'Ingen data',
+      titles: ['List 1', 'List 2'], // to be translated
+      filterPlaceholder: 'Enter keyword', // to be translated
+      noCheckedFormat: '{total} items', // to be translated
+      hasCheckedFormat: '{checked}/{total} checked' // to be translated
+    },
+    image: {
+      error: 'FAILED' // to be translated
+    },
+    pageHeader: {
+      title: 'Bakåt' // to be translated
+    },
+    popconfirm: {
+      confirmButtonText: 'Ja',
+      cancelButtonText: 'Nej'
     }
   }
 };

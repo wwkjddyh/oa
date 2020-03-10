@@ -1,7 +1,4 @@
-'use strict';
-
-exports.__esModule = true;
-exports.default = {
+export default {
   el: {
     colorpicker: {
       confirm: 'ตกลง',
@@ -19,6 +16,10 @@ exports.default = {
       startTime: 'เวลาเริ่มต้น',
       endDate: 'วันที่สิ้นสุด',
       endTime: 'เวลาสิ้นสุด',
+      prevYear: 'ปีก่อนหน้า',
+      nextYear: 'ปีถัดไป',
+      prevMonth: 'เดือนก่อนหน้า',
+      nextMonth: 'เดือนถัดไป',
       year: 'ปี',
       month1: 'มกราคม',
       month2: 'กุมภาพันธ์',
@@ -34,7 +35,7 @@ exports.default = {
       month12: 'ธันวาคม',
       // week: 'week',
       weeks: {
-        sun: 'อ',
+        sun: 'อา',
         mon: 'จ',
         tue: 'อ',
         wed: 'พ',
@@ -65,7 +66,9 @@ exports.default = {
     },
     cascader: {
       noMatch: 'ไม่พบข้อมูลที่ตรงกัน',
-      placeholder: 'เลือก'
+      loading: 'กำลังโหลด',
+      placeholder: 'เลือก',
+      noData: 'ไม่พบข้อมูล'
     },
     pagination: {
       goto: 'ไปที่',
@@ -80,6 +83,7 @@ exports.default = {
       error: 'คุณป้อนข้อมูลไม่ถูกต้อง'
     },
     upload: {
+      deleteTip: 'กดปุ่ม "ลบ" เพื่อลบออก',
       delete: 'ลบ',
       preview: 'ตัวอย่าง',
       continue: 'ทำต่อ'
@@ -88,10 +92,29 @@ exports.default = {
       emptyText: 'ไม่พบข้อมูล',
       confirmFilter: 'ยืนยัน',
       resetFilter: 'รีเซ็ต',
-      clearFilter: 'ทั้งหมด'
+      clearFilter: 'ทั้งหมด',
+      sumText: 'รวม'
     },
     tree: {
       emptyText: 'ไม่พบข้อมูล'
+    },
+    transfer: {
+      noMatch: 'ไม่พบข้อมูลที่ตรงกัน',
+      noData: 'ไม่พบข้อมูล',
+      titles: ['List 1', 'List 2'], // to be translated
+      filterPlaceholder: 'กรอกคีย์เวิร์ด',
+      noCheckedFormat: '{total} items', // to be translated
+      hasCheckedFormat: '{checked}/{total} checked' // to be translated
+    },
+    image: {
+      error: 'FAILED' // to be translated
+    },
+    pageHeader: {
+      title: 'ย้อนกลับ'
+    },
+    popconfirm: {
+      confirmButtonText: 'Yes', // to be translated
+      cancelButtonText: 'No' // to be translated
     }
   }
 };

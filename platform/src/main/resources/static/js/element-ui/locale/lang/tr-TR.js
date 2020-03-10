@@ -1,10 +1,7 @@
-'use strict';
-
-exports.__esModule = true;
-exports.default = {
+export default {
   el: {
     colorpicker: {
-      confirm: 'OK',
+      confirm: 'Onayla',
       clear: 'Temizle'
     },
     datepicker: {
@@ -12,13 +9,17 @@ exports.default = {
       today: 'Bugün',
       cancel: 'İptal',
       clear: 'Temizle',
-      confirm: 'OK',
+      confirm: 'Onayla',
       selectDate: 'Tarih seç',
       selectTime: 'Saat seç',
       startDate: 'Başlangıç Tarihi',
       startTime: 'Başlangıç Saati',
       endDate: 'Bitiş Tarihi',
       endTime: 'Bitiş Saati',
+      prevYear: 'Önceki Yıl',
+      nextYear: 'Sonraki Yıl',
+      prevMonth: 'Önceki Ay',
+      nextMonth: 'Sonraki Ay',
       year: '',
       month1: 'Ocak',
       month2: 'Şubat',
@@ -65,21 +66,24 @@ exports.default = {
     },
     cascader: {
       noMatch: 'Eşleşen veri bulunamadı',
-      placeholder: 'Seç'
+      loading: 'Yükleniyor',
+      placeholder: 'Seç',
+      noData: 'Veri yok'
     },
     pagination: {
       goto: 'Git',
-      pagesize: '/page',
+      pagesize: '/sayfa',
       total: 'Toplam {total}',
       pageClassifier: ''
     },
     messagebox: {
       title: 'Mesaj',
-      confirm: 'OK',
+      confirm: 'Onayla',
       cancel: 'İptal',
       error: 'İllegal giriş'
     },
     upload: {
+      deleteTip: 'kaldırmak için delete tuşuna bas',
       delete: 'Sil',
       preview: 'Görüntüle',
       continue: 'Devam'
@@ -87,11 +91,30 @@ exports.default = {
     table: {
       emptyText: 'Veri yok',
       confirmFilter: 'Onayla',
-      resetFilter: 'Reset',
-      clearFilter: 'Hepsi'
+      resetFilter: 'Sıfırla',
+      clearFilter: 'Hepsi',
+      sumText: 'Sum'
     },
     tree: {
       emptyText: 'Veri yok'
+    },
+    transfer: {
+      noMatch: 'Eşleşen veri bulunamadı',
+      noData: 'Veri yok',
+      titles: ['Liste 1', 'Liste 2'],
+      filterPlaceholder: 'Anahtar kelimeleri gir',
+      noCheckedFormat: '{total} adet',
+      hasCheckedFormat: '{checked}/{total} seçildi'
+    },
+    image: {
+      error: 'FAILED' // to be translated
+    },
+    pageHeader: {
+      title: 'Back' // to be translated
+    },
+    popconfirm: {
+      confirmButtonText: 'Yes', // to be translated
+      cancelButtonText: 'No' // to be translated
     }
   }
 };

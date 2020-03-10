@@ -1,7 +1,4 @@
-'use strict';
-
-exports.__esModule = true;
-exports.default = {
+export default {
   el: {
     colorpicker: {
       confirm: 'OK',
@@ -19,7 +16,11 @@ exports.default = {
       startTime: 'Ora inizio',
       endDate: 'Data fine',
       endTime: 'Ora fine',
-      year: 'Anno',
+      prevYear: 'Anno precedente',
+      nextYear: 'Anno successivo',
+      prevMonth: 'Mese precedente',
+      nextMonth: 'Mese successivo',
+      year: '',
       month1: 'Gennaio',
       month2: 'Febbraio',
       month3: 'Marzo',
@@ -60,12 +61,14 @@ exports.default = {
     select: {
       loading: 'Caricamento',
       noMatch: 'Nessuna corrispondenza',
-      noData: 'Nessun risultato',
+      noData: 'Nessun dato',
       placeholder: 'Seleziona'
     },
     cascader: {
       noMatch: 'Nessuna corrispondenza',
-      placeholder: 'Seleziona'
+      loading: 'Caricamento',
+      placeholder: 'Seleziona',
+      noData: 'Nessun dato'
     },
     pagination: {
       goto: 'Vai a',
@@ -79,6 +82,7 @@ exports.default = {
       error: 'Input non valido'
     },
     upload: {
+      deleteTip: 'Premi cancella per rimuovere',
       delete: 'Cancella',
       preview: 'Anteprima',
       continue: 'Continua'
@@ -87,10 +91,29 @@ exports.default = {
       emptyText: 'Nessun dato',
       confirmFilter: 'Conferma',
       resetFilter: 'Reset',
-      clearFilter: 'Tutti'
+      clearFilter: 'Tutti',
+      sumText: 'Somma'
     },
     tree: {
       emptyText: 'Nessun dato'
+    },
+    transfer: {
+      noMatch: 'Nessuna corrispondenza',
+      noData: 'Nessun dato',
+      titles: ['Lista 1', 'Lista 2'],
+      filterPlaceholder: 'Inserisci filtro',
+      noCheckedFormat: '{total} elementi',
+      hasCheckedFormat: '{checked}/{total} selezionati'
+    },
+    image: {
+      error: 'FAILED' // to be translated
+    },
+    pageHeader: {
+      title: 'Back' // to be translated
+    },
+    popconfirm: {
+      confirmButtonText: 'Yes', // to be translated
+      cancelButtonText: 'No' // to be translated
     }
   }
 };

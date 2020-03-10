@@ -1,24 +1,25 @@
-'use strict';
-
-exports.__esModule = true;
-exports.default = {
+export default {
   el: {
     colorpicker: {
       confirm: 'باشد',
-      clear: 'خذف'
+      clear: 'حذف'
     },
     datepicker: {
       now: 'اکنون',
       today: 'امروز',
       cancel: 'لغو',
-      clear: 'خذف',
-      confirm: 'باشد',
+      clear: 'حذف',
+      confirm: 'باشه',
       selectDate: 'انتخاب تاریخ',
       selectTime: 'انتخاب زمان',
       startDate: 'تاریخ شروع',
       startTime: 'زمان شروع',
       endDate: 'تاریخ پایان',
       endTime: 'زمان پایان',
+      prevYear: 'سال قبل',
+      nextYear: 'سال بعد',
+      prevMonth: 'ماه قبل',
+      nextMonth: 'ماه بعد',
       year: 'سال',
       month1: 'ژانویه',
       month2: 'فوریه',
@@ -65,7 +66,9 @@ exports.default = {
     },
     cascader: {
       noMatch: 'هیچ داده‌ای پیدا نشد',
-      placeholder: 'انتخاب کنید'
+      loading: 'بارگیری',
+      placeholder: 'انتخاب کنید',
+      noData: 'اطلاعاتی وجود ندارد'
     },
     pagination: {
       goto: 'برو به',
@@ -75,23 +78,43 @@ exports.default = {
     },
     messagebox: {
       title: 'پیام',
-      confirm: 'باشد',
+      confirm: 'باشه',
       cancel: 'لغو',
       error: 'ورودی غیر مجاز'
     },
     upload: {
+      deleteTip: 'برای پاک کردن حذف را فشار دهید',
       delete: 'حذف',
       preview: 'پیش‌نمایش',
-      continue: 'ادهمه'
+      continue: 'ادامه'
     },
     table: {
       emptyText: 'اطلاعاتی وجود ندارد',
       confirmFilter: 'تایید',
       resetFilter: 'حذف',
-      clearFilter: 'همه'
+      clearFilter: 'همه',
+      sumText: 'جمع'
     },
     tree: {
       emptyText: 'اطلاعاتی وجود ندارد'
+    },
+    transfer: {
+      noMatch: 'هیچ داده‌ای پیدا نشد',
+      noData: 'اطلاعاتی وجود ندارد',
+      titles: ['لیست 1', 'لیست 2'],
+      filterPlaceholder: 'کلید واژه هارو وارد کن',
+      noCheckedFormat: '{total} مورد',
+      hasCheckedFormat: '{checked} مورد از {total} مورد انتخاب شده است'
+    },
+    image: {
+      error: 'خطا در بارگیری تصویر'
+    },
+    pageHeader: {
+      title: 'بازگشت'
+    },
+    popconfirm: {
+      confirmButtonText: 'Yes', // to be translated
+      cancelButtonText: 'No' // to be translated
     }
   }
 };
