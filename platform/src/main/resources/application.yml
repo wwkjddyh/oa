@@ -20,13 +20,6 @@ pagehelper:
   params: count=countSql
   returnPageInfo: check
 
-#二维码相关设置
-qrcode:
-  width: 400
-  height: 400
-  dirName: qrcode
-  suffix: png
-
 platform:
   session-keys:
     user: OA-PLATFORM-SYSTEM-MANAGE-USER
