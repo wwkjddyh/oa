@@ -182,7 +182,50 @@ new Vue({
                 ]
             ]
         },
-
+        dwjbxxTableData: [{
+            id: 1,
+            orgName: '上海市党委',
+            orgAttr: '上海市政府直属党组织',
+            phone: '17501697782',
+            leader: '俞书记',
+            foundTime: '2016-05-02'
+          }, {
+            id: 2,
+            orgName: '上海市党委',
+            orgAttr: '上海市政府直属党组织2',
+            phone: '17501697782',
+            leader: '俞书记',
+            foundTime: '2016-05-02'
+          }, {
+            id: 3,
+            orgName: '上海市党委',
+            orgAttr: '上海市政府直属党组织3',
+            phone: '17501697782',
+            leader: '俞书记',
+            foundTime: '2016-05-02',
+            children: [{
+                id: 31,
+                orgName: '上海市党委',
+                orgAttr: '上海市政府直属党组织31',
+                phone: '17501697782',
+                leader: '俞书记',
+                foundTime: '2016-05-02'
+              }, {
+                id: 32,
+                orgName: '上海市党委',
+                orgAttr: '上海市政府直属党组织32',
+                phone: '17501697782',
+                leader: '俞书记',
+                foundTime: '2016-05-02'
+            }]
+          }, {
+            id: 4,
+            orgName: '上海市党委',
+            orgAttr: '上海市政府直属党组织4',
+            phone: '17501697782',
+            leader: '俞书记',
+            foundTime: '2016-05-02'
+          }],
         formUser: {},
         formSysUser: {},
         formUserType: {},
@@ -210,7 +253,8 @@ new Vue({
         formSearchCategoryType: {},
         formSearchDict: {},
         formSearchLangConf: {},
-
+        formdwjbxx:{},
+        
         dialogShow: {},
         memberUsers: [],
         sysUsers: [],
@@ -864,7 +908,23 @@ new Vue({
                     }
                     that.dialogShow.category = !that.dialogShow.category;
                     break;
-
+                case 'dwjbxx':
+                	//党委基本信息新增修改
+                	if(isAdd){
+                		that.dwjbxxTableData={};
+                	}else{
+                		entry = that.dwjbxxTableData[scopeIndex];
+                		that.formdwjbxx = {
+                				id: entry.id,
+                				orgName: entry.orgName,
+                				orgAttr: entry.orgAttr,
+                				phone: entry.phone,
+                				foundTime: entry.foundTime,
+                				leader: entry.leader
+                		};
+                	}
+                	that.dialogShow.dwjbxx = !that.dialogShow.dwjbxx;
+                	break;
                 default: break;
             }
         },
