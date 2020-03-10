@@ -226,6 +226,7 @@ const formStructConfig = {
         category: false,
         categoryType: false,
         langConf: false,
+        dwjbxx: false
     },
     rules: {
         username: [

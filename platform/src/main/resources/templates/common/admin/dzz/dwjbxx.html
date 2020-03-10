@@ -8,29 +8,36 @@
             <el-button plain ><i class="el-icon-refresh"></i>刷新</el-button>
             <div style="margin-top: 20px">
                 <el-table
-                        :data="categories"
+                        :data="dwjbxxTableData"
                         border
-                        style="width: 100%">
+                        style="width: 100%"
+                        row-key="id"
+                        :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
                     <el-table-column
-                            prop="name"
+                            prop="orgName"
                             label="组织简称"
+                            sortable
                             width="200">
                     </el-table-column>
                     <el-table-column
-                            prop="typeName"
+                            prop="orgAttr"
                             label="组织属性"
+                            sortable
                             width="200">
                     </el-table-column>
                     <el-table-column
-                            prop="desc"
+                            prop="phone"
+                            sortable
                             label="联系电话">
                     </el-table-column>
                     <el-table-column
-                            prop="desc"
+                            prop="foundTime"
+                            sortable
                             label="成立时间">
                     </el-table-column>
                     <el-table-column
-                            prop="desc"
+                            prop="leader"
+                            sortable
                             label="书记">
                     </el-table-column>
                     <el-table-column
@@ -39,8 +46,8 @@
                             label="操作">
                         <template slot-scope="scope">
                             <div style="display: flex;width:100%">
-                                <el-button size="mini" @click="edit('category',scope.$index,scope.row,false)">修改</el-button>
-                                <el-button size="mini" type="danger" @click="handleDel(scope.$index,'category')">删除</el-button>
+                                <el-button size="mini" @click="edit('dwjbxx',scope.$index,scope.row,false)">修改</el-button>
+                                <el-button size="mini" type="danger" @click="handleDel(scope.$index,'dwjbxx')">删除</el-button>
                             </div>
                         </template>
                     </el-table-column>
@@ -57,29 +64,142 @@
                     </el-pagination>
                 </div>
             </div>
-            <el-dialog title="分类类别信息" :visible.sync="dialogShow.category" lock-scroll="true" width="800px">
+            <el-dialog title="党委信息" :visible.sync="dialogShow.dwjbxx" lock-scroll="true" width="1000px">
                 <el-card shadow="never" style="width: 100%;" type="card">
-                    <el-form ref="formCategory" :rules="rules" :model="formCategory" label-width="100px">
-                        <el-form-item label="类别" prop="typeId">
-                            <el-select v-model="formCategory.typeId" style="width: 300px;" placeholder="请选择类型">
-                                <el-option v-for="item in allCategoryTypes" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>
-                            </el-select>
+                    <el-form ref="formdwjbxx"  label-width="110px" style="width: 100%;">
+                    <el-row>
+                    	<el-col :span="12">
+                        <el-form-item label="所属组织全称" prop="orgName">
+                            <el-input v-model="formdwjbxx.orgName" size="medium" 
+                            	auto-complete="off" style="width: 300px;" maxlength="512" placeholder="所属组织全称" clearable></el-input>
                             <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">分类类别</div><i class="el-icon-question"></i></el-tooltip>
+                                <div slot="content">所属组织全称</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
-                        <el-form-item label="名称" prop="name">
-                            <el-input v-model="formCategory.name" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+                        </el-col>
+                        <el-col :span="12">
+                        <el-form-item label="组织简称" prop="orgDesc">
+                            <el-input v-model="formdwjbxx.orgDesc" size="medium" 
+                            	auto-complete="off" style="width: 300px;" maxlength="512" placeholder="组织简称" clearable></el-input>
                             <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
+                                <div slot="content">组织简称</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
-                        <el-form-item label="描述" prop="desc">
-                            <el-input v-model="formCategory.desc" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="描述"></el-input>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                    	<el-col :span="12">
+                        <el-form-item label="组织属性" prop="orgAttr">
+                            <el-input v-model="formdwjbxx.orgAttr" size="medium" 
+                            	auto-complete="off" style="width: 300px;" maxlength="512" placeholder="组织属性" clearable></el-input>
                             <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">描述</div><i class="el-icon-question"></i></el-tooltip>
+                                <div slot="content">组织属性</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
-                        <el-form-item>
-                            <el-button @click="resetForm('formCategory')" plain>取消</el-button>
-                            <el-button @click="submitForm('formCategory')" type="primary" plain>保存</el-button>
+                        </el-col>
+                        <el-col :span="12">
+                        <el-form-item label="联系电话" prop="phone">
+                            <el-input v-model="formdwjbxx.phone" size="medium" 
+                            	auto-complete="off" style="width: 300px;" maxlength="512" placeholder="联系电话" clearable></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">联系电话</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                    	<el-col :span="12">
+                        <el-form-item label="上级党组织" prop="upperOrg">
+                            <el-input v-model="formdwjbxx.upperOrg" size="medium" 
+                            	auto-complete="off" style="width: 300px;" maxlength="512" placeholder="上级党组织" clearable></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">上级党组织</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                        <el-form-item label="党组织属地关系" prop="orgAddr">
+                            <el-input v-model="formdwjbxx.orgAddr" size="medium" 
+                            	auto-complete="off" style="width: 300px;" maxlength="512" placeholder="党组织属地关系" clearable></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">党组织属地关系</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                    	<el-col :span="12">
+                        <el-form-item label="建立日期" prop="foundTime">
+                            <el-date-picker
+							      v-model="formdwjbxx.foundTime"
+							      type="date"
+							      placeholder="选择日期" style="width: 300px;">
+							    </el-date-picker>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">建立日期</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                        <el-form-item label="建立文号" prop="foundContent">
+                            <el-input v-model="formdwjbxx.foundContent" size="medium" 
+                            	auto-complete="off" style="width: 300px;" maxlength="512" placeholder="建立文号" clearable></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">建立文号</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                    	<el-col :span="12">
+                        <el-form-item label="邮政编码" prop="transCode">
+                            <el-input v-model="formdwjbxx.transCode" size="medium" 
+                            	auto-complete="off" style="width: 300px;" maxlength="512" placeholder="邮政编码" clearable></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">邮政编码</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                        <el-form-item label="传真号码" prop="fixPhone">
+                            <el-input v-model="formdwjbxx.fixPhone" size="medium" 
+                            	auto-complete="off" style="width: 300px;" maxlength="512" placeholder="传真号码" clearable></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">传真号码</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                    	<el-col :span="12">
+                        <el-form-item label="通讯地址" prop="address">
+                            <el-input v-model="formdwjbxx.address" size="medium" 
+                            	auto-complete="off" style="width: 300px;" maxlength="512" placeholder="通讯地址" clearable></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">通讯地址</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                        <el-form-item label="排序" prop="prev">
+                            <el-input v-model="formdwjbxx.prev" size="medium" 
+                            	auto-complete="off" style="width: 300px;" maxlength="512" placeholder="排序" clearable></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">排序</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                    	<el-col :span="12">
+                        <el-form-item label="建立原因" prop="reasion">
+                            <el-input v-model="formdwjbxx.reasion" size="medium" 
+                            	auto-complete="off" style="width: 300px;" maxlength="512" placeholder="建立原因" type="textarea" clearable
+  									:rows="4"></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">建立原因</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                        <el-form-item label="组织简介" prop="orgIntroduction">
+                            <el-input v-model="formdwjbxx.orgIntroduction" size="medium" type="textarea"
+  									:rows="4" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="组织简介" clearable></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">组织简介</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        </el-col>
+                    </el-row>
+                        <el-form-item align="center">
+                            <el-button @click="submitForm('dwjbxx')" type="primary" plain>确定</el-button>
+                            <el-button @click="submitForm('dwjbxx')" type="cancel" plain>取消</el-button>
                         </el-form-item>
                     </el-form>
                 </el-card>
