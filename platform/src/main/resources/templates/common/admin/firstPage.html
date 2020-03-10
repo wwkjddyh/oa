@@ -4,48 +4,56 @@
 <div th:fragment="content">
 	<el-row>
 	  <el-col :span="4" v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 2 : 0">
-	    <el-card :body-style="{ padding: '0px' }">
-	      <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
-	      <div style="padding: 14px;">
+	    <el-card style="height: 180px; margin-top: 20px">
+	      <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+			   class="image" style="height: 120px">
+	      <div style="height: 40px; padding-top: 0px; text-align: center;">
 	        <span>首页</span>
 	      </div>
 	    </el-card>
 	  </el-col>
-	</el-row>
-	<el-row>
-	  <el-col :span="4" v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 2 : 0">
-	    <el-card style="height: 150px;">
-	      <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png" class="image">
-	      <div style="padding: 14px;">
-	        <span>首页</span>
-	      </div>
-	    </el-card>
-	  </el-col>
+		<el-col :span="4" v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 2 : 0">
+			<el-card style="height: 180px; margin-top: 20px">
+				<img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+				 class="image" style="height: 120px">
+				<div style="height: 40px; padding-top: 0px; text-align: center;">
+					<span>首页</span>
+				</div>
+			</el-card>
+		</el-col>
 	</el-row>
 </div>
 <style>
 
-  .bottom {
-    margin-top: 13px;
-    line-height: 2px;
-  }
+	.time {
+		font-size: 13px;
+		color: #999;
+	}
 
- 
+	.bottom {
+		margin-top: 13px;
+		line-height: 12px;
+	}
 
-  /* .image {
-    width: 100%;
-    height：50%;
-    display: block;
-  } */
+	.button {
+		padding: 0;
+		float: right;
+	}
 
-  .clearfix:before,
-  .clearfix:after {
-      display: table;
-      content: "";
-  }
-  
-  .clearfix:after {
-      clear: both
-  }
+	.image {
+	/*	width: 100%;*/
+		height: 120px;
+	/*	display: block;*/
+	}
+
+	.clearfix:before,
+	.clearfix:after {
+		display: table;
+		content: "";
+	}
+
+	.clearfix:after {
+		clear: both
+	}
 </style>
 </html>
