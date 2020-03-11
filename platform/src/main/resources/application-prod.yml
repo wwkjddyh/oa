@@ -65,27 +65,5 @@ spring:
 upload:
   save-dir: /Users/baby/work/upload/
 
-platform:
-  path:
-    ignoring:
-      -"/test"
-      -"/api/auth/login"
-      -"/api/auth/logout"
-      -"/index"
-      -"/login"
-      -"/test/**"
-      -"/logout"
-      -"/"
-      -"/4**"
-      -"/5**"
-      -"/css/**"
-      -"/img/**"
-      -"/images/**"
-      -"/js/**"
-      -"/fonts/**"
-      -"/error"
-      -"/tmp/**"
-      -"/api/file/**"
-      -"/api/socket/**"
 
 
