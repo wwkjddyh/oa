@@ -1,10 +1,14 @@
 package com.oa.platform.entity;
+
+import java.io.Serializable;
+
 /**
  * 党组织
  * @author 俞灶森
- *
+ * @date 2020/03/11
  */
-public class Organization {
+public class Organization implements Serializable {
+
 	//组织主键
 	private String orgId;
 	//组织简称
@@ -199,5 +203,38 @@ public class Organization {
 	public void setOrgIntroduction(String orgIntroduction) {
 		this.orgIntroduction = orgIntroduction;
 	}
-	
+
+	public Organization() {
+	}
+
+	@Override
+	public String toString() {
+		return "Organization{" +
+				"orgId='" + orgId + '\'' +
+				", orgName='" + orgName + '\'' +
+				", orgAttr='" + orgAttr + '\'' +
+				", orgFullName='" + orgFullName + '\'' +
+				", phone='" + phone + '\'' +
+				", upperOrg='" + upperOrg + '\'' +
+				", orgAddr='" + orgAddr + '\'' +
+				", foundTime='" + foundTime + '\'' +
+				", foundContext='" + foundContext + '\'' +
+				", transCode='" + transCode + '\'' +
+				", fixPhone='" + fixPhone + '\'' +
+				", address='" + address + '\'' +
+				", prev='" + prev + '\'' +
+				", reasion='" + reasion + '\'' +
+				", orgIntroduction='" + orgIntroduction + '\'' +
+				", createBy='" + createBy + '\'' +
+				", updateBy='" + updateBy + '\'' +
+				", orgDesc='" + orgDesc + '\'' +
+				", isLeaf='" + isLeaf + '\'' +
+				", root_org='" + root_org + '\'' +
+				", field1='" + field1 + '\'' +
+				", field2='" + field2 + '\'' +
+				", field3='" + field3 + '\'' +
+				", field4='" + field4 + '\'' +
+				", field5='" + field5 + '\'' +
+				'}';
+	}
 }

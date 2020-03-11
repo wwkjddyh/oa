@@ -9,7 +9,7 @@ import com.oa.platform.entity.Organization;
  *
  */
 @Repository
-public interface OrgDao {
+public interface OrgRepository  {
 
 	void orgAdd(Organization organization);
 

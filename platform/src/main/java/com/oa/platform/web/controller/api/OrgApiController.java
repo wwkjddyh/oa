@@ -36,8 +36,7 @@ public class OrgApiController extends BaseController{
 	}
 	/**
 	 * 党组织操作
-	 * @param organization
-	 * @param opreateType
+	 * @param organization 组织信息
 	 * @return
 	 */
 	@PostMapping("orgOpreate")

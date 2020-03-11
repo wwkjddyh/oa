@@ -16,7 +16,7 @@ import com.oa.platform.util.StringUtil;
  *
  */
 @Component
-public class OrgBiz{
+public class OrgBiz extends BaseBiz {
 	
 	
 	@Autowired

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.oa.platform.entity.Organization;
-import com.oa.platform.repository.OrgDao;
+import com.oa.platform.repository.OrgRepository;
 import com.oa.platform.service.OrgService;
 /**
  * orgservice
@@ -15,13 +15,13 @@ import com.oa.platform.service.OrgService;
 public class OrgServiceImpl implements OrgService {
 	
 	@Autowired
-	private OrgDao orgDao;
+	private OrgRepository orgRepository;
 	/**
 	 * 组织新增
 	 */
 	@Override
 	public void orgAdd(Organization organization) {
-		orgDao.orgAdd(organization);
+		orgRepository.orgAdd(organization);
 		
 	}
 	/**
@@ -29,7 +29,7 @@ public class OrgServiceImpl implements OrgService {
 	 */
 	@Override
 	public void orgAddDetail(Organization organization) {
-		orgDao.orgAddDetail(organization);
+		orgRepository.orgAddDetail(organization);
 		
 	}
 
