@@ -1,14 +1,17 @@
 package com.oa.platform.biz;
 
+import com.google.common.collect.Maps;
 import com.oa.platform.common.Constants;
 import com.oa.platform.service.VerifyCodeGen;
 import com.oa.platform.entity.VerifyCode;
+import com.oa.platform.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * 验证码处理处理
@@ -48,5 +51,23 @@ public class VerifyBiz extends BaseBiz {
             LOGGER.info("", e);
         }
     }
+
+    /**
+     * 获得验证码
+     * @param request 请求对象
+     * @return
+     */
+    public Map<String, Object> getVerifyCode(HttpServletRequest request) {
+        String code = "";
+        try {
+            code = StringUtil.trimObject(request.getSession().getAttribute(Constants.VERIFY_CODE));
+        } catch (Exception e) {
+            LOGGER.info("", e);
+        }
+        Map<String, String> info = Maps.newHashMap();
+        info.put("code", code);
+        return this.getSuccessVo("", info);
+    }
+
 
 }
