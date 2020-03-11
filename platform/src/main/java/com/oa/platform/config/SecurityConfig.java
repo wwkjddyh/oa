@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 设置不拦截规则
     //    web.ignoring().antMatchers("/static/**", "/**/*.jsp");
         web.ignoring().antMatchers("/static/**","/css/**","/img/**","/images/**","/js/**","/fonts/**",
-                "/test/**", "/tmp/**", "/api/file/**", "/api/socket/**");
+                "/test/**", "/tmp/**", "/api/file/**", "/api/socket/**", "/api/verify/**");
     }
 
     // @formatter:off

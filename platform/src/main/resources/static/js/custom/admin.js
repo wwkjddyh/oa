@@ -9,6 +9,7 @@ new Vue({
             let that = this;
             that.formLogon.username = '';
             that.formLogon.password = '';
+            that.formLogon.verifyCode = '';
         },
         submitForm() {
             let that = this;
@@ -50,3 +51,14 @@ new Vue({
     },
 })
 
+
+/**
+ * 刷新验证码
+ * @param _targetId 目标id
+ */
+function refreshVerifyCode(_targetId) {
+    let verifyImg = document.getElementById(_targetId);
+    if (verifyImg) {
+        verifyImg.src = "/api/verify/code?&timestamp=" + new Date();
+    }
+}

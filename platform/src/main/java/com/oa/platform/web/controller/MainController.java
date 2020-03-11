@@ -24,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,7 +68,7 @@ public class MainController {
 	 * 特别配置，因为Spring Security会自动产生这个路径:/logout
 	 * @return
 	 */
-	@RequestMapping("/logout")
+	@RequestMapping(value = "/logout", method = {RequestMethod.POST, RequestMethod.GET})
 	public String logout() {
 		return "redirect:/login";
 	}

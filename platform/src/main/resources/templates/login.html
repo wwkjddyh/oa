@@ -23,6 +23,12 @@
             <el-input id="password" @keyup.enter.native="submitForm" name="password" type="password" v-model="formLogon.password" size="medium" auto-complete="off" maxlength="64" style="width: 300px" placeholder="登录用户密码"></el-input>
             <el-tooltip style="line-height: 36px;" class="item" effect="dark" placement="top"><div slot="content">用户密码:6~64个字符</div><i class="el-icon-question"></i></el-tooltip>
         </div>
+        <div style="margin-top: 10px;display: flex;">
+            <div style="width: 100px;text-align: right;line-height: 36px;">验证码：</div>
+            <el-input id="verifyCode" @keyup.enter.native="submitForm" name="verifyCode" v-model="formLogon.verifyCode" size="medium" auto-complete="off" maxlength="4" style="width: 200px" placeholder="验证码"></el-input>
+            <el-tooltip style="line-height: 36px;" class="item" effect="dark" placement="top"><div slot="content">验证码:4个字符</div><i class="el-icon-question"></i></el-tooltip>
+            <img onclick="refreshVerifyCode('verifyImg');" src="/api/verify/code" id="verifyImg" style="margin-left: 5px; cursor: pointer;"/>
+        </div>
         <div style="margin-top: 10px;display: flex;padding-left: 100px;">
             <el-button @click="resetForm()" plain>取消</el-button>
             <el-button @click="submitForm()" type="primary" plain>登录</el-button>
@@ -32,7 +38,7 @@
     <a href="/index" th:href="@{/index}">返回首页</a>
 </div>
 </body>
-<script src="/js/vue/vue.js" th:src="@{~/js/vue/vue.js}"></script>
+<script src="/js/vue/vue.min.js" th:src="@{~/js/vue/vue.min.js}"></script>
 <script src="/js/axios/axios.min.js" th:src="@{~/js/axios/axios.min.js}"></script>
 <script src="/js/element-ui/index.js" th:src="@{~/js/element-ui/index.js}"></script>
 <script src="/js/mock/mock-min.js" th:src="@{~/js/mock/mock-min.js}"></script>

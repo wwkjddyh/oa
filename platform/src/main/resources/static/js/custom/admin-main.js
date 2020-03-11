@@ -1547,9 +1547,9 @@ new Vue({
             let that = this,checkIds = [];
             for(let i = 0;i < that.allModules.length; i ++ ) {
                 let entry = that.allModules[i];
-                checkIds.push(entry.id);
+                checkIds.push(entry.moduleId);
             }
-            // console.log(that.checkBoxOptions.roleModule,that.allModules,val,checkIds);
+            console.log(that.checkBoxOptions.roleModule,that.allModules,val,checkIds);
             that.checkBoxOptions.roleModule = val ? checkIds : [];
             that.isIndeterminate.roleModule = false;
         },
@@ -1572,7 +1572,7 @@ new Vue({
             let that = this,checkIds = [];
             for(let i = 0;i < that.allRoles.length; i ++ ) {
                 let entry = that.allRoles[i];
-                checkIds.push(entry.id);
+                checkIds.push(entry.roleId);
             }
             that.checkBoxOptions.sysUserRole = val ? checkIds : [];
             that.isIndeterminate.sysUserRole = false;
@@ -1597,7 +1597,7 @@ new Vue({
             for(let i = 0;i < that.allRoles.length; i ++ ) {
                 let entry = that.allRoles[i];
                 if(entry.name != 'ROLE_USER' && entry.name != 'ROLE_ADMIN') {
-                    checkIds.push(entry.id);
+                    checkIds.push(entry.roleId);
                 }
             }
             that.checkBoxOptions.userRole = val ? checkIds : [];
@@ -1612,7 +1612,7 @@ new Vue({
             for(let i = 0;i < that.allRoles.length; i ++ ) {
                 let entry = that.allRoles[i];
                 if(entry.name != 'ROLE_USER' && entry.name != 'ROLE_ADMIN') {
-                    checkIds.push(entry.id);
+                    checkIds.push(entry.roleId);
                 }
             }
             let checkedCount = value.length;

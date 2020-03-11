@@ -18,7 +18,7 @@ spring:
   banner:
     charset: UTF-8
   resources:
-    static-locations: file:/Users/baby/work/upload/,classpath:/static/
+    static-locations: file:/home/yuzaosen/data/uploads/platform/,classpath:/static/
   application:
     name: oa-platform
     thymeleaf:
@@ -63,6 +63,7 @@ spring:
       enabled: always # 彩色日志设置
 
 upload:
-  save-dir: /Users/baby/work/upload/
+  save-dir: /home/yuzaosen/data/uploads/platform/
+
 
 

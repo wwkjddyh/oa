@@ -232,4 +232,9 @@ public class Constants {
      * 中文匹配:
      */
     public static final String CHINESE_MATCHES = "[\u0391-\uFFE5]";
+
+    /**
+     * 校验码(VerifyCode) Key: PlatformVerifyCode
+     */
+    public static final String VERIFY_CODE = "PlatformVerifyCode";
 }
