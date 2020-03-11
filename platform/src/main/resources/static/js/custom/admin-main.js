@@ -1559,7 +1559,7 @@ new Vue({
             for(let i = 0;i < that.allRoles.length; i ++ ) {
                 let entry = that.allRoles[i];
                 if(entry.name != 'ROLE_USER' && entry.name != 'ROLE_ADMIN') {
-                    checkIds.push(entry.id);
+                    checkIds.push(entry.roleId);
                 }
             }
             let checkedCount = value.length;
