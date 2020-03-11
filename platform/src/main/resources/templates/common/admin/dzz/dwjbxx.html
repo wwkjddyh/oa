@@ -3,7 +3,7 @@
 <div th:fragment="content">
     <el-tabs v-model="activeTabName" type="card">
         <el-tab-pane label="党委基本信息" name="first">
-            <el-button plain @click="edit('category','','',true)" type="primary"><i class="el-icon-plus"></i>新增</el-button>
+            <el-button plain @click="edit('dwjbxx','','','true')" type="primary"><i class="el-icon-plus"></i>新增</el-button>
             <el-button plain type="danger"><i class="el-icon-close" ></i>删除</el-button>
             <el-button plain ><i class="el-icon-refresh"></i>刷新</el-button>
             <div style="margin-top: 20px">
@@ -11,7 +11,7 @@
                         :data="dwjbxxTableData"
                         border
                         style="width: 100%"
-                        row-key="id"
+                        row-key="orgId"
                         :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
                     <el-table-column
                             prop="orgName"
@@ -199,7 +199,7 @@
                     </el-row>
                         <el-form-item align="center">
                             <el-button @click="submitForm('dwjbxx')" type="primary" plain>确定</el-button>
-                            <el-button @click="submitForm('dwjbxx')" type="cancel" plain>取消</el-button>
+                            <el-button @click="dialogShow.dwjbxx = false" type="cancel" plain>取消</el-button>
                         </el-form-item>
                     </el-form>
                 </el-card>

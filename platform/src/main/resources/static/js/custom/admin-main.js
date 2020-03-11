@@ -183,35 +183,35 @@ new Vue({
             ]
         },
         dwjbxxTableData: [{
-            id: 1,
+            orgId: 1,
             orgName: '上海市党委',
             orgAttr: '上海市政府直属党组织',
             phone: '17501697782',
             leader: '俞书记',
             foundTime: '2016-05-02'
           }, {
-            id: 2,
+        	orgId: 2,
             orgName: '上海市党委',
             orgAttr: '上海市政府直属党组织2',
             phone: '17501697782',
             leader: '俞书记',
             foundTime: '2016-05-02'
           }, {
-            id: 3,
+        	  orgId: 3,
             orgName: '上海市党委',
             orgAttr: '上海市政府直属党组织3',
             phone: '17501697782',
             leader: '俞书记',
             foundTime: '2016-05-02',
             children: [{
-                id: 31,
+            	orgId: 31,
                 orgName: '上海市党委',
                 orgAttr: '上海市政府直属党组织31',
                 phone: '17501697782',
                 leader: '俞书记',
                 foundTime: '2016-05-02'
               }, {
-                id: 32,
+            	  orgId: 32,
                 orgName: '上海市党委',
                 orgAttr: '上海市政府直属党组织32',
                 phone: '17501697782',
@@ -219,7 +219,7 @@ new Vue({
                 foundTime: '2016-05-02'
             }]
           }, {
-            id: 4,
+        	  orgId: 4,
             orgName: '上海市党委',
             orgAttr: '上海市政府直属党组织4',
             phone: '17501697782',
@@ -492,8 +492,8 @@ new Vue({
         submitForm(formName) {
             let that = this;
             console.log("submit-formName:",formName);
-            that.$refs[formName].validate((valid) => {
-                if (valid) {
+            
+               
                     that.$confirm('是否确认提交？', '警告', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
@@ -516,6 +516,7 @@ new Vue({
                                     case 'formCategory': that.submitCategory(); break;
 
                                     case 'formLangConf': that.submitLangConf(); break;
+                                    case 'dwjbxx': that.submitDwjbxx();break;
                                     default: break;
                                 }
                                 //提交成功之后
@@ -524,11 +525,8 @@ new Vue({
                         }
                     });
 
-                } else {
-                    console.log(formName,'error submit!!');
-                    return false;
-                }
-            });
+                
+            
             //勿删，特意写下此句
             console.log('submitForm-formName,',formName,new Date().getTime());
         },
@@ -736,7 +734,62 @@ new Vue({
                 console.warn(err);
             });
         },
-
+        /**
+         * 党委信息提交
+         */
+        submitDwjbxx(){
+        	let that = this;
+        	let params = new URLSearchParams();
+        	if(that.formdwjbxx.orgId != null){
+            	params.append('orgId',that.formdwjbxx.orgId);
+        	}
+        	if(that.formdwjbxx.orgName != null){
+        		params.append('orgName',that.formdwjbxx.orgName);
+        	}
+        	if(that.formdwjbxx.orgDesc != null){
+        		params.append('orgDesc',that.formdwjbxx.orgDesc);
+        	}
+        	if(that.formdwjbxx.orgAttr != null){
+        		params.append('orgAttr',that.formdwjbxx.orgAttr);
+        	}
+        	if(that.formdwjbxx.phone != null){
+        		params.append('phone',that.formdwjbxx.phone);
+        	}
+        	if(that.formdwjbxx.upperOrg != null){
+        		params.append('upperOrg',that.formdwjbxx.upperOrg);
+        	}
+        	if(that.formdwjbxx.orgAddr != null){
+        		params.append('orgAddr',that.formdwjbxx.orgAddr);
+        	}
+        	if(that.formdwjbxx.foundTime != null){
+        		params.append('foundTime',that.formdwjbxx.foundTime);
+        	}
+        	if(that.formdwjbxx.foundContent != null){
+        		params.append('foundContent',that.formdwjbxx.foundContent);
+        	}
+        	if(that.formdwjbxx.transCode != null){
+        		params.append('transCode',that.formdwjbxx.transCode);
+        	}
+        	if(that.formdwjbxx.fixPhone != null){
+        		params.append('fixPhone',that.formdwjbxx.fixPhone);
+        	}
+        	if(that.formdwjbxx.address != null){
+        		params.append('address',that.formdwjbxx.address);
+        	}                                        
+        	if(that.formdwjbxx.prev != null){
+        		params.append('prev',that.formdwjbxx.prev);
+        	}
+        	if(that.formdwjbxx.reasion != null){
+        		params.append('reasion',that.formdwjbxx.reasion);
+        	}
+        	if(that.formdwjbxx.orgIntroduction != null){
+        		params.append('orgIntroduction',that.formdwjbxx.orgIntroduction);
+        	}
+        	axios.post("/api/org/orgOpreate",params)
+        		.then(function(response){
+        			alert("success");
+        		})
+        },
         /**
          * 分类信息提交
          */
@@ -910,17 +963,17 @@ new Vue({
                     break;
                 case 'dwjbxx':
                 	//党委基本信息新增修改
+                
                 	if(isAdd){
-                		that.dwjbxxTableData={};
+                		that.formdwjbxx={};
                 	}else{
-                		entry = that.dwjbxxTableData[scopeIndex];
                 		that.formdwjbxx = {
-                				id: entry.id,
-                				orgName: entry.orgName,
-                				orgAttr: entry.orgAttr,
-                				phone: entry.phone,
-                				foundTime: entry.foundTime,
-                				leader: entry.leader
+                				orgId: scopeRow.orgId,
+                				orgName: scopeRow.orgName,
+                				orgAttr: scopeRow.orgAttr,
+                				phone: scopeRow.phone,
+                				foundTime: scopeRow.foundTime,
+                				leader: scopeRow.leader
                 		};
                 	}
                 	that.dialogShow.dwjbxx = !that.dialogShow.dwjbxx;

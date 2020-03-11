@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oa.platform.repository.OrgDao" >
+	<resultMap id="orgMap" type="com.oa.platform.entity.Organization">
+		<result column="org_id" property="orgId" jdbcType="VARCHAR"/>
+		<result column="org_nm" property="orgName" jdbcType="VARCHAR"/>
+		<result column="org_desc" property="orgDesc" jdbcType="VARCHAR"/>
+		<result column="is_leaf" property="isLeaf" jdbcType="VARCHAR"/>
+		<result column="root_org" property="root_org" jdbcType="VARCHAR"/>
+		<result column="org_attr" property="orgAttr" jdbcType="VARCHAR"/>
+		<result column="org_full_nm" property="orgFullName" jdbcType="VARCHAR"/>
+		<result column="phone" property="phone" jdbcType="VARCHAR"/>
+		<result column="upper_org" property="upperOrg" jdbcType="VARCHAR"/>
+		<result column="org_addr" property="orgAddr" jdbcType="VARCHAR"/>
+		<result column="found_time" property="foundTime" jdbcType="VARCHAR"/>
+		<result column="found_context" property="foundContext" jdbcType="VARCHAR"/>
+		<result column="trans_code" property="transCode" jdbcType="VARCHAR"/>
+		<result column="fix_phone" property="fixPhone" jdbcType="VARCHAR"/>
+		<result column="address" property="address" jdbcType="VARCHAR"/>
+		<result column="prev" property="prev" jdbcType="VARCHAR"/>
+		<result column="reasion" property="reasion" jdbcType="VARCHAR"/>
+		<result column="org_introduction" property="orgIntroduction" jdbcType="VARCHAR"/>
+		<result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+		<result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
+		<result column="field1" property="field1" jdbcType="VARCHAR"/>
+		<result column="field2" property="field2" jdbcType="VARCHAR"/>
+		<result column="field3" property="field3" jdbcType="VARCHAR"/>
+		<result column="field4" property="field4" jdbcType="VARCHAR"/>
+		<result column="field5" property="field5" jdbcType="VARCHAR"/>
+	</resultMap>
+	<insert id="orgAdd" parameterType="com.oa.platform.entity.Organization">
+		insert into t_sys_org (
+			org_id, 
+			org_nm,
+			org_dec,
+			org_attr,
+			phone, 
+			found_time, 
+			upper_org, 
+			root_org,
+			is_leaf,
+			status,
+			create_on,
+			create_by,
+			update_on,
+			update_by)
+		values (#{orgId},#{orgName},#{orgDesc},#{orgAttr},#{phone},#{foundTime},#{upperOrg},#{root_org},#{isLeaf},'1',now(),#{createBy},now(),#{updateBy})
+	</insert>
+	<insert id="orgAddDetail" parameterType="com.oa.platform.entity.Organization">
+		insert into t_org_detail (
+			org_id, 
+			org_full_nm, 
+			found_context, 
+			trans_code, 
+			fix_phone, 
+			address, 
+			prev, 
+			reasion, 
+			org_introduction, 
+			field1, 
+			field2, 
+			field3, 
+			field4, 
+			field5, 
+			status, 
+			create_on, 
+			create_by, 
+			update_on, 
+			update_by
+		) values (
+			#{orgId},
+			#{orgFullName},
+			#{foundContext},
+			#{transCode},
+			#{fixPhone},
+			#{address},
+			#{prev},
+			#{reasion},
+			#{orgIntroduction},
+			#{field1},
+			#{field2},
+			#{field3},
+			#{field4},
+			#{field5},
+			'1',
+			now(),
+			#{createBy},
+			now(),
+			#{updateBy}
+		)
+	</insert>
+</mapper>

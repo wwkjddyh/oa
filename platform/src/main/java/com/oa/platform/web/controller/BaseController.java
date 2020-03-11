@@ -2,6 +2,8 @@ package com.oa.platform.web.controller;
 
 import com.oa.platform.biz.BaseBiz;
 import com.oa.platform.common.Constants;
+import com.oa.platform.common.ResultVo;
+import com.oa.platform.common.StatusCode;
 import com.oa.platform.entity.Role;
 import com.oa.platform.entity.User;
 import com.oa.platform.util.StringUtil;
@@ -234,5 +236,31 @@ public abstract class BaseController {
         securityContext.setAuthentication(authentication);
         HttpSession session = request.getSession();
         session.setAttribute(Constants.SPRING_SECURITY_SESSION_KEY, securityContext);
+    }
+    /**
+     * 获取成功返回
+     * @param result
+     * @return
+     */
+    public ResultVo getSuccessResultVo(Object result) {
+    	ResultVo resultVo = new ResultVo();
+    	resultVo.setCode(StatusCode.SUCCESS);
+    	resultVo.setMsg(Constants.STR_SUCCESS);
+    	resultVo.setResult(result);
+    	return resultVo;
+    }
+    /**
+     * 获取错误返回
+     * @param code
+     * @param msg
+     * @param result
+     * @return
+     */
+    public ResultVo getErroResultVo(Integer code,String msg,Object result) {
+    	ResultVo resultVo = new ResultVo();
+    	resultVo.setCode(code);
+    	resultVo.setMsg(msg);
+    	resultVo.setResult(result);
+    	return resultVo;
     }
 }
