@@ -237,4 +237,14 @@ public class Constants {
      * 校验码(VerifyCode) Key: PlatformVerifyCode
      */
     public static final String VERIFY_CODE = "PlatformVerifyCode";
+
+    /**
+     * 接收者类型：用户(0)
+     */
+    public static final int RECEIVER_TYPE_USER = 0;
+
+    /**
+     * 接收者类型：角色(1)
+     */
+    public static final int RECEIVER_TYPE_ROLE = 1;
 }

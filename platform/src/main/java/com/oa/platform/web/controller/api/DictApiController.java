@@ -69,8 +69,8 @@ public class DictApiController extends BaseController {
     @GetMapping("search")
     public Map<String,Object> search(@RequestParam(defaultValue = "",required = false) String dictType,
                                      @RequestParam(defaultValue = "",required = false) String key,
-                                     @RequestParam(defaultValue = "1",required = false) int pageNum,
-                                     @RequestParam(defaultValue = "10",required = false) int pageSize) {
+                                     @RequestParam(defaultValue = PAGE_NUM_STR,required = false) int pageNum,
+                                     @RequestParam(defaultValue = PAGE_SIZE_STR,required = false) int pageSize) {
         return dictBiz.search(dictType,key,pageNum,pageSize);
     }
 }

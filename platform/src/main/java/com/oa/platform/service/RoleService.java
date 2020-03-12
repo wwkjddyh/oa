@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.oa.platform.entity.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 角色信息
@@ -199,5 +200,18 @@ public interface RoleService extends BaseService<Role, String> {
      */
     PageInfo<UserRoleModule> searchUserRoleModule(UserRoleModule userRoleModule, int pageNum, int pageSize);
 
+    /**
+     * 根据ID列表查询角色信息
+     * @param roleIds ID列表
+     * @return
+     */
+    List<Role> findRoleByIds(List<String> roleIds);
+
+    /**
+     * 角色列表转map
+     * @param roles 角色列表
+     * @return
+     */
+    Map<String, Role> listToMap(List<Role> roles);
 
 }

@@ -56,4 +56,11 @@ public interface UserRepository extends BaseRepository<User,String> {
      * @return
      */
     User findUserByName(String userName);
+
+    /**
+     * 根据ID列表查询用户基本信息
+     * @param ids 用户ID列表
+     * @return
+     */
+    List<User> findByIds(List<String> ids);
 }

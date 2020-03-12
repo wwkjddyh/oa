@@ -153,4 +153,11 @@ public interface RoleRepository extends BaseRepository<Role, String> {
      * @param module
      */
     void updateModule(Module module);
+
+    /**
+     * 根据ID列表查询角色信息
+     * @param roleIds ID列表
+     * @return
+     */
+    List<Role> findRoleByIds(List<String> roleIds);
 }

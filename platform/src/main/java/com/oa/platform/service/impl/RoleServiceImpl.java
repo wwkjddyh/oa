@@ -204,4 +204,18 @@ public class RoleServiceImpl extends AbstractBaseService<Role, String> implement
             roleRepository.updateModule(module);
         }
     }
+
+    @Override
+    public List<Role> findRoleByIds(List<String> roleIds) {
+        return roleRepository.findRoleByIds(roleIds);
+    }
+
+    @Override
+    public Map<String, Role> listToMap(List<Role> roles) {
+        Map<String, Role> ret = Maps.newHashMap();
+        if (roles != null && !roles.isEmpty()) {
+            roles.stream().forEach(e -> ret.put(e.getRoleId(), e));
+        }
+        return ret;
+    }
 }

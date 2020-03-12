@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oa.platform.repository.NewsRepository" >
+
+  <resultMap id="news" type="com.oa.platform.entity.News">
+    <result column="record_id" property="recordId" jdbcType="VARCHAR"/>
+    <result column="type_id" property="typeId" jdbcType="VARCHAR"/>
+    <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
+    <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
+    <result column="title" property="title" jdbcType="VARCHAR"/>
+    <result column="content" property="content" jdbcType="VARCHAR"/>
+    <result column="tags" property="tags" jdbcType="VARCHAR"/>
+    <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    <result column="is_receipt" property="isReceipt" jdbcType="INTEGER"/>
+    <result column="start_time" property="startTime" jdbcType="VARCHAR"/>
+    <result column="end_time" property="endTime" jdbcType="VARCHAR"/>
+    <result column="receiver_type" property="receiverType" jdbcType="INTEGER"/>
+    <result column="receiver_id" property="receiverId" jdbcType="VARCHAR"/>
+    <result column="record_user_id" property="recordUserId" jdbcType="VARCHAR"/>
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
+    <result column="update_user_id" property="updateUserId" jdbcType="VARCHAR"/>
+
+    <result column="type_name" property="typeName" jdbcType="VARCHAR"/>
+    <result column="record_user_name" property="recordUserName" jdbcType="VARCHAR"/>
+    <result column="update_user_name" property="updateUserName" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <!--插入信息-->
+  <insert id="insert" parameterType="news">
+    INSERT INTO t_news (
+        record_id, type_id, record_time, record_flag, title, content, tags, remark,
+        is_receipt, start_time, end_time, receiver_type, receiver_id, record_user_id
+    )
+    VALUES (
+        #{recordId}, #{typeId}, NOW(), #{recordFlag}, #{title}, #{content}, #{tags}, #{remark},
+        #{isReceipt}, #{startTime}, #{endTime}, #{receiverType}, #{receiverId}, #{recordUserId}
+    )
+  </insert>
+
+  <!--更新信息-->
+  <update id="update" parameterType="news">
+    UPDATE t_news
+    <trim prefix="SET" suffixOverrides="," suffix=" WHERE record_id = #{recordId}">
+      <if test="typeId != null and typeId != ''">
+        type_id = #{typeId},
+      </if>
+      <if test="title != null and title != ''">
+        title = #{title},
+      </if>
+      <if test="content != null and content != ''">
+        content = #{content},
+      </if>
+      <if test="tags != null and tags != ''">
+        tags = #{tags},
+      </if>
+      <if test="remark != null and remark != ''">
+        remark = #{remark},
+      </if>
+      <if test="isReceipt != null">
+        is_receipt = #{isReceipt},
+      </if>
+      <if test="startTime != null and startTime != ''">
+        start_time = STR_TO_DATE(#{startTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+      <if test="endTime != null and endTime != ''">
+        end_time = STR_TO_DATE(#{endTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+      <if test="receiverType != null">
+        receiver_type = #{receiverType},
+      </if>
+      <if test="receiverId != null and receiverId != ''">
+        receiver_id = #{receiverId},
+      </if>
+      <if test="recordUserId != null and recordUserId != ''">
+        record_user_id = #{recordUserId},
+      </if>
+      <if test="updateUserId != null and updateUserId != ''">
+        update_user_id = #{updateUserId},
+      </if>
+      <if test="recordFlag != null">
+        record_flag = #{recordFlag},
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        update_time = STR_TO_DATE(#{updateTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+    </trim>
+  </update>
+
+  <!--根据recordId查询信息-->
+  <select id="findById" resultMap="news" parameterType="java.lang.String">
+    SELECT
+	    t1.record_id, t1.type_id, t1.record_time, t1.record_flag, t1.title, t1.content,
+	    t1.tags, t1.remark, t1.is_receipt,
+	    DATE_FORMAT(t1.start_time,'%Y-%m-%d %H:%i:%s') start_time,
+	    DATE_FORMAT(t1.end_time,'%Y-%m-%d %H:%i:%s') end_time, t1.receiver_type,
+	    t1.receiver_id, t1.record_user_id,
+	    DATE_FORMAT(t1.update_time,'%Y-%m-%d %H:%i:%s') update_time, t1.update_user_id,
+		t2.user_name record_user_name, t3.user_name update_user_name, t4.`name` type_name
+    FROM (SELECT * FROM t_news WHERE record_id = #{recordId} AND record_flag = 1) t1
+    LEFT JOIN t_user t2 ON t1.record_user_id = t2.user_id
+    LEFT JOIN t_user t3 ON t1.update_user_id = t3.user_id
+    LEFT JOIN t_category t4 ON t1.type_id = t4.record_id
+  </select>
+
+  <delete id="delete" parameterType="news">
+    DELETE FROM t_news
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="typeId != null and typeId != ''">
+        AND type_id = #{typeId}
+      </if>
+      <if test="title != null and title != ''">
+        AND title = #{title}
+      </if>
+      <if test="content != null and content != ''">
+        AND content = #{content}
+      </if>
+      <if test="tags != null and tags != ''">
+        AND tags = #{tags}
+      </if>
+      <if test="remark != null and remark != ''">
+        AND remark = #{remark}
+      </if>
+      <if test="isReceipt != null">
+        AND is_receipt = #{isReceipt}
+      </if>
+      <if test="receiverType != null">
+        AND receiver_type = #{receiverType}
+      </if>
+      <if test="receiverId != null and receiverId != ''">
+        AND receiver_id = #{receiverId}
+      </if>
+      <if test="recordUserId != null and recordUserId != ''">
+        AND record_user_id = #{recordUserId}
+      </if>
+      <if test="updateUserId != null and updateUserId != ''">
+        AND update_user_id = #{updateUserId}
+      </if>
+      <if test="recordFlag != null">
+        AND record_flag = #{recordFlag}
+      </if>
+    </trim>
+  </delete>
+
+  <!--查询-->
+  <select id="find" parameterType="news" resultMap="news">
+    SELECT
+        record_id, type_id, record_time, record_flag, title, content, tags, remark, is_receipt,
+        DATE_FORMAT(start_time,'%Y-%m-%d %H:%i:%s') start_time, DATE_FORMAT(end_time,'%Y-%m-%d %H:%i:%s') end_time,
+        receiver_type, receiver_id, record_user_id,
+        DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,
+        update_user_id,
+        record_user_name, update_user_name, type_name
+    FROM (
+      SELECT
+        t1.record_id, t1.type_id, t1.record_time, t1.record_flag, t1.title, t1.content, t1.tags,
+        t1.remark, t1.is_receipt, t1.start_time, t1.end_time, t1.receiver_type, t1.receiver_id,
+        t1.record_user_id, t1.update_time, t1.update_user_id,
+        t2.user_name record_user_name, t3.user_name update_user_name, t4.`name` type_name
+      FROM t_news t1
+      LEFT JOIN t_user t2 ON t1.record_user_id = t2.user_id
+      LEFT JOIN t_user t3 ON t1.update_user_id = t3.user_id
+      LEFT JOIN t_category t4 ON t1.type_id = t4.record_id
+    ) t
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="typeId != null and typeId != ''">
+        AND type_id = #{typeId}
+      </if>
+      <if test="title != null and title != ''">
+        AND title = #{title}
+      </if>
+      <if test="tags != null and tags != ''">
+        AND tags = #{tags}
+      </if>
+      <if test="remark != null and remark != ''">
+        AND remark = #{remark}
+      </if>
+      <if test="isReceipt != null">
+        AND is_receipt = #{isReceipt}
+      </if>
+      <if test="receiverType != null">
+        AND receiver_type = #{receiverType}
+      </if>
+      <if test="receiverId != null and receiverId != ''">
+        AND receiver_id = #{receiverId}
+      </if>
+      <if test="recordUserId != null and recordUserId != ''">
+        AND record_user_id = #{recordUserId}
+      </if>
+      <if test="updateUserId != null and updateUserId != ''">
+        AND update_user_id = #{updateUserId}
+      </if>
+      <if test="recordFlag != null">
+        AND record_flag = #{recordFlag}
+      </if>
+      <if test="key != null and key != ''">
+        AND (UPPER(title) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(content) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(tags) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(remark) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(type_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+        )
+      </if>
+      <if test="content != null and content != ''">
+        AND content LIKE CONCAT('%',#{content},'%')
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
+      </if>
+      <if test="startTime != null and startTime != ''">
+        AND DATE_FORMAT(start_time,'%Y-%m-%d') = #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND DATE_FORMAT(end_time,'%Y-%m-%d') = #{endTime}
+      </if>
+    </trim>
+  </select>
+</mapper>

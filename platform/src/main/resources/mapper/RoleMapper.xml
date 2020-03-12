@@ -438,4 +438,14 @@
       </if>
     </trim>
   </select>
+
+  <!-- 根据ID列表查询角色信息 -->
+  <select id="findRoleByIds" parameterType="java.util.List" resultMap="role">
+    SELECT role_id,role_name,role_desc,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+          DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag
+    FROM t_role WHERE role_id IN
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
 </mapper>

@@ -2,6 +2,7 @@ package com.oa.platform.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Maps;
 import com.oa.platform.common.Constants;
 import com.oa.platform.entity.Role;
 import com.oa.platform.entity.User;
@@ -155,6 +156,20 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
             ret = findDetailByUserIds(userIds)
                     .parallelStream()
                     .collect(toMap(UserDtl::getUserId, Function.identity(), (key1, key2) -> key1));
+        }
+        return ret;
+    }
+
+    @Override
+    public List<User> findByIds(List<String> ids) {
+        return userRepository.findByIds(ids);
+    }
+
+    @Override
+    public Map<String, User> listToMap(List<User> users) {
+        Map<String, User> ret = Maps.newHashMap();
+        if (users != null && !users.isEmpty()) {
+            users.stream().forEach(e -> ret.put(e.getUserId(), e));
         }
         return ret;
     }
