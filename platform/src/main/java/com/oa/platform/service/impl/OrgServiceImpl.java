@@ -12,7 +12,11 @@ import com.oa.platform.service.OrgService;
  *
  */
 @Service
-public class OrgServiceImpl implements OrgService {
+public class OrgServiceImpl extends AbstractBaseService<Organization, String> implements OrgService {
+
+	public OrgServiceImpl() {
+		super(Organization.class);
+	}
 	
 	@Autowired
 	private OrgRepository orgRepository;
