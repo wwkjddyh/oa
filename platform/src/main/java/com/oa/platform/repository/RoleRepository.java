@@ -12,7 +12,7 @@ import java.util.Map;
  * @date 2019/03/01
  */
 @Repository
-public interface RoleRepository {
+public interface RoleRepository extends BaseRepository<Role, String> {
 
     /**
      * 插入角色信息

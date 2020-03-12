@@ -20,7 +20,11 @@ import java.util.List;
  * @date 2018/08/23
  */
 @Service
-public class LogServiceImpl implements LogService {
+public class LogServiceImpl extends AbstractBaseService<LoginLog, String> implements LogService {
+
+    public LogServiceImpl() {
+        super(LoginLog.class);
+    }
 
     @Autowired
     private LogRepository logRepository;

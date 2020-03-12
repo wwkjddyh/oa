@@ -22,7 +22,11 @@ import java.util.Map;
  * @date 2018/08/23
  */
 @Service
-public class RoleServiceImpl implements RoleService {
+public class RoleServiceImpl extends AbstractBaseService<Role, String> implements RoleService {
+
+    public RoleServiceImpl() {
+        super(Role.class);
+    }
 
     @Autowired
     RoleRepository roleRepository;

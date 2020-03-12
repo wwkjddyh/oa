@@ -10,7 +10,7 @@ import java.util.List;
  * @author Feng
  * @date 2018/08/23
  */
-public interface RoleService {
+public interface RoleService extends BaseService<Role, String> {
 
     /**
      * 保存角色信息

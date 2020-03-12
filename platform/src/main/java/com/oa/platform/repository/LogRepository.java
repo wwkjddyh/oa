@@ -12,7 +12,7 @@ import java.util.List;
  * @date 2019/03/01
  */
 @Repository
-public interface LogRepository {
+public interface LogRepository extends BaseRepository<LoginLog, String>{
 
     /**
      * 插入登录日志
