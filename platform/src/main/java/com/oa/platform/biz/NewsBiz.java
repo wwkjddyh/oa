@@ -3,6 +3,7 @@ package com.oa.platform.biz;
 import com.github.pagehelper.PageInfo;
 import com.oa.platform.common.Constants;
 import com.oa.platform.entity.News;
+import com.oa.platform.entity.NewsSendRecord;
 import com.oa.platform.service.NewsService;
 import com.oa.platform.service.RoleService;
 import com.oa.platform.service.UserService;
@@ -168,6 +169,43 @@ public class NewsBiz extends BaseBiz {
             news.setKey(StringUtil.trim(key));
             news.setRecordFlag(Constants.INT_NORMAL);
             PageInfo<News> pageInfo = newsService.search(news, pageNum, pageSize);
+            ret = this.getPageInfo(pageInfo);
+        }
+        catch(Exception e) {
+            loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+            ret = this.getErrorVo();
+        }
+        return ret;
+    }
+
+    /**
+     * 检索发送信息（模糊匹配名称、备注）
+     * @param id 发送信息ID
+     * @param newsId 消息ID
+     * @param senderId 发送者ID
+     * @param receiverId 接收者ID
+     * @param status 状态(0, 未查看; 1, 已查看)
+     * @param key 关键字
+     * @param flag 信息标识(1,正常;0,删除;)
+     * @param pageNum 页码
+     * @param pageSize 每页记录数
+     * @return
+     */
+    public Map<String,Object> searchSendRecord(String id, String newsId, String senderId, String receiverId,
+                                               Integer status, String key, Integer flag, int pageNum, int pageSize) {
+        ret = null;
+        try {
+            NewsSendRecord record = new NewsSendRecord();
+            record.setRecordId(StringUtil.trim(id));
+            record.setNewsId(StringUtil.trim(newsId));
+            record.setSenderId(StringUtil.trim(senderId));
+            record.setReceiverId(StringUtil.trim(receiverId));
+            if (status != null) {
+                record.setStatus(status);
+            }
+            record.setRecordFlag(flag == null ? Constants.INT_NORMAL : flag);
+            record.setKey(StringUtil.trim(key));
+            PageInfo<NewsSendRecord> pageInfo = newsService.searchNewsSendRecord(record, pageNum, pageSize);
             ret = this.getPageInfo(pageInfo);
         }
         catch(Exception e) {

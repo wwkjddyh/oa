@@ -71,10 +71,37 @@ public class NewsApiController extends BaseController {
      */
     @GetMapping("search")
     public Map<String,Object> search(
-            @RequestParam(defaultValue = "",required = false) String typeId,
-            @RequestParam(defaultValue = "",required = false) String key,
-            @RequestParam(defaultValue = PAGE_NUM_STR,required = false) int pageNum,
-            @RequestParam(defaultValue = PAGE_SIZE_STR,required = false) int pageSize) {
+            @RequestParam(defaultValue = "", required = false) String typeId,
+            @RequestParam(defaultValue = "", required = false) String key,
+            @RequestParam(defaultValue = PAGE_NUM_STR, required = false) int pageNum,
+            @RequestParam(defaultValue = PAGE_SIZE_STR, required = false) int pageSize) {
         return newsBiz.search(typeId, key, pageNum, pageSize);
+    }
+
+    /**
+     * 检索发送信息
+     * @param id 发送信息ID
+     * @param newsId 消息ID
+     * @param senderId 发送者ID
+     * @param receiverId 接收者ID
+     * @param status 状态(0, 未查看; 1, 已查看)
+     * @param key 关键字(模糊匹配消息标题、发送者姓名、接收者姓名)
+     * @param flag 信息标识(1,正常;0,删除;)
+     * @param pageNum 页码
+     * @param pageSize 每页记录数
+     * @return
+     */
+    @GetMapping("searchSendRecord")
+    public Map<String,Object> searchSendRecord(
+            @RequestParam(defaultValue = "", required = false) String id,
+            @RequestParam(defaultValue = "", required = false) String newsId,
+            @RequestParam(defaultValue = "", required = false) String senderId,
+            @RequestParam(defaultValue = "", required = false) String receiverId,
+            Integer status,
+            @RequestParam(defaultValue = "", required = false) String key,
+            @RequestParam(defaultValue = "1", required = false) Integer flag,
+            @RequestParam(defaultValue = PAGE_NUM_STR, required = false) int pageNum,
+            @RequestParam(defaultValue = PAGE_SIZE_STR, required = false) int pageSize) {
+        return newsBiz.searchSendRecord(id, newsId, senderId, receiverId, status, key, flag, pageNum, pageSize);
     }
 }
