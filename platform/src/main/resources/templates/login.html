@@ -26,7 +26,7 @@
         <div style="margin-top: 10px;display: flex;">
             <div style="width: 100px;text-align: right;line-height: 36px;">验证码：</div>
             <el-input id="verifyCode" @keyup.enter.native="submitForm" name="verifyCode" v-model="formLogon.verifyCode" size="medium" auto-complete="off" maxlength="4" style="width: 200px" placeholder="验证码"></el-input>
-            <el-tooltip style="line-height: 36px;" class="item" effect="dark" placement="top"><div slot="content">验证码:4个字符</div><i class="el-icon-question"></i></el-tooltip>
+            <el-tooltip style="line-height: 36px;" class="item" effect="dark" placement="top"><div slot="content">验证码:4个字符(不区分大小写)</div><i class="el-icon-question"></i></el-tooltip>
             <img onclick="refreshVerifyCode('verifyImg');" src="/api/verify/code" id="verifyImg" style="margin-left: 5px; cursor: pointer;"/>
         </div>
         <div style="margin-top: 10px;display: flex;padding-left: 100px;">
