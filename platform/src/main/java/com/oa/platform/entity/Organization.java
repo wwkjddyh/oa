@@ -51,8 +51,21 @@ public class Organization implements Serializable {
 	private String field3;
 	private String field4;
 	private String field5;
-
+	private String isDept;
+	private String leader;
 	
+	public String getLeader() {
+		return leader;
+	}
+	public void setLeader(String leader) {
+		this.leader = leader;
+	}
+	public String getIsDept() {
+		return isDept;
+	}
+	public void setIsDept(String isDept) {
+		this.isDept = isDept;
+	}
 	public String getField1() {
 		return field1;
 	}

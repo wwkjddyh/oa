@@ -53,10 +53,14 @@ new Vue({
                     that.getAllAuthRole();
                     that.loadSysUsers('',1, that.pager.sysUser.pageSize);
                     break;
-      
+                case 'dwjbxx':
+                	that.getUpperOrg();
+                	that.loadDwjbxx();
+                	break;
+              
             }
         },
-
+        
         /**
          * 监测cronConfig的值变化
          * @param val 新值
@@ -182,50 +186,8 @@ new Vue({
                 ]
             ]
         },
-        dwjbxxTableData: [{
-            orgId: 1,
-            orgName: '上海市党委',
-            orgAttr: '上海市政府直属党组织',
-            phone: '17501697782',
-            leader: '俞书记',
-            foundTime: '2016-05-02'
-          }, {
-        	orgId: 2,
-            orgName: '上海市党委',
-            orgAttr: '上海市政府直属党组织2',
-            phone: '17501697782',
-            leader: '俞书记',
-            foundTime: '2016-05-02'
-          }, {
-        	  orgId: 3,
-            orgName: '上海市党委',
-            orgAttr: '上海市政府直属党组织3',
-            phone: '17501697782',
-            leader: '俞书记',
-            foundTime: '2016-05-02',
-            children: [{
-            	orgId: 31,
-                orgName: '上海市党委',
-                orgAttr: '上海市政府直属党组织31',
-                phone: '17501697782',
-                leader: '俞书记',
-                foundTime: '2016-05-02'
-              }, {
-            	  orgId: 32,
-                orgName: '上海市党委',
-                orgAttr: '上海市政府直属党组织32',
-                phone: '17501697782',
-                leader: '俞书记',
-                foundTime: '2016-05-02'
-            }]
-          }, {
-        	  orgId: 4,
-            orgName: '上海市党委',
-            orgAttr: '上海市政府直属党组织4',
-            phone: '17501697782',
-            leader: '俞书记',
-            foundTime: '2016-05-02'
-          }],
+        dwjbxxTableData: [],
+        upperOrg:[],
         formUser: {},
         formSysUser: {},
         formUserType: {},
@@ -516,11 +478,16 @@ new Vue({
                                     case 'formCategory': that.submitCategory(); break;
 
                                     case 'formLangConf': that.submitLangConf(); break;
-                                    case 'dwjbxx': that.submitDwjbxx();break;
+                                    case 'dwjbxx': 
+                                    	that.submitDwjbxx();
+                                    	
+                                    	break;
                                     default: break;
                                 }
                                 //提交成功之后
-                                that.resetForm(formName);
+                                if(formName != 'dwjbxx'){
+                                	that.resetForm(formName);
+                                }
                             }
                         }
                     });
@@ -549,7 +516,9 @@ new Vue({
                 case 'formSearchLangConf':
                     that.loadLangConfs(that.formSearchLangConf.name, 1, that.pager.langConf.pageSize);
                     break;
-
+                case 'searchDwjbxx':
+                	that.loadDwjbxx();
+                	break;
             }
         },
 
@@ -764,8 +733,8 @@ new Vue({
         	if(that.formdwjbxx.foundTime != null){
         		params.append('foundTime',that.formdwjbxx.foundTime);
         	}
-        	if(that.formdwjbxx.foundContent != null){
-        		params.append('foundContent',that.formdwjbxx.foundContent);
+        	if(that.formdwjbxx.foundContext != null){
+        		params.append('foundContext',that.formdwjbxx.foundContext);
         	}
         	if(that.formdwjbxx.transCode != null){
         		params.append('transCode',that.formdwjbxx.transCode);
@@ -785,9 +754,22 @@ new Vue({
         	if(that.formdwjbxx.orgIntroduction != null){
         		params.append('orgIntroduction',that.formdwjbxx.orgIntroduction);
         	}
+        	if(that.formdwjbxx.orgFullName != null){
+        		params.append('orgFullName',that.formdwjbxx.orgFullName);
+        	}
         	axios.post("/api/org/orgOpreate",params)
         		.then(function(response){
-        			alert("success");
+        			if(parseInt(response.data.code) === 200){
+        				that.dialogShow.dwjbxx =false;
+            			that.formdwjbxx={};
+            			that.getUpperOrg();
+            			that.loadDwjbxx();
+                        that.$message({
+                            message: '操作成功',
+                            type: 'success'
+                        });
+                    }
+        			
         		})
         },
         /**
@@ -851,135 +833,190 @@ new Vue({
             }
         },
         edit(type,scopeIndex, scopeRow, isAdd) {
-            let that = this, entry = null, parents = [];
-            isAdd = isAdd != undefined && isAdd == true? true : false;
-            let rowId = scopeRow != undefined && scopeRow.id != undefined ? scopeRow.id : '';
-            that.currAction = isAdd ? 'append':'edit';
-            console.log('currAction',that.currAction);
-            switch (type) {
-                case 'memberUser':
-                    if(isAdd) {
-                        that.formUser = {};
-                    }
-                    else {
-                        entry = that.memberUsers[scopeIndex];
-                        that.formUser = {
-                            id: entry.id,
-                            name: entry.name,
-                            nickname: entry.nickname,
-                            oldPassword: '',
-                            password: '',
-                            passwordOrgi: '',
-                            typeId: entry.typeId,
-                            isHeadhunting: entry.isHeadhunting,
-                            memberId: entry.memberId,
-                            status: entry.status,
-                        };
-                    }
-                    that.dialogShow.memberUser = !that.dialogShow.memberUser;
-                    break;
-                case 'sysUser':
-                    if(isAdd) {
-                        that.formSysUser = {};
-                    }
-                    else {
-                        entry = that.sysUsers[scopeIndex];
-                        that.formSysUser = {
-                            id: entry.id,
-                            name: entry.name,
-                            nickname: entry.nickname,
-                            oldPassword: '',
-                            password: '',
-                            passwordOrgi: '',
-                        };
-                    }
-                    that.dialogShow.sysUser = !that.dialogShow.sysUser;
-                    break;
-                case 'authModule':
-                    that.getAllAuthModules();
-                    if(isAdd) {
-                        that.formAuthModule = {};
-                    }
-                    else {
-                        entry = that.authModules[scopeIndex];
-                        that.formAuthModule = {
-                            moduleId: entry.moduleId,
-                            parentId: entry.parentId,
-                            moduleName: entry.moduleName,
-                            moduleDesc: entry.moduleDesc,
-                            moduleUrl: entry.moduleUrl,
-                            isLeaf: entry.isLeaf,
-                            fullModuleName: entry.fullModuleName,
-                        };
-                    }
-                    that.dialogShow.authModule = !that.dialogShow.authModule;
-                    break;
-                case 'role':
-                    if(isAdd) {
-                        that.formAuthRole = {};
-                    }
-                    else {
-                        entry =  that.roles[scopeIndex];
-                        that.formAuthRole = {
-                            roleId: entry.roleId,
-                            roleName: entry.roleName,
-                            roleDesc: entry.roleDesc
-                        };
-                    }
+        	if(isAdd == null && type == 'dwjbxx'){
+        		let that = this
+        		that.formdwjbxx={
+        				upperOrg: scopeRow.orgId
+        		};
+        		that.dialogShow.dwjbxx = !that.dialogShow.dwjbxx;
+        	}else{
+	            let that = this, entry = null, parents = [];
+	            isAdd = isAdd != undefined && isAdd == true? true : false;
+	            let rowId = scopeRow != undefined && scopeRow.id != undefined ? scopeRow.id : '';
+	            that.currAction = isAdd ? 'append':'edit';
+	            console.log('currAction',that.currAction);
+	            switch (type) {
+	                case 'memberUser':
+	                    if(isAdd) {
+	                        that.formUser = {};
+	                    }
+	                    else {
+	                        entry = that.memberUsers[scopeIndex];
+	                        that.formUser = {
+	                            id: entry.id,
+	                            name: entry.name,
+	                            nickname: entry.nickname,
+	                            oldPassword: '',
+	                            password: '',
+	                            passwordOrgi: '',
+	                            typeId: entry.typeId,
+	                            isHeadhunting: entry.isHeadhunting,
+	                            memberId: entry.memberId,
+	                            status: entry.status,
+	                        };
+	                    }
+	                    that.dialogShow.memberUser = !that.dialogShow.memberUser;
+	                    break;
+	                case 'sysUser':
+	                    if(isAdd) {
+	                        that.formSysUser = {};
+	                    }
+	                    else {
+	                        entry = that.sysUsers[scopeIndex];
+	                        that.formSysUser = {
+	                            id: entry.id,
+	                            name: entry.name,
+	                            nickname: entry.nickname,
+	                            oldPassword: '',
+	                            password: '',
+	                            passwordOrgi: '',
+	                        };
+	                    }
+	                    that.dialogShow.sysUser = !that.dialogShow.sysUser;
+	                    break;
+	                case 'authModule':
+	                    that.getAllAuthModules();
+	                    if(isAdd) {
+	                        that.formAuthModule = {};
+	                    }
+	                    else {
+	                        entry = that.authModules[scopeIndex];
+	                        that.formAuthModule = {
+	                            moduleId: entry.moduleId,
+	                            parentId: entry.parentId,
+	                            moduleName: entry.moduleName,
+	                            moduleDesc: entry.moduleDesc,
+	                            moduleUrl: entry.moduleUrl,
+	                            isLeaf: entry.isLeaf,
+	                            fullModuleName: entry.fullModuleName,
+	                        };
+	                    }
+	                    that.dialogShow.authModule = !that.dialogShow.authModule;
+	                    break;
+	                case 'role':
+	                    if(isAdd) {
+	                        that.formAuthRole = {};
+	                    }
+	                    else {
+	                        entry =  that.roles[scopeIndex];
+	                        that.formAuthRole = {
+	                            roleId: entry.roleId,
+	                            roleName: entry.roleName,
+	                            roleDesc: entry.roleDesc
+	                        };
+	                    }
+	
+	                    that.dialogShow.role = !that.dialogShow.role;
+	                    break;
+	                case 'categoryType':
+	                    if(isAdd) {
+	                        that.formCategoryType = {};
+	                    }
+	                    else {
+	                        entry = that.categoryTypes[scopeIndex];
+	                        console.log('entry',entry,that.categoryTypes);
+	                        that.formCategoryType = {
+	                            recordId: entry.recordId,
+	                            name: entry.name,
+	                            desc: entry.desc,
+	                        };
+	                    }
+	                    that.dialogShow.categoryType = !that.dialogShow.categoryType;
+	                    break;
+	                case 'category':
+	                    that.getAllCategoryTypes();
+	                    if(isAdd) {
+	                        that.formCategory = {};
+	                    }
+	                    else {
+	                        entry = that.categories[scopeIndex];
+	                        that.formCategory = {
+	                            recordId: entry.recordId,
+	                            typeId: entry.typeId,
+	                            typeName: entry.typeName,
+	                            name: entry.name,
+	                            desc: entry.desc
+	                        };
+	                    }
+	                    that.dialogShow.category = !that.dialogShow.category;
+	                    break;
+	                case 'dwjbxx':
+	                	//党委基本信息新增修改
+	                
+	                	if(isAdd){
+	                		that.formdwjbxx={};
+	                	}else{
+	                		axios.get("/api/org/getOrgDetailById",{params:{
+	                			orgId: scopeRow.orgId
+	                        }})
+	                        .then(function(response){/*成功*/
+	                            let data = response.data;
+	                            if(parseInt(data.code) === 200) {
+	                            	that.formdwjbxx = response.data.result
+	                            }
+	                        })
+	                        .catch(function(err){/*异常*/
+	                            console.log(err);
+	                        });
+	                		
+	                	}
+	                	that.dialogShow.dwjbxx = !that.dialogShow.dwjbxx;
+	                	break;
+	                default: break;
+	            }
+        	}
+        },
+        dwjbxxDel(row,type){
+        	let that = this;
+            let entry = null, params = null;
+            console.log('handleDel,',row,type);
+            that.$confirm('是否确认删除？', '警告', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+                callback: action => {
+                    if(action === "cancel"){
+                        that.$message({
+                            type: 'info',
+                            message: "取消删除"
+                        });
+                    }else{
+                        switch (type) {
+                            
+                            case 'dwjbxx':
+                                let orgId = row.orgId;
+                                let params = new URLSearchParams();
+                                params.append("orgId",orgId);
+                                axios.post("/api/org/delOrg",params)
+                                    .then(function(response){
+                                        if(parseInt(response.data.code) === 200){
+                                        	that.loadDwjbxx();
+                                            that.$message({
+                                                message: '删除成功',
+                                                type: 'success'
+                                            });
+                                        }
+                                    }).catch(function(err){
+                                    console.warn(err);
+                                });
+                                break;
 
-                    that.dialogShow.role = !that.dialogShow.role;
-                    break;
-                case 'categoryType':
-                    if(isAdd) {
-                        that.formCategoryType = {};
+                            
+                            default: break;
+                        }
                     }
-                    else {
-                        entry = that.categoryTypes[scopeIndex];
-                        console.log('entry',entry,that.categoryTypes);
-                        that.formCategoryType = {
-                            recordId: entry.recordId,
-                            name: entry.name,
-                            desc: entry.desc,
-                        };
-                    }
-                    that.dialogShow.categoryType = !that.dialogShow.categoryType;
-                    break;
-                case 'category':
-                    that.getAllCategoryTypes();
-                    if(isAdd) {
-                        that.formCategory = {};
-                    }
-                    else {
-                        entry = that.categories[scopeIndex];
-                        that.formCategory = {
-                            recordId: entry.recordId,
-                            typeId: entry.typeId,
-                            typeName: entry.typeName,
-                            name: entry.name,
-                            desc: entry.desc
-                        };
-                    }
-                    that.dialogShow.category = !that.dialogShow.category;
-                    break;
-                case 'dwjbxx':
-                	//党委基本信息新增修改
-                
-                	if(isAdd){
-                		that.formdwjbxx={};
-                	}else{
-                		that.formdwjbxx = {
-                				orgId: scopeRow.orgId,
-                				orgName: scopeRow.orgName,
-                				orgAttr: scopeRow.orgAttr,
-                				phone: scopeRow.phone,
-                				foundTime: scopeRow.foundTime,
-                				leader: scopeRow.leader
-                		};
-                	}
-                	that.dialogShow.dwjbxx = !that.dialogShow.dwjbxx;
-                	break;
-                default: break;
-            }
+                }
+            });
         },
         handleDel(idx,type) {
             let that = this;
@@ -1619,7 +1656,55 @@ new Vue({
             that.checkBoxAll.userRole = (checkedCount === checkIds.length);
             that.isIndeterminate.userRole = checkedCount > 0 && checkedCount < checkIds.length;
         },
-
+        /**
+         * 加载党委基本信息
+         */
+        loadDwjbxx(){
+        	let that = this;
+        	let treeTable =[];
+        	axios.get("/api/org/getOrgList",null).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			let parentArr = response.data.result.filter(l => l.upperOrg === null);
+        			that.dwjbxxTableData = that.getTreeData(response.data.result, parentArr);
+        		}
+        	});
+        },
+        getUpperOrg(){
+        	let that = this;
+        	let treeTable =[];
+        	axios.get("/api/org/getUpperOrgList",null).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			for(let i =0 ; i <response.data.result.length;i++){
+        				response.data.result[i].value=response.data.result[i].orgId;
+        				response.data.result[i].label=response.data.result[i].orgName;
+        			}
+        			let parentArr = response.data.result.filter(l => l.upperOrg === null);
+        			that.upperOrg = that.getTreeData(response.data.result, parentArr);
+        			console.log(that.upperOrg);
+        		}
+        	});
+        },
+        /**
+         * 处理没有children结构的数据
+         */
+        getTreeData(list, dataArr) {
+            dataArr.map((pNode, i) => {
+              let childObj = []
+              list.map((cNode, j) => {
+                if (pNode.orgId === cNode.upperOrg) {
+                  childObj.push(cNode)
+                }
+              })
+              pNode.children = childObj
+              if(pNode.children.length ==0){
+            	  pNode.children = null;
+              }
+              if (childObj.length > 0) {
+                this.getTreeData(list, childObj)
+              }
+            })
+            return dataArr
+          },
         /**
          * 加载分类信息
          */

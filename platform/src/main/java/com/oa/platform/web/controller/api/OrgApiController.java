@@ -35,6 +35,28 @@ public class OrgApiController extends BaseController{
 		return getSuccessResultVo(result);
 	}
 	/**
+	 * 获取上级党组织列表
+	 * @return
+	 */
+	@GetMapping("getUpperOrgList")
+	public ResultVo getUpperOrgList() {
+		List<Organization> result = orgBiz.getUpperOrgList();
+		return getSuccessResultVo(result);
+	}
+	/**
+	 * 获取组织详情
+	 * @param orgId
+	 * @return
+	 */
+	@GetMapping("getOrgDetailById")
+	public ResultVo getOrgDetailById(String orgId) {
+		List<Organization> result = orgBiz.getOrgDetailById(orgId);
+		if(result == null || result.size() == 0) {
+			return getSuccessResultVo(null);
+		}
+		return getSuccessResultVo(result.get(0));
+	}
+	/**
 	 * 党组织操作
 	 * @param organization 组织信息
 	 * @return
@@ -45,7 +67,6 @@ public class OrgApiController extends BaseController{
 		ResultVo resultVo = null;
 		organization.setCreateBy(user.getUserName());
 		organization.setUpdateBy(user.getUserName());
-
 		if(organization.getOrgId() == null || "".equals(organization.getOrgId())) {
 			orgBiz.orgAdd(organization);
 			resultVo = getSuccessResultVo(null);
@@ -53,8 +74,16 @@ public class OrgApiController extends BaseController{
 			orgBiz.orgEdit(organization);
 			resultVo = getSuccessResultVo(null);
 		}
-		
-		
 		return resultVo;
+	}
+	/**
+	 * 删除指定组织
+	 * @param orgId
+	 * @return
+	 */
+	@PostMapping("delOrg")
+	public ResultVo delOrg(String orgId) {
+		orgBiz.orgDel(orgId);
+		return getSuccessResultVo(null);
 	}
 }

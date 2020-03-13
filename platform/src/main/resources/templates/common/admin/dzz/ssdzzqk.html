@@ -3,43 +3,43 @@
 <div th:fragment="content">
     <el-tabs v-model="activeTabName" type="card">
         <el-tab-pane label="所属党组织情况" name="first">
-            <el-button plain @click="edit('category','','',true)" type="primary"><i class="el-icon-plus"></i>新增</el-button>
-            <el-button plain type="danger"><i class="el-icon-close" ></i>删除</el-button>
-            <el-button plain ><i class="el-icon-refresh"></i>刷新</el-button>
+            <el-button plain @click="edit('ssdzzqk','','',true)" type="primary" size="mini"><i class="el-icon-plus" ></i>新增</el-button>
+            <el-button plain type="danger" size="mini"><i class="el-icon-close" ></i>删除</el-button>
+            <el-button plain size="mini"><i class="el-icon-refresh"></i>刷新</el-button>
             <div style="margin-top: 20px">
                 <el-table
-                        :data="categories"
+                        :data="ssdzzqk"
                         border
                         style="width: 100%">
                     <el-table-column
-                            prop="name"
+                            prop="orgName"
                             label="单位名称"
                             align="center">
                     </el-table-column>
                     <el-table-column
-                            prop="typeName"
+                            prop="upperOrgName"
                             label="所属组织名称"
                             align="center"
                             >
                     </el-table-column>
                     <el-table-column
-                            prop="desc"
+                            prop="upperOrgAttr"
                             label="单位所在组织属性" align="center">
                     </el-table-column>
                     <el-table-column
-                            prop="desc"
+                            prop="orgAttr"
                             label="单位属性" align="center">
                     </el-table-column>
                     <el-table-column
-                            prop="desc"
+                            prop="contactPersion"
                             label="联系人" align="center">
                     </el-table-column>
                     <el-table-column
-                            prop="desc"
+                            prop="phone"
                             label="联系电话" align="center">
                     </el-table-column>
                     <el-table-column
-                            prop="desc"
+                            prop="count"
                             label="党员人数" align="center">
                     </el-table-column>
                     <el-table-column
@@ -66,9 +66,9 @@
                     </el-pagination>
                 </div>
             </div>
-            <el-dialog title="分类类别信息" :visible.sync="dialogShow.category" lock-scroll="true" width="800px">
+            <el-dialog title="所属党组织情况" :visible.sync="dialogShow.ssdzzqk" lock-scroll="true" width="800px">
                 <el-card shadow="never" style="width: 100%;" type="card">
-                    <el-form ref="formCategory" :rules="rules" :model="formCategory" label-width="100px">
+                    <el-form ref="formSsdzzqk" :rules="rules" :model="formCategory" label-width="100px">
                         <el-form-item label="类别" prop="typeId">
                             <el-select v-model="formCategory.typeId" style="width: 300px;" placeholder="请选择类型">
                                 <el-option v-for="item in allCategoryTypes" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>

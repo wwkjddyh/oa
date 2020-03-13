@@ -20,6 +20,8 @@
 		<result column="prev" property="prev" jdbcType="VARCHAR"/>
 		<result column="reasion" property="reasion" jdbcType="VARCHAR"/>
 		<result column="org_introduction" property="orgIntroduction" jdbcType="VARCHAR"/>
+		<result column="is_dept" property="isDept" jdbcType="VARCHAR"/>
+		<result column="leader" property="leader" jdbcType="VARCHAR"/>
 		<result column="create_by" property="createBy" jdbcType="VARCHAR"/>
 		<result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
 		<result column="field1" property="field1" jdbcType="VARCHAR"/>
@@ -40,11 +42,12 @@
 			root_org,
 			is_leaf,
 			status,
+			is_dept,
 			create_on,
 			create_by,
 			update_on,
 			update_by)
-		values (#{orgId},#{orgName},#{orgDesc},#{orgAttr},#{phone},#{foundTime},#{upperOrg},#{root_org},#{isLeaf},'1',now(),#{createBy},now(),#{updateBy})
+		values (#{orgId},#{orgName},#{orgDesc},#{orgAttr},#{phone},#{foundTime},#{upperOrg},#{root_org},#{isLeaf},'1','0',now(),#{createBy},now(),#{updateBy})
 	</insert>
 	<insert id="orgAddDetail" parameterType="com.oa.platform.entity.Organization">
 		insert into t_org_detail (
@@ -89,4 +92,298 @@
 			#{updateBy}
 		)
 	</insert>
+	<select id="getUpperOrgList" resultMap="orgMap">
+		select
+			org_id,
+			org_nm,
+			upper_org
+		from t_sys_org
+		where status='1' and is_dept='0'
+	</select>
+	<select id="getOrgDetailById" resultMap="orgMap">
+		select 
+			org.org_id,
+			org.org_nm,
+			orgdetail.org_full_nm,
+			org.org_attr,
+			org.phone,
+			org.upper_org,
+			org.found_time,
+			orgdetail.found_context,
+			orgdetail.trans_code,
+			orgdetail.fix_phone,
+			orgdetail.address,
+			orgdetail.prev,
+			orgdetail.reasion,
+			orgdetail.org_introduction
+		from 
+			t_sys_org org 
+		left join 
+			t_org_detail orgdetail
+		on org.org_id=orgdetail.org_id and org.status='1'
+		where org.org_id=#{orgId}
+	</select>
+	<select id="getOrgList" resultMap="orgMap">
+		(
+		WITH recursive org_cte AS (
+			SELECT
+				org_id,
+				org_nm,
+				org_attr,
+				phone,
+				found_time,
+				is_dept,
+				upper_org 
+			FROM
+				t_sys_org 
+			WHERE
+				org_id = #{orgId} and status='1'
+			UNION ALL
+			SELECT
+				org.org_id,
+				org.org_nm,
+				org.org_attr,
+				org.phone,
+				org.found_time,
+				org.is_dept,
+				org.upper_org 
+			FROM
+				t_sys_org org
+				inner join org_cte sysorg on org.org_id = sysorg.upper_org and org.status='1'
+				) 
+		SELECT
+			ote.*,
+			CONCAT( tuser.user_name, '书记' ) leader 
+		FROM
+			org_cte ote
+			LEFT JOIN (
+		SELECT
+			urole.user_id,
+			osuser.org_id 
+		FROM
+			t_user_role urole
+			LEFT JOIN t_org_user osuser ON urole.user_id = osuser.user_id 
+		WHERE
+			urole.role_id = 'f99e26b6-8f95-4049-b719-36609fe76fea1' 
+			and osuser.status='1'
+			and urole.status='1'
+			) ouser ON ote.org_id = ouser.org_id
+			LEFT JOIN t_user tuser ON ouser.user_id = tuser.user_id
+		)
+		union
+		(
+		WITH recursive org_cte AS (
+			SELECT
+				org_id,
+				org_nm,
+				org_attr,
+				phone,
+				found_time,
+				is_dept,
+				upper_org 
+			FROM
+				t_sys_org 
+			WHERE
+				org_id = #{orgId} and status='1'
+			UNION ALL
+			SELECT
+				org.org_id,
+				org.org_nm,
+				org.org_attr,
+				org.phone,
+				org.found_time,
+				org.is_dept,
+				org.upper_org 
+			FROM
+				t_sys_org org
+				inner join org_cte sysorg on sysorg.org_id = org.upper_org and org.status='1'
+				) 
+		SELECT
+			ote.*,
+			CONCAT( tuser.user_name, '书记' ) leader 
+		FROM
+			org_cte ote
+			LEFT JOIN (
+		SELECT
+			urole.user_id,
+			osuser.org_id 
+		FROM
+			t_user_role urole
+			LEFT JOIN t_org_user osuser ON urole.user_id = osuser.user_id 
+		WHERE
+			urole.role_id = 'f99e26b6-8f95-4049-b719-36609fe76fea1' 
+			and osuser.status='1'
+			and urole.status='1'
+			) ouser ON ote.org_id = ouser.org_id
+			LEFT JOIN t_user tuser ON ouser.user_id = tuser.user_id
+		)
+	</select>
+	<select id="getOrgIdByuserId" resultMap="orgMap">
+		SELECT
+			org_id 
+		FROM
+			t_org_user 
+		WHERE
+			user_id = #{userId} and status='1'
+	</select>
+	<!-- 删除指定组织及下属组织 -->
+	<update id="delOrg">
+		UPDATE t_sys_org 
+		SET STATUS = '0' 
+		WHERE
+			org_id IN (
+			WITH recursive org_cte AS (
+		SELECT
+			org_id 
+		FROM
+			t_sys_org 
+		WHERE
+			org_id = #{orgId}
+			AND STATUS = '1' UNION ALL
+		SELECT
+			org.org_id 
+		FROM
+			t_sys_org org
+			INNER JOIN org_cte sysorg ON sysorg.org_id = org.upper_org 
+			AND org.STATUS = '1' 
+			) SELECT
+			* 
+		FROM
+			org_cte 
+			)
+	</update>
+	<!-- 删除指定组织及下属组织的人员关联 -->
+	<update id="delOrgUser">
+		UPDATE t_org_user 
+		SET STATUS = '0' 
+		WHERE
+			org_id IN (
+			WITH recursive org_cte AS (
+		SELECT
+			org_id 
+		FROM
+			t_sys_org 
+		WHERE
+			org_id = #{orgId}
+			AND STATUS = '1' UNION ALL
+		SELECT
+			org.org_id 
+		FROM
+			t_sys_org org
+			INNER JOIN org_cte sysorg ON sysorg.org_id = org.upper_org 
+			AND org.STATUS = '1' 
+			) SELECT
+			* 
+		FROM
+			org_cte 
+			)
+	</update>
+	<!-- 指定组织及下属组织书记删除 -->
+	<update id="delLeader">
+		UPDATE t_user_role 
+		SET STATUS = '0' 
+		WHERE
+			user_id IN (
+			WITH recursive org_cte AS (
+		SELECT
+			org_id,
+			org_nm,
+			org_attr,
+			phone,
+			found_time,
+			is_dept,
+			upper_org 
+		FROM
+			t_sys_org 
+		WHERE
+			org_id = #{orgId} 
+			AND STATUS = '1' UNION ALL
+		SELECT
+			org.org_id,
+			org.org_nm,
+			org.org_attr,
+			org.phone,
+			org.found_time,
+			org.is_dept,
+			org.upper_org 
+		FROM
+			t_sys_org org
+			INNER JOIN org_cte sysorg ON sysorg.org_id = org.upper_org 
+			AND org.STATUS = '1' 
+			) SELECT
+			tuser.user_id 
+		FROM
+			org_cte ote
+			LEFT JOIN (
+		SELECT
+			urole.user_id,
+			osuser.org_id 
+		FROM
+			t_user_role urole
+			LEFT JOIN t_org_user osuser ON urole.user_id = osuser.user_id 
+		WHERE
+			urole.role_id = 'f99e26b6-8f95-4049-b719-36609fe76fea1' 
+			AND osuser.STATUS = '1' 
+			AND urole.STATUS = '1' 
+			) ouser ON ote.org_id = ouser.org_id
+			LEFT JOIN t_user tuser ON ouser.user_id = tuser.user_id 
+			)
+	</update>
+	<update id="orgEdit" parameterType="com.oa.platform.entity.Organization">
+		UPDATE t_sys_org
+	    <trim prefix="SET" suffixOverrides="," suffix=" WHERE org_id = #{orgId} and status='1'">
+	      <if test="orgName != null and orgName != ''">
+	        org_nm = #{orgName},
+	      </if>
+	      <if test="orgAttr != null and orgAttr != ''">
+	        org_attr = #{orgAttr},
+	      </if>
+	      <if test="phone != null and phone != ''">
+	        phone = #{phone},
+	      </if>
+	      <if test="upperOrg != null and upperOrg != ''">
+	        upper_org = #{upperOrg},
+	      </if>
+	      <if test="foundTime != null and foundTime != ''">
+	        found_time = #{foundTime},
+	      </if>
+	      <if test="updateBy != null and updateBy != ''">
+	        update_by = #{updateBy},
+	        update_on = now(),
+	      </if>
+	    </trim>
+	</update>
+	<update id="orgEditDetail" parameterType="com.oa.platform.entity.Organization">
+		UPDATE t_org_detail
+	    <trim prefix="SET" suffixOverrides="," suffix=" WHERE org_id = #{orgId} and status='1'">
+	      <if test="orgFullName != null and orgFullName != ''">
+	        org_full_nm = #{orgFullName},
+	      </if>
+	      <if test="foundContext != null and foundContext != ''">
+	        found_context = #{foundContext},
+	      </if>
+	      <if test="transCode != null and transCode != ''">
+	        trans_code = #{transCode},
+	      </if>
+	      <if test="fixPhone != null and fixPhone != ''">
+	        fix_phone = #{fixPhone},
+	      </if>
+	      <if test="address != null and address != ''">
+	        address = #{address},
+	      </if>
+	      <if test="prev != null and prev != ''">
+	        prev = #{prev},
+	      </if>
+	      <if test="reasion != null and reasion != ''">
+	        reasion = #{reasion},
+	      </if>
+	      <if test="orgIntroduction != null and orgIntroduction != ''">
+	        org_introduction = #{orgIntroduction},
+	      </if>
+	      <if test="updateBy != null and updateBy != ''">
+	        update_by = #{updateBy},
+	        update_on = now(),
+	      </if>
+	    </trim>
+	</update>
 </mapper>
