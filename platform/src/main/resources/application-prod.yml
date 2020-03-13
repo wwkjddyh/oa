@@ -76,5 +76,7 @@ spring:
 upload:
   save-dir: /home/yuzaosen/data/uploads/platform/
 
+platform:
+
 
 

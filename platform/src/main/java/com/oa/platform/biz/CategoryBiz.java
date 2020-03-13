@@ -1,6 +1,7 @@
 package com.oa.platform.biz;
 
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.oa.platform.common.Constants;
 import com.oa.platform.entity.Category;
 import com.oa.platform.entity.CategoryType;
@@ -9,6 +10,7 @@ import com.oa.platform.util.DateUtil;
 import com.oa.platform.util.StringUtil;
 import com.oa.platform.util.ThreadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -298,9 +300,9 @@ public class CategoryBiz extends BaseBiz {
      * @param typeName 类型分类名称(若为null或""，则返回空列表)
      * @return
      */
-    public Map<String, Object> getArticleCategories(String typeName) {
+    public Map<String, Object> getCategoriesByTypeName(String typeName) {
         try {
-            List<Category> categories = new ArrayList<>(0);
+            List<Category> categories = Lists.newArrayList();
             typeName = StringUtil.trim(typeName);
             if(!"".equals(typeName)) {
                 Category category = new Category();
@@ -311,6 +313,29 @@ public class CategoryBiz extends BaseBiz {
             ret = this.getSuccessVo("", categories);
         }
         catch(Exception e) {
+            loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+            ret = this.getErrorVo();
+        }
+        return ret;
+    }
+
+    /**
+     * 根据类别获得消息分类
+     * @param typeId 类别序号
+     * @return
+     */
+    public Map<String, Object> getCategoriesByTypeId(String typeId) {
+        try {
+            List<Category> categories = Lists.newArrayList();
+            typeId = StringUtil.trim(typeId);
+            if (!"".equals(typeId)) {
+                Category category = new Category();
+                category.setFlag(Constants.INT_NORMAL);
+                category.setTypeId(typeId);
+                categories = categoryService.find(category);
+            }
+            ret = this.getSuccessVo("", categories);
+        } catch (Exception e) {
             loggerError(ThreadUtil.getCurrentFullMethodName(), e);
             ret = this.getErrorVo();
         }

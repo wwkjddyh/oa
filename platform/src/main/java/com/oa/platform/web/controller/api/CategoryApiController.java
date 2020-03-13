@@ -124,15 +124,25 @@ public class CategoryApiController extends BaseController {
      */
     @GetMapping("allArticleCategories")
     public Map<String, Object> allArticleCategories() {
-        return categoryBiz.getArticleCategories("文章");
+        return categoryBiz.getCategoriesByTypeName("文章");
     }
 
     /**
-     * 获得虫控服务分类信息
+     * 获得消息类别的所有分类
      * @return
      */
-    @GetMapping("allInsectCategories")
-    public Map<String, Object> allInsectCategories() {
-        return categoryBiz.getArticleCategories("虫控服务");
+    @GetMapping("allMsgCategories")
+    public Map<String, Object> allMsgCategories() {
+        return categoryBiz.getCategoriesByTypeName("消息");
+    }
+
+    /**
+     * 根据类别获得消息分类
+     * @param typeId 类别序号
+     * @return
+     */
+    @GetMapping("getCategoriesByTypeId")
+    public Map<String, Object> getCategoriesByTypeId(@RequestParam String typeId) {
+        return categoryBiz.getCategoriesByTypeId(typeId);
     }
 }

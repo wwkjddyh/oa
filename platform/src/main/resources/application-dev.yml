@@ -79,4 +79,6 @@ spring:
 upload:
   save-dir: /Users/baby/work/upload/
 
+platform:
+
 
