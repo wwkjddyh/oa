@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 8082
   tomcat:
     uri-encoding: UTF-8
     max-http-post-size: 20MB
@@ -50,9 +50,12 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     #    driver-class-name: com.mysql.cj.jdbc.Driver
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:mysql://localhost:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
-    username: root
-    password: root
+#    url: jdbc:p6spy:mysql://localhost:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+#    username: root
+#    password: root
+    url: jdbc:p6spy:mysql://106.12.179.56:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    username: oaplat
+    password: oaplat
     hikari:
       minimum-idle: 10
       maximum-pool-size: 60

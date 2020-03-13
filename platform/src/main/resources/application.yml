@@ -27,4 +27,4 @@ platform:
 
 spring:
   profiles:
-    active: prod
+    active: dev
