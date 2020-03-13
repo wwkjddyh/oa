@@ -115,10 +115,13 @@ public class RoleBiz extends BaseBiz {
      * @param moduleUrl
      * @param isLeaf
      * @param recordFlag
+     * @param moduleCode
+     * @param order
      * @return
      */
     public Map<String, Object> saveModule(String moduleId, String parentId, String moduleName, String moduleDesc,
-                                          String moduleUrl, String isLeaf, String recordFlag) {
+                                          String moduleUrl, String isLeaf, String recordFlag, String moduleCode,
+                                          Integer order) {
         moduleName = StringUtil.trim(moduleName);
         if("".equals(moduleName)) {
             ret = this.getParamErrorVo();
@@ -147,6 +150,8 @@ public class RoleBiz extends BaseBiz {
                     ret = this.getParamRepeatErrorVo("角色名称");
                 }
                 else {
+                    module.setOrder(order == null ? 0 : order);
+                    module.setModuleCode(StringUtil.trim(moduleCode));
                     module.setModuleDesc(moduleDesc);
                     module.setModuleUrl(StringUtil.trim(moduleUrl));
                     module.setIsLeaf(Integer.parseInt(StringUtil.trim(isLeaf, "1")));

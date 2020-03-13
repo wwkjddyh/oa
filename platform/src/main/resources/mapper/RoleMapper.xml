@@ -51,6 +51,8 @@
     <result column="update_user_id" property="updateUserId" jdbcType="VARCHAR"/>
     <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
     <result column="full_module_name" property="fullModuleName" jdbcType="VARCHAR"/>
+    <result column="module_code" property="moduleCode" jdbcType="VARCHAR"/>
+    <result column="order" property="order" jdbcType="INTEGER"/>
   </resultMap>
 
   <resultMap id="userRoleModule" type="com.oa.platform.entity.UserRoleModule">
@@ -97,8 +99,8 @@
   </delete>
 
   <insert id="insertModule" parameterType="module">
-    INSERT INTO t_module(module_id,parent_id,module_name,module_desc,module_url,is_leaf,record_time,record_flag)
-    VALUES(#{moduleId},#{parentId},#{moduleName},#{moduleDesc},#{moduleUrl},#{isLeaf},NOW(),#{recordFlag})
+    INSERT INTO t_module(module_id,parent_id,module_name,module_desc,module_url,is_leaf,record_time,record_flag,module_code,`order`)
+    VALUES(#{moduleId},#{parentId},#{moduleName},#{moduleDesc},#{moduleUrl},#{isLeaf},NOW(),#{recordFlag},#{moduleCode},#{order})
   </insert>
 
   <update id="updateModuleFlagById" parameterType="java.util.Map">
@@ -107,7 +109,7 @@
 
   <select id="findModuleById" parameterType="java.lang.String" resultMap="module">
     SELECT module_id,parent_id,module_name,module_url,is_leaf,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
-      DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag
+      DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag,module_code
     FROM t_module WHERE module_id = #{moduleId} AND record_flag = 1
   </select>
 
@@ -177,6 +179,12 @@
       </if>
       <if test="moduleName != null and moduleName != ''">
         module_name = #{moduleName},
+      </if>
+      <if test="order != null">
+        `order` = #{order},
+      </if>
+      <if test="moduleCode != null and moduleCode != ''">
+        module_code = #{moduleCode},
       </if>
       <if test="moduleDesc != null and moduleDesc != ''">
         module_desc = #{moduleDesc},
@@ -386,7 +394,7 @@
   <select id="findModule" parameterType="module" resultMap="module">
     SELECT
       module_id,parent_id,module_name,module_desc,module_url,is_leaf,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
-      DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag,full_module_name
+      DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag,full_module_name,module_code,`order`
       FROM (
         WITH RECURSIVE cte AS
         (
@@ -399,7 +407,7 @@
         SELECT t10.*, c.module_name full_module_name
         FROM cte c, t_module t10
         WHERE c.module_id = t10.module_id
-        ORDER BY c.module_name ASC
+        ORDER BY t10.parent_id,t10.`order`,c.module_name ASC
     ) t
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="moduleId != null and moduleId != ''">
@@ -453,7 +461,7 @@
   <select id="findModuleByUserId" parameterType="java.lang.String" resultMap="module">
     SELECT
       module_id,parent_id,module_name,module_desc,module_url,is_leaf,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
-      DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag,full_module_name
+      DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag,full_module_name,module_code,`order`
       FROM (
         WITH RECURSIVE cte AS
         (
@@ -470,7 +478,7 @@
         SELECT t10.*, c.module_name full_module_name
         FROM cte c, t_module t10
         WHERE c.module_id = t10.module_id
-        ORDER BY c.module_name ASC
+        ORDER BY t10.parent_id,t10.`order`,c.module_name ASC
     ) t
   </select>
 </mapper>

@@ -65,6 +65,16 @@ public class Module implements Serializable {
     private String fullModuleName;
 
     /**
+     * 模块代码
+     */
+    private String moduleCode;
+
+    /**
+     * 排序(不为负数的整数)
+     */
+    private Integer order;
+
+    /**
      * 搜索关键字
      */
     private String key;
@@ -165,12 +175,28 @@ public class Module implements Serializable {
         this.fullModuleName = fullModuleName;
     }
 
+    public String getModuleCode() {
+        return moduleCode;
+    }
+
+    public void setModuleCode(String moduleCode) {
+        this.moduleCode = moduleCode;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
     public Module() {
     }
 
     public Module(String moduleId, String parentId, String moduleName, String moduleDesc, String moduleUrl,
                   Integer isLeaf, String recordTime, String updateTime, String updateUserId, Integer recordFlag,
-                  String fullModuleName) {
+                  String fullModuleName, String moduleCode, Integer order) {
         this.moduleId = moduleId;
         this.parentId = parentId;
         this.moduleName = moduleName;
@@ -182,6 +208,8 @@ public class Module implements Serializable {
         this.updateUserId = updateUserId;
         this.recordFlag = recordFlag;
         this.fullModuleName = fullModuleName;
+        this.moduleCode = moduleCode;
+        this.order = order;
     }
 
     @Override
@@ -198,6 +226,8 @@ public class Module implements Serializable {
                 ", updateUserId='" + updateUserId + '\'' +
                 ", recordFlag=" + recordFlag +
                 ", fullModuleName='" + fullModuleName + '\'' +
+                ", moduleCode='" + moduleCode + '\'' +
+                ", order='" + order + '\'' +
                 '}';
     }
 }

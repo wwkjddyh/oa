@@ -124,6 +124,8 @@ public class UserApiController extends BaseController {
      * @param moduleUrl
      * @param isLeaf
      * @param recordFlag
+     * @param moduleCode
+     * @param order
      * @return
      */
     @PostMapping("saveModule")
@@ -134,8 +136,11 @@ public class UserApiController extends BaseController {
             @RequestParam(defaultValue = "",required = false) String moduleDesc,
             @RequestParam(defaultValue = "",required = false) String moduleUrl,
             @RequestParam(defaultValue = "",required = false) String isLeaf,
-            @RequestParam(defaultValue = "1",required = false) String recordFlag) {
-        return roleBiz.saveModule(moduleId, parentId, moduleName, moduleDesc, moduleUrl, isLeaf, recordFlag);
+            @RequestParam(defaultValue = "1",required = false) String recordFlag,
+            @RequestParam(defaultValue = "",required = false) String moduleCode,
+            @RequestParam(defaultValue = "0",required = false) Integer order) {
+        return roleBiz.saveModule(moduleId, parentId, moduleName,
+                moduleDesc, moduleUrl, isLeaf, recordFlag, moduleCode, order);
     }
 
     /**

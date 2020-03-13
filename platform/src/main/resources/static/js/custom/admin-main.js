@@ -638,6 +638,8 @@ new Vue({
             params.append('moduleUrl',that.formAuthModule.moduleUrl || '');
             params.append('isLeaf',that.formAuthModule.isLeaf || '1');
             params.append('recordFlag',1);
+            params.append('moduleCode', that.formAuthModule.moduleCode || '');
+            params.append('order', that.formAuthModule.order || 0);
             if(that.currAction === 'edit') {
                 operName = '修改';
                 params.append('moduleId',that.formAuthModule.moduleId);
@@ -900,6 +902,8 @@ new Vue({
 	                            moduleUrl: entry.moduleUrl,
 	                            isLeaf: entry.isLeaf,
 	                            fullModuleName: entry.fullModuleName,
+                                moduleCode: entry.moduleCode || '',
+                                order: entry.order || 0,
 	                        };
 	                    }
 	                    that.dialogShow.authModule = !that.dialogShow.authModule;
@@ -1044,8 +1048,8 @@ new Vue({
                             case 'authModule':
                                 let authModuleEntry = that.authModules[idx];
                                 let moduleParams = new URLSearchParams();
-                                moduleParams.append("id",authModuleEntry.moduleId);
-                                moduleParams.append("flag",authModuleEntry.recordFlag);
+                                moduleParams.append("id", authModuleEntry.moduleId);
+                                moduleParams.append("flag", '0');
                                 axios.post("/api/user/updateModuleFlagById",moduleParams)
                                     .then(function(response){
                                         if(parseInt(response.data.code) === 200){
@@ -1064,8 +1068,8 @@ new Vue({
                             case 'role':
                                 let authRoleEntry = that.roles[idx];
                                 let roleParams = new URLSearchParams();
-                                roleParams.append("id",authRoleEntry.id);
-                                roleParams.append("flag",authRoleEntry.recordFlag);
+                                roleParams.append("id", authRoleEntry.id);
+                                roleParams.append("flag", '0');
                                 axios.post("/api/user/updateRoleFlagById",roleParams)
                                     .then(function(response){
                                         if(parseInt(response.data.code) === 200){

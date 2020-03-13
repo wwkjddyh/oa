@@ -85,6 +85,8 @@ const formStructConfig = {
         moduleUrl: '',
         isLeaf: '0',
         fullModuleName: '',
+        moduleCode: '',
+        order: 0,
     },
     formAuthUserRoleModule: {
         userId: '',
@@ -168,6 +170,8 @@ const formStructConfig = {
             moduleUrl: '',
             isLeaf: '0',
             fullModuleName: '',
+            moduleCode: '',
+            order: 0,
         },
         authUserRoleModule: {
             userId: '',
