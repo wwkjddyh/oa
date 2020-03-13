@@ -11,7 +11,7 @@ import java.util.List;
  * @author Feng
  * @date 2018/08/23
  */
-public interface LogService {
+public interface LogService extends BaseService<LoginLog, String> {
 
     /**
      * 保存登录日志

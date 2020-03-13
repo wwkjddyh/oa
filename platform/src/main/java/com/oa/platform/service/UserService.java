@@ -79,4 +79,25 @@ public interface UserService extends BaseService<User,String>, UserDetailsServic
      * @return
      */
     Map<String, UserDtl> findDtlsByUserIds(List<String> userIds);
+
+    /**
+     * 根据ID列表查询用户基本信息
+     * @param ids 用户ID列表
+     * @return
+     */
+    List<User> findByIds(List<String> ids);
+
+    /**
+     * 用户信息列表转Map
+     * @param users 用户基本信息列表
+     * @return
+     */
+    Map<String, User> listToMap(List<User> users);
+
+    /**
+     * 根据ID列表查询用户（MAP, key: userId, value: userName）信息
+     * @param ids ID列表
+     * @return
+     */
+    Map<String, String> findUserNamesByIds(List<String> ids);
 }

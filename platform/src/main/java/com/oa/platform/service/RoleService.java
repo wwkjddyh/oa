@@ -4,13 +4,14 @@ import com.github.pagehelper.PageInfo;
 import com.oa.platform.entity.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 角色信息
  * @author Feng
  * @date 2018/08/23
  */
-public interface RoleService {
+public interface RoleService extends BaseService<Role, String> {
 
     /**
      * 保存角色信息
@@ -199,5 +200,25 @@ public interface RoleService {
      */
     PageInfo<UserRoleModule> searchUserRoleModule(UserRoleModule userRoleModule, int pageNum, int pageSize);
 
+    /**
+     * 根据ID列表查询角色信息
+     * @param roleIds ID列表
+     * @return
+     */
+    List<Role> findRoleByIds(List<String> roleIds);
+
+    /**
+     * 角色列表转map
+     * @param roles 角色列表
+     * @return
+     */
+    Map<String, Role> listToMap(List<Role> roles);
+
+    /**
+     * 根据ID列表查询角色（MAP, key: roleId, value: roleName）信息
+     * @param roleIds ID列表
+     * @return
+     */
+    Map<String, String> findRoleNamesByIds(List<String> roleIds);
 
 }

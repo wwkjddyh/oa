@@ -12,7 +12,7 @@ import java.util.Map;
  * @date 2019/03/01
  */
 @Repository
-public interface RoleRepository {
+public interface RoleRepository extends BaseRepository<Role, String> {
 
     /**
      * 插入角色信息
@@ -153,4 +153,11 @@ public interface RoleRepository {
      * @param module
      */
     void updateModule(Module module);
+
+    /**
+     * 根据ID列表查询角色信息
+     * @param roleIds ID列表
+     * @return
+     */
+    List<Role> findRoleByIds(List<String> roleIds);
 }

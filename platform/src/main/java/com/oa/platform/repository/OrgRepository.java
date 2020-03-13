@@ -12,7 +12,7 @@ import com.oa.platform.entity.Organization;
  *
  */
 @Repository
-public interface OrgRepository  {
+public interface OrgRepository extends BaseRepository<Organization, String> {
 
 	void orgAdd(Organization organization);
 

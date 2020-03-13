@@ -22,7 +22,11 @@ import java.util.Map;
  * @date 2018/08/23
  */
 @Service
-public class RoleServiceImpl implements RoleService {
+public class RoleServiceImpl extends AbstractBaseService<Role, String> implements RoleService {
+
+    public RoleServiceImpl() {
+        super(Role.class);
+    }
 
     @Autowired
     RoleRepository roleRepository;
@@ -199,5 +203,31 @@ public class RoleServiceImpl implements RoleService {
         if(module != null) {
             roleRepository.updateModule(module);
         }
+    }
+
+    @Override
+    public List<Role> findRoleByIds(List<String> roleIds) {
+        return roleRepository.findRoleByIds(roleIds);
+    }
+
+    @Override
+    public Map<String, Role> listToMap(List<Role> roles) {
+        Map<String, Role> ret = Maps.newHashMap();
+        if (roles != null && !roles.isEmpty()) {
+            roles.parallelStream().forEach(e -> ret.put(e.getRoleId(), e));
+        }
+        return ret;
+    }
+
+    @Override
+    public Map<String, String> findRoleNamesByIds(List<String> roleIds) {
+        Map<String, String> ret = Maps.newHashMap();
+        if (roleIds != null && !roleIds.isEmpty()) {
+            List<Role> roles = findRoleByIds(roleIds);
+            if (roles != null && !roles.isEmpty()) {
+                roles.parallelStream().forEach(e -> ret.put(e.getRoleId(), e.getRoleName()));
+            }
+        }
+        return ret;
     }
 }

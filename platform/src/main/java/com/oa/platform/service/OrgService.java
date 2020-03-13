@@ -8,7 +8,7 @@ import com.oa.platform.entity.Organization;
  * @author 俞灶森
  *
  */
-public interface OrgService {
+public interface OrgService extends BaseService<Organization, String> {
 	/**
 	 * 组织新增
 	 * @param organization
