@@ -188,6 +188,7 @@ new Vue({
         },
         dwjbxxTableData: [],
         upperOrg:[],
+        userOwnedModules: [],    //  用户所拥有(的所有角色)的模块
         formUser: {},
         formSysUser: {},
         formUserType: {},
@@ -1368,6 +1369,25 @@ new Vue({
         },
 
         /**
+         * 获得用户所拥有的所有模块信息
+         */
+        getUserOwnedModules() {
+            let that = this;
+            that.userOwnedModules = [];
+            axios.get("/api/auth/getOwnedModules")
+                .then(function(response){/*成功*/
+                    let data = response.data;
+                    console.log('userOwnedModules.data => ', data);
+                    if(parseInt(data.code) === 200) {
+                        that.userOwnedModules = data.data;
+                    }
+                })
+                .catch(function(err){/*异常*/
+                    console.log(err);
+                });
+        },
+
+        /**
          * 获得所有分类类别信息
          */
         getAllCategoryTypes() {
@@ -1848,6 +1868,7 @@ new Vue({
     },
     mounted: function () {
         let that = this;
+        that.getUserOwnedModules();
         that.getAllAuthRole();
         that.loadMemberUsers('','',0, that.pager.user.pageSize);
         that.ueditors.article = UE.getEditor('articleEditor', that.ueditorConfig);

@@ -1,9 +1,11 @@
 package com.oa.platform.web.controller;
 
+import com.google.common.collect.Lists;
 import com.oa.platform.biz.BaseBiz;
 import com.oa.platform.common.Constants;
 import com.oa.platform.common.ResultVo;
 import com.oa.platform.common.StatusCode;
+import com.oa.platform.entity.Module;
 import com.oa.platform.entity.Role;
 import com.oa.platform.entity.User;
 import com.oa.platform.util.StringUtil;
@@ -124,6 +126,19 @@ public abstract class BaseController {
     public List<Role> getAuthorities() {
         Authentication authentication = getAuthentication();
         return authentication == null ? null : (List<Role>) authentication.getAuthorities();
+    }
+
+    /**
+     * 获取用户所拥有的所有模块
+     * @return
+     */
+    public List<Module> getModules() {
+        List<Module> modules = Lists.newArrayList();
+        User user = this.getUserOfSecurity();
+        if (user != null) {
+            modules = user.getModules();
+        }
+        return modules;
     }
 
     /**

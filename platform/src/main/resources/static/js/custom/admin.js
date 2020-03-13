@@ -14,7 +14,6 @@ new Vue({
         submitForm() {
             let that = this;
             let error = "";
-            console.log('that.formLogon=>', that.formLogon);
             let _verifyCode = that.formLogon.verifyCode.replace(/(^\s*)|(\s*$)/g, "");
             let nameLen = that.formLogon.username.replace(/(^\s*)|(\s*$)/g, "").length,
                 pwdLen = that.formLogon.password.length,
@@ -43,7 +42,6 @@ new Vue({
                 axios.get("/api/verify/getCode")
                     .then(function(response) {
                         let data = response.data;
-                        console.log('data ==>', data)
                         if(parseInt(data.code) === 200) {
                             if (data.data.code === _verifyCode.toUpperCase()) {
                                 document.getElementById("logonForm").submit()

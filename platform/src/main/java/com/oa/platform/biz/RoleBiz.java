@@ -658,4 +658,19 @@ public class RoleBiz extends BaseBiz {
         }
         return ret;
     }
+
+    /**
+     * 获得当前用户所拥有的所有模块信息
+     * @return
+     */
+    public Map<String, Object> getOwnedModules() {
+        try {
+            ret = this.getSuccessVo("", getModules());
+        }
+        catch (Exception e) {
+            loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+            ret = this.getErrorVo();
+        }
+        return ret;
+    }
 }

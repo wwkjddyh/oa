@@ -171,4 +171,13 @@ public class AuthApiController extends BaseController {
     public Map<String, Object> findModuleByUserId(@RequestParam String userId) {
         return roleBiz.findModuleByUserId(userId);
     }
+
+    /**
+     * 获得用户所拥有的所有模块信息
+     * @return
+     */
+    @GetMapping("getOwnedModules")
+    public Map<String, Object> getOwnedModules() {
+        return roleBiz.getOwnedModules();
+    }
 }
