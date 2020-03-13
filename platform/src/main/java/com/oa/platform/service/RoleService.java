@@ -214,4 +214,11 @@ public interface RoleService extends BaseService<Role, String> {
      */
     Map<String, Role> listToMap(List<Role> roles);
 
+    /**
+     * 根据ID列表查询角色（MAP, key: roleId, value: roleName）信息
+     * @param roleIds ID列表
+     * @return
+     */
+    Map<String, String> findRoleNamesByIds(List<String> roleIds);
+
 }

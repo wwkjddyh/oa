@@ -93,4 +93,11 @@ public interface UserService extends BaseService<User,String>, UserDetailsServic
      * @return
      */
     Map<String, User> listToMap(List<User> users);
+
+    /**
+     * 根据ID列表查询用户（MAP, key: userId, value: userName）信息
+     * @param ids ID列表
+     * @return
+     */
+    Map<String, String> findUserNamesByIds(List<String> ids);
 }

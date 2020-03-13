@@ -169,7 +169,19 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
     public Map<String, User> listToMap(List<User> users) {
         Map<String, User> ret = Maps.newHashMap();
         if (users != null && !users.isEmpty()) {
-            users.stream().forEach(e -> ret.put(e.getUserId(), e));
+            users.parallelStream().forEach(e -> ret.put(e.getUserId(), e));
+        }
+        return ret;
+    }
+
+    @Override
+    public Map<String, String> findUserNamesByIds(List<String> ids) {
+        Map<String, String> ret = Maps.newHashMap();
+        if (ids != null && !ids.isEmpty()) {
+            List<User> users = findByIds(ids);
+            if (users != null && !users.isEmpty()) {
+                users.parallelStream().forEach(e -> ret.put(e.getUserId(), e.getUserName()));
+            }
         }
         return ret;
     }

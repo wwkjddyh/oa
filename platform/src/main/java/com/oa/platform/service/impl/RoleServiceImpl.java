@@ -214,7 +214,19 @@ public class RoleServiceImpl extends AbstractBaseService<Role, String> implement
     public Map<String, Role> listToMap(List<Role> roles) {
         Map<String, Role> ret = Maps.newHashMap();
         if (roles != null && !roles.isEmpty()) {
-            roles.stream().forEach(e -> ret.put(e.getRoleId(), e));
+            roles.parallelStream().forEach(e -> ret.put(e.getRoleId(), e));
+        }
+        return ret;
+    }
+
+    @Override
+    public Map<String, String> findRoleNamesByIds(List<String> roleIds) {
+        Map<String, String> ret = Maps.newHashMap();
+        if (roleIds != null && !roleIds.isEmpty()) {
+            List<Role> roles = findRoleByIds(roleIds);
+            if (roles != null && !roles.isEmpty()) {
+                roles.parallelStream().forEach(e -> ret.put(e.getRoleId(), e.getRoleName()));
+            }
         }
         return ret;
     }
