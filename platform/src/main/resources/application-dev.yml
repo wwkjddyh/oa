@@ -33,7 +33,18 @@ spring:
       multipart:
         max-file-size: 20MB
         max-request-size: 200MB
-
+  mail:
+    host: smtp.qq.com
+    username: 445121408
+    default-encoding: utf-8
+    password: XXXXXX
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
   datasource:
     name: platform_source
     type: com.zaxxer.hikari.HikariDataSource

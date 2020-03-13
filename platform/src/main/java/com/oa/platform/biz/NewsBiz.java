@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.oa.platform.common.Constants;
 import com.oa.platform.entity.News;
 import com.oa.platform.entity.NewsSendRecord;
+import com.oa.platform.service.MailService;
 import com.oa.platform.service.NewsService;
 import com.oa.platform.service.RoleService;
 import com.oa.platform.service.UserService;
@@ -32,6 +33,9 @@ public class NewsBiz extends BaseBiz {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MailService mailService;
 
     /**
      * 保存信息
@@ -207,6 +211,23 @@ public class NewsBiz extends BaseBiz {
             record.setKey(StringUtil.trim(key));
             PageInfo<NewsSendRecord> pageInfo = newsService.searchNewsSendRecord(record, pageNum, pageSize);
             ret = this.getPageInfo(pageInfo);
+        }
+        catch(Exception e) {
+            loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+            ret = this.getErrorVo();
+        }
+        return ret;
+    }
+
+    /**
+     * 邮件发送测试
+     * @return
+     */
+    public Map<String, Object> sendMail() {
+        ret = null;
+        try {
+            mailService.sendSimpleMail();
+            ret = this.getSuccessVo("", "");
         }
         catch(Exception e) {
             loggerError(ThreadUtil.getCurrentFullMethodName(), e);

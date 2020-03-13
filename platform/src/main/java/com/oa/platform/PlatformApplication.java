@@ -8,11 +8,16 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.util.ResourceUtils;
 
 import java.io.IOException;
 
+/**
+ * 项目启动类
+ * @author
+ */
 @EnableTransactionManagement
 @SpringBootApplication
 @MapperScan("com.oa.platform.repository")

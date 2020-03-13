@@ -92,7 +92,7 @@ public class NewsApiController extends BaseController {
      * @return
      */
     @GetMapping("searchSendRecord")
-    public Map<String,Object> searchSendRecord(
+    public Map<String, Object> searchSendRecord(
             @RequestParam(defaultValue = "", required = false) String id,
             @RequestParam(defaultValue = "", required = false) String newsId,
             @RequestParam(defaultValue = "", required = false) String senderId,
@@ -103,5 +103,14 @@ public class NewsApiController extends BaseController {
             @RequestParam(defaultValue = PAGE_NUM_STR, required = false) int pageNum,
             @RequestParam(defaultValue = PAGE_SIZE_STR, required = false) int pageSize) {
         return newsBiz.searchSendRecord(id, newsId, senderId, receiverId, status, key, flag, pageNum, pageSize);
+    }
+
+    /**
+     * 邮件发送测试
+     * @return
+     */
+    @GetMapping("mail")
+    public Map<String, Object> sendMail() {
+        return newsBiz.sendMail();
     }
 }

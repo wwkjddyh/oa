@@ -69,6 +69,41 @@ public class NewsSendRecord implements Serializable {
      */
     private String receiverName;
 
+    /**
+     * 发送者邮箱(邮件发送时)
+     */
+    private String senderMail;
+
+    /**
+     * 接收者邮箱(邮件发送时)
+     */
+    private String receiverMail;
+
+    /**
+     * 发送者手机号码(发送短信时)
+     */
+    private String senderMobileNumber;
+
+    /**
+     * 接收者手机号码(发送短信时)
+     */
+    private String receiverMobileNumber;
+
+    /**
+     * 发送者备注(其他类型消息发送时)
+     */
+    private String senderRemark;
+
+    /**
+     * 接收者备注(其他类型消息发送时)
+     */
+    private String receiverRemark;
+
+    /**
+     * 消息对象
+     */
+    private News news;
+
     public String getRecordId() {
         return recordId;
     }
@@ -165,6 +200,62 @@ public class NewsSendRecord implements Serializable {
         this.viewTime = viewTime;
     }
 
+    public String getSenderMail() {
+        return senderMail;
+    }
+
+    public void setSenderMail(String senderMail) {
+        this.senderMail = senderMail;
+    }
+
+    public String getReceiverMail() {
+        return receiverMail;
+    }
+
+    public void setReceiverMail(String receiverMail) {
+        this.receiverMail = receiverMail;
+    }
+
+    public News getNews() {
+        return news;
+    }
+
+    public void setNews(News news) {
+        this.news = news;
+    }
+
+    public String getSenderMobileNumber() {
+        return senderMobileNumber;
+    }
+
+    public void setSenderMobileNumber(String senderMobileNumber) {
+        this.senderMobileNumber = senderMobileNumber;
+    }
+
+    public String getReceiverMobileNumber() {
+        return receiverMobileNumber;
+    }
+
+    public void setReceiverMobileNumber(String receiverMobileNumber) {
+        this.receiverMobileNumber = receiverMobileNumber;
+    }
+
+    public String getSenderRemark() {
+        return senderRemark;
+    }
+
+    public void setSenderRemark(String senderRemark) {
+        this.senderRemark = senderRemark;
+    }
+
+    public String getReceiverRemark() {
+        return receiverRemark;
+    }
+
+    public void setReceiverRemark(String receiverRemark) {
+        this.receiverRemark = receiverRemark;
+    }
+
     public NewsSendRecord() {
     }
 
@@ -179,10 +270,15 @@ public class NewsSendRecord implements Serializable {
                 ", viewTime='" + viewTime + '\'' +
                 ", status=" + status +
                 ", recordFlag=" + recordFlag +
-                ", key='" + key + '\'' +
                 ", newsTitle='" + newsTitle + '\'' +
                 ", senderName='" + senderName + '\'' +
                 ", receiverName='" + receiverName + '\'' +
+                ", senderMail='" + senderMail + '\'' +
+                ", receiverMail='" + receiverMail + '\'' +
+                ", senderMobileNumber='" + senderMobileNumber + '\'' +
+                ", receiverMobileNumber='" + receiverMobileNumber + '\'' +
+                ", senderRemark='" + senderRemark + '\'' +
+                ", receiverRemark='" + receiverRemark + '\'' +
                 '}';
     }
 }
