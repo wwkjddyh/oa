@@ -230,4 +230,9 @@ public class RoleServiceImpl extends AbstractBaseService<Role, String> implement
         }
         return ret;
     }
+
+    @Override
+    public List<Module> findModuleByUserId(String userId) {
+        return roleRepository.findModuleByUserId(userId);
+    }
 }

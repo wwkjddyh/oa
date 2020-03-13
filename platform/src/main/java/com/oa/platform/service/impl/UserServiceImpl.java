@@ -111,6 +111,7 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
                 String userId = user.getUserId();
                 user.setAuthorities(findRoleByUserId(userId));
                 user.setUserDtl(findDetailByUserId(userId));
+                user.setModules(roleRepository.findModuleByUserId(userId));
             }
         }
         return user;

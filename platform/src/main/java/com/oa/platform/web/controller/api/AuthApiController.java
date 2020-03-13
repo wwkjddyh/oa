@@ -161,4 +161,14 @@ public class AuthApiController extends BaseController {
                                        @RequestParam(defaultValue = "1",required = false) Integer recordFlag) {
         return roleBiz.saveRole(roleId,roleName,roleDesc,recordFlag,this.getUserIdOfSecurity());
     }
+
+    /**
+     * 根据用户ID查询模块信息
+     * @param userId 用户ID
+     * @return
+     */
+    @GetMapping("findModuleByUserId")
+    public Map<String, Object> findModuleByUserId(@RequestParam String userId) {
+        return roleBiz.findModuleByUserId(userId);
+    }
 }

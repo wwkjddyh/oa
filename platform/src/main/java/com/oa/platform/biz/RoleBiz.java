@@ -636,4 +636,26 @@ public class RoleBiz extends BaseBiz {
         }
         return ret;
     }
+
+    /**
+     * 根据用户ID查询模块信息
+     * @param userId 用户ID
+     * @return
+     */
+    public Map<String, Object> findModuleByUserId(String userId) {
+        userId = StringUtil.trim(userId);
+        if ("".equals(userId)) {
+            ret = this.getParamErrorVo();
+        }
+        else {
+            try {
+                ret = this.getSuccessVo("", roleService.findModuleByUserId(userId));
+            }
+            catch (Exception e) {
+                loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+                ret = this.getErrorVo();
+            }
+        }
+        return ret;
+    }
 }

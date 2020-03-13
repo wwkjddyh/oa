@@ -191,6 +191,11 @@ public class User implements UserDetails, Serializable {
      */
     private UserDtl userDtl;
 
+    /**
+     * 用户角色对应的所有模块信息
+     */
+    private List<Module> modules;
+
     public String getUserId() {
         return userId;
     }
@@ -360,6 +365,14 @@ public class User implements UserDetails, Serializable {
 
     public void setLangCode(String langCode) {
         this.langCode = langCode;
+    }
+
+    public List<Module> getModules() {
+        return modules;
+    }
+
+    public void setModules(List<Module> modules) {
+        this.modules = modules;
     }
 
     public User() {
