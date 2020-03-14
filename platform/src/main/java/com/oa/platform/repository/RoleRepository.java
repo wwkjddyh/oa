@@ -163,8 +163,8 @@ public interface RoleRepository extends BaseRepository<Role, String> {
 
     /**
      * 根据用户ID查询模块信息
-     * @param userId 用户ID
+     * @param param 模块信息参数(keys: userId、isMenu)
      * @return
      */
-    List<Module> findModuleByUserId(String userId);
+    List<Module> findModuleByUserId(Map<String, Object> param);
 }

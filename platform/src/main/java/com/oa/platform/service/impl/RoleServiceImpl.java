@@ -232,7 +232,10 @@ public class RoleServiceImpl extends AbstractBaseService<Role, String> implement
     }
 
     @Override
-    public List<Module> findModuleByUserId(String userId) {
-        return roleRepository.findModuleByUserId(userId);
+    public List<Module> findModuleByUserId(String userId, Integer isMenu) {
+        Map<String, Object> param = Maps.newHashMap();
+        param.put("isMenu", isMenu);
+        param.put("userId", userId);
+        return roleRepository.findModuleByUserId(param);
     }
 }

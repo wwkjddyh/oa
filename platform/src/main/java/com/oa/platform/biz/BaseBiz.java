@@ -231,6 +231,23 @@ public abstract class BaseBiz {
     }
 
     /**
+     * 获取用户所拥有的菜单模块
+     * @return
+     */
+    public List<Module> getMenus() {
+        List<Module> menus = Lists.newArrayList();
+        List<Module> modules = getModules();
+        if (!modules.isEmpty()) {
+            for (Module module : modules) {
+                if (module.getIsMenu() == Constants.IS_MENU) {
+                    menus.add(module);
+                }
+            }
+        }
+        return menus;
+    }
+
+    /**
      * 从Security中获取客户端访问IP地址及SessionId
      * @return
      */

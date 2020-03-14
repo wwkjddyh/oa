@@ -75,6 +75,21 @@ public class Module implements Serializable {
     private Integer order;
 
     /**
+     * 模块图标
+     */
+    private String moduleIcon;
+
+    /**
+     * 模块样式(CSS)
+     */
+    private String moduleStyle;
+
+    /**
+     * 是否为菜单(0,否;1,是)
+     */
+    private Integer isMenu;
+
+    /**
      * 搜索关键字
      */
     private String key;
@@ -191,12 +206,37 @@ public class Module implements Serializable {
         this.order = order;
     }
 
+    public String getModuleIcon() {
+        return moduleIcon;
+    }
+
+    public void setModuleIcon(String moduleIcon) {
+        this.moduleIcon = moduleIcon;
+    }
+
+    public String getModuleStyle() {
+        return moduleStyle;
+    }
+
+    public void setModuleStyle(String moduleStyle) {
+        this.moduleStyle = moduleStyle;
+    }
+
+    public Integer getIsMenu() {
+        return isMenu;
+    }
+
+    public void setIsMenu(Integer isMenu) {
+        this.isMenu = isMenu;
+    }
+
     public Module() {
     }
 
     public Module(String moduleId, String parentId, String moduleName, String moduleDesc, String moduleUrl,
                   Integer isLeaf, String recordTime, String updateTime, String updateUserId, Integer recordFlag,
-                  String fullModuleName, String moduleCode, Integer order) {
+                  String fullModuleName, String moduleCode, Integer order, String moduleIcon, String moduleStyle,
+                  Integer isMenu) {
         this.moduleId = moduleId;
         this.parentId = parentId;
         this.moduleName = moduleName;
@@ -210,6 +250,9 @@ public class Module implements Serializable {
         this.fullModuleName = fullModuleName;
         this.moduleCode = moduleCode;
         this.order = order;
+        this.moduleIcon = moduleIcon;
+        this.moduleStyle = moduleStyle;
+        this.isMenu = isMenu;
     }
 
     @Override
@@ -228,6 +271,10 @@ public class Module implements Serializable {
                 ", fullModuleName='" + fullModuleName + '\'' +
                 ", moduleCode='" + moduleCode + '\'' +
                 ", order='" + order + '\'' +
+                ", moduleIcon='" + moduleIcon + '\'' +
+                ", moduleStyle='" + moduleStyle + '\'' +
+                ", isMenu='" + isMenu + '\'' +
+
                 '}';
     }
 }

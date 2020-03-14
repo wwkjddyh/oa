@@ -165,11 +165,12 @@ public class AuthApiController extends BaseController {
     /**
      * 根据用户ID查询模块信息
      * @param userId 用户ID
+     * @param isMenu 是否为菜单(0,否;1,是)
      * @return
      */
     @GetMapping("findModuleByUserId")
-    public Map<String, Object> findModuleByUserId(@RequestParam String userId) {
-        return roleBiz.findModuleByUserId(userId);
+    public Map<String, Object> findModuleByUserId(@RequestParam String userId, Integer isMenu) {
+        return roleBiz.findModuleByUserId(userId, isMenu);
     }
 
     /**

@@ -2,8 +2,10 @@ package com.oa.platform.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.oa.platform.common.Constants;
+import com.oa.platform.entity.Module;
 import com.oa.platform.entity.Role;
 import com.oa.platform.entity.User;
 import com.oa.platform.entity.UserDtl;
@@ -111,7 +113,20 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
                 String userId = user.getUserId();
                 user.setAuthorities(findRoleByUserId(userId));
                 user.setUserDtl(findDetailByUserId(userId));
-                user.setModules(roleRepository.findModuleByUserId(userId));
+                Map<String, Object> param = Maps.newHashMap();
+                param.put("userId", userId);
+                param.put("isMenu", null);
+                List<Module> modules = roleRepository.findModuleByUserId(param);
+                List<Module> menus = Lists.newArrayList();
+                if (!modules.isEmpty()) {
+                    for (Module module : modules) {
+                        if (module.getIsMenu() == Constants.IS_MENU) {
+                            menus.add(module);
+                        }
+                    }
+                }
+                user.setModules(modules);
+                user.setMenus(menus);
             }
         }
         return user;

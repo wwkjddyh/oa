@@ -196,6 +196,11 @@ public class User implements UserDetails, Serializable {
      */
     private List<Module> modules;
 
+    /**
+     * 用户角色对应的所有菜单信息
+     */
+    private List<Module> menus;
+
     public String getUserId() {
         return userId;
     }
@@ -373,6 +378,14 @@ public class User implements UserDetails, Serializable {
 
     public void setModules(List<Module> modules) {
         this.modules = modules;
+    }
+
+    public List<Module> getMenus() {
+        return menus;
+    }
+
+    public void setMenus(List<Module> menus) {
+        this.menus = menus;
     }
 
     public User() {

@@ -1,5 +1,5 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <div th:fragment="menu">
     <!-- # el-menu 中，default-active不能和:default-openeds；否则，default-active不起作用-->
     <el-menu :default-active="def_menu_id"
@@ -8,7 +8,33 @@
              @close="handleClose"
              :collapse="isCollapse"
              @select="handleNavMenu">
-      
+        <el-menu-item :index="__menu.moduleCode" v-for="__menu in userOwnedMenus" :key="__menu.moduleId" v-if="__menu.subs.length == 0">
+            <i :class="__menu.moduleIcon"></i>
+            <span slot="title">{{__menu.moduleName}}</span>
+        </el-menu-item>
+        <el-submenu :index="__menu.moduleCode" v-for="__menu in userOwnedMenus" :key="__menu.moduleId" v-if="__menu.subs.length > 0">
+            <template slot="title">
+                <i :class="__menu.moduleIcon"></i>
+                <span slot="title">{{__menu.moduleName}}</span>
+            </template>
+            <el-menu-item v-for="__subMenu in __menu.subs" :index="__subMenu.moduleCode" :key="__subMenu.moduleId">{{__subMenu.moduleName}}</el-menu-item>
+        </el-submenu>
+        <!--
+        <div v-for="__menu in userOwnedMenus">
+            <el-menu-item :index="__menu.moduleCode" v-if="__menu.subs.length == 0">
+                <i v-bind:class="__menu.moduleIcon"></i>
+                <span slot="title">{{__menu.moduleName}}</span>
+            </el-menu-item>
+            <el-submenu :index="__menu.moduleCode" v-if="__menu.subs.length > 0">
+                <template slot="title">
+                    <i v-bind:class="__menu.moduleIcon"></i>
+                    <span slot="title">{{__menu.moduleName}}</span>
+                </template>
+                <el-menu-item v-for="__subMenu in __menu.subs" :index="__subMenu.moduleCode">{{__subMenu.moduleName}}</el-menu-item>
+            </el-submenu>
+        </div>
+        -->
+        <!--
         <el-menu-item index="firstPage" >
         		<i class="el-icon-arrow-up"></i>
                 <span slot="title">首页</span>
@@ -91,6 +117,7 @@
             <el-menu-item index="categories">分类管理</el-menu-item>
             <el-menu-item index="categoryTypes">分类类别管理</el-menu-item>
         </el-submenu>
+        -->
         
     </el-menu>
 </div>

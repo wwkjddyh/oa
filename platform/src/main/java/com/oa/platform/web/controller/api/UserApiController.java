@@ -138,9 +138,13 @@ public class UserApiController extends BaseController {
             @RequestParam(defaultValue = "",required = false) String isLeaf,
             @RequestParam(defaultValue = "1",required = false) String recordFlag,
             @RequestParam(defaultValue = "",required = false) String moduleCode,
-            @RequestParam(defaultValue = "0",required = false) Integer order) {
+            @RequestParam(defaultValue = "0",required = false) Integer order,
+            @RequestParam(defaultValue = "",required = false) String moduleIcon,
+            @RequestParam(defaultValue = "",required = false) String moduleStyle,
+            @RequestParam(defaultValue = "0",required = false) Integer isMenu) {
         return roleBiz.saveModule(moduleId, parentId, moduleName,
-                moduleDesc, moduleUrl, isLeaf, recordFlag, moduleCode, order);
+                moduleDesc, moduleUrl, isLeaf, recordFlag, moduleCode, order,
+                moduleIcon, moduleStyle, isMenu);
     }
 
     /**
@@ -284,10 +288,11 @@ public class UserApiController extends BaseController {
             @RequestParam(defaultValue = "",required = false) String parentId,
             @RequestParam(defaultValue = "",required = false) String moduleName,
             @RequestParam(defaultValue = "1",required = false) Integer recordFlag,
+            Integer isMenu,
             @RequestParam(defaultValue = "",required = false) String key,
             @RequestParam(defaultValue = PAGE_NUM_STR,required = false) int pageNum,
             @RequestParam(defaultValue = PAGE_SIZE_STR,required = false) int pageSize) {
-        return roleBiz.searchModule(moduleId, parentId, moduleName, recordFlag, key, pageNum, pageSize);
+        return roleBiz.searchModule(moduleId, parentId, moduleName, recordFlag, isMenu, key, pageNum, pageSize);
     }
 
     /**

@@ -247,4 +247,14 @@ public class Constants {
      * 接收者类型：角色(1)
      */
     public static final int RECEIVER_TYPE_ROLE = 1;
+
+    /**
+     * 是否为菜单：是(1)
+     */
+    public static final int IS_MENU = 1;
+
+    /**
+     * 是否为菜单：否(0)
+     */
+    public static final int IS_NOT_MENU = 0;
 }

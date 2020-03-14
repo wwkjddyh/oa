@@ -224,8 +224,9 @@ public interface RoleService extends BaseService<Role, String> {
     /**
      * 根据用户ID查询模块信息
      * @param userId 用户ID
+     * @param isMenu 是否为菜单(0,否;1,是)
      * @return
      */
-    List<Module> findModuleByUserId(String userId);
+    List<Module> findModuleByUserId(String userId, Integer isMenu);
 
 }

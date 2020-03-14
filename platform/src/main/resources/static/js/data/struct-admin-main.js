@@ -87,6 +87,9 @@ const formStructConfig = {
         fullModuleName: '',
         moduleCode: '',
         order: 0,
+        moduleIcon: '',
+        moduleStyle: '',
+        isMenu: 0,
     },
     formAuthUserRoleModule: {
         userId: '',
@@ -172,6 +175,9 @@ const formStructConfig = {
             fullModuleName: '',
             moduleCode: '',
             order: 0,
+            moduleIcon: '',
+            moduleStyle: '',
+            isMenu: null,
         },
         authUserRoleModule: {
             userId: '',

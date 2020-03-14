@@ -117,11 +117,14 @@ public class RoleBiz extends BaseBiz {
      * @param recordFlag
      * @param moduleCode
      * @param order
+     * @param moduleIcon
+     * @param moduleStyle
+     * @param isMenu
      * @return
      */
     public Map<String, Object> saveModule(String moduleId, String parentId, String moduleName, String moduleDesc,
                                           String moduleUrl, String isLeaf, String recordFlag, String moduleCode,
-                                          Integer order) {
+                                          Integer order, String moduleIcon, String moduleStyle, Integer isMenu) {
         moduleName = StringUtil.trim(moduleName);
         if("".equals(moduleName)) {
             ret = this.getParamErrorVo();
@@ -151,7 +154,10 @@ public class RoleBiz extends BaseBiz {
                 }
                 else {
                     module.setOrder(order == null ? 0 : order);
+                    module.setModuleIcon(StringUtil.trim(moduleIcon));
+                    module.setModuleStyle(StringUtil.trim(moduleStyle));
                     module.setModuleCode(StringUtil.trim(moduleCode));
+                    module.setIsMenu(isMenu == null ? Constants.IS_NOT_MENU : isMenu);
                     module.setModuleDesc(moduleDesc);
                     module.setModuleUrl(StringUtil.trim(moduleUrl));
                     module.setIsLeaf(Integer.parseInt(StringUtil.trim(isLeaf, "1")));
@@ -464,19 +470,21 @@ public class RoleBiz extends BaseBiz {
      * @param parentId
      * @param moduleName
      * @param recordFlag
+     * @param isMenu
      * @param key
      * @param pageNum
      * @param pageSize
      * @return
      */
     public Map<String, Object> searchModule(String moduleId, String parentId, String moduleName, Integer recordFlag,
-                                            String key, int pageNum, int pageSize) {
+                                            Integer isMenu, String key, int pageNum, int pageSize) {
         try {
             Module module = new Module();
             module.setModuleId(StringUtil.trim(moduleId));
             module.setParentId(StringUtil.trim(parentId));
             module.setModuleName(StringUtil.trim(moduleName));
             module.setRecordFlag(recordFlag);
+            module.setIsMenu(isMenu);
             module.setKey(StringUtil.trim(key));
             ret = this.getPageInfo(roleService.searchModule(module, pageNum, pageSize));
         }
@@ -645,16 +653,17 @@ public class RoleBiz extends BaseBiz {
     /**
      * 根据用户ID查询模块信息
      * @param userId 用户ID
+     * @param isMenu 是否为菜单
      * @return
      */
-    public Map<String, Object> findModuleByUserId(String userId) {
+    public Map<String, Object> findModuleByUserId(String userId, Integer isMenu) {
         userId = StringUtil.trim(userId);
         if ("".equals(userId)) {
             ret = this.getParamErrorVo();
         }
         else {
             try {
-                ret = this.getSuccessVo("", roleService.findModuleByUserId(userId));
+                ret = this.getSuccessVo("", roleService.findModuleByUserId(userId, isMenu));
             }
             catch (Exception e) {
                 loggerError(ThreadUtil.getCurrentFullMethodName(), e);

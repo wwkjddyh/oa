@@ -17,6 +17,15 @@
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
+                <el-form-item label="是否菜单" prop="isMenu">
+                    <el-select v-model="formSearchAuthModule.isMenu" style="width: 300px;" placeholder="请是否为菜单">
+                        <el-option label="请选择" value=""></el-option>
+                        <el-option label="是" value="1"></el-option>
+                        <el-option label="否" value="0"></el-option>
+                    </el-select>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">是否菜单</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
                 <!--<el-form-item label="模块类型" prop="isLeaf">-->
                     <!--<el-select v-model="formSearchAuthModule.isLeaf" style="width: 300px;" placeholder="请选择类型">-->
                         <!--<el-option label="请选择" value=""></el-option>-->
@@ -74,6 +83,14 @@
                             width="100">
                         <template slot-scope="scope">
                             {{scope.row.isLeaf === 0 ? '节点':'叶子'}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="isMenu"
+                            label="是否菜单"
+                            width="100">
+                        <template slot-scope="scope">
+                            {{scope.row.isMenu === 1 ? '是':'否'}}
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -144,6 +161,24 @@
                             <el-input v-model="formAuthModule.order" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="排序"></el-input>
                             <el-tooltip class="item" effect="dark" placement="top">
                                 <div slot="content">代码</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="模块ICON" prop="moduleIcon">
+                            <el-input v-model="formAuthModule.moduleIcon" type="textarea" size="medium" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="ICON"></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">模块ICON</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="模块样式" prop="moduleStyle">
+                            <el-input v-model="formAuthModule.moduleStyle" type="textarea" size="medium" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="样式"></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">模块样式</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="是否菜单" prop="isMenu">
+                            <el-select v-model="formAuthModule.isMenu" style="width: 300px;" placeholder="请是否为菜单">
+                                <el-option label="是" value="1"></el-option>
+                                <el-option label="否" value="0"></el-option>
+                            </el-select>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">确定是否为菜单</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
                         <el-form-item>
                             <el-button @click="resetForm('formAuthModule')" plain>取消</el-button>
