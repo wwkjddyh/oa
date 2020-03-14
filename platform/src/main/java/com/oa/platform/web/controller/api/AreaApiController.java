@@ -3,10 +3,7 @@ package com.oa.platform.web.controller.api;
 import com.oa.platform.biz.AreaBiz;
 import com.oa.platform.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -31,7 +28,11 @@ public class AreaApiController extends BaseController {
      * @return
      */
     @PostMapping("save")
-    public Map<String, Object> save(String areaId, String areaName, String areaDesc, String parentId) {
+    public Map<String, Object> save(
+            @RequestParam(defaultValue = "", required = false) String areaId,
+            @RequestParam String areaName,
+            @RequestParam(defaultValue = "", required = false) String areaDesc,
+            @RequestParam(defaultValue = "", required = false) String parentId) {
         return areaBiz.save(areaId, areaName, areaDesc, parentId);
     }
 
@@ -41,7 +42,7 @@ public class AreaApiController extends BaseController {
      * @return
      */
     @GetMapping("get")
-    public Map<String, Object> get(String areaId) {
+    public Map<String, Object> get(@RequestParam String areaId) {
         return areaBiz.get(areaId);
     }
 
@@ -51,7 +52,7 @@ public class AreaApiController extends BaseController {
      * @return
      */
     @PostMapping("deleteById")
-    public Map<String, Object> deleteById(String areaId) {
+    public Map<String, Object> deleteById(@RequestParam String areaId) {
         return areaBiz.deleteById(areaId);
     }
 
@@ -64,7 +65,11 @@ public class AreaApiController extends BaseController {
      * @return
      */
     @GetMapping("search")
-    public Map<String, Object> search(String parentId,String key,int pageNum,int pageSize) {
+    public Map<String, Object> search(
+            @RequestParam(defaultValue = "", required = false) String parentId,
+            @RequestParam(defaultValue = "", required = false) String key,
+            @RequestParam(defaultValue = PAGE_NUM_STR, required = false) int pageNum,
+            @RequestParam(defaultValue = PAGE_SIZE_STR, required = false) int pageSize) {
         return areaBiz.search(parentId, key, pageNum, pageSize);
     }
 }
