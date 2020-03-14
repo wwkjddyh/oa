@@ -21,15 +21,10 @@
                             width="200">
                     </el-table-column>
                     <el-table-column
-                            prop="orgAttr"
-                            label="组织属性"
+                            prop="orgType"
+                            label="党组织类型"
                             align="center"
                             width="200">
-                    </el-table-column>
-                    <el-table-column
-                            prop="phone"
-                            align="center"
-                            label="联系电话">
                     </el-table-column>
                     <el-table-column
                             prop="foundTime"
@@ -42,12 +37,22 @@
                             label="书记">
                     </el-table-column>
                     <el-table-column
+                            prop="concatPersion"
+                            align="center"
+                            label="联系人">
+                    </el-table-column>
+                    <el-table-column
+                            prop="phone"
+                            align="center"
+                            label="联系电话">
+                    </el-table-column>
+                    <el-table-column
                             align="center"
                             width="260"
                             label="操作">
                         <template slot-scope="scope" >
                             <div style="display: flex;width:100%" align="right">
-                            	<el-button size="mini" v-if="scope.row.isDept == '0'" @click="edit('dwjbxx',scope.$index,scope.row,null)" >添加下级组织</el-button>
+                            	<el-button size="mini" v-if="scope.row.level < 2" @click="edit('dwjbxx',scope.$index,scope.row,null)" >添加下级组织</el-button>
                                 <el-button size="mini" @click="edit('dwjbxx',scope.$index,scope.row,false)" >修改</el-button>
                                 <el-button size="mini" type="danger" @click="dwjbxxDel(scope.row,'dwjbxx')" >删除</el-button>
                             </div>
@@ -82,9 +87,9 @@
                         </el-form-item>
                         </el-col>
                         <el-col :span="11">
-                        <el-form-item label="批准建立党组织日期" prop="allowFoundTime" size="mini" >
+                        <el-form-item label="批准建立党组织日期" prop="foundTime" size="mini" >
                             <el-date-picker
-							      v-model="formdwjbxx.allowFoundTime"
+							      v-model="formdwjbxx.foundTime"
 							      size="medium"
 							      format="yyyy-MM-dd"
 							      value-format="yyyy-MM-dd"
@@ -97,15 +102,17 @@
                     <el-row>
                     	<el-col :span="11">
 	                        <el-form-item label="党组织类型" prop="orgType"  size="mini" style="width: 100%;">
-	                            <el-cascader
-								    v-model="formdwjbxx.orgType"
-								    :options="orgType"
-								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
-								    style="width: 421.66px;"
-								    size="medium"
-								    filterable
-								    clearable
-								    ></el-cascader>
+	                            
+								  <el-select v-model="formdwjbxx.orgType" placeholder="请选择" style="width: 421.66px;"
+								    	size="medium">
+								    <el-option
+								      v-for="item in orgType"
+								      :key="item.dictId"
+								      
+								      :label="item.dictName"
+								      :value="item.dictId">
+								    </el-option>
+								  </el-select>
 	                        </el-form-item>
                         </el-col>
                         <el-col :span="2">
@@ -130,15 +137,17 @@
                     <el-row>
                     	<el-col :span="11">
 	                        <el-form-item label="选举方式" prop="elctType"  size="mini" style="width: 100%;">
-	                            <el-cascader
-								    v-model="formdwjbxx.elctType"
-								    :options="elctType"
-								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
-								    style="width: 421.66px;"
-								    size="medium"
-								    filterable
-								    clearable
-								    ></el-cascader>
+	                           
+								    <el-select v-model="formdwjbxx.elctType" placeholder="请选择" style="width: 421.66px;"
+								    	size="medium">
+								    <el-option
+								      v-for="item in elctType"
+								      :key="item.dictId"
+								      
+								      :label="item.dictName"
+								      :value="item.dictId">
+								    </el-option>
+								  </el-select>
 	                        </el-form-item>
                         </el-col>
                         <el-col :span="2">
@@ -148,15 +157,17 @@
                         </el-col>                        
                         <el-col :span="11">
 	                        <el-form-item label="任期年限" prop="leadTime"  size="mini" style="width: 100%;">
-	                            <el-cascader
-								    v-model="formdwjbxx.leadTime"
-								    :options="leadTime"
-								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
-								    style="width: 421.66px;"
-								    size="medium"
-								    filterable
-								    clearable
-								    ></el-cascader>
+	                            
+								    <el-select v-model="formdwjbxx.leadTime" placeholder="请选择" style="width: 421.66px;"
+								    	size="medium">
+								    <el-option
+								      v-for="item in leadTime"
+								      :key="item.dictId"
+								      
+								      :label="item.dictName"
+								      :value="item.dictId">
+								    </el-option>
+								  </el-select>
 	                        </el-form-item>
                         </el-col>
                     </el-row>
@@ -232,15 +243,17 @@
                     <el-row>
                     	<el-col :span="11">
 	                        <el-form-item label="转接组织关系权限" prop="changeOrgRelationAuth"  size="mini" style="width: 100%;">
-	                            <el-cascader
-								    v-model="formdwjbxx.changeOrgRelationAuth"
-								    :options="changeOrgRelationAuth"
-								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
-								    style="width: 421.66px;"
-								    size="medium"
-								    filterable
-								    clearable
-								    ></el-cascader>
+	                            
+								    <el-select v-model="formdwjbxx.changeOrgRelationAuth" placeholder="请选择" style="width: 421.66px;"
+								    	size="medium">
+								    <el-option
+								      v-for="item in isDelPartPersonAuth"
+								      :key="item.dictId"
+								      
+								      :label="item.dictName"
+								      :value="item.dictId">
+								    </el-option>
+								  </el-select>
 	                        </el-form-item>
                         </el-col>
                         <el-col :span="2">
@@ -250,15 +263,15 @@
                         </el-col>                        
                         <el-col :span="11">
 	                        <el-form-item label="是否拥有党员删除权限" prop="isDelPartPersonAuth"  size="mini" style="width: 100%;">
-	                            <el-cascader
-								    v-model="formdwjbxx.isDelPartPersonAuth"
-								    :options="isDelPartPersonAuth"
-								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
-								    style="width: 421.66px;"
-								    size="medium"
-								    filterable
-								    clearable
-								    ></el-cascader>
+	                            <el-select v-model="formdwjbxx.isDelPartPersonAuth" placeholder="请选择" style="width: 421.66px;"
+								    	size="medium">
+								    <el-option
+								      v-for="item in isDelPartPersonAuth"
+								      :key="item.dictId"
+								      :label="item.dictName"
+								      :value="item.dictId">
+								    </el-option>
+								  </el-select>
 	                        </el-form-item>
                         </el-col>
                     </el-row>
@@ -321,16 +334,16 @@
 	                        </el-form-item>
                         </el-col>                      
                         <el-col :span="11">
-	                        <el-form-item label="邮政编码" prop="tranCode"  size="mini" style="width: 100%;">
-	                             <el-input v-model="formdwjbxx.tranCode"  size="medium" clearable
+	                        <el-form-item label="邮政编码" prop="transCode"  size="mini" style="width: 100%;">
+	                             <el-input v-model="formdwjbxx.transCode"  size="medium" clearable
                             	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="邮政编码"  ></el-input>
 	                        </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                     	<el-col :span="24">
-	                        <el-form-item label="详细地址" prop="addressDetail"  size="mini" style="width: 100%;">
-	                            <el-input v-model="formdwjbxx.addressDetail" size="medium" clearable
+	                        <el-form-item label="详细地址" prop="address"  size="mini" style="width: 100%;">
+	                            <el-input v-model="formdwjbxx.address" size="medium" clearable
                             	auto-complete="off" style="width: 100%;" maxlength="1024" placeholder="详细地址"  ></el-input>
 	                        </el-form-item>
                         </el-col>                   
@@ -415,7 +428,7 @@
                  
                  <span slot="footer" class="dialog-footer" align="center">
                  <div align="center">
-				    <el-button @click="submitForm('dwjbxx')" type="primary" plain align="center">确定</el-button>
+				    <el-button @click="submitForm('formdwjbxx')" type="primary" plain align="center">确定</el-button>
                     <el-button @click="dialogShow.dwjbxx = false" type="cancel" plain align="center">取消</el-button>
 				 </div> 
 				 </span>

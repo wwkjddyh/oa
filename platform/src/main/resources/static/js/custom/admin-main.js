@@ -236,11 +236,6 @@ new Vue({
         authModules: [],
         deptOrgType:[],
         leaderList:[
-        	{
-        		userName: '俞灶森',
-        		positon: '党委书记',
-        		allowLeaderTime: '2019-12-12'
-        	}
         ],
         
         ssdzzqk:[
@@ -307,6 +302,7 @@ new Vue({
         roleModules: [],
         userRoles: [],
         roles: [],
+        dwjbxxTreeLevel:{},
         deptInfoList:[],
         rewardList:[],
         categories: [],
@@ -531,7 +527,7 @@ new Vue({
             let that = this;
             console.log("submit-formName:",formName);
             
-               
+               		
                     that.$confirm('是否确认提交？', '警告', {
                         confirmButtonText: '确定',
                         cancelButtonText: '取消',
@@ -543,27 +539,37 @@ new Vue({
                                     message: "取消提交"
                                 });
                             }else{
-                                switch (formName) {
-                                    case 'formAuthRole' : that.sumbitAuthRole(); break;
-
-                                    case 'formAuthModule': that.submitAuthModule(); break;
-                                    case 'formUser': that.submitUser(false); break;
-                                    case 'formSysUser': that.submitUser(true); break;
-
-                                    case 'formCategoryType': that.submitCategoryType(); break;
-                                    case 'formCategory': that.submitCategory(); break;
-
-                                    case 'formLangConf': that.submitLangConf(); break;
-                                    case 'dwjbxx': 
-                                    	that.submitDwjbxx();
-                                    	
-                                    	break;
-                                    default: break;
-                                }
-                                //提交成功之后
-                                if(formName != 'dwjbxx'){
-                                	that.resetForm(formName);
-                                }
+                            	that.$refs[formName].validate((valid) => {
+                            	    if (valid) {
+                            	      // 表单验证通过之后的操作
+                            	    	switch (formName) {
+	                                        case 'formAuthRole' : that.sumbitAuthRole(); break;
+	
+	                                        case 'formAuthModule': that.submitAuthModule(); break;
+	                                        case 'formUser': that.submitUser(false); break;
+	                                        case 'formSysUser': that.submitUser(true); break;
+	
+	                                        case 'formCategoryType': that.submitCategoryType(); break;
+	                                        case 'formCategory': that.submitCategory(); break;
+	
+	                                        case 'formLangConf': that.submitLangConf(); break;
+	                                        case 'formdwjbxx': 
+	                                        	that.submitDwjbxx();
+	                                        	
+	                                        	break;
+	                                        default: break;
+	                                    }
+	                                    //提交成功之后
+	                                    if(formName != 'formdwjbxx'){
+	                                    	that.resetForm(formName);
+	                                    }
+                            	    } else {
+                            	    	
+                            	    	this.$message.error('提交失败,请按要求填写表单内容');
+                            	      return false;
+                            	    }
+                            	  });
+                                
                             }
                         }
                     });
@@ -798,17 +804,12 @@ new Vue({
         submitDwjbxx(){
         	let that = this;
         	let params = new URLSearchParams();
+        	console.log(that.formdwjbxx)
         	if(that.formdwjbxx.orgId != null){
             	params.append('orgId',that.formdwjbxx.orgId);
         	}
         	if(that.formdwjbxx.orgName != null){
         		params.append('orgName',that.formdwjbxx.orgName);
-        	}
-        	if(that.formdwjbxx.orgDesc != null){
-        		params.append('orgDesc',that.formdwjbxx.orgDesc);
-        	}
-        	if(that.formdwjbxx.orgAttr != null){
-        		params.append('orgAttr',that.formdwjbxx.orgAttr);
         	}
         	if(that.formdwjbxx.phone != null){
         		params.append('phone',that.formdwjbxx.phone);
@@ -816,14 +817,8 @@ new Vue({
         	if(that.formdwjbxx.upperOrg != null){
         		params.append('upperOrg',that.formdwjbxx.upperOrg);
         	}
-        	if(that.formdwjbxx.orgAddr != null){
-        		params.append('orgAddr',that.formdwjbxx.orgAddr);
-        	}
         	if(that.formdwjbxx.foundTime != null){
         		params.append('foundTime',that.formdwjbxx.foundTime);
-        	}
-        	if(that.formdwjbxx.foundContext != null){
-        		params.append('foundContext',that.formdwjbxx.foundContext);
         	}
         	if(that.formdwjbxx.transCode != null){
         		params.append('transCode',that.formdwjbxx.transCode);
@@ -833,21 +828,64 @@ new Vue({
         	}
         	if(that.formdwjbxx.address != null){
         		params.append('address',that.formdwjbxx.address);
-        	}                                        
-        	if(that.formdwjbxx.prev != null){
-        		params.append('prev',that.formdwjbxx.prev);
         	}
-        	if(that.formdwjbxx.reasion != null){
-        		params.append('reasion',that.formdwjbxx.reasion);
+        	if(that.formdwjbxx.orgType != null){
+        		params.append('orgType',that.formdwjbxx.orgType);
         	}
-        	if(that.formdwjbxx.orgIntroduction != null){
-        		params.append('orgIntroduction',that.formdwjbxx.orgIntroduction);
+        	if(that.formdwjbxx.orgCode != null){
+        		params.append('orgCode',that.formdwjbxx.orgCode);
         	}
-        	if(that.formdwjbxx.orgFullName != null){
-        		params.append('orgFullName',that.formdwjbxx.orgFullName);
+        	if(that.formdwjbxx.orgAddressRelation != null){
+        		params.append('orgAddressRelation',that.formdwjbxx.orgAddressRelation);
         	}
+        	if(that.formdwjbxx.elctType != null){
+        		params.append('elctType',that.formdwjbxx.elctType);
+        	}
+        	if(that.formdwjbxx.leadTime != null){
+        		params.append('leadTime',that.formdwjbxx.leadTime);
+        	}
+        	if(that.formdwjbxx.currentLeaderTime != null){
+        		params.append('currentLeaderTime',that.formdwjbxx.currentLeaderTime);
+        	}
+        	if(that.formdwjbxx.currentLeadOutTime != null){
+        		params.append('currentLeadOutTime',that.formdwjbxx.currentLeadOutTime);
+        	}
+        	if(that.formdwjbxx.elctShoudPeopleCount != null){
+        		params.append('elctShoudPeopleCount',that.formdwjbxx.elctShoudPeopleCount);
+        	}
+        	if(that.formdwjbxx.elctActPeopleCount != null){
+        		params.append('elctActPeopleCount',that.formdwjbxx.elctActPeopleCount);
+        	}
+        	if(that.formdwjbxx.upperSureOrgCount != null){
+        		params.append('upperSureOrgCount',that.formdwjbxx.upperSureOrgCount);
+        	}
+        	if(that.formdwjbxx.actUpperOrgPerCount != null){
+        		params.append('actUpperOrgPerCount',that.formdwjbxx.actUpperOrgPerCount);
+        	}
+        	if(that.formdwjbxx.changeOrgRelationAuth != null){
+        		params.append('changeOrgRelationAuth',that.formdwjbxx.changeOrgRelationAuth);
+        	}
+        	if(that.formdwjbxx.isDelPartPersonAuth != null){
+        		params.append('isDelPartPersonAuth',that.formdwjbxx.isDelPartPersonAuth);
+        	}
+        	if(that.formdwjbxx.concatPersion != null){
+        		params.append('concatPersion',that.formdwjbxx.concatPersion);
+        	}
+        	if(that.formdwjbxx.orgJobPhone != null){
+        		params.append('orgJobPhone',that.formdwjbxx.orgJobPhone);
+        	}
+        	if(that.formdwjbxx.belongArea != null){
+        		params.append('belongArea',that.formdwjbxx.belongArea);
+        	}
+        	params.leaderDetails=that.leaderList;
+        	params.rewardDetails=that.rewardList;
+        	params.deptDetails=that.deptInfoList;
+//        	params.append('leaderDetails',that.leaderList);
+//        	params.append('rewardDetails',that.rewardList);
+//        	params.append('deptDetails',that.deptInfoList);
         	axios.post("/api/org/orgOpreate",params)
         		.then(function(response){
+        			console.log(response)
         			if(parseInt(response.data.code) === 200){
         				that.dialogShow.dwjbxx =false;
             			that.formdwjbxx={};
@@ -857,6 +895,8 @@ new Vue({
                             message: '操作成功',
                             type: 'success'
                         });
+                    }else{
+                    	this.$message.error("chucuo");
                     }
         			
         		})
@@ -1009,8 +1049,9 @@ new Vue({
         				upperOrg: scopeRow.orgId
         		};
         		that.dwjbxxDialog={
-        				title:scopeRow.orgName
+        				title:scopeRow.orgName + '下级组织添加'
         		};
+        		that.getOptionDict();
         		that.dialogShow.dwjbxx = !that.dialogShow.dwjbxx;
         	}else{
 	            let that = this, entry = null, parents = [];
@@ -1130,11 +1171,11 @@ new Vue({
 	                    break;
 	                case 'dwjbxx':
 	                	//党委基本信息新增修改
-	                
+	                	that.getOptionDict();
 	                	if(isAdd){
 	                		that.formdwjbxx={};
 	                		that.dwjbxxDialog={
-	                				title: '党委基本信息新增'
+	                				title: '党委基本信息新增(根层党委)'
 	                		};
 	                	}else{
 	                		that.dwjbxxDialog={
@@ -1954,7 +1995,9 @@ new Vue({
         	axios.get("/api/org/getOrgList",null).then(function(response){
         		if(parseInt(response.status) == 200 ){
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
+        			that.dwjbxxTreeLevel.level = 0;
         			that.dwjbxxTableData = that.getTreeData(response.data.result, parentArr);
+        			console.log(that.dwjbxxTableData);
         		}
         	});
         },
@@ -1988,6 +2031,37 @@ new Vue({
         		}
         	});
         },
+        getOptionDict(){
+        	let that = this;
+        	axios.get("/api/dict/search",{params:{
+        		dictType:'leadTime'
+            }}).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			that.leadTime = response.data.data.list;
+        		}
+        	});
+        	axios.get("/api/dict/search",{params:{
+        		dictType:'orgType'
+            }}).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			that.orgType = response.data.data.list;
+        		}
+        	});
+        	axios.get("/api/dict/search",{params:{
+        		dictType:'isDelPartPersonAuth'
+            }}).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			that.isDelPartPersonAuth = response.data.data.list;
+        		}
+        	});
+        	axios.get("/api/dict/search",{params:{
+        		dictType:'elecType'
+            }}).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			that.elctType = response.data.data.list;
+        		}
+        	});
+        },
         /**
          * 处理没有children结构的数据
          */
@@ -2014,9 +2088,14 @@ new Vue({
          */
         getTreeData(list, dataArr) {
             dataArr.map((pNode, i) => {
+            	if(pNode.level == null){
+            		pNode.level = 0 ;
+            	}
               let childObj = []
               list.map((cNode, j) => {
                 if (pNode.orgId === cNode.upperOrg) {
+                	
+                	cNode.level = pNode.level+1;
                   childObj.push(cNode)
                 }
               })

@@ -4,24 +4,33 @@
 	<resultMap id="orgMap" type="com.oa.platform.entity.Organization">
 		<result column="org_id" property="orgId" jdbcType="VARCHAR"/>
 		<result column="org_nm" property="orgName" jdbcType="VARCHAR"/>
-		<result column="org_desc" property="orgDesc" jdbcType="VARCHAR"/>
 		<result column="is_leaf" property="isLeaf" jdbcType="VARCHAR"/>
 		<result column="root_org" property="root_org" jdbcType="VARCHAR"/>
-		<result column="org_attr" property="orgAttr" jdbcType="VARCHAR"/>
-		<result column="org_full_nm" property="orgFullName" jdbcType="VARCHAR"/>
 		<result column="phone" property="phone" jdbcType="VARCHAR"/>
 		<result column="upper_org" property="upperOrg" jdbcType="VARCHAR"/>
-		<result column="org_addr" property="orgAddr" jdbcType="VARCHAR"/>
 		<result column="found_time" property="foundTime" jdbcType="VARCHAR"/>
-		<result column="found_context" property="foundContext" jdbcType="VARCHAR"/>
 		<result column="trans_code" property="transCode" jdbcType="VARCHAR"/>
 		<result column="fix_phone" property="fixPhone" jdbcType="VARCHAR"/>
 		<result column="address" property="address" jdbcType="VARCHAR"/>
-		<result column="prev" property="prev" jdbcType="VARCHAR"/>
-		<result column="reasion" property="reasion" jdbcType="VARCHAR"/>
-		<result column="org_introduction" property="orgIntroduction" jdbcType="VARCHAR"/>
 		<result column="is_dept" property="isDept" jdbcType="VARCHAR"/>
 		<result column="leader" property="leader" jdbcType="VARCHAR"/>
+		<result column="org_type" property="orgType" jdbcType="VARCHAR"/>
+		<result column="org_code" property="orgCode" jdbcType="VARCHAR"/>
+		<result column="org_address_relation" property="orgAddressRelation" jdbcType="VARCHAR"/>
+		<result column="elct_Type" property="elctType" jdbcType="VARCHAR"/>
+		<result column="lead_time" property="leadTime" jdbcType="VARCHAR"/>
+		<result column="current_leader_time" property="currentLeaderTime" jdbcType="VARCHAR"/>
+		<result column="current_lead_out_time" property="currentLeadOutTime" jdbcType="VARCHAR"/>
+		<result column="elct_shoud_people_count" property="elctShoudPeopleCount" jdbcType="INTEGER"/>
+		<result column="elct_act_people_count" property="elctActPeopleCount" jdbcType="INTEGER"/>
+		<result column="upper_sure_org_count" property="upperSureOrgCount" jdbcType="INTEGER"/>
+		<result column="act_upper_org_per_count" property="actUpperOrgPerCount" jdbcType="INTEGER"/>
+		<result column="change_org_relation_auth" property="changeOrgRelationAuth" jdbcType="VARCHAR"/>
+		<result column="is_del_part_person_auth" property="isDelPartPersonAuth" jdbcType="VARCHAR"/>
+		<result column="concat_persion" property="concatPersion" jdbcType="VARCHAR"/>
+		<result column="org_job_phone" property="orgJobPhone" jdbcType="VARCHAR"/>
+		<result column="belong_area" property="belongArea" jdbcType="VARCHAR"/>
+		
 		<result column="create_by" property="createBy" jdbcType="VARCHAR"/>
 		<result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
 		<result column="field1" property="field1" jdbcType="VARCHAR"/>
@@ -30,12 +39,39 @@
 		<result column="field4" property="field4" jdbcType="VARCHAR"/>
 		<result column="field5" property="field5" jdbcType="VARCHAR"/>
 	</resultMap>
+	<resultMap id="orgLeaderDetailMap" type="com.oa.platform.entity.OrgLeaderDetail">
+		<result column="id_" property="staticsId" jdbcType="VARCHAR"/>
+		<result column="org_id" property="orgId" jdbcType="VARCHAR"/>
+		<result column="user_name" property="userName" jdbcType="VARCHAR"/>
+		<result column="positon" property="positon" jdbcType="VARCHAR"/>
+		<result column="allow_leader_time" property="allowLeaderTime" jdbcType="VARCHAR"/>
+		<result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+		<result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap  id="orgRewardDetailMap" type="com.oa.platform.entity.OrgRewardDetail">
+		<result column="id_" property="staticsId" jdbcType="VARCHAR"/>
+		<result column="org_id" property="orgId" jdbcType="VARCHAR"/>
+		<result column="reward_name" property="rewardName" jdbcType="VARCHAR"/>
+		<result column="allow_org" property="allowOrg" jdbcType="VARCHAR"/>
+		<result column="allow_time" property="allowTime" jdbcType="VARCHAR"/>
+		<result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+		<result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
+	</resultMap>
+	<resultMap  id="orgDeptDetailMap" type="com.oa.platform.entity.OrgDeptDetail">
+		<result column="id_" property="staticsId" jdbcType="VARCHAR"/>
+		<result column="org_id" property="orgId" jdbcType="VARCHAR"/>
+		<result column="dept_name" property="deptName" jdbcType="VARCHAR"/>
+		<result column="dept_natureType" property="deptNatureType" jdbcType="VARCHAR"/>
+		<result column="dept_type" property="deptType" jdbcType="VARCHAR"/>
+		<result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+		<result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
+	</resultMap>
 	<insert id="orgAdd" parameterType="com.oa.platform.entity.Organization">
 		insert into t_sys_org (
 			org_id, 
 			org_nm,
-			org_dec,
-			org_attr,
+			org_type,
+			concat_persion,
 			phone, 
 			found_time, 
 			upper_org, 
@@ -47,19 +83,28 @@
 			create_by,
 			update_on,
 			update_by)
-		values (#{orgId},#{orgName},#{orgDesc},#{orgAttr},#{phone},#{foundTime},#{upperOrg},#{root_org},#{isLeaf},'1','0',now(),#{createBy},now(),#{updateBy})
+		values (#{orgId},#{orgName},#{orgType},#{concatPersion},#{phone},#{foundTime},#{upperOrg},#{root_org},#{isLeaf},'1','0',now(),#{createBy},now(),#{updateBy})
 	</insert>
 	<insert id="orgAddDetail" parameterType="com.oa.platform.entity.Organization">
 		insert into t_org_detail (
-			org_id, 
-			org_full_nm, 
-			found_context, 
+			org_id,
+			org_code,
+			org_address_relation,
+			elct_Type,
+			lead_time,
+			current_leader_time,
+			current_lead_out_time,
+			elct_shoud_people_count,
+			elct_act_people_count,
+			upper_sure_org_count,
+			act_upper_org_per_count,
+			change_org_relation_auth,
+			is_del_part_person_auth,
+			org_job_phone,
+			belong_area,
 			trans_code, 
 			fix_phone, 
 			address, 
-			prev, 
-			reasion, 
-			org_introduction, 
 			field1, 
 			field2, 
 			field3, 
@@ -72,14 +117,23 @@
 			update_by
 		) values (
 			#{orgId},
-			#{orgFullName},
-			#{foundContext},
+			#{orgCode},
+			#{orgAddressRelation},
+			#{elctType},
+			#{leadTime},
+			#{currentLeaderTime},
+			#{currentLeadOutTime},
+			#{elctShoudPeopleCount,jdbcType=INTEGER},
+			#{elctActPeopleCount,jdbcType=INTEGER},
+			#{upperSureOrgCount,jdbcType=INTEGER},
+			#{actUpperOrgPerCount,jdbcType=INTEGER},
+			#{changeOrgRelationAuth},
+			#{isDelPartPersonAuth},
+			#{orgJobPhone},
+			#{belongArea},
 			#{transCode},
 			#{fixPhone},
 			#{address},
-			#{prev},
-			#{reasion},
-			#{orgIntroduction},
 			#{field1},
 			#{field2},
 			#{field3},
@@ -104,18 +158,33 @@
 		select 
 			org.org_id,
 			org.org_nm,
-			orgdetail.org_full_nm,
-			org.org_attr,
+			org.org_type,
+			org.concat_persion,
 			org.phone,
 			org.upper_org,
 			org.found_time,
-			orgdetail.found_context,
-			orgdetail.trans_code,
+			orgdetail.org_code,
+			orgdetail.org_address_relation,
+			orgdetail.elct_Type,
+			orgdetail.lead_time,
+			orgdetail.current_leader_time,
+			orgdetail.current_lead_out_time,
+			orgdetail.elct_shoud_people_count,
+			orgdetail.elct_act_people_count,
+			orgdetail.upper_sure_org_count,
+			orgdetail.act_upper_org_per_count,
+			orgdetail.change_org_relation_auth,
+			orgdetail.is_del_part_person_auth,
+			orgdetail.org_job_phone,
 			orgdetail.fix_phone,
+			orgdetail.belong_area,
+			orgdetail.trans_code,
 			orgdetail.address,
-			orgdetail.prev,
-			orgdetail.reasion,
-			orgdetail.org_introduction
+			orgdetail.field1,
+			orgdetail.field2,
+			orgdetail.field3,
+			orgdetail.field4,
+			orgdetail.field5
 		from 
 			t_sys_org org 
 		left join 
@@ -124,99 +193,107 @@
 		where org.org_id=#{orgId}
 	</select>
 	<select id="getOrgList" resultMap="orgMap">
-		(
-		WITH recursive org_cte AS (
-			SELECT
-				org_id,
-				org_nm,
-				org_attr,
-				phone,
-				found_time,
-				is_dept,
-				upper_org 
-			FROM
-				t_sys_org 
-			WHERE
-				org_id = #{orgId} and status='1'
-			UNION ALL
-			SELECT
-				org.org_id,
-				org.org_nm,
-				org.org_attr,
-				org.phone,
-				org.found_time,
-				org.is_dept,
-				org.upper_org 
-			FROM
-				t_sys_org org
-				inner join org_cte sysorg on org.org_id = sysorg.upper_org and org.status='1'
-				) 
-		SELECT
-			ote.*,
-			CONCAT( tuser.user_name, '书记' ) leader 
-		FROM
-			org_cte ote
-			LEFT JOIN (
-		SELECT
-			urole.user_id,
-			osuser.org_id 
-		FROM
-			t_user_role urole
-			LEFT JOIN t_org_user osuser ON urole.user_id = osuser.user_id 
-		WHERE
-			urole.role_id = 'f99e26b6-8f95-4049-b719-36609fe76fea1' 
-			and osuser.status='1'
-			and urole.status='1'
-			) ouser ON ote.org_id = ouser.org_id
-			LEFT JOIN t_user tuser ON ouser.user_id = tuser.user_id
-		)
-		union
-		(
-		WITH recursive org_cte AS (
-			SELECT
-				org_id,
-				org_nm,
-				org_attr,
-				phone,
-				found_time,
-				is_dept,
-				upper_org 
-			FROM
-				t_sys_org 
-			WHERE
-				org_id = #{orgId} and status='1'
-			UNION ALL
-			SELECT
-				org.org_id,
-				org.org_nm,
-				org.org_attr,
-				org.phone,
-				org.found_time,
-				org.is_dept,
-				org.upper_org 
-			FROM
-				t_sys_org org
-				inner join org_cte sysorg on sysorg.org_id = org.upper_org and org.status='1'
-				) 
-		SELECT
-			ote.*,
-			CONCAT( tuser.user_name, '书记' ) leader 
-		FROM
-			org_cte ote
-			LEFT JOIN (
-		SELECT
-			urole.user_id,
-			osuser.org_id 
-		FROM
-			t_user_role urole
-			LEFT JOIN t_org_user osuser ON urole.user_id = osuser.user_id 
-		WHERE
-			urole.role_id = 'f99e26b6-8f95-4049-b719-36609fe76fea1' 
-			and osuser.status='1'
-			and urole.status='1'
-			) ouser ON ote.org_id = ouser.org_id
-			LEFT JOIN t_user tuser ON ouser.user_id = tuser.user_id
-		)
+		( WITH recursive org_cte AS (
+				SELECT
+					sorg.org_id,
+					sorg.org_nm,
+					sorg.org_type,
+					sorg.concat_persion,
+					sorg.phone,
+					sorg.found_time,
+					sorg.is_dept,
+					sorg.upper_org,
+					orgleader.leader 
+				FROM
+					t_sys_org sorg
+					LEFT JOIN ( SELECT GROUP_CONCAT( user_name ) leader, org_id FROM t_org_leader_detail WHERE STATUS = '1' GROUP BY org_id ) orgleader ON sorg.org_id = orgleader.org_id 
+				WHERE
+					sorg.org_id = #{orgId} 
+					AND sorg.STATUS = '1' UNION ALL
+				SELECT
+					org.org_id,
+					org.org_nm,
+					org.org_type,
+					org.concat_persion,
+					org.phone,
+					org.found_time,
+					org.is_dept,
+					org.upper_org,
+					orgleader.leader 
+				FROM
+					t_sys_org org
+					LEFT JOIN ( SELECT GROUP_CONCAT( user_name ) leader, org_id FROM t_org_leader_detail WHERE STATUS = '1' GROUP BY org_id ) orgleader ON org.org_id = orgleader.org_id
+					INNER JOIN org_cte sysorg ON org.org_id = sysorg.upper_org 
+					AND org.STATUS = '1' 
+					) SELECT
+					ote.* 
+				FROM
+					org_cte ote
+					LEFT JOIN (
+				SELECT
+					urole.user_id,
+					osuser.org_id 
+				FROM
+					t_user_role urole
+					LEFT JOIN t_org_user osuser ON urole.user_id = osuser.user_id 
+				WHERE
+					urole.role_id = 'f99e26b6-8f95-4049-b719-36609fe76fea1' 
+					AND osuser.STATUS = '1' 
+					AND urole.STATUS = '1' 
+					) ouser ON ote.org_id = ouser.org_id
+					LEFT JOIN t_user tuser ON ouser.user_id = tuser.user_id 
+					) UNION
+					(
+					WITH recursive org_cte AS (
+				SELECT
+					sorg.org_id,
+					sorg.org_nm,
+					sorg.org_type,
+					sorg.concat_persion,
+					sorg.phone,
+					sorg.found_time,
+					sorg.is_dept,
+					sorg.upper_org,
+					orgleader.leader 
+				FROM
+					t_sys_org sorg
+					LEFT JOIN ( SELECT GROUP_CONCAT( user_name ) leader, org_id FROM t_org_leader_detail WHERE STATUS = '1' GROUP BY org_id ) orgleader ON sorg.org_id = orgleader.org_id 
+				WHERE
+					sorg.org_id = #{orgId} 
+					AND sorg.STATUS = '1' UNION ALL
+				SELECT
+					org.org_id,
+					org.org_nm,
+					org.org_type,
+					org.concat_persion,
+					org.phone,
+					org.found_time,
+					org.is_dept,
+					org.upper_org,
+					orgleader.leader 
+				FROM
+					t_sys_org org
+					LEFT JOIN ( SELECT GROUP_CONCAT( user_name ) leader, org_id FROM t_org_leader_detail WHERE STATUS = '1' GROUP BY org_id ) orgleader ON org.org_id = orgleader.org_id
+					INNER JOIN org_cte sysorg ON sysorg.org_id = org.upper_org 
+					AND org.STATUS = '1' 
+					) SELECT
+					ote.* 
+				FROM
+					org_cte ote
+					LEFT JOIN (
+				SELECT
+					urole.user_id,
+					osuser.org_id 
+				FROM
+					t_user_role urole
+					LEFT JOIN t_org_user osuser ON urole.user_id = osuser.user_id 
+				WHERE
+					urole.role_id = 'f99e26b6-8f95-4049-b719-36609fe76fea1' 
+					AND osuser.STATUS = '1' 
+					AND urole.STATUS = '1' 
+					) ouser ON ote.org_id = ouser.org_id
+					LEFT JOIN t_user tuser ON ouser.user_id = tuser.user_id 
+					)
 	</select>
 	<select id="getOrgIdByuserId" resultMap="orgMap">
 		SELECT
@@ -290,7 +367,6 @@
 		SELECT
 			org_id,
 			org_nm,
-			org_attr,
 			phone,
 			found_time,
 			is_dept,
@@ -303,7 +379,6 @@
 		SELECT
 			org.org_id,
 			org.org_nm,
-			org.org_attr,
 			org.phone,
 			org.found_time,
 			org.is_dept,
@@ -337,11 +412,14 @@
 	      <if test="orgName != null and orgName != ''">
 	        org_nm = #{orgName},
 	      </if>
-	      <if test="orgAttr != null and orgAttr != ''">
-	        org_attr = #{orgAttr},
+	      <if test="orgType != null and orgType != ''">
+	        org_type = #{orgType},
 	      </if>
 	      <if test="phone != null and phone != ''">
 	        phone = #{phone},
+	      </if>
+	      <if test="concatPersion != null and concatPersion != ''">
+	        concat_persion = #{concatPersion},
 	      </if>
 	      <if test="upperOrg != null and upperOrg != ''">
 	        upper_org = #{upperOrg},
@@ -358,11 +436,47 @@
 	<update id="orgEditDetail" parameterType="com.oa.platform.entity.Organization">
 		UPDATE t_org_detail
 	    <trim prefix="SET" suffixOverrides="," suffix=" WHERE org_id = #{orgId} and status='1'">
-	      <if test="orgFullName != null and orgFullName != ''">
-	        org_full_nm = #{orgFullName},
+	      <if test="orgCode != null and orgCode != ''">
+	        org_code = #{orgCode},
 	      </if>
-	      <if test="foundContext != null and foundContext != ''">
-	        found_context = #{foundContext},
+	      <if test="orgAddressRelation != null and orgAddressRelation != ''">
+	        org_address_relation = #{orgAddressRelation},
+	      </if>
+	      <if test="elctType != null and elctType != ''">
+	        elct_Type = #{elctType},
+	      </if>
+	      <if test="leadTime != null and leadTime != ''">
+	        lead_time = #{leadTime},
+	      </if>
+	      <if test="currentLeaderTime != null and currentLeaderTime != ''">
+	        current_leader_time = #{currentLeaderTime},
+	      </if>
+	      <if test="currentLeadOutTime != null and currentLeadOutTime != ''">
+	        current_lead_out_time = #{currentLeadOutTime},
+	      </if>
+	      <if test="elctShoudPeopleCount != null">
+	        elct_shoud_people_count = #{elctShoudPeopleCount},
+	      </if>
+	      <if test="elctActPeopleCount != null">
+	        elct_act_people_count = #{elctActPeopleCount},
+	      </if>
+	      <if test="upperSureOrgCount != null">
+	        upper_sure_org_count = #{upperSureOrgCount},
+	      </if>
+	      <if test="actUpperOrgPerCount != null">
+	        act_upper_org_per_count = #{actUpperOrgPerCount},
+	      </if>
+	      <if test="changeOrgRelationAuth != null and changeOrgRelationAuth != ''">
+	        change_org_relation_auth = #{changeOrgRelationAuth},
+	      </if>
+	      <if test="isDelPartPersonAuth != null and isDelPartPersonAuth != ''">
+	        is_del_part_person_auth = #{isDelPartPersonAuth},
+	      </if>
+	      <if test="orgJobPhone != null and orgJobPhone != ''">
+	        org_job_phone = #{orgJobPhone},
+	      </if>
+	      <if test="belongArea != null and belongArea != ''">
+	        belong_area = #{belongArea},
 	      </if>
 	      <if test="transCode != null and transCode != ''">
 	        trans_code = #{transCode},
@@ -373,19 +487,136 @@
 	      <if test="address != null and address != ''">
 	        address = #{address},
 	      </if>
-	      <if test="prev != null and prev != ''">
-	        prev = #{prev},
-	      </if>
-	      <if test="reasion != null and reasion != ''">
-	        reasion = #{reasion},
-	      </if>
-	      <if test="orgIntroduction != null and orgIntroduction != ''">
-	        org_introduction = #{orgIntroduction},
-	      </if>
 	      <if test="updateBy != null and updateBy != ''">
 	        update_by = #{updateBy},
 	        update_on = now(),
 	      </if>
 	    </trim>
+	</update>
+	
+	<!-- 										领导班子									 -->
+	
+	<select id="getOrgLeaderList" resultMap="orgLeaderDetailMap">
+		select
+			id_,
+			org_id,
+			user_name,
+			positon,
+			allow_leader_time,
+			create_by,
+			update_by
+		from 
+			t_org_leader_detail
+		where status='1' and org_id=#{orgId}
+	</select>
+	<insert id="saveOrgLeaderDetail" parameterType="com.oa.platform.entity.OrgLeaderDetail">
+		insert into t_org_leader_detail (
+			id_, 
+			org_id,
+			user_name,
+			positon,
+			allow_leader_time,
+			status,
+			create_on,
+			create_by
+			)
+		values (
+			#{staticsId},
+			#{orgId},
+			#{userName},
+			#{positon},
+			#{allowLeaderTime},
+			'1',
+			now(),
+			#{createBy}
+		)
+	</insert>
+	<!-- 删除 -->
+	<update id="delOrgLeaderById">
+		update t_org_leader_detail set status='0' 
+		where org_id=#{orgId} and status='1'
+	</update>
+	<!--                                    奖惩情况                                                         -->
+	<select id="getOrgRewardList" resultMap="orgRewardDetailMap">
+		select
+			id_,
+			org_id,
+			reward_name,
+			allow_org,
+			allow_time,
+			create_by,
+			update_by
+		from 
+			t_org_reward_detail
+		where status='1' and org_id=#{orgId}
+	</select>
+	<insert id="saveOrgRewardDetail" parameterType="com.oa.platform.entity.OrgRewardDetail">
+		insert into t_org_reward_detail (
+			id_,
+			org_id,
+			reward_name,
+			allow_org,
+			allow_time,
+			status,
+			create_on,
+			create_by
+			)
+		values (
+			#{staticsId},
+			#{orgId},
+			#{rewardName},
+			#{allowOrg},
+			#{allowTime},
+			'1',
+			now(),
+			#{createBy}
+		)
+	</insert>
+	<!-- 删除 -->
+	<update id="delOrgRewardById">
+		update t_org_reward_detail set status='0' 
+		where org_id=#{orgId} and status='1'
+	</update>
+	
+	<!--                                    单位信息                                                         -->
+	<select id="getOrgDeptList" resultMap="orgDeptDetailMap">
+		select
+			id_,
+			org_id,
+			dept_name,
+			dept_natureType,
+			dept_type,
+			create_by,
+			update_by
+		from 
+			t_org_dept_detail
+		where status='1' and org_id=#{orgId}
+	</select>
+	<insert id="saveOrgDeptDetail" parameterType="com.oa.platform.entity.OrgDeptDetail">
+		insert into t_org_dept_detail (
+			id_,
+			org_id,
+			dept_name,
+			dept_natureType,
+			dept_type,
+			status,
+			create_on,
+			create_by
+			)
+		values (
+			#{staticsId},
+			#{orgId},
+			#{deptName},
+			#{deptNatureType},
+			#{deptType},
+			'1',
+			now(),
+			#{createBy}
+		)
+	</insert>
+	<!-- 删除 -->
+	<update id="delOrgDeptById">
+		update t_org_dept_detail set status='0' 
+		where org_id=#{orgId} and status='1'
 	</update>
 </mapper>

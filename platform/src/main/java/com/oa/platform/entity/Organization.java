@@ -1,6 +1,7 @@
 package com.oa.platform.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 党组织
@@ -9,62 +10,272 @@ import java.io.Serializable;
  */
 public class Organization implements Serializable {
 
+	private static final long serialVersionUID = 1L;
+	
 	//组织主键
 	private String orgId;
 	//组织简称
 	private String orgName;
-	//组织属性
-	private String orgAttr;
-	//组织全称
-	private String orgFullName;
-	//联系电话
-	private String phone;
+	//组织类型
+	private String orgType;
+	//组织代码
+	private String orgCode;
 	//上级党组织
 	private String upperOrg;
-	//党组织属地关系
-	private String orgAddr;
 	//成立时间
 	private String foundTime;
-	//创建文号
-	private String foundContext;
-	//邮政编码
-	private String transCode;
+	//党组织属地关系
+	private String orgAddressRelation;
+	//选举方式
+	private String elctType;
+	//任期年限
+	private String leadTime;
+	//本届班子当选日期
+	private String currentLeaderTime;
+	//本届班子届满日期
+	private String currentLeadOutTime;
+	//选举应到人数
+	private Integer elctShoudPeopleCount;
+	//选举实到人数
+	private Integer elctActPeopleCount;
+	//上级核定委员会名额
+	private Integer upperSureOrgCount;
+	//实有委员数
+	private Integer actUpperOrgPerCount;
+	//转接组织关系权限
+	private String changeOrgRelationAuth;
+	//是否拥有党员删除权限
+	private String isDelPartPersonAuth;
+	//党组织联系人
+	private String concatPersion;
+	//党组织联系人手机号
+	private String phone;
+	//党组织办公电话
+	private String orgJobPhone;
 	//传真号码
 	private String fixPhone;
-	//通讯地址
+	//所属地区
+	private String belongArea;
+	//邮政编码
+	private String transCode;
+	//详细地址
 	private String address;
-	//排序
-	private String prev;
-	//建立原因
-	private String reasion;
-	//组织简介
-	private String orgIntroduction;
 	//创建人
 	private String createBy;
 	//更新人
 	private String updateBy;
-	private String orgDesc;
+	//是否叶子
 	private String isLeaf;
+	//根组织
 	private String root_org;
+	//预留1
 	private String field1;
+	//预留2
 	private String field2;
+	//预留3
 	private String field3;
+	//预留4
 	private String field4;
+	//预留5
 	private String field5;
+	//是否为部门
 	private String isDept;
+	//书记
 	private String leader;
 	
-	public String getLeader() {
-		return leader;
+//	//单位信息
+//	private List<OrgDeptDetail> deptDetails;
+//	//奖惩信息
+//	private List<OrgRewardDetail> rewardDetails;
+//	//领导班子
+//	private List<OrgLeaderDetail> leaderDetails;
+	
+	
+//	public List<OrgDeptDetail> getDeptDetails() {
+//		return deptDetails;
+//	}
+//	public void setDeptDetails(List<OrgDeptDetail> deptDetails) {
+//		this.deptDetails = deptDetails;
+//	}
+//	public List<OrgRewardDetail> getRewardDetails() {
+//		return rewardDetails;
+//	}
+//	public void setRewardDetails(List<OrgRewardDetail> rewardDetails) {
+//		this.rewardDetails = rewardDetails;
+//	}
+//	public List<OrgLeaderDetail> getLeaderDetails() {
+//		return leaderDetails;
+//	}
+//	public void setLeaderDetails(List<OrgLeaderDetail> leaderDetails) {
+//		this.leaderDetails = leaderDetails;
+//	}
+	public String getOrgId() {
+		return orgId;
 	}
-	public void setLeader(String leader) {
-		this.leader = leader;
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
 	}
-	public String getIsDept() {
-		return isDept;
+	public String getOrgName() {
+		return orgName;
 	}
-	public void setIsDept(String isDept) {
-		this.isDept = isDept;
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+	public String getOrgType() {
+		return orgType;
+	}
+	public void setOrgType(String orgType) {
+		this.orgType = orgType;
+	}
+	public String getOrgCode() {
+		return orgCode;
+	}
+	public void setOrgCode(String orgCode) {
+		this.orgCode = orgCode;
+	}
+	public String getUpperOrg() {
+		return upperOrg;
+	}
+	public void setUpperOrg(String upperOrg) {
+		this.upperOrg = upperOrg;
+	}
+	public String getFoundTime() {
+		return foundTime;
+	}
+	public void setFoundTime(String foundTime) {
+		this.foundTime = foundTime;
+	}
+	public String getOrgAddressRelation() {
+		return orgAddressRelation;
+	}
+	public void setOrgAddressRelation(String orgAddressRelation) {
+		this.orgAddressRelation = orgAddressRelation;
+	}
+	public String getElctType() {
+		return elctType;
+	}
+	public void setElctType(String elctType) {
+		this.elctType = elctType;
+	}
+	public String getLeadTime() {
+		return leadTime;
+	}
+	public void setLeadTime(String leadTime) {
+		this.leadTime = leadTime;
+	}
+	public String getCurrentLeaderTime() {
+		return currentLeaderTime;
+	}
+	public void setCurrentLeaderTime(String currentLeaderTime) {
+		this.currentLeaderTime = currentLeaderTime;
+	}
+	public String getCurrentLeadOutTime() {
+		return currentLeadOutTime;
+	}
+	public void setCurrentLeadOutTime(String currentLeadOutTime) {
+		this.currentLeadOutTime = currentLeadOutTime;
+	}
+	public Integer getElctShoudPeopleCount() {
+		return elctShoudPeopleCount;
+	}
+	public void setElctShoudPeopleCount(Integer elctShoudPeopleCount) {
+		this.elctShoudPeopleCount = elctShoudPeopleCount;
+	}
+	public Integer getElctActPeopleCount() {
+		return elctActPeopleCount;
+	}
+	public void setElctActPeopleCount(Integer elctActPeopleCount) {
+		this.elctActPeopleCount = elctActPeopleCount;
+	}
+	public Integer getUpperSureOrgCount() {
+		return upperSureOrgCount;
+	}
+	public void setUpperSureOrgCount(Integer upperSureOrgCount) {
+		this.upperSureOrgCount = upperSureOrgCount;
+	}
+	public Integer getActUpperOrgPerCount() {
+		return actUpperOrgPerCount;
+	}
+	public void setActUpperOrgPerCount(Integer actUpperOrgPerCount) {
+		this.actUpperOrgPerCount = actUpperOrgPerCount;
+	}
+	public String getChangeOrgRelationAuth() {
+		return changeOrgRelationAuth;
+	}
+	public void setChangeOrgRelationAuth(String changeOrgRelationAuth) {
+		this.changeOrgRelationAuth = changeOrgRelationAuth;
+	}
+	public String getIsDelPartPersonAuth() {
+		return isDelPartPersonAuth;
+	}
+	public void setIsDelPartPersonAuth(String isDelPartPersonAuth) {
+		this.isDelPartPersonAuth = isDelPartPersonAuth;
+	}
+	public String getConcatPersion() {
+		return concatPersion;
+	}
+	public void setConcatPersion(String concatPersion) {
+		this.concatPersion = concatPersion;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getOrgJobPhone() {
+		return orgJobPhone;
+	}
+	public void setOrgJobPhone(String orgJobPhone) {
+		this.orgJobPhone = orgJobPhone;
+	}
+	public String getFixPhone() {
+		return fixPhone;
+	}
+	public void setFixPhone(String fixPhone) {
+		this.fixPhone = fixPhone;
+	}
+	public String getBelongArea() {
+		return belongArea;
+	}
+	public void setBelongArea(String belongArea) {
+		this.belongArea = belongArea;
+	}
+	public String getTransCode() {
+		return transCode;
+	}
+	public void setTransCode(String transCode) {
+		this.transCode = transCode;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getCreateBy() {
+		return createBy;
+	}
+	public void setCreateBy(String createBy) {
+		this.createBy = createBy;
+	}
+	public String getUpdateBy() {
+		return updateBy;
+	}
+	public void setUpdateBy(String updateBy) {
+		this.updateBy = updateBy;
+	}
+	public String getIsLeaf() {
+		return isLeaf;
+	}
+	public void setIsLeaf(String isLeaf) {
+		this.isLeaf = isLeaf;
+	}
+	public String getRoot_org() {
+		return root_org;
+	}
+	public void setRoot_org(String root_org) {
+		this.root_org = root_org;
 	}
 	public String getField1() {
 		return field1;
@@ -96,158 +307,17 @@ public class Organization implements Serializable {
 	public void setField5(String field5) {
 		this.field5 = field5;
 	}
-	public String getOrgDesc() {
-		return orgDesc;
+	public String getIsDept() {
+		return isDept;
 	}
-	public void setOrgDesc(String orgDesc) {
-		this.orgDesc = orgDesc;
+	public void setIsDept(String isDept) {
+		this.isDept = isDept;
 	}
-	public String getIsLeaf() {
-		return isLeaf;
+	public String getLeader() {
+		return leader;
 	}
-	public void setIsLeaf(String isLeaf) {
-		this.isLeaf = isLeaf;
-	}
-	public String getRoot_org() {
-		return root_org;
-	}
-	public void setRoot_org(String root_org) {
-		this.root_org = root_org;
-	}
-	public String getCreateBy() {
-		return createBy;
-	}
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
-	public String getUpdateBy() {
-		return updateBy;
-	}
-	public void setUpdateBy(String updateBy) {
-		this.updateBy = updateBy;
-	}
-	public String getOrgId() {
-		return orgId;
-	}
-	public void setOrgId(String orgId) {
-		this.orgId = orgId;
-	}
-	public String getOrgName() {
-		return orgName;
-	}
-	public void setOrgName(String orgName) {
-		this.orgName = orgName;
-	}
-	public String getOrgAttr() {
-		return orgAttr;
-	}
-	public void setOrgAttr(String orgAttr) {
-		this.orgAttr = orgAttr;
-	}
-	public String getOrgFullName() {
-		return orgFullName;
-	}
-	public void setOrgFullName(String orgFullName) {
-		this.orgFullName = orgFullName;
-	}
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-	public String getUpperOrg() {
-		return upperOrg;
-	}
-	public void setUpperOrg(String upperOrg) {
-		this.upperOrg = upperOrg;
-	}
-	public String getOrgAddr() {
-		return orgAddr;
-	}
-	public void setOrgAddr(String orgAddr) {
-		this.orgAddr = orgAddr;
-	}
-	public String getFoundTime() {
-		return foundTime;
-	}
-	public void setFoundTime(String foundTime) {
-		this.foundTime = foundTime;
-	}
-	public String getFoundContext() {
-		return foundContext;
-	}
-	public void setFoundContext(String foundContext) {
-		this.foundContext = foundContext;
-	}
-	public String getTransCode() {
-		return transCode;
-	}
-	public void setTransCode(String transCode) {
-		this.transCode = transCode;
-	}
-	public String getFixPhone() {
-		return fixPhone;
-	}
-	public void setFixPhone(String fixPhone) {
-		this.fixPhone = fixPhone;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public String getPrev() {
-		return prev;
-	}
-	public void setPrev(String prev) {
-		this.prev = prev;
-	}
-	public String getReasion() {
-		return reasion;
-	}
-	public void setReasion(String reasion) {
-		this.reasion = reasion;
-	}
-	public String getOrgIntroduction() {
-		return orgIntroduction;
-	}
-	public void setOrgIntroduction(String orgIntroduction) {
-		this.orgIntroduction = orgIntroduction;
+	public void setLeader(String leader) {
+		this.leader = leader;
 	}
 
-	public Organization() {
-	}
-
-	@Override
-	public String toString() {
-		return "Organization{" +
-				"orgId='" + orgId + '\'' +
-				", orgName='" + orgName + '\'' +
-				", orgAttr='" + orgAttr + '\'' +
-				", orgFullName='" + orgFullName + '\'' +
-				", phone='" + phone + '\'' +
-				", upperOrg='" + upperOrg + '\'' +
-				", orgAddr='" + orgAddr + '\'' +
-				", foundTime='" + foundTime + '\'' +
-				", foundContext='" + foundContext + '\'' +
-				", transCode='" + transCode + '\'' +
-				", fixPhone='" + fixPhone + '\'' +
-				", address='" + address + '\'' +
-				", prev='" + prev + '\'' +
-				", reasion='" + reasion + '\'' +
-				", orgIntroduction='" + orgIntroduction + '\'' +
-				", createBy='" + createBy + '\'' +
-				", updateBy='" + updateBy + '\'' +
-				", orgDesc='" + orgDesc + '\'' +
-				", isLeaf='" + isLeaf + '\'' +
-				", root_org='" + root_org + '\'' +
-				", field1='" + field1 + '\'' +
-				", field2='" + field2 + '\'' +
-				", field3='" + field3 + '\'' +
-				", field4='" + field4 + '\'' +
-				", field5='" + field5 + '\'' +
-				'}';
-	}
 }

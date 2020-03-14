@@ -265,7 +265,7 @@ const formStructConfig = {
         orgName: [
         	{ required: true, message: '请填写党组织名称' , trigger: 'blur'}
         ],
-    	allowFoundTime: [
+    	foundTime: [
         	{ required: true, message: '请选择批准建立党组织日期' , trigger: 'blur'}
         ],
         orgType:[

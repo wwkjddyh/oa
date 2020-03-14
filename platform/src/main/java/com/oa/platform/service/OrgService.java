@@ -2,6 +2,9 @@ package com.oa.platform.service;
 
 import java.util.List;
 
+import com.oa.platform.entity.OrgDeptDetail;
+import com.oa.platform.entity.OrgLeaderDetail;
+import com.oa.platform.entity.OrgRewardDetail;
 import com.oa.platform.entity.Organization;
 /**
  * orgservice
@@ -47,5 +50,25 @@ public interface OrgService extends BaseService<Organization, String> {
 	void orgEditDetail(Organization organization);
 	
 	List<Organization> getDeptList(String userId);
-
+	
+	/**
+	 * 领导班子
+	 */
+	List<OrgLeaderDetail> getOrgLeaderList(String orgId);
+	void delOrgLeaderById(String orgId);
+	void saveOrgLeaderDetail(OrgLeaderDetail orgLeaderDetail);
+	
+	/**
+	 * 奖惩情况
+	 */
+	List<OrgRewardDetail> getOrgRewardList(String orgId);
+	void saveOrgRewardDetail(OrgRewardDetail orgRewardDetail);
+	void delOrgRewardById(String orgId);
+	
+	/**
+	 * 单位信息
+	 */
+	List<OrgDeptDetail> getOrgDeptList(String orgId);
+	void saveOrgDeptDetail(OrgDeptDetail orgDeptDetail);
+	void delOrgDeptById(String orgId);
 }

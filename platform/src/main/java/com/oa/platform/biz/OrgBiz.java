@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.oa.platform.entity.OrgDeptDetail;
+import com.oa.platform.entity.OrgLeaderDetail;
+import com.oa.platform.entity.OrgRewardDetail;
 import com.oa.platform.entity.Organization;
 import com.oa.platform.service.OrgService;
 import com.oa.platform.util.StringUtil;
@@ -43,22 +46,26 @@ public class OrgBiz extends BaseBiz {
 	 * @param organization
 	 */
 	@Transactional
-	public void orgAdd(Organization organization) {
+	public void orgAdd(Organization organization,List<OrgDeptDetail> deptDetails,List<OrgRewardDetail> rewardDetails,List<OrgLeaderDetail> leaderDetails) {
 		organization.setOrgId(StringUtil.getRandomUUID());
 		orgSerivce.orgAdd(organization);
 		orgSerivce.orgAddDetail(organization);
+		//领导班子，单位信息，奖惩信息操作
+		orgDetailsOperate(organization,deptDetails,rewardDetails,leaderDetails);
 	}
 	/**
 	 * 党组织修改
 	 * @param organization
 	 */
 	@Transactional
-	public void orgEdit(Organization organization) {
-		
-		orgSerivce.orgEdit(organization);
-		
-		orgSerivce.orgEditDetail(organization);
-		
+	public void orgEdit(Organization organization,List<OrgDeptDetail> deptDetails,List<OrgRewardDetail> rewardDetails,List<OrgLeaderDetail> leaderDetails) {
+		if(organization.getOrgId() != null && !"".equals(organization.getOrgId())) {
+			orgSerivce.orgEdit(organization);
+			
+			orgSerivce.orgEditDetail(organization);
+			//领导班子，单位信息，奖惩信息操作
+			orgDetailsOperate(organization,deptDetails,rewardDetails,leaderDetails);
+		}
 	}
 	/**
 	 * 党组织删除
@@ -89,6 +96,64 @@ public class OrgBiz extends BaseBiz {
 	 */
 	public List<Organization> getDeptList(String userId) {
 		return orgSerivce.getDeptList(userId);
+	}
+	/**
+	 * 根据组织获取领导班子成员
+	 * @param orgId
+	 * @return
+	 */
+	public List<OrgLeaderDetail> getOrgLeaderList(String orgId) {
+		return orgSerivce.getOrgLeaderList(orgId);
+	}
+	/**
+	 * 组织附加详情操作
+	 */
+	private void orgDetailsOperate(Organization organization,List<OrgDeptDetail> deptDetails,List<OrgRewardDetail> rewardDetails,List<OrgLeaderDetail> leaderDetails) {
+		//班子成员
+		//删除原有数据
+		orgSerivce.delOrgLeaderById(organization.getOrgId());
+		//新增现有数据
+		for (OrgLeaderDetail orgLeaderDetail : leaderDetails) {
+			if(orgLeaderDetail.getStaticsId() == null || "".equals(orgLeaderDetail.getStaticsId())){
+				orgLeaderDetail.setStaticsId(StringUtil.getRandomUUID());
+			}
+			orgSerivce.saveOrgLeaderDetail(orgLeaderDetail);
+		}
+		//奖罚信息
+		orgSerivce.delOrgRewardById(organization.getOrgId());
+		for (OrgRewardDetail orgRewardDetail : rewardDetails) {
+			if(orgRewardDetail.getStaticsId() == null || "".equals(orgRewardDetail.getStaticsId())){
+				orgRewardDetail.setStaticsId(StringUtil.getRandomUUID());
+			}
+			orgSerivce.saveOrgRewardDetail(orgRewardDetail);
+		}
+		//单位信息
+		orgSerivce.delOrgDeptById(organization.getOrgId());
+		for (OrgDeptDetail orgDeptDetail : deptDetails) {
+			if(orgDeptDetail.getStaticsId() == null || "".equals(orgDeptDetail.getStaticsId())){
+				orgDeptDetail.setStaticsId(StringUtil.getRandomUUID());
+			}
+			orgSerivce.saveOrgDeptDetail(orgDeptDetail);
+		}
+		
+	}
+	/**
+	 * 班子成员数据提交
+	 * @param orgLeaderDetails
+	 * @param userName
+	 */
+	@Transactional
+	public void orgLeaderDetailSubmit(List<OrgLeaderDetail> orgLeaderDetails, String userName,String orgId) {
+		//删除原有数据
+		orgSerivce.delOrgLeaderById(orgId);
+		//新增现有数据
+		for (OrgLeaderDetail orgLeaderDetail : orgLeaderDetails) {
+			if(orgLeaderDetail.getStaticsId() == null || "".equals(orgLeaderDetail.getStaticsId())){
+				orgLeaderDetail.setStaticsId(StringUtil.getRandomUUID());
+			}
+			orgSerivce.saveOrgLeaderDetail(orgLeaderDetail);
+		}
+		
 	}
 	
 }

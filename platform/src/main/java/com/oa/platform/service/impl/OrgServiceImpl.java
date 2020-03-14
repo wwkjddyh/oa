@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.oa.platform.entity.OrgDeptDetail;
+import com.oa.platform.entity.OrgLeaderDetail;
+import com.oa.platform.entity.OrgRewardDetail;
 import com.oa.platform.entity.Organization;
 import com.oa.platform.repository.OrgRepository;
 import com.oa.platform.service.OrgService;
@@ -85,6 +88,46 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 	@Override
 	public List<Organization> getDeptList(String userId) {
 		return orgRepository.getDeptList(userId);
+	}
+	@Override
+	public List<OrgLeaderDetail> getOrgLeaderList(String orgId) {
+		return orgRepository.getOrgLeaderList(orgId);
+	}
+	@Override
+	public void delOrgLeaderById(String orgId) {
+		orgRepository.delOrgLeaderById(orgId);
+		
+	}
+	@Override
+	public void saveOrgLeaderDetail(OrgLeaderDetail orgLeaderDetail) {
+		orgRepository.saveOrgLeaderDetail(orgLeaderDetail);
+		
+	}
+	@Override
+	public List<OrgRewardDetail> getOrgRewardList(String orgId) {
+		return orgRepository.getOrgRewardList(orgId);
+	}
+	@Override
+	public void saveOrgRewardDetail(OrgRewardDetail orgRewardDetail) {
+		orgRepository.saveOrgRewardDetail(orgRewardDetail);
+	}
+	@Override
+	public void delOrgRewardById(String orgId) {
+		orgRepository.delOrgRewardById(orgId);
+	}
+	@Override
+	public List<OrgDeptDetail> getOrgDeptList(String orgId) {
+		return orgRepository.getOrgDeptList(orgId);
+	}
+	@Override
+	public void saveOrgDeptDetail(OrgDeptDetail orgDeptDetail) {
+		orgRepository.saveOrgDeptDetail(orgDeptDetail);
+		
+	}
+	@Override
+	public void delOrgDeptById(String orgId) {
+		orgRepository.delOrgDeptById(orgId);
+		
 	}
 
 }

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 /**
  * 党委组织
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.oa.platform.biz.OrgBiz;
 import com.oa.platform.common.ResultVo;
 import com.oa.platform.common.StatusCode;
+import com.oa.platform.entity.OrgDeptDetail;
+import com.oa.platform.entity.OrgLeaderDetail;
+import com.oa.platform.entity.OrgRewardDetail;
 import com.oa.platform.entity.Organization;
 import com.oa.platform.entity.User;
 import com.oa.platform.web.controller.BaseController;
@@ -62,16 +66,19 @@ public class OrgApiController extends BaseController{
 	 * @return
 	 */
 	@PostMapping("orgOpreate")
-	public ResultVo orgOpreate(Organization organization) {
+	public ResultVo orgOpreate(Organization organization,
+			@RequestParam(value = "deptDetails")List<OrgDeptDetail> deptDetails,
+			@RequestParam(value = "rewardDetails")List<OrgRewardDetail> rewardDetails,
+			@RequestParam(value = "leaderDetails")List<OrgLeaderDetail> leaderDetails) {
 		User user = getUserOfSecurity();
 		ResultVo resultVo = null;
 		organization.setCreateBy(user.getUserName());
 		organization.setUpdateBy(user.getUserName());
 		if(organization.getOrgId() == null || "".equals(organization.getOrgId())) {
-			orgBiz.orgAdd(organization);
+			orgBiz.orgAdd(organization,deptDetails,rewardDetails,leaderDetails);
 			resultVo = getSuccessResultVo(null);
 		}else {
-			orgBiz.orgEdit(organization);
+			orgBiz.orgEdit(organization,deptDetails,rewardDetails,leaderDetails);
 			resultVo = getSuccessResultVo(null);
 		}
 		return resultVo;
@@ -95,5 +102,27 @@ public class OrgApiController extends BaseController{
 		User user = getUserOfSecurity();
 		List<Organization> result = orgBiz.getDeptList(user.getUserId());
 		return getSuccessResultVo(result);
+	}
+	/**
+	 * 根据组织id获取班子成员
+	 * @param org_id
+	 * @return
+	 */
+	@GetMapping("getOrgLeaderList")
+	public ResultVo getOrgLeaderList(String orgId) {
+		List<OrgLeaderDetail> result = orgBiz.getOrgLeaderList(orgId);
+		return getSuccessResultVo(result);
+	}
+	/**
+	 * 班子成员数据提交
+	 * @param orgLeaderDetails
+	 * @param orgId
+	 * @return
+	 */
+	@PostMapping("orgLeaderDetailSubmit")
+	public ResultVo orgLeaderDetailSubmit(List<OrgLeaderDetail> orgLeaderDetails,String orgId) {
+		User user = getUserOfSecurity();
+		orgBiz.orgLeaderDetailSubmit(orgLeaderDetails,user.getUserName(),orgId);
+		return getSuccessResultVo(null);
 	}
 }

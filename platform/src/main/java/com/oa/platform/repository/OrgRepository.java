@@ -5,6 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.oa.platform.entity.OrgDeptDetail;
+import com.oa.platform.entity.OrgLeaderDetail;
+import com.oa.platform.entity.OrgRewardDetail;
 import com.oa.platform.entity.Organization;
 /**
  * dao
@@ -46,4 +49,26 @@ public interface OrgRepository extends BaseRepository<Organization, String> {
 	void orgEditDetail(Organization organization);
 
 	List<Organization> getDeptList(@Param("userId") String userId);
+
+	/**
+	 * 领导班子
+	 */
+	List<OrgLeaderDetail> getOrgLeaderList(@Param("orgId") String orgId);
+	void saveOrgLeaderDetail(OrgLeaderDetail orgLeaderDetail);
+	void delOrgLeaderById(@Param("orgId") String orgId);
+	
+	/**
+	 * 奖惩情况
+	 */
+	List<OrgRewardDetail> getOrgRewardList(@Param("orgId") String orgId);
+	void saveOrgRewardDetail(OrgRewardDetail orgRewardDetail);
+	void delOrgRewardById(@Param("orgId") String orgId);
+	
+	
+	/**
+	 * 单位信息
+	 */
+	List<OrgDeptDetail> getOrgDeptList(@Param("orgId") String orgId);
+	void saveOrgDeptDetail(OrgDeptDetail orgDeptDetail);
+	void delOrgDeptById(@Param("orgId") String orgId);
 }
