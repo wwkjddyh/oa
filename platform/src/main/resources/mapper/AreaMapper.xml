@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oa.platform.repository.AreaRepository" >
+
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"
+         eviction="LRU"
+         flushInterval="3600000"
+         size="1024"
+         readOnly="true"
+         blocking="true"
+  />
+
+  <resultMap id="area" type="com.oa.platform.entity.Area">
+    <result column="area_id" property="areaId" jdbcType="VARCHAR"/>
+    <result column="parent_id" property="parentId" jdbcType="VARCHAR"/>
+    <result column="area_name" property="areaName" jdbcType="VARCHAR"/>
+    <result column="area_desc" property="areaDesc" jdbcType="VARCHAR"/>
+    <result column="parent_name" property="parentName" jdbcType="VARCHAR"/>
+    <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
+  </resultMap>
+
+  <!--插入信息-->
+  <insert id="insert" parameterType="area">
+    INSERT INTO t_area (area_id,parent_id,area_name,area_desc,record_flag)
+    VALUES (#{areaId},#{parentId},#{areaName},#{areaDesc},#{recordFlag})
+  </insert>
+
+  <!--更新信息-->
+  <update id="update" parameterType="area">
+    UPDATE t_area
+    <trim prefix="SET" suffixOverrides="," suffix=" WHERE area_id = #{areaId}">
+      <if test="parentId != null">
+        parent_id = #{parentId},
+      </if>
+      <if test="areaName != null and areaName != ''">
+        area_name = #{areaName},
+      </if>
+      <if test="areaDesc != null and areaDesc != ''">
+        area_desc = #{areaDesc},
+      </if>
+      <if test="recordFlag != null">
+        record_flag = #{recordFlag},
+      </if>
+    </trim>
+  </update>
+
+  <!--根据aread查询信息-->
+  <select id="findById" resultMap="area" parameterType="java.lang.String">
+    SELECT  area_id,parent_id,area_name,area_desc,record_flag
+    FROM t_area WHERE area_id = #{areaId} AND record_flag = 1
+  </select>
+
+  <delete id="delete" parameterType="area">
+    DELETE FROM t_area
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="areaId != null and areaId != ''">
+        AND area_id = #{areaId}
+      </if>
+      <if test="parentId != null">
+        AND parent_id = #{parentId}
+      </if>
+      <if test="areaName != null and areaName != ''">
+        AND area_name = #{areaName}
+      </if>
+      <if test="areaDesc != null and areaDesc != ''">
+        AND area_desc = #{areaDesc}
+      </if>
+      <if test="recordFlag != null">
+        AND record_flag = #{recordFlag}
+      </if>
+    </trim>
+  </delete>
+
+  <!--查询-->
+  <select id="find" parameterType="area" resultMap="area">
+    SELECT area_id,parent_id,area_name,area_desc,record_flag
+    FROM t_area
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="areaId != null and areaId != ''">
+        AND area_id = #{areaId}
+      </if>
+      <if test="parentId != null">
+        AND parent_id = #{parentId}
+      </if>
+      <if test="areaName != null and areaName != ''">
+        AND area_name = #{areaName}
+      </if>
+      <if test="areaDesc != null and areaDesc != ''">
+        AND area_desc = #{areaDesc}
+      </if>
+      <if test="recordFlag != null">
+        AND record_flag = #{recordFlag}
+      </if>
+      <if test="key != null and key != ''">
+        AND (UPPER(area_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(area_desc) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(parent_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+        )
+      </if>
+    </trim>
+  </select>
+</mapper>
