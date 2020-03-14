@@ -44,6 +44,11 @@ public class Area implements Serializable {
      */
     private String key;
 
+    /**
+     * 地域全名(包括上级地域名称，以">"分隔)
+     */
+    private String fullName;
+
     public String getAreaId() {
         return areaId;
     }
@@ -98,6 +103,14 @@ public class Area implements Serializable {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public Area() {

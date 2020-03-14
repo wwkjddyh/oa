@@ -16,6 +16,7 @@
     <result column="area_name" property="areaName" jdbcType="VARCHAR"/>
     <result column="area_desc" property="areaDesc" jdbcType="VARCHAR"/>
     <result column="parent_name" property="parentName" jdbcType="VARCHAR"/>
+    <result column="full_name" property="fullName" jdbcType="VARCHAR"/>
     <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
   </resultMap>
 
@@ -73,8 +74,24 @@
 
   <!--查询-->
   <select id="find" parameterType="area" resultMap="area">
-    SELECT area_id,parent_id,area_name,area_desc,record_flag
-    FROM t_area
+    SELECT
+        t.area_id, t.parent_id, t.area_name, t.area_desc, t.record_flag, t.full_name, t11.area_name parent_name
+    FROM (
+      WITH RECURSIVE cte AS
+      (
+        SELECT a.area_id, area_name
+        FROM t_area a WHERE a.record_flag = 1 and (a.parent_id is null or a.parent_id = '')
+        UNION ALL
+        SELECT k.area_id,CONCAT(c.area_name, '>', k.area_name) as area_name
+            FROM (SELECT * FROM t_area WHERE record_flag = 1
+        ) k INNER JOIN cte c ON c.area_id = k.parent_id
+      )
+      SELECT t10.*, c.area_name full_name
+      FROM cte c, t_area t10
+      WHERE c.area_id = t10.area_id
+      ORDER BY c.area_name ASC
+    ) t
+    LEFT JOIN t_area t11 ON t.parent_id = t11.area_id
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="areaId != null and areaId != ''">
         AND area_id = #{areaId}
@@ -95,6 +112,7 @@
         AND (UPPER(area_name) LIKE CONCAT('%',UPPER(#{key}),'%')
             OR UPPER(area_desc) LIKE CONCAT('%',UPPER(#{key}),'%')
             OR UPPER(parent_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(full_name) LIKE CONCAT('%',UPPER(#{key}),'%')
         )
       </if>
     </trim>
