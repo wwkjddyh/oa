@@ -201,16 +201,37 @@
 			<artifactId>json</artifactId>
 			<version>${org.json.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.baidu</groupId>
+			<artifactId>ueditor</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/libs/ueditor-0.0.1-SNAPSHOT.jar</systemPath>
+		</dependency>
 		<!-- ueditor end -->
 	</dependencies>
 
 	<build>
 		<finalName>ROOT</finalName>
+<!--		<resources>-->
+<!--			<resource>-->
+<!--				<directory>${project.basedir}/libs</directory>-->
+<!--				<targetPath>WEB-INF/lib/</targetPath>-->
+<!--				<includes>-->
+<!--					<include>**/*.jar</include>-->
+<!--				</includes>-->
+<!--			</resource>-->
+<!--			<resource>-->
+<!--				<directory>src/main/resources</directory>-->
+<!--				<targetPath>WEB-INF/classes/</targetPath>-->
+<!--			</resource>-->
+<!--		</resources>-->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<includeSystemScope>true</includeSystemScope>
 					<fork>true</fork>
 					<excludes>
 						<exclude>
