@@ -67,10 +67,11 @@ public class AreaBiz extends BaseBiz {
                 ret = this.getParamErrorVo();
             }
             else {
-                boolean isRepeat = validRepeat(areaId, parentId, areaName);
-                if (isRepeat) {
-                    ret = this.getParamRepeatErrorVo("地域名称");
-                } else {
+                // 暂时不做重名判定
+//                boolean isRepeat = validRepeat(areaId, parentId, areaName);
+//                if (isRepeat) {
+//                    ret = this.getParamRepeatErrorVo("地域名称");
+//                } else {
                     Area area = new Area();
                     area.setParentId(parentId);
                     area.setAreaName(areaName);
@@ -85,7 +86,7 @@ public class AreaBiz extends BaseBiz {
                         areaService.update(area);
                     }
                     ret = this.getSuccessVo("", "");
-                }
+//                }
             }
         }
         catch (Exception e) {
@@ -137,6 +138,7 @@ public class AreaBiz extends BaseBiz {
                 Area area = new Area();
                 area.setAreaId(areaId);
                 area.setRecordFlag(Constants.INT_DEL);
+                areaService.update(area);
                 ret = this.getSuccessVo("", "");
             } catch (Exception e) {
                 loggerError(ThreadUtil.getCurrentFullMethodName(), e);

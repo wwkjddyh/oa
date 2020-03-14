@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 /**
- * 权限API接口
+ * 地域API接口
  * @author Feng
  * @date 2020/03/14
  */

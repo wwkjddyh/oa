@@ -26,7 +26,7 @@ public class NewsApiController extends BaseController {
      * @return
      */
     @PostMapping("save")
-    public Map<String, Object> save(@RequestParam News news) {
+    public Map<String, Object> save(@RequestBody News news) {
         return newsBiz.save(news);
     }
 
