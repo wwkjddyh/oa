@@ -15,6 +15,7 @@
  */
 package com.oa.platform.web.controller;
 
+import com.baidu.ueditor.ActionEnter;
 import com.oa.platform.common.Constants;
 //import com.oa.platform.ueditor.ActionEnter;
 import org.slf4j.Logger;
@@ -180,5 +181,24 @@ public class MainController {
 	@GetMapping("/test/cron")
 	public String cron() {
 		return "cron";
+	}
+
+	@RequestMapping("/ueditor/config")
+	public void config(HttpServletRequest request, HttpServletResponse response) {
+		response.setContentType("application/json");
+		String rootPath = ClassUtils.getDefaultClassLoader().getResource("").getPath() + "static/js/ueditor/jsp";
+		try {
+			response.setCharacterEncoding("UTF-8");
+			String exec = new ActionEnter(request, rootPath).exec();
+			LOGGER.debug("exec => " + exec);
+			PrintWriter printWriter = response.getWriter();
+			printWriter.write(exec);
+			printWriter.flush();
+			printWriter.close();
+		}
+		catch (IOException e) {
+			LOGGER.error(e.getMessage(), e);
+//			e.printStackTrace();
+		}
 	}
 }

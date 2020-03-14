@@ -22,7 +22,8 @@ public class PlatformWebMvcConfigurer implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/test","/api/auth/login","/api/auth/logout","/test/**","/index","/login",
                         "/test/**", "/logout","/","/4**","/5**","/css/**","/img/**","/images/**","/js/**","/fonts/**",
-                        "/error", "/tmp/**", "/api/file/**", "/api/socket/**", "/api/verify/**", "/api/news/**");
+                        "/error", "/tmp/**", "/api/file/**", "/api/socket/**", "/api/verify/**", "/api/news/**",
+                        "/ueditor/**");
     }
 
     @Override
