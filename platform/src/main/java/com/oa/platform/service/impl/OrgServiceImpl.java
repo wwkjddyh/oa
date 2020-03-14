@@ -82,5 +82,9 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 		orgRepository.orgEditDetail(organization);
 		
 	}
+	@Override
+	public List<Organization> getDeptList(String userId) {
+		return orgRepository.getDeptList(userId);
+	}
 
 }

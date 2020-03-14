@@ -45,5 +45,7 @@ public interface OrgService extends BaseService<Organization, String> {
 	void orgEdit(Organization organization);
 	
 	void orgEditDetail(Organization organization);
+	
+	List<Organization> getDeptList(String userId);
 
 }

@@ -78,8 +78,17 @@ public class OrgBiz extends BaseBiz {
 	public List<Organization> getUpperOrgList() {
 		return orgSerivce.getUpperOrgList();
 	}
+	
 	public List<Organization> getOrgDetailById(String orgId) {
 		return orgSerivce.getOrgDetailById(orgId);
+	}
+	/**
+	 * 获取所属党组织情况信息
+	 * @param userId
+	 * @return
+	 */
+	public List<Organization> getDeptList(String userId) {
+		return orgSerivce.getDeptList(userId);
 	}
 	
 }

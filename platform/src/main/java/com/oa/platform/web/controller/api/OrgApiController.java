@@ -86,4 +86,14 @@ public class OrgApiController extends BaseController{
 		orgBiz.orgDel(orgId);
 		return getSuccessResultVo(null);
 	}
+	/**
+	 * 获取所属党组织情况信息
+	 * @return
+	 */
+	@GetMapping("getDeptList")
+	public ResultVo getDeptList() {
+		User user = getUserOfSecurity();
+		List<Organization> result = orgBiz.getDeptList(user.getUserId());
+		return getSuccessResultVo(result);
+	}
 }

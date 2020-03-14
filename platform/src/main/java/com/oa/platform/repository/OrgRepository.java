@@ -44,4 +44,6 @@ public interface OrgRepository extends BaseRepository<Organization, String> {
 	void orgEdit(Organization organization);
 
 	void orgEditDetail(Organization organization);
+
+	List<Organization> getDeptList(@Param("userId") String userId);
 }

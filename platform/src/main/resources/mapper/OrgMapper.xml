@@ -226,6 +226,8 @@
 		WHERE
 			user_id = #{userId} and status='1'
 	</select>
+	<select id="getDeptList" resultMap="orgMap">
+	</select>
 	<!-- 删除指定组织及下属组织 -->
 	<update id="delOrg">
 		UPDATE t_sys_org 
