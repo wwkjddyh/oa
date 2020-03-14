@@ -158,9 +158,9 @@
                                 <div slot="content">模块描述</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
                         <el-form-item label="模块排序" prop="order">
-                            <el-input v-model="formAuthModule.order" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="排序"></el-input>
+                            <el-input v-model="formAuthModule.order" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="排序代码" @blur="handleInputNumber"></el-input>
                             <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">代码</div><i class="el-icon-question"></i></el-tooltip>
+                                <div slot="content">模块排序(仅输入数字)</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
                         <el-form-item label="模块ICON" prop="moduleIcon">
                             <el-input v-model="formAuthModule.moduleIcon" type="textarea" size="medium" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="ICON"></el-input>
@@ -181,7 +181,7 @@
                                 <div slot="content">确定是否为菜单</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
                         <el-form-item>
-                            <el-button @click="resetForm('formAuthModule')" plain>取消</el-button>
+                            <el-button @click="dialogShow.authModule = false;resetForm('formAuthModule')" plain>取消</el-button>
                             <el-button @click="submitForm('formAuthModule')" type="primary" plain>保存</el-button>
                         </el-form-item>
                     </el-form>

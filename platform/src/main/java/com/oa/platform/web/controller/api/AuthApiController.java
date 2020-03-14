@@ -181,4 +181,13 @@ public class AuthApiController extends BaseController {
     public Map<String, Object> getOwnedModules() {
         return roleBiz.getOwnedModules();
     }
+
+    /**
+     * 获得当前用户信息
+     * @return
+     */
+    @GetMapping("getCurrentUser")
+    public Map<String, Object> getCurrentUser() {
+        return roleBiz.getCurrentUser();
+    }
 }

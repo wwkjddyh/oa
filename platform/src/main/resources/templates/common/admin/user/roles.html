@@ -67,7 +67,7 @@
                                 <div slot="content">描述</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
                         <el-form-item>
-                            <el-button @click="resetForm('formAuthRole')" plain>取消</el-button>
+                            <el-button @click="dialogShow.role = false;resetForm('formAuthRole')" plain>取消</el-button>
                             <el-button @click="submitForm('formAuthRole')" type="primary" plain>保存</el-button>
                         </el-form-item>
                     </el-form>

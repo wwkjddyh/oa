@@ -95,7 +95,7 @@
                                 <div slot="content">描述</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
                         <el-form-item>
-                            <el-button @click="resetForm('formCategory')" plain>取消</el-button>
+                            <el-button @click="dialogShow.category = false;resetForm('formCategory')" plain>取消</el-button>
                             <el-button @click="submitForm('formCategory')" type="primary" plain>保存</el-button>
                         </el-form-item>
                     </el-form>

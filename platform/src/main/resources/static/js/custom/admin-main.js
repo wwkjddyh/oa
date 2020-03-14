@@ -188,8 +188,9 @@ new Vue({
         },
         dwjbxxTableData: [],
         upperOrg:[],
-        userOwnedModules: [],    //  用户所拥有(的所有角色)的模块
-        userOwnedMenus: [],     // 用户所拥有(的所有角色)的菜单
+        currentUser: {},        // 当前用户信息
+        userOwnedModules: [],    //  当前用户所拥有(的所有角色)的模块
+        userOwnedMenus: [],     // 当前用户所拥有(的所有角色)的菜单
         formUser: {},
         formSysUser: {},
         formUserType: {},
@@ -904,13 +905,13 @@ new Vue({
 	                            moduleName: entry.moduleName,
 	                            moduleDesc: entry.moduleDesc,
 	                            moduleUrl: entry.moduleUrl,
-	                            isLeaf: entry.isLeaf,
+	                            isLeaf: entry.isLeaf + '',
 	                            fullModuleName: entry.fullModuleName,
                                 moduleCode: entry.moduleCode || '',
                                 order: entry.order || 0,
                                 moduleIcon: entry.moduleIcon || '',
                                 moduleStyle: entry.moduleStyle || '',
-                                isMenu: entry.isMenu || 0,
+                                isMenu: entry.isMenu + '' || '0',
 	                        };
 	                    }
 	                    that.dialogShow.authModule = !that.dialogShow.authModule;
@@ -1380,51 +1381,53 @@ new Vue({
         },
 
         /**
-         * 获得用户所拥有的所有模块信息
+         * 获得当前用户信息
          */
-        getUserOwnedModules() {
+        getCurrentUserInfo() {
             let that = this;
+            that.currentUser = {};
             that.userOwnedModules = [];
             that.userOwnedMenus = [];
-            axios.get("/api/auth/getOwnedModules")
+
+            axios.get("/api/auth/getCurrentUser")
                 .then(function(response){/*成功*/
                     let data = response.data;
-                    if(parseInt(data.code) === 200) {
-                        that.userOwnedModules = data.data;
-                        let __modules = data.data;
-                        let moduleLen = __modules.length;
-                        for (let i = 0; i < moduleLen; i ++) {
-                            let __module = __modules[i];
-                            let __moduleId = __module.moduleId;
-                            if (__module.isMenu == 1) {
-                                if (__module.parentId == '' || __module.parentId == null) {
-                                    let __subMenus = [];
-                                    for (let j = 0; j < moduleLen; j++) {
-                                        let __module2 = __modules[j];
-                                        if (__module2.isMenu == 1 && __module2.parentId == __moduleId) {
-                                            __subMenus.push(__module2);
-                                        }
+                    console.log('getCurrentUserInfo=>', data)
+                    that.currentUser = data.data;
+                    let __modules = data.data['modules'] || [];
+                    that.userOwnedModules = __modules;
+                    let moduleLen = __modules.length;
+                    for (let i = 0; i < moduleLen; i ++) {
+                        let __module = __modules[i];
+                        let __moduleId = __module.moduleId;
+                        if (__module.isMenu == 1) {
+                            if (__module.parentId == '' || __module.parentId == null) {
+                                let __subMenus = [];
+                                for (let j = 0; j < moduleLen; j++) {
+                                    let __module2 = __modules[j];
+                                    if (__module2.isMenu == 1 && __module2.parentId == __moduleId) {
+                                        __subMenus.push(__module2);
                                     }
-                                    that.userOwnedMenus.push({
-                                        moduleId: __moduleId,
-                                        parentId: __module.parentId,
-                                        moduleName: __module.moduleName,
-                                        moduleDesc: __module.moduleDesc,
-                                        moduleUrl: __module.moduleUrl,
-                                        isLeaf: __module.isLeaf,
-                                        fullModuleName: __module.fullModuleName,
-                                        moduleCode: __module.moduleCode,
-                                        order: __module.order,
-                                        moduleIcon: __module.moduleIcon,
-                                        moduleStyle: __module.moduleStyle,
-                                        isMenu: __module.isMenu,
-                                        subs: __subMenus,
-                                    });
                                 }
+                                that.userOwnedMenus.push({
+                                    moduleId: __moduleId,
+                                    parentId: __module.parentId,
+                                    moduleName: __module.moduleName,
+                                    moduleDesc: __module.moduleDesc,
+                                    moduleUrl: __module.moduleUrl,
+                                    isLeaf: __module.isLeaf,
+                                    fullModuleName: __module.fullModuleName,
+                                    moduleCode: __module.moduleCode,
+                                    order: __module.order,
+                                    moduleIcon: __module.moduleIcon,
+                                    moduleStyle: __module.moduleStyle,
+                                    isMenu: __module.isMenu,
+                                    subs: __subMenus,
+                                });
                             }
                         }
-                        console.log('that.userOwnedMenus,that.userOwnedModules => ', that.userOwnedMenus, that.userOwnedModules);
                     }
+
                 })
                 .catch(function(err){/*异常*/
                     console.log(err);
@@ -1867,6 +1870,22 @@ new Vue({
             this.loadLangConfs(this.pager.langConf.criteria, this.pager.langConf.currentPage, this.pager.langConf.pageSize);
         },
 
+        /**
+         * 文本域只能输入数字(默认设置为0)
+         * @param e
+         */
+        handleInputNumber: function(e) {
+            //console.log('handleInputNumber=>', e.target, e.target.value);
+            let a = e.target.value.replace(/[^\d]/g, "");
+            if (!a) {
+                e.target.value = 0;
+            }
+
+            // if (!a && e.keyCode != 8) {
+            //     e.preventDefault();
+            // }
+        },
+
     },
     props: {
 
@@ -1910,10 +1929,14 @@ new Vue({
     },
     created: function () {
         //this.loadArticleTypes();
+        this.getCurrentUserInfo();
+    },
+    beforeMount: function() {
+        // this.getCurrentUserInfo();
     },
     mounted: function () {
         let that = this;
-        that.getUserOwnedModules();
+
         that.getAllAuthRole();
         that.loadMemberUsers('','',0, that.pager.user.pageSize);
         that.ueditors.article = UE.getEditor('articleEditor', that.ueditorConfig);

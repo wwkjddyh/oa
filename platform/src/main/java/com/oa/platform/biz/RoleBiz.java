@@ -687,4 +687,21 @@ public class RoleBiz extends BaseBiz {
         }
         return ret;
     }
+
+    /**
+     * 获得当前用户信息
+     * @return
+     */
+    public Map<String, Object> getCurrentUser() {
+        try {
+            User user = this.getUserOfSecurity();
+            user.setUserPwd(null);
+            user.setUserPwdOrigi(null);
+            ret = this.getSuccessVo("", user);
+        } catch (Exception e) {
+            loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+            ret = this.getErrorVo();
+        }
+        return ret;
+    }
 }

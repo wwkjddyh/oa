@@ -88,7 +88,7 @@
                                 <div slot="content">重复密码</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
                         <el-form-item>
-                            <el-button @click="resetForm('formSysUser')" plain>取消</el-button>
+                            <el-button @click="dialogShow.sysUser = false;resetForm('formSysUser')" plain>取消</el-button>
                             <el-button @click="submitForm('formSysUser')" type="primary" plain>保存</el-button>
                         </el-form-item>
                     </el-form>

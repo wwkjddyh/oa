@@ -170,7 +170,7 @@
                                 <!--<div slot="content">会员等级</div><i class="el-icon-question"></i></el-tooltip>-->
                         <!--</el-form-item>-->
                         <el-form-item>
-                            <el-button @click="resetForm('formUser')" plain>取消</el-button>
+                            <el-button @click="dialogShow.memberUser = false;resetForm('formUser')" plain>取消</el-button>
                             <el-button @click="submitForm('formUser')" type="primary" plain>保存</el-button>
                         </el-form-item>
                     </el-form>
