@@ -236,7 +236,11 @@ const formStructConfig = {
         category: false,
         categoryType: false,
         langConf: false,
-        dwjbxx: false
+        dwjbxx: false,
+        ssdzzqk:false,
+        leader:false,
+        reward:false,
+        dept:false
     },
     rules: {
         username: [
@@ -255,6 +259,36 @@ const formStructConfig = {
             { required: true, message: '请填写标题', trigger: 'blur' },
             { min: 3, max: 512, message: '长度在 3 到 512 个字符之间', trigger: 'blur' }
         ],
+        orgCode: [
+        	{ required: true, message: '请填写党组织代码' , trigger: 'blur'}
+        ],
+        orgName: [
+        	{ required: true, message: '请填写党组织名称' , trigger: 'blur'}
+        ],
+    	allowFoundTime: [
+        	{ required: true, message: '请选择批准建立党组织日期' , trigger: 'blur'}
+        ],
+        orgType:[
+        	{ required: true, message: '请选择党组织类型' , trigger: 'blur'}
+        ],
+        orgAddressRelation:[
+        	{ required: true, message: '请选择党组织属地关系' , trigger: 'blur'}
+        ],
+        elctType:[
+        	{ required: true, message: '请选择选举方式' , trigger: 'blur'}
+        ],
+        currentLeaderTime:[
+        	{ required: true, message: '请选择本届班子当选日期' , trigger: 'blur'}
+        ],
+        changeOrgRelationAuth:[
+        	{ required: true, message: '请选择转接组织关系权限' , trigger: 'blur'}
+        ],
+        concatPersion:[
+        	{ required: true, message: '请填写党组织联系人' , trigger: 'blur'}
+        ],
+        orgJobPhone:[
+        	{ required: true, message: '请填写党组织办公电话' , trigger: 'blur'}
+        ]
     }
 };
 

@@ -55,6 +55,7 @@ new Vue({
                     break;
                 case 'dwjbxx':
                 	that.getUpperOrg();
+                	that.getTreeDict();
                 	that.loadDwjbxx();
                 	break;
               
@@ -219,12 +220,81 @@ new Vue({
         formSearchDict: {},
         formSearchLangConf: {},
         formdwjbxx:{},
-        
+        formLeader:{},
+        formDept:{},
         dialogShow: {},
         memberUsers: [],
         sysUsers: [],
+        orgType:[],
+        orgAddressRelation:[],
+        elctType:[],
+        leadTime:[],
+        changeOrgRelationAuth:[],
+        isDelPartPersonAuth:[],
+        belongArea:[],
+        formReward:[],
         authModules: [],
-
+        deptOrgType:[],
+        leaderList:[
+        	{
+        		userName: '俞灶森',
+        		positon: '党委书记',
+        		allowLeaderTime: '2019-12-12'
+        	}
+        ],
+        
+        ssdzzqk:[
+        	{
+        		orgId: '1231231231',
+        		orgName: '创新事业部1',
+        		upperOrgName: '博彦泓智',
+        		upperOrgAttr: 'it外包',
+        		orgAttr: '外包',
+        		contactPersion: 'skfjl',
+        		phone: '7151551',
+        		count: '10'
+        	},
+        	{
+        		orgId: '1231231232',
+        		orgName: '创新事业部2',
+        		upperOrgName: '博彦泓智',
+        		upperOrgAttr: 'it外包',
+        		orgAttr: '外包',
+        		contactPersion: 'skfjl',
+        		phone: '7151551',
+        		count: '10'
+        	},
+        	{
+        		orgId: '1231231233',
+        		orgName: '创新事业部3',
+        		upperOrgName: '博彦泓智',
+        		upperOrgAttr: 'it外包',
+        		orgAttr: '外包',
+        		contactPersion: 'skfjl',
+        		phone: '7151551',
+        		count: '10'
+        	},
+        	{
+        		orgId: '1231231234',
+        		orgName: '创新事业部4',
+        		upperOrgName: '博彦泓智',
+        		upperOrgAttr: 'it外包',
+        		orgAttr: '外包',
+        		contactPersion: 'skfjl',
+        		phone: '7151551',
+        		count: '10'
+        	},
+        	{
+        		orgId: '1231231235',
+        		orgName: '创新事业部5',
+        		upperOrgName: '博彦泓智',
+        		upperOrgAttr: 'it外包',
+        		orgAttr: '外包',
+        		contactPersion: 'skfjl',
+        		phone: '7151551',
+        		count: '10'
+        	}
+        ],
         allRoles: [],
         allModules: [],
         articleCategories: [],
@@ -237,8 +307,11 @@ new Vue({
         roleModules: [],
         userRoles: [],
         roles: [],
+        deptInfoList:[],
+        rewardList:[],
         categories: [],
         categoryTypes : [],
+        dwjbxxDialog:{},
         langConfs: [],
         continent: '',
         nation: '',
@@ -578,7 +651,15 @@ new Vue({
                 type: messageType
             });
         },
-
+        copyCode(){
+    		var orgCodeDom = document.getElementById("orgCode");
+    		orgCodeDom.select();
+    		document.execCommand("Copy");
+    		this.$message({
+    	          message: '党组织代码复制成功',
+    	          type: 'success'
+    	        });
+    	},
         /**
          * 用户信息提交
          */
@@ -840,11 +921,95 @@ new Vue({
 
             }
         },
+        dwjgxxEdit(type,scopeIndex, scopeRow){
+        	let that = this;
+        	switch (type) {
+        		case 'reward':
+        			entry = that.rewardList[scopeIndex];
+        			that.formReward = {
+        					rewardName: entry.rewardName,
+        					allowOrg: entry.allowOrg,
+        					allowTime: entry.allowTime,
+        					index: scopeIndex
+        			}
+        			that.dialogShow.reward = !that.dialogShow.reward;
+        			break;
+        		case 'leader':
+        			entry = that.leaderList[scopeIndex];
+        			that.formLeader = {
+        					userName: entry.userName,
+        					positon: entry.positon,
+        					allowLeaderTime: entry.allowLeaderTime,
+        					index: scopeIndex
+        			}
+        			that.dialogShow.leader = !that.dialogShow.leader;
+        			break;
+        		case 'dept':
+        			entry = that.deptInfoList[scopeIndex];
+        			that.formDept = {
+        					deptName: entry.deptName,
+        					deptNatureType: entry.deptNatureType,
+        					deptType: entry.deptType,
+        					index: scopeIndex
+        			}
+        			that.dialogShow.dept = !that.dialogShow.dept;
+        			break;
+        	}
+        },
+        formTaleConfirm(type){
+        	let that = this;
+        	
+        	switch (type) {
+        		case 'leader':
+        			console.log(that.formLeader);
+        			let rowValue = that.formLeader;
+        			let scopeIndex = that.formLeader.index;
+        			that.leaderList[scopeIndex] =rowValue;
+        			let tmpleaderList = that.leaderList;
+        			that.leaderList = [];
+        			for(let i = 0 ; i < tmpleaderList.length ; i++){
+        				that.leaderList.push(tmpleaderList[i]);
+        			}
+        			
+        			
+        			that.dialogShow.leader =false;
+        			break;
+        		case 'reward':
+        			let rowValue1 = that.formReward;
+        			let scopeIndex1 = that.formReward.index;
+        			that.rewardList[scopeIndex1] =rowValue1;
+        			let tmprewardList = that.rewardList;
+        			that.rewardList = [];
+        			for(let i = 0 ; i < tmprewardList.length ; i++){
+        				that.rewardList.push(tmprewardList[i]);
+        			}
+        			
+        			
+        			that.dialogShow.reward =false;
+        			break;
+        		case 'dept':
+        			let rowValue2 = that.formDept;
+        			let scopeIndex2 = that.formDept.index;
+        			that.deptInfoList[scopeIndex2] =rowValue2;
+        			let tmpdeptInfoList = that.deptInfoList;
+        			that.deptInfoList = [];
+        			for(let i = 0 ; i < tmpdeptInfoList.length ; i++){
+        				that.deptInfoList.push(tmpdeptInfoList[i]);
+        			}
+        			
+        			
+        			that.dialogShow.dept =false;
+        			break;
+        	}
+        },
         edit(type,scopeIndex, scopeRow, isAdd) {
         	if(isAdd == null && type == 'dwjbxx'){
         		let that = this
         		that.formdwjbxx={
         				upperOrg: scopeRow.orgId
+        		};
+        		that.dwjbxxDialog={
+        				title:scopeRow.orgName
         		};
         		that.dialogShow.dwjbxx = !that.dialogShow.dwjbxx;
         	}else{
@@ -968,7 +1133,13 @@ new Vue({
 	                
 	                	if(isAdd){
 	                		that.formdwjbxx={};
+	                		that.dwjbxxDialog={
+	                				title: '党委基本信息新增'
+	                		};
 	                	}else{
+	                		that.dwjbxxDialog={
+	                				title: scopeRow.orgName
+	                		};
 	                		axios.get("/api/org/getOrgDetailById",{params:{
 	                			orgId: scopeRow.orgId
 	                        }})
@@ -1545,7 +1716,57 @@ new Vue({
             this.pager.authModule.currentPage = val;
             this.loadAuthModules(this.pager.authModule.criteria, this.pager.authModule.currentPage, this.pager.authModule.pageSize);
         },
-
+        /**
+         * 增加表行
+         */
+        addLine(tableName){
+        	let rowValue={};
+        	switch (tableName){
+        	
+        		case 'dept':
+        			rowValue={
+        				deptName:'',
+        				deptNatureType:'',
+        				deptType:''
+        			}
+        			//添加新的行数
+                    this.deptInfoList.push(rowValue);
+        			break;
+        		case 'reward':
+        			rowValue={
+        				rewardName:'',
+        				allowOrg:'',
+        				allowTime:''
+        			}
+        			//添加新的行数
+                    this.rewardList.push(rowValue);
+        			break;
+        		case 'leader':
+        			rowValue={
+        				userName:'',
+        				positon:'',
+        				allowLeaderTime:''
+        			}
+        			//添加新的行数
+                    this.leaderList.push(rowValue);
+        			break;
+        	}
+        		
+        },
+        deleteLine(tableName,scopeIndex){
+        	
+        	switch (tableName){
+    		case 'dept':
+    			this.deptInfoList.splice(scopeIndex, 1);
+    			break;
+    		case 'reward':
+    			this.rewardList.splice(scopeIndex, 1);
+    			break;
+    		case 'leader':
+    			this.leaderList.splice(scopeIndex, 1);
+    			break;
+        	}
+        },
         /**
          * 加载角色信息
          */
@@ -1752,6 +1973,42 @@ new Vue({
         		}
         	});
         },
+        getTreeDict(){
+        	let that = this;
+        	axios.get("/api/treeDict/getTreeDictByType",{params:{
+        		treeType:'2'
+            }}).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			for(let i =0 ; i <response.data.result.length;i++){
+        				response.data.result[i].value=response.data.result[i].nodeId;
+        				response.data.result[i].label=response.data.result[i].nodeName;
+        			}
+        			let parentArr = response.data.result.filter(l => l.upperNode === null);
+        			that.orgAddressRelation = that.getTreeDictData(response.data.result, parentArr);
+        		}
+        	});
+        },
+        /**
+         * 处理没有children结构的数据
+         */
+        getTreeDictData(list, dataArr) {
+            dataArr.map((pNode, i) => {
+              let childObj = []
+              list.map((cNode, j) => {
+                if (pNode.nodeId === cNode.upperNode) {
+                  childObj.push(cNode)
+                }
+              })
+              pNode.children = childObj
+              if(pNode.children.length ==0){
+            	  pNode.children = null;
+              }
+              if (childObj.length > 0) {
+                this.getTreeDictData(list, childObj)
+              }
+            })
+            return dataArr
+          },
         /**
          * 处理没有children结构的数据
          */
