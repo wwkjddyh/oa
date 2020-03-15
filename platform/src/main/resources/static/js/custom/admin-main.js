@@ -58,7 +58,10 @@ new Vue({
                 	that.getTreeDict();
                 	that.loadDwjbxx();
                 	break;
-              
+                case 'announce':
+                    that.getAllMsgCategories();
+                    that.loadNews('', 1, that.pager.news.pageSize);
+                    break;
             }
         },
         
@@ -208,6 +211,7 @@ new Vue({
         formCategoryType: {},
         formDict: {},
         formLangConf: {},
+        formNews: {},
 
         formSearchAuthUserRole: {},
         formSearchAuthRoleModule: {},
@@ -219,6 +223,7 @@ new Vue({
         formSearchCategoryType: {},
         formSearchDict: {},
         formSearchLangConf: {},
+        formSearchNews: {},
         formdwjbxx:{},
         formLeader:{},
         formDept:{},
@@ -295,6 +300,7 @@ new Vue({
         articleCategories: [],
         allInsectCategories: [],
         allCategoryTypes: [],
+        allMsgCategories: [],
         allLangConfs: [],
         allTitleTypes: [],
         allLangAndType: {},
@@ -309,6 +315,25 @@ new Vue({
         categoryTypes : [],
         dwjbxxDialog:{},
         langConfs: [],
+        newsArray: [],
+        newsReceiveUsers: {
+            '1fe30445-96ec-4a1d-88e2-749f29440bef2': {
+                userId: '1fe30445-96ec-4a1d-88e2-749f29440bef2',
+                userName: '蔡',
+                userNickname: '传龙',
+            },
+            '1fe30445-96ec-4a1d-88e2-749f29440bef3': {
+                userId: '1fe30445-96ec-4a1d-88e2-749f29440bef3',
+                userName: '魏',
+                userNickname: '懊悔',
+            },
+            '1fe30445-96ec-4a1d-88e2-749f29440bef4': {
+                userId: '1fe30445-96ec-4a1d-88e2-749f29440bef4',
+                userName: '吕',
+                userNickname: '红娟',
+            },
+        },   // 消息接收人(用于'选择接收人'dialog)
+        newsReceiveUserIds: [],
         continent: '',
         nation: '',
         rules: {},
@@ -495,6 +520,25 @@ new Vue({
                 //默认数据总数
                 totalCount: 1000,
             },
+            news: {
+                //搜索条件
+                criteria: '',
+
+                //默认每页数据量
+                pageSize: 10,
+
+                //默认高亮行数据id
+                highlightId: -1,
+
+                //当前页码
+                currentPage: 1,
+
+                //查询的页码
+                start: 1,
+
+                //默认数据总数
+                totalCount: 1000,
+            },
         },
     },
     methods: {
@@ -557,6 +601,7 @@ new Vue({
 	                                        	that.submitDwjbxx();
 	                                        	
 	                                        	break;
+                                            case 'formNews': that.submitNews(); break;
 	                                        default: break;
 	                                    }
 	                                    //提交成功之后
@@ -601,6 +646,9 @@ new Vue({
                 case 'searchDwjbxx':
                 	that.loadDwjbxx();
                 	break;
+                case 'formSearchNews':
+                    that.loadNews(that.formSearchNews.title, 1, that.pager.news.pageSize);
+                    break;
             }
         },
 
@@ -952,6 +1000,74 @@ new Vue({
             });
         },
 
+        /**
+         * 消息提交
+         */
+        submitNews() {
+            let that = this;
+            console.log('submitNews', that.formNews);
+            that.formNews.receiverId = that.formNews.receiverId || '';
+            let _len = that.formNews.receiveUsers.length;
+            if (_len == 0) {
+                that.$message.error('请选择接收人');
+                return;
+            }
+            else {
+                for (let i = 0; i < _len; i ++) {
+                    if (that.formNews.receiverId == '') {
+                        that.formNews.receiverId = that.formNews.receiveUsers[i].userId;
+                    }
+                    else {
+                        that.formNews.receiverId += ',' +  that.formNews.receiveUsers[i].userId;
+                    }
+                }
+            }
+            console.log('submitNews', that.formNews);
+            let params = new URLSearchParams();
+            let operName = '新增';
+            /*
+            params.append('receiverId', that.formNews.receiverId);
+            params.append('title',that.formNews.title);
+            params.append('content',that.formNews.content);
+            params.append('sendSms', that.formNews.sendSms ? '1' : '0');
+            params.append('sendMail', that.formNews.sendMail ? "1" : "0");
+             */
+            let _data = {
+                "recordId" : that.formNews.recordId || '',
+                "receiverId" : that.formNews.receiverId,
+                "title" : that.formNews.title,
+                "content" : that.formNews.content,
+                "sendSms" : that.formNews.sendSms ? '1' : '0',
+                "sendMail" : that.formNews.sendMail ? "1" : "0",
+                "tags" : that.formNews.tags || '',
+                "remark" : that.formNews.remark || '',
+                "typeId" : that.formNews.typeId || 'msg-notice',
+                "isReceipt" : that.formNews.isReceipt || '0',
+                "startTime" : that.formNews.startTime || '',
+                "endTime" : that.formNews.endTime || '',
+                "receiverType" : that.formNews.receiverType || '0',
+                "recordFlag": that.formNews.recordFlag || '1',
+            };
+            if(that.currAction === 'edit') {
+                operName = '修改';
+                // params.append('recordId',that.formNews.recordId || '');
+            }
+            axios.post("/api/news/save", _data, {
+                headers: {
+                    "Content-type": "application/json;charset=utf-8"
+                }
+                })
+                .then(function(response){
+                    that.responseMessageHandler(response, '消息', operName, function() {
+                        that.dialogShow.news = false;
+                        that.pager.news.currentPage = 1;
+                        that.loadNews('',1, that.pager.news.pageSize);
+                    });
+                }).catch(function(err){
+                console.warn(err);
+            });
+        },
+
         show(type,scopeIndex,scopeRow) {
             let that = this;
             let rowId = scopeRow != undefined && scopeRow.id != undefined ? scopeRow.id : '';
@@ -1197,6 +1313,37 @@ new Vue({
 	                	}
 	                	that.dialogShow.dwjbxx = !that.dialogShow.dwjbxx;
 	                	break;
+                    case 'news':
+                        that.getAllMsgCategories();
+                        if(isAdd) {
+                            that.formNews = {
+                            };
+                        }
+                        else {
+                            entry = that.newsArray[scopeIndex];
+                            that.formNews = {
+                                recordId: entry.recordId,
+                                title: entry.title || '',
+                                content: entry.content || '',
+                                tags: entry.tags || '',
+                                remark: entry.remark || '',
+                                typeId: entry.typeId || '',
+                                isReceipt: entry.isReceipt + '' || '',
+                                startTime: entry.startTime,
+                                endTime: entry.endTime,
+                                receiverType: entry.receiverType + '',
+                                receiverId: entry.receiverId,
+                                recordFlag: entry.recordFlag,
+                                typeName: entry.typeName || '',
+                                receiveRoles: entry.receiveRoles || [],
+                                receiveUsers: entry.receiveUsers || [],
+                                receiveUserIds: entry.receiveUserIds || [],
+                                sendSms: (entry.sendSms == 1 || entry.sendSms == '1') ? true : false,
+                                sendMail: (entry.sendMail == 1 || entry.sendMail == '1') ? true : false,
+                            };
+                        }
+                        that.dialogShow.news = !that.dialogShow.news;
+                        break;
 	                default: break;
 	            }
         	}
@@ -1377,6 +1524,32 @@ new Vue({
                                         else {
                                             that.$message({
                                                 message: '语言配置信息删除失败!',
+                                                type: 'error'
+                                            });
+                                        }
+                                    }).catch(function(err){
+                                    console.warn(err);
+                                });
+                                break;
+                            case 'news':
+                                entry = that.newsArray[idx];
+                                params = new URLSearchParams();
+                                params.append('id', entry.recordId);
+                                params.append('flag','0');
+                                axios.post("/api/news/updateFlagById",params)
+                                    .then(function(response){
+                                        if(parseInt(response.data.code) === 200){
+                                            that.newsArray.splice(idx,1);
+                                            that.pager.news.currentPage = 1;
+                                            that.loadNews('', 1, that.pager.news.pageSize);
+                                            that.$message({
+                                                message: '消息删除成功!',
+                                                type: 'success'
+                                            });
+                                        }
+                                        else {
+                                            that.$message({
+                                                message: '消息删除失败!',
                                                 type: 'error'
                                             });
                                         }
@@ -1663,6 +1836,27 @@ new Vue({
                     console.log(err);
                 });
         },
+
+        /**
+         * 获得消息分类信息
+         */
+        getAllMsgCategories() {
+            let that = this;
+            that.allMsgCategories = [];
+            axios.get("/api/category/allMsgCategories")
+                .then(function(response){/*成功*/
+                    let data = response.data;
+                    if(parseInt(data.code) === 200) {
+                        that.allMsgCategories = data.data;
+                    }
+                })
+                .catch(function(err){/*异常*/
+                    console.log(err);
+                });
+        },
+
+
+
 
         /**
          * 获取所有语言配置信息
@@ -2207,6 +2401,43 @@ new Vue({
         },
 
         /**
+         * 加载消息信息
+         */
+        loadNews(criteria, pageNum, pageSize) {
+            let that = this;
+            let _isViewed = null;
+            if (that.formSearchNews.isViewed && that.formSearchNews.isViewed != '') {
+                _isViewed = that.formSearchNews.isViewed;
+            }
+            axios.get("/api/news/getCurrUserNews",{params:{
+                    key: criteria,
+                    pageNum: pageNum,
+                    pageSize: pageSize,
+                    isViewed: _isViewed,
+                }})
+                .then(function(response){/*成功*/
+                    if(parseInt(response.status) == 200 ) {
+                        that.newsArray = response.data.data.list;
+                        that.pager.news.totalCount = response.data.data.total;
+                    }
+                })
+                .catch(function(err){/*异常*/
+                    console.log(err);
+                });
+        },
+        //每页显示数据量变更
+        handleNewsSizeChange: function(val) {
+            this.pager.news.pageSize = val;
+            this.loadNews(this.pager.news.criteria, this.pager.news.currentPage, this.pager.news.pageSize);
+        },
+
+        //页码变更
+        handleNewsCurrentChange: function(val) {
+            this.pager.news.currentPage = val;
+            this.loadNews(this.pager.news.criteria, this.pager.news.currentPage, this.pager.news.pageSize);
+        },
+
+        /**
          * 文本域只能输入数字(默认设置为0)
          * @param e
          */
@@ -2220,6 +2451,65 @@ new Vue({
             // if (!a && e.keyCode != 8) {
             //     e.preventDefault();
             // }
+        },
+
+        /**
+         * (消息)新增接收人
+         */
+        handleNewsAddReceivers: function(e) {
+            console.log(e);
+            let that = this;
+            that.formNews.receiveUserIds = that.formNews.receiveUserIds || [];
+            that.formNews.receiveUsers = that.formNews.receiveUsers || [];
+            console.log('newsReceiveUserIds => ', that.newsReceiveUserIds);
+            let _len = that.newsReceiveUserIds.length;
+            if (_len > 0) {
+                // 向表单中添加记录
+                for (let i = 0; i < _len; i ++) {
+                    let _newsReceiveUserId = that.newsReceiveUserIds[i];
+                    if (that.newsReceiveUsers[_newsReceiveUserId]) {
+                        that.formNews.receiveUserIds.push(_newsReceiveUserId);
+                        that.formNews.receiveUsers.push(that.newsReceiveUsers[_newsReceiveUserId]);
+                    }
+                }
+                console.log('that.formNews.receiveUserIds', that.formNews.receiveUserIds);
+                console.log('that.formNews.receiveUsers', that.formNews.receiveUsers);
+            }
+            that.dialogShow.newsReceivers = !that.dialogShow.newsReceivers;
+        },
+
+        /**
+         * (消息)移除接收人
+         * @param _reUserId 用户ID
+         */
+        handleNewsRemoveReceiver: function(_reUserId) {
+            _reUserId = _reUserId || '';
+            let that = this;
+            if (_reUserId && _reUserId != '') {
+                let _len = that.formNews.receiveUsers.length;
+                if (_len > 0) {
+                    for (let i = 0; i < _len; i ++) {
+                        if (that.formNews.receiveUsers[i].userId === _reUserId) {
+                            that.formNews.receiveUsers.splice(i, 1);
+                        }
+                    }
+                }
+            }
+        },
+
+        /**
+         * 按照阅读状态查询消息处理
+         * @param _isViewed 是否已阅读
+         */
+        handleNewsSearchByViewed: function (_isViewed) {
+            let that = this;
+            _isViewed = _isViewed || '';
+            _isViewed = (_isViewed != '1' && _isViewed != '0') ? '' : _isViewed;
+            that.formSearchNews.isViewed = _isViewed;
+            that.formSearchNews.viewedBtnType = (_isViewed == '1') ? 'info' : '';
+            that.formSearchNews.unViewedBtnType = (_isViewed == '0') ? 'info' : '';
+            that.formSearchNews.allBtnType = (_isViewed == '') ? 'info' : '';
+            that.searchForm('formSearchNews');
         },
 
     },
@@ -2246,6 +2536,7 @@ new Vue({
                 that.formCategoryType = config.formCategoryType;
                 that.formDict = config.formDict;
                 that.formLangConf = config.formLangConf;
+                that.formNews = config.formNews;
 
                 that.dialogShow = config.dialogShow;
                 that.rules = config.rules;
@@ -2258,6 +2549,7 @@ new Vue({
                 that.formSearchDict = searchForm.dict;
                 that.formSearchLangConf = searchForm.langConf;
                 that.formSearchMemberUser = searchForm.memberUser;
+                that.formSearchNews = searchForm.news;
             })
             .catch(function(err){/*异常*/
                 console.log(err);

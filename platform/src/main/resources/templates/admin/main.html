@@ -65,6 +65,9 @@
                         <el-card shadow="never" v-if="showContent == 'hjfgzd'" key="hjfgzd">
                             <div th:replace="/common/admin/hjgl/hjfgzd :: content"/>
                         </el-card>
+                        <el-card shadow="never" v-if="showContent == 'announce'" key="announce">
+                            <div th:replace="/common/admin/news/list :: content"/>
+                        </el-card>
                     </div>
                 </el-main>
                 <el-footer style="background-color:#eee;margin-top:20px">
@@ -82,6 +85,7 @@
 <!--<script src="https://unpkg.com/element-ui@2.4.11/lib/index.js"></script>-->
 <script src="/js/vue/vue.min.js" th:src="@{~/js/vue/vue.min.js}"></script>
 <script src="/js/axios/axios.min.js" th:src="@{~/js/axios/axios.min.js}"></script>
+<script src="/js/qs/qs.min.js" th:src="@{~/js/qs/qs.min.js}"></script>
 <script src="/js/element-ui/index.js" th:src="@{~/js/element-ui/index.js}"></script>
 <script src="/js/mock/mock-min.js" th:src="@{~/js/mock/mock-min.js}"></script>
 <script src="/js/data/struct-admin-main.js" th:src="@{~/js/data/struct-admin-main.js}"></script>

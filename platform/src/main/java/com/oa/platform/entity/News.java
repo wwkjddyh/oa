@@ -101,6 +101,16 @@ public class News implements Serializable {
     private String updateUserName;
 
     /**
+     * (是否)发送短信(1,是;0,否;)
+     */
+    private Integer sendSms;
+
+    /**
+     * (是否)发送邮件(1,是;0,否;)
+     */
+    private Integer sendMail;
+
+    /**
      * 搜索关键字
      */
     private String key;
@@ -119,6 +129,16 @@ public class News implements Serializable {
      * 接收用户列表(数据显示之用)
      */
     private List<User> receiveUsers;
+
+    /**
+     * <当前用户>是否已浏览(用于判定用户已查看该消息)
+     */
+    private Integer isViewed;
+
+    /**
+     * <当前>浏览者ID
+     */
+    private String viewerId;
 
     public String getRecordId() {
         return recordId;
@@ -296,6 +316,38 @@ public class News implements Serializable {
         this.receiveUsers = receiveUsers;
     }
 
+    public Integer getSendSms() {
+        return sendSms;
+    }
+
+    public void setSendSms(Integer sendSms) {
+        this.sendSms = sendSms;
+    }
+
+    public Integer getSendMail() {
+        return sendMail;
+    }
+
+    public void setSendMail(Integer sendMail) {
+        this.sendMail = sendMail;
+    }
+
+    public Integer getIsViewed() {
+        return isViewed;
+    }
+
+    public void setIsViewed(Integer isViewed) {
+        this.isViewed = isViewed;
+    }
+
+    public String getViewerId() {
+        return viewerId;
+    }
+
+    public void setViewerId(String viewerId) {
+        this.viewerId = viewerId;
+    }
+
     public News() {
     }
 
@@ -320,6 +372,8 @@ public class News implements Serializable {
                 ", updateTime='" + updateTime + '\'' +
                 ", updateUserId='" + updateUserId + '\'' +
                 ", updateUserName='" + updateUserName + '\'' +
+                ", sendSms=" + sendSms +
+                ", sendMail=" + sendMail +
                 ", typeName='" + typeName + '\'' +
                 ", receiveRoles=" + receiveRoles +
                 ", receiveUsers=" + receiveUsers +

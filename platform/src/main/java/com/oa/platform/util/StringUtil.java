@@ -743,4 +743,27 @@ public class StringUtil {
         return trim(src, def).toLowerCase(LOCALE_DEFAULT);
     }
 
+    /**
+     * 去除null或'null'字符串,默认替换为""
+     * @param src 源字符串
+     * @return
+     */
+    public static String trimNull(String src) {
+        return trimNull(src, "");
+    }
+
+    /**
+     * 去除null或'null'字符串,默认替换为默认字符串
+     * @param src 源字符串
+     * @param def 默认字符串
+     * @return
+     */
+    public static String trimNull(String src, String def) {
+        src = toLowerCase(src, def);
+        if ("null".equals(src)) {
+            src = def;
+        }
+        return src;
+    }
+
 }

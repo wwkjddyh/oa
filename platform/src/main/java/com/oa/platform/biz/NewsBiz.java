@@ -8,6 +8,7 @@ import com.oa.platform.service.MailService;
 import com.oa.platform.service.NewsService;
 import com.oa.platform.service.RoleService;
 import com.oa.platform.service.UserService;
+import com.oa.platform.util.DateUtil;
 import com.oa.platform.util.StringUtil;
 import com.oa.platform.util.ThreadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,15 +50,26 @@ public class NewsBiz extends BaseBiz {
         }
         else {
             try {
-                String recordId = StringUtil.trim(news.getRecordId());
+                String recordId = StringUtil.trimNull(news.getRecordId());
+                news.setStartTime(StringUtil.trimNull(news.getStartTime()));
+                news.setEndTime(StringUtil.trimNull(news.getEndTime()));
+                news.setTypeId(StringUtil.trimNull(news.getTypeId(), "msg-notice"));
                 if ("".equals(recordId)) {
+                    news.setRecordId(StringUtil.getRandomUUID());
+                    news.setRecordUserId(this.getUserIdOfSecurity());
+                    news.setRecordFlag(Constants.INT_NORMAL);
                     newsService.save(news);
                 }
                 else {
+                    Integer recordFlag = news.getRecordFlag();
+                    news.setUpdateTime(DateUtil.currDateFormat(null));
+                    news.setUpdateUserId(this.getUserIdOfSecurity());
+                    news.setRecordFlag(recordFlag == null ? Constants.INT_NORMAL : recordFlag);
                     newsService.update(news);
                 }
                 ret = this.getSuccessVo("", "");
             } catch (Exception e) {
+                e.printStackTrace();
                 loggerError(ThreadUtil.getCurrentFullMethodName(), e);
                 ret = this.getErrorVo();
             }
@@ -165,11 +177,14 @@ public class NewsBiz extends BaseBiz {
      * @param pageSize 每页记录数
      * @return
      */
-    public Map<String,Object> search(String typeId, String key, int pageNum, int pageSize) {
+    public Map<String,Object> search(String typeId, Integer isViewed, String viewerId,
+                                     String key, int pageNum, int pageSize) {
         ret = null;
         try {
             News news = new News();
             news.setTypeId(StringUtil.trim(typeId));
+            news.setIsViewed(isViewed);
+            news.setViewerId(StringUtil.trim(viewerId));
             news.setKey(StringUtil.trim(key));
             news.setRecordFlag(Constants.INT_NORMAL);
             PageInfo<News> pageInfo = newsService.search(news, pageNum, pageSize);

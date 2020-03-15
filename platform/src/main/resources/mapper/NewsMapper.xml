@@ -19,10 +19,14 @@
     <result column="record_user_id" property="recordUserId" jdbcType="VARCHAR"/>
     <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
     <result column="update_user_id" property="updateUserId" jdbcType="VARCHAR"/>
+    <result column="send_sms" property="sendSms" jdbcType="INTEGER"/>
+    <result column="send_mail" property="sendMail" jdbcType="INTEGER"/>
 
     <result column="type_name" property="typeName" jdbcType="VARCHAR"/>
     <result column="record_user_name" property="recordUserName" jdbcType="VARCHAR"/>
     <result column="update_user_name" property="updateUserName" jdbcType="VARCHAR"/>
+    <result column="is_viewed" property="isViewed" jdbcType="INTEGER"/>
+    <result column="viewer_id" property="viewerId" jdbcType="VARCHAR"/>
   </resultMap>
 
   <resultMap id="newsSendRecord" type="com.oa.platform.entity.NewsSendRecord">
@@ -50,11 +54,27 @@
   <insert id="insert" parameterType="news">
     INSERT INTO t_news (
         record_id, type_id, record_time, record_flag, title, content, tags, remark,
-        is_receipt, start_time, end_time, receiver_type, receiver_id, record_user_id
+        is_receipt,
+        <if test="startTime != null and startTime != ''">
+            start_time,
+        </if>
+        <if test="endTime != null and endTime != ''">
+            end_time,
+        </if>
+         receiver_type, receiver_id, record_user_id,
+        send_sms, send_mail
     )
     VALUES (
         #{recordId}, #{typeId}, NOW(), #{recordFlag}, #{title}, #{content}, #{tags}, #{remark},
-        #{isReceipt}, #{startTime}, #{endTime}, #{receiverType}, #{receiverId}, #{recordUserId}
+        #{isReceipt},
+        <if test="startTime != null and startTime != ''">
+        STR_TO_DATE(#{startTime},'%Y-%m-%d %H:%i:%s'),
+        </if>
+        <if test="endTime != null and endTime != ''">
+        STR_TO_DATE(#{endTime},'%Y-%m-%d %H:%i:%s'),
+        </if>
+        #{receiverType}, #{receiverId}, #{recordUserId},
+        #{sendSms}, #{sendMail}
     )
   </insert>
 
@@ -131,6 +151,12 @@
       <if test="updateTime != null and updateTime != ''">
         update_time = STR_TO_DATE(#{updateTime},'%Y-%m-%d %H:%i:%s'),
       </if>
+      <if test="sendSms != null">
+        send_sms = #{sendSms},
+      </if>
+      <if test="sendMail != null">
+        send_mail = #{sendMail},
+      </if>
     </trim>
   </update>
 
@@ -157,7 +183,7 @@
   <select id="findById" resultMap="news" parameterType="java.lang.String">
     SELECT
 	    t1.record_id, t1.type_id, t1.record_time, t1.record_flag, t1.title, t1.content,
-	    t1.tags, t1.remark, t1.is_receipt,
+	    t1.tags, t1.remark, t1.is_receipt, t1.send_sms, t1.send_mail,
 	    DATE_FORMAT(t1.start_time,'%Y-%m-%d %H:%i:%s') start_time,
 	    DATE_FORMAT(t1.end_time,'%Y-%m-%d %H:%i:%s') end_time, t1.receiver_type,
 	    t1.receiver_id, t1.record_user_id,
@@ -207,6 +233,12 @@
       </if>
       <if test="recordFlag != null">
         AND record_flag = #{recordFlag}
+      </if>
+      <if test="sendSms != null">
+        AND send_sms = #{sendSms}
+      </if>
+      <if test="sendMail != null">
+        AND send_mail = #{sendMail}
       </if>
     </trim>
   </delete>
@@ -260,20 +292,29 @@
     SELECT
         record_id, type_id, record_time, record_flag, title, content, tags, remark, is_receipt,
         DATE_FORMAT(start_time,'%Y-%m-%d %H:%i:%s') start_time, DATE_FORMAT(end_time,'%Y-%m-%d %H:%i:%s') end_time,
-        receiver_type, receiver_id, record_user_id,
+        receiver_type, receiver_id, record_user_id, send_sms, send_mail,
         DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,
         update_user_id,
         record_user_name, update_user_name, type_name
+        <if test="viewerId != null and viewerId != ''">
+          , is_viewed
+        </if>
     FROM (
       SELECT
         t1.record_id, t1.type_id, t1.record_time, t1.record_flag, t1.title, t1.content, t1.tags,
         t1.remark, t1.is_receipt, t1.start_time, t1.end_time, t1.receiver_type, t1.receiver_id,
-        t1.record_user_id, t1.update_time, t1.update_user_id,
+        t1.record_user_id, t1.update_time, t1.update_user_id,t1.send_sms, t1.send_mail,
         t2.user_name record_user_name, t3.user_name update_user_name, t4.`name` type_name
-      FROM t_news t1
+        <if test="viewerId != null and viewerId != ''">
+          , if(t5.`status` is NULL, 0, 1) is_viewed
+        </if>
+      FROM (SELECT * FROM t_news ORDER BY record_time DESC) t1
       LEFT JOIN t_user t2 ON t1.record_user_id = t2.user_id
       LEFT JOIN t_user t3 ON t1.update_user_id = t3.user_id
       LEFT JOIN t_category t4 ON t1.type_id = t4.record_id
+      <if test="viewerId != null and viewerId != ''">
+        LEFT JOIN (SELECT DISTINCT news_id, `status` FROM t_news_send_record WHERE record_flag = 1 and receiver_id = #{viewerId}) t5 ON t1.record_id = t5.news_id
+      </if>
     ) t
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="recordId != null and recordId != ''">
@@ -328,6 +369,15 @@
       </if>
       <if test="endTime != null and endTime != ''">
         AND DATE_FORMAT(end_time,'%Y-%m-%d') = #{endTime}
+      </if>
+      <if test="sendSms != null">
+        AND send_sms = #{sendSms}
+      </if>
+      <if test="sendMail != null">
+        AND send_mail = #{sendMail}
+      </if>
+      <if test="viewerId != null and viewerId != '' and isViewed != null">
+        AND is_viewed = #{isViewed}
       </if>
     </trim>
   </select>

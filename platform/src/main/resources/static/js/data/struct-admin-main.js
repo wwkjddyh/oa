@@ -135,6 +135,26 @@ const formStructConfig = {
         updateUserId: '',
         recordFlag: ''
     },
+    formNews: {
+        recordId: '',
+        title: '',
+        content: '',
+        tags: '',
+        remark: '',
+        typeId: '',
+        isReceipt: '',
+        startTime: '',
+        endTime: '',
+        receiverType: '',
+        receiverId: '',
+        recordFlag: '',
+        typeName: '',
+        receiveRoles: [],
+        receiveUsers: [],
+        receiveUserIds: [],
+        sendSms: false,
+        sendMail: false,
+    },
 
     searchForm: {
         memberUser: {
@@ -223,6 +243,26 @@ const formStructConfig = {
             updateUserId: '',
             recordFlag: ''
         },
+        news: {
+            recordId: '',
+            title: '',
+            content: '',
+            tags: '',
+            remark: '',
+            typeId: '',
+            isReceipt: '',
+            startTime: '',
+            endTime: '',
+            receiverType: '',
+            receiverId: '',
+            recordFlag: '',
+            typeName: '',
+            isViewed: '',
+            viewerId: '',
+            allBtnType: 'info', // 全部按钮样式
+            viewedBtnType: '', // 已读按钮样式
+            unViewedBtnType: '', // 未读按钮样式
+        },
     },
     dialogShow: {
         authModule: false,
@@ -240,7 +280,9 @@ const formStructConfig = {
         ssdzzqk:false,
         leader:false,
         reward:false,
-        dept:false
+        dept:false,
+        news: false,
+        newsReceivers: false,
     },
     rules: {
         username: [

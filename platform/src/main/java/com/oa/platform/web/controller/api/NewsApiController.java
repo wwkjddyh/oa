@@ -1,7 +1,9 @@
 package com.oa.platform.web.controller.api;
 
 import com.oa.platform.biz.NewsBiz;
+import com.oa.platform.common.StatusCode;
 import com.oa.platform.entity.News;
+import com.oa.platform.util.StringUtil;
 import com.oa.platform.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +66,8 @@ public class NewsApiController extends BaseController {
     /**
      * 检索（模糊匹配名称、备注）
      * @param typeId 类型ID
+     * @param isViewed 是否已查看(为null或""，则查询全部)
+     * @param viewerId 查看者ID
      * @param key 关键字
      * @param pageNum 页码
      * @param pageSize 每页记录数
@@ -72,10 +76,37 @@ public class NewsApiController extends BaseController {
     @GetMapping("search")
     public Map<String,Object> search(
             @RequestParam(defaultValue = "", required = false) String typeId,
+            Integer isViewed,
+            @RequestParam(defaultValue = "", required = false) String viewerId,
             @RequestParam(defaultValue = "", required = false) String key,
             @RequestParam(defaultValue = PAGE_NUM_STR, required = false) int pageNum,
             @RequestParam(defaultValue = PAGE_SIZE_STR, required = false) int pageSize) {
-        return newsBiz.search(typeId, key, pageNum, pageSize);
+        return newsBiz.search(typeId, isViewed, viewerId, key, pageNum, pageSize);
+    }
+
+    /**
+     * 获得当前用户消息（模糊匹配名称、备注）
+     * @param typeId 类型ID
+     * @param isViewed 是否已查看(为null或""，则查询全部)
+     * @param key 关键字
+     * @param pageNum 页码
+     * @param pageSize 每页记录数
+     * @return
+     */
+    @GetMapping("getCurrUserNews")
+    public Map<String, Object> getCurrUserNews(
+            @RequestParam(defaultValue = "", required = false) String typeId,
+            Integer isViewed,
+            @RequestParam(defaultValue = "", required = false) String key,
+            @RequestParam(defaultValue = PAGE_NUM_STR, required = false) int pageNum,
+            @RequestParam(defaultValue = PAGE_SIZE_STR, required = false) int pageSize) {
+        String userId = this.getUserIdOfSecurity();
+        if ("".equals(userId)) {
+            return StringUtil.getResultVo(StatusCode.UNAUTHORIZED, "", "");
+        }
+        else {
+            return newsBiz.search(typeId, isViewed, this.getUserIdOfSecurity(), key, pageNum, pageSize);
+        }
     }
 
     /**
