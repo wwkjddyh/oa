@@ -257,4 +257,14 @@ public class Constants {
      * 是否为菜单：否(0)
      */
     public static final int IS_NOT_MENU = 0;
+
+    /**
+     * 是否已读：是(1)
+     */
+    public static final int VIEWED = 1;
+
+    /**
+     * 是否已读：否(0)
+     */
+    public static final int UN_VIEWED = 0;
 }

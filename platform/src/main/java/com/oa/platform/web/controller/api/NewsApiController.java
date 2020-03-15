@@ -1,6 +1,7 @@
 package com.oa.platform.web.controller.api;
 
 import com.oa.platform.biz.NewsBiz;
+import com.oa.platform.common.Constants;
 import com.oa.platform.common.StatusCode;
 import com.oa.platform.entity.News;
 import com.oa.platform.util.StringUtil;
@@ -86,7 +87,6 @@ public class NewsApiController extends BaseController {
 
     /**
      * 获得当前用户消息（模糊匹配名称、备注）
-     * @param typeId 类型ID
      * @param isViewed 是否已查看(为null或""，则查询全部)
      * @param key 关键字
      * @param pageNum 页码
@@ -95,7 +95,6 @@ public class NewsApiController extends BaseController {
      */
     @GetMapping("getCurrUserNews")
     public Map<String, Object> getCurrUserNews(
-            @RequestParam(defaultValue = "", required = false) String typeId,
             Integer isViewed,
             @RequestParam(defaultValue = "", required = false) String key,
             @RequestParam(defaultValue = PAGE_NUM_STR, required = false) int pageNum,
@@ -105,7 +104,8 @@ public class NewsApiController extends BaseController {
             return StringUtil.getResultVo(StatusCode.UNAUTHORIZED, "", "");
         }
         else {
-            return newsBiz.search(typeId, isViewed, this.getUserIdOfSecurity(), key, pageNum, pageSize);
+            return newsBiz.searchSendRecord("", "", "",
+                    userId, isViewed, key, Constants.INT_NORMAL, pageNum, pageSize);
         }
     }
 

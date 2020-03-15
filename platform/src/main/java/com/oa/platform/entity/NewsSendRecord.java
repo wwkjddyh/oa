@@ -100,6 +100,21 @@ public class NewsSendRecord implements Serializable {
     private String receiverRemark;
 
     /**
+     * 消息内容
+     */
+    private String newsContent;
+
+    /**
+     * 消息标签
+     */
+    private String newsTags;
+
+    /**
+     * 消息备注
+     */
+    private String newsRemark;
+
+    /**
      * 消息对象
      */
     private News news;
@@ -254,6 +269,30 @@ public class NewsSendRecord implements Serializable {
 
     public void setReceiverRemark(String receiverRemark) {
         this.receiverRemark = receiverRemark;
+    }
+
+    public String getNewsContent() {
+        return newsContent;
+    }
+
+    public void setNewsContent(String newsContent) {
+        this.newsContent = newsContent;
+    }
+
+    public String getNewsTags() {
+        return newsTags;
+    }
+
+    public void setNewsTags(String newsTags) {
+        this.newsTags = newsTags;
+    }
+
+    public String getNewsRemark() {
+        return newsRemark;
+    }
+
+    public void setNewsRemark(String newsRemark) {
+        this.newsRemark = newsRemark;
     }
 
     public NewsSendRecord() {

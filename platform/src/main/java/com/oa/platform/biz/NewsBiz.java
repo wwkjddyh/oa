@@ -1,6 +1,7 @@
 package com.oa.platform.biz;
 
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.oa.platform.common.Constants;
 import com.oa.platform.entity.News;
 import com.oa.platform.entity.NewsSendRecord;
@@ -54,16 +55,44 @@ public class NewsBiz extends BaseBiz {
                 news.setStartTime(StringUtil.trimNull(news.getStartTime()));
                 news.setEndTime(StringUtil.trimNull(news.getEndTime()));
                 news.setTypeId(StringUtil.trimNull(news.getTypeId(), "msg-notice"));
+                String receiverId = StringUtil.trimNull(news.getReceiverId());
+                List<String> reUserIds = Arrays.asList(receiverId.split(","));
+                String senderId = this.getUserIdOfSecurity();
                 if ("".equals(recordId)) {
-                    news.setRecordId(StringUtil.getRandomUUID());
-                    news.setRecordUserId(this.getUserIdOfSecurity());
+                    String newsId = StringUtil.getRandomUUID();
+
+                    news.setRecordId(newsId);
+                    news.setRecordUserId(senderId);
                     news.setRecordFlag(Constants.INT_NORMAL);
-                    newsService.save(news);
+                    List<NewsSendRecord> sendRecords = Lists.newArrayList();
+                    if (!reUserIds.isEmpty()) {
+                        for (String reUserId : receiverId.split(",")) {
+                            NewsSendRecord sendRecord = new NewsSendRecord();
+                            sendRecord.setNewsId(newsId);
+                            sendRecord.setRecordFlag(Constants.INT_NORMAL);
+                            sendRecord.setRecordId(StringUtil.getRandomUUID());
+                            sendRecord.setStatus(Constants.UN_VIEWED);
+                            sendRecord.setSenderId(senderId);
+                            sendRecord.setReceiverId(reUserId);
+                            sendRecord.setSenderRemark("");
+                            sendRecord.setReceiverRemark("");
+                            sendRecord.setSenderMail("");
+                            sendRecord.setReceiverMail("");
+                            sendRecord.setSenderMobileNumber("");
+                            sendRecord.setReceiverMobileNumber("");
+                            sendRecords.add(sendRecord);
+                        }
+                        newsService.batchSaveNewsSendRecord(sendRecords);
+                        newsService.save(news);
+                    }
+                    else {
+                        ret = this.getParamErrorVo();
+                    }
                 }
                 else {
                     Integer recordFlag = news.getRecordFlag();
                     news.setUpdateTime(DateUtil.currDateFormat(null));
-                    news.setUpdateUserId(this.getUserIdOfSecurity());
+                    news.setUpdateUserId(senderId);
                     news.setRecordFlag(recordFlag == null ? Constants.INT_NORMAL : recordFlag);
                     newsService.update(news);
                 }

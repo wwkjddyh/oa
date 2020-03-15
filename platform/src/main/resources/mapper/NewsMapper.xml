@@ -48,6 +48,10 @@
     <result column="receiver_mobile_number" property="receiverMobileNumber" jdbcType="VARCHAR"/>
     <result column="sender_remark" property="senderRemark" jdbcType="VARCHAR"/>
     <result column="receiver_remark" property="receiverRemark" jdbcType="VARCHAR"/>
+
+    <result column="news_content" property="newsContent" jdbcType="VARCHAR"/>
+    <result column="news_tags" property="newsTags" jdbcType="VARCHAR"/>
+    <result column="news_remark" property="newsRemark" jdbcType="VARCHAR"/>
   </resultMap>
 
   <!--插入信息-->
@@ -81,7 +85,7 @@
   <!--插入发送记录-->
   <insert id="insertNewsSendRecord" parameterType="newsSendRecord">
     INSERT INTO t_news_send_record (
-        record_id, send_time, record_flag, news_id, sender_id, receiver_id, status, sender_mail, receiver_mail,
+        record_id, send_time, record_flag, news_id, sender_id, receiver_id, `status`, sender_mail, receiver_mail,
         sender_mobile_number, receiver_mobile_number, sender_remark, receiver_remark
     )
     VALUES (
@@ -93,14 +97,14 @@
   <!--批量插入发送记录-->
   <insert id="batchInsertNewsSendRecord" parameterType="java.util.List">
     INSERT INTO t_news_send_record (
-        record_id, send_time, record_flag, news_id, sender_id, receiver_id, status,
+        record_id, send_time, record_flag, news_id, sender_id, receiver_id, `status`,
         sender_mail, receiver_mail, sender_mobile_number, receiver_mobile_number, sender_remark, receiver_remark
     )
     VALUES
     <foreach collection="list" item="item" index="index" separator=",">
       (#{item.recordId}, NOW(),#{item.recordFlag}, #{item.newsId}, #{item.senderId}, #{item.receiverId}, #{item.status},
       #{item.senderMail}, #{item.receiverMail},
-      #{senderMobileNumber}, #{receiverMobileNumber}, #{senderRemark}, #{receiverRemark}
+      #{item.senderMobileNumber}, #{item.receiverMobileNumber}, #{item.senderRemark}, #{item.receiverRemark}
       )
     </foreach>
   </insert>
@@ -387,12 +391,14 @@
     SELECT
         t.record_id, DATE_FORMAT(t.send_time,'%Y-%m-%d %H:%i:%s') send_time, t.record_flag,
         DATE_FORMAT(t.view_time,'%Y-%m-%d %H:%i:%s') view_time, t.news_id, t.sender_id, t.receiver_id, t.`status`,
-        t.news_title, t.sender_name, t.receiver_name, t.sender_mail, t.receiver_mail,
+        t.news_title, t.news_tags, t.news_content, t.news_remark,
+        t.sender_name, t.receiver_name, t.sender_mail, t.receiver_mail,
         t.sender_mobile_number, t.receiver_mobile_number, t.sender_remark, t.receiver_remark
     FROM
     (SELECT
         t1.record_id, t1.send_time, t1.record_flag, t1.view_time, t1.news_id, t1.sender_id, t1.receiver_id, t1.`status`,
-        t4.title news_title, t2.user_name sender_name, t3.user_name receiver_name,
+        t4.title news_title, t4.tags news_tags, t4.content news_content, t4.remark news_remark,
+        t2.user_name sender_name, t3.user_name receiver_name,
         t1.sender_mail, t1.receiver_mail, t1.sender_mobile_number, t1.receiver_mobile_number, t1.sender_remark, t1.receiver_remark
       FROM
         t_news_send_record t1
@@ -421,8 +427,11 @@
       </if>
       <if test="key != null and key != ''">
         AND (UPPER(news_title) LIKE CONCAT('%',UPPER(#{key}),'%')
-        OR UPPER(sender_name) LIKE CONCAT('%',UPPER(#{key}),'%')
-        OR UPPER(receiver_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(sender_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(receiver_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(news_tags) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(news_content) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(news_remark) LIKE CONCAT('%',UPPER(#{key}),'%')
         )
       </if>
       <if test="sendTime != null and sendTime != ''">

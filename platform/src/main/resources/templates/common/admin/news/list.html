@@ -62,16 +62,16 @@
                     <div v-for="item in newsArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
                         <div style="width: 70%; height: auto">
                             <div style="height: 20px; font-size: 15px;font-weight: bold;">
-                                <label v-if="item.isViewed && item.isViewed == 1" style="color: #82848a">[已读]</label>
-                                <label v-if="!item.isViewed || item.isViewed == 0">[未读]</label>
-                                 <a style="color: #409EFF; margin-left: 20px">{{item.title || ''}}</a>
+                                <label v-if="item.status && item.status == 1" style="color: #82848a">[已读]</label>
+                                <label v-if="!item.status || item.status == 0">[未读]</label>
+                                 <a style="color: #409EFF; margin-left: 20px">{{item.newsTitle || ''}}</a>
                             </div>
                             <div style="height: auto; min-height: 20px; margin-top: 10px; font-size: 13px; color: #8c939d; font-weight: bold;">
-                                {{item.content}}
+                                {{item.newsContent}}
                             </div>
                         </div>
                         <div style="width: 30%; font-size: 13px; color: #8c939d;">
-                            {{item.recordTime}}
+                            {{item.sendTime}}
                         </div>
                     </div>
                 </div>

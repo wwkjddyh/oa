@@ -2457,7 +2457,6 @@ new Vue({
          * (消息)新增接收人
          */
         handleNewsAddReceivers: function(e) {
-            console.log(e);
             let that = this;
             that.formNews.receiveUserIds = that.formNews.receiveUserIds || [];
             that.formNews.receiveUsers = that.formNews.receiveUsers || [];
