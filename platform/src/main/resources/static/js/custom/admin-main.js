@@ -2485,15 +2485,25 @@ new Vue({
         handleNewsRemoveReceiver: function(_reUserId) {
             _reUserId = _reUserId || '';
             let that = this;
+            console.log('that.formNews', that.formNews);
             if (_reUserId && _reUserId != '') {
                 let _len = that.formNews.receiveUsers.length;
+                let _ids = [], _users = [];
                 if (_len > 0) {
                     for (let i = 0; i < _len; i ++) {
-                        if (that.formNews.receiveUsers[i].userId === _reUserId) {
-                            that.formNews.receiveUsers.splice(i, 1);
+                        let __user = that.formNews.receiveUsers[i];
+                        // if (__user.userId === _reUserId) {
+                        //     that.formNews.receiveUsers.splice(i, 1);
+                        // }
+                        if (__user.userId != _reUserId) {
+                            _ids.push(__user.userId);
+                            _users.push(__user);
                         }
                     }
                 }
+                that.formNews.receiveUsers = _users;
+                that.formNews.receiveUserIds = _ids;
+                that.$forceUpdate();
             }
         },
 
