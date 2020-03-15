@@ -59,6 +59,7 @@
                 </el-table>
                 -->
                 <div style="margin-top: 20px; width: 100%">
+                    <!--
                     <div v-for="item in newsArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
                         <div style="width: 70%; height: auto">
                             <div style="height: 20px; font-size: 15px;font-weight: bold;">
@@ -69,6 +70,26 @@
                             <div style="height: auto; min-height: 20px; margin-top: 10px; font-size: 13px; color: #8c939d; font-weight: bold;">
                                 {{item.newsContent}}
                             </div>
+                        </div>
+                        <div style="width: 30%; font-size: 13px; color: #8c939d;">
+                            {{item.sendTime}}
+                        </div>
+                    </div>
+                    -->
+                    <div v-for="item in newsArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
+                        <div style="width: 70%; height: auto">
+                            <label v-if="item.status && item.status == 1" style="color: #82848a">[已读]</label>
+                            <label v-if="!item.status || item.status == 0">[未读]</label>
+                            <!--
+                            <el-popover
+                                    placement="top-start"
+                                    width="400"
+                                    trigger="manual"
+                                    :content="item.newsContent" v-model="item.dialogShow">
+                                <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" slot="reference" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
+                            </el-popover>
+                            -->
+                            <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
                         </div>
                         <div style="width: 30%; font-size: 13px; color: #8c939d;">
                             {{item.sendTime}}
@@ -133,6 +154,11 @@
                     <el-button @click="newsReceiveUserIds = [];dialogShow.newsReceivers = false;" type="info" round size="small">取消</el-button>
                 </div>
             </el-card>
+        </el-dialog>
+        <el-dialog :title="currNewsSendRecord.title" :visible.sync="dialogShow.viewNews" lock-scroll="true" width="500">
+            <div style="width: 100%; text-align: center">
+                {{currNewsSendRecord.content}}
+            </div>
         </el-dialog>
     </el-tabs>
 </div>

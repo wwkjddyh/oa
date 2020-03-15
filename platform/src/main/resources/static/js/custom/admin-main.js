@@ -334,6 +334,7 @@ new Vue({
             },
         },   // 消息接收人(用于'选择接收人'dialog)
         newsReceiveUserIds: [],
+        currNewsSendRecord: {},
         continent: '',
         nation: '',
         rules: {},
@@ -2519,6 +2520,45 @@ new Vue({
             that.formSearchNews.unViewedBtnType = (_isViewed == '0') ? 'info' : '';
             that.formSearchNews.allBtnType = (_isViewed == '') ? 'info' : '';
             that.searchForm('formSearchNews');
+        },
+
+        /**
+         * 查看消息
+         * @param recordId 当前记录唯一标识
+         */
+        handleNewsView: function(_recordId) {
+            let that = this;
+            _recordId = _recordId || '';
+            if ('' != _recordId) {
+                let _record = {};
+                for (let i = 0; i < that.newsArray.length; i ++) {
+                    if (that.newsArray[i].recordId === _recordId) {
+                        _record = that.newsArray[i];
+                        break;
+                    }
+                }
+                console.log('_record', _record);
+                that.currNewsSendRecord = {
+                    newId: _record.newsId || '',
+                    title: _record.newsTitle || '',
+                    content: _record.newsContent || '',
+                };
+                that.dialogShow.viewNews = !that.dialogShow.viewNews;
+                if (_record.status && _record.status != 1) {
+                    let params = new URLSearchParams();
+                    params.append('recordId', _recordId);
+                    axios.post("/api/news/viewNews", params)
+                        .then(function(response){
+                            if(parseInt(response.data.code) === 200){
+                                that.searchForm('formSearchNews');
+                                console.log('查看成功。。。', _recordId);
+                            }
+                        }).catch(function(err){
+                        console.warn(err);
+                    });
+                }
+            }
+
         },
 
     },

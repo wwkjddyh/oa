@@ -168,8 +168,8 @@
   <update id="updateNewsSendRecord" parameterType="newsSendRecord">
     UPDATE t_news_send_record
     <trim prefix="SET" suffixOverrides="," suffix=" WHERE record_id = #{recordId}">
-      <if test="typeId != null and typeId != ''">
-        type_id = #{typeId},
+      <if test="newsId != null and newsId != ''">
+        news_id = #{newsId},
       </if>
       <if test="recordFlag != null">
         record_flag = #{recordFlag},

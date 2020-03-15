@@ -283,6 +283,7 @@ const formStructConfig = {
         dept:false,
         news: false,
         newsReceivers: false,
+        viewNews: false,
     },
     rules: {
         username: [

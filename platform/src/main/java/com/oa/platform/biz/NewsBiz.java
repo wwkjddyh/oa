@@ -279,4 +279,32 @@ public class NewsBiz extends BaseBiz {
         }
         return ret;
     }
+
+    /**
+     * 查看消息
+     * @param recordId 接收信息记录(NewsSendRecord)的唯一标识
+     * @return
+     */
+    public Map<String, Object> viewNews(String recordId) {
+        ret = null;
+        recordId = StringUtil.trim(recordId);
+        if ("".equals(recordId)) {
+            ret = this.getParamErrorVo();
+        }
+        else {
+            try {
+                NewsSendRecord sendRecord = new NewsSendRecord();
+                sendRecord.setRecordId(recordId);
+                sendRecord.setStatus(Constants.VIEWED);
+                sendRecord.setViewTime(DateUtil.currDateFormat(null));
+                newsService.updateNewsSendRecord(sendRecord);
+                ret = this.getSuccessVo("", "");
+            } catch (Exception e) {
+                e.printStackTrace();
+                loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+                ret = this.getErrorVo();
+            }
+        }
+        return ret;
+    }
 }
