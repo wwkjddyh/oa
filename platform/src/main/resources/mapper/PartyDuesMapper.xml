@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oa.platform.repository.PartyDuesRepository" >
+
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"
+         eviction="LRU"
+         flushInterval="3600000"
+         size="1024"
+         readOnly="true"
+         blocking="true"
+  />
+
+  <resultMap id="partyDues" type="com.oa.platform.entity.PartyDues">
+    <result column="record_id" property="recordId" jdbcType="VARCHAR"/>
+    <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+    <result column="pay_time" property="payTime" jdbcType="VARCHAR"/>
+    <result column="pay_amount" property="payAmount" jdbcType="java.math.BigDecimal"/>
+    <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
+    <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
+    <result column="updator_id" property="updatorId" jdbcType="VARCHAR"/>
+    <result column="update_time" property="updatetTime" jdbcType="VARCHAR"/>
+    <result column="pay_period" property="payPeriod" jdbcType="VARCHAR"/>
+
+    <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+    <result column="user_nickname" property="userNickname" jdbcType="VARCHAR"/>
+    <result column="user_sex" property="userSex" jdbcType="VARCHAR"/>
+    <result column="user_org_name" property="userOrgName" jdbcType="VARCHAR"/>
+    <result column="updator_name" property="updatorName" jdbcType="VARCHAR"/>
+  </resultMap>
+
+  <!--插入信息-->
+  <insert id="insert" parameterType="partyDues">
+    INSERT INTO t_party_dues (record_id,user_id,pay_time,pay_amount,remark,record_time,record_flag,pay_period)
+    VALUES (#{recordId},#{userId},#{payTime},#{payAmount},#{remark},NOW(),#{recordFlag},#{payPeriod})
+  </insert>
+
+  <!--更新信息-->
+  <update id="update" parameterType="partyDues">
+    UPDATE t_party_dues
+    <trim prefix="SET" suffixOverrides="," suffix=" WHERE record_id = #{recordId}">
+      <if test="userId != null and userId != ''">
+        user_id = #{userId},
+      </if>
+      <if test="payPeriod != null and payPeriod != ''">
+        pay_period = #{payPeriod},
+      </if>
+      <if test="payAmount != null and payAmount != ''">
+        pay_amount = #{payAmount},
+      </if>
+      <if test="remark != null">
+        remark = #{remark},
+      </if>
+      <if test="recordFlag != null">
+        record_flag = #{recordFlag},
+      </if>
+      <if test="updatorId != null and updatorId != ''">
+        updator_id = #{updatorId},
+      </if>
+      <if test="payTime != null and payTime != ''">
+        `pay_time` = STR_TO_DATE(#{payTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        `update_time` = STR_TO_DATE(#{updateTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        record_time = STR_TO_DATE(#{recordTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+    </trim>
+  </update>
+
+  <!--根据dictId查询信息-->
+  <select id="findById" resultMap="partyDues" parameterType="java.lang.String">
+    SELECT record_id, record_flag, user_id, DATE_FORMAT(pay_time,'%Y-%m-%d %H:%i:%s') pay_time,
+        pay_amount, DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time, remark,
+	    updator_id, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time, pay_period,
+	     user_name, user_nickname, user_sex, updator_name
+    FROM (
+        SELECT
+        t1.* , t2.user_name, t2.user_nickname user_nickname, t2.user_sex,
+        t3.user_name updator_name
+        FROM (SELECT * FROM t_party_dues WHERE record_id = #{recordId}) t1
+        LEFT JOIN t_user t2 ON t1.user_id = t2.user_id
+        LEFT JOIN t_user t3 ON t1.updator_id = t3.user_id
+    ) t
+  </select>
+
+  <delete id="delete" parameterType="partyDues">
+    DELETE FROM t_party_dues
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="userId != null and userId != ''">
+        AND user_id = #{userId}
+      </if>
+      <if test="updatorId != null and updatorId != ''">
+        AND updator_id = #{updatorId}
+      </if>
+      <if test="payPeriod != null and payPeriod != ''">
+        AND pay_period = #{payPeriod}
+      </if>
+      <if test="payAmount != null and payAmount != ''">
+        AND pay_amount = #{payAmount}
+      </if>
+      <if test="remark != null and remark != ''">
+        AND remark = #{remark}
+      </if>
+      <if test="recordFlag != null">
+        AND record_flag = #{recordFlag}
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        AND DATE_FORMAT(update_time,'%Y-%m-%d') = #{updateTime},
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
+      </if>
+    </trim>
+  </delete>
+
+  <!--查询-->
+  <select id="find" parameterType="partyDues" resultMap="partyDues">
+    SELECT record_id, record_flag, user_id, DATE_FORMAT(pay_time,'%Y-%m-%d %H:%i:%s') pay_time,
+      pay_amount, DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time, remark,
+      updator_id, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time, pay_period,
+      user_name, user_nickname, user_sex, updator_name
+    FROM (
+      SELECT
+        t1.* , t2.user_name, t2.user_nickname user_nickname, t2.user_sex,
+        t3.user_name updator_name
+        FROM t_party_dues t1
+        LEFT JOIN t_user t2 ON t1.user_id = t2.user_id
+        LEFT JOIN t_user t3 ON t1.updator_id = t3.user_id
+    ) t
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="userId != null and userId != ''">
+        AND user_id = #{userId}
+      </if>
+      <if test="updatorId != null and updatorId != ''">
+        AND updator_id = #{updatorId}
+      </if>
+      <if test="payPeriod != null and payPeriod != ''">
+        AND pay_period = #{payPeriod}
+      </if>
+      <if test="payAmount != null and payAmount != ''">
+        AND pay_amount = #{payAmount}
+      </if>
+      <if test="remark != null and remark != ''">
+        AND remark = #{remark}
+      </if>
+      <if test="recordFlag != null">
+        AND record_flag = #{recordFlag}
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        AND DATE_FORMAT(update_time,'%Y-%m-%d') = #{updateTime},
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
+      </if>
+      <if test="key != null and key != ''">
+        AND (UPPER(remark) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(pay_period) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(user_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(user_nickname) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(user_org_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+        )
+      </if>
+    </trim>
+  </select>
+</mapper>
