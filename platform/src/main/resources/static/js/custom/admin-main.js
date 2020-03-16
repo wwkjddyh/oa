@@ -1433,7 +1433,7 @@ new Vue({
                         break;
                     case 'article':
                         if(isAdd) {
-                            that.def_menu_id = 'formArticle';
+                            //that.def_menu_id = 'formArticle';
                             that.formArticle = {isEdit : false,};
                             setTimeout(function() {
                                 that.ueditors.article.setContent('', false);
@@ -1441,7 +1441,7 @@ new Vue({
                             that.showContent = 'formArticle';
                         }
                         else {
-                            that.def_menu_id = 'formArticle';
+                            //that.def_menu_id = 'formArticle';
                             entry = that.articles[scopeIndex];
                             that.formArticle = {
                                 isEdit: true,
