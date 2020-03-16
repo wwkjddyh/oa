@@ -76,4 +76,25 @@ public class PartyDuesApiController extends BaseController {
             @RequestParam(defaultValue = PAGE_SIZE_STR, required = false) int pageSize) {
         return partyDuesBiz.search(userId, key, pageNum, pageSize);
     }
+
+    /**
+     * 获取当前用户缴费记录
+     * @param key 关键字
+     * @param pageNum 页码
+     * @param pageSize 每页记录数
+     * @return
+     */
+    @GetMapping("getCurrUserDues")
+    public Map<String, Object> getCurrUserDues(
+            @RequestParam(defaultValue = "", required = false) String key,
+            @RequestParam(defaultValue = PAGE_NUM_STR, required = false)  int pageNum,
+            @RequestParam(defaultValue = PAGE_SIZE_STR, required = false) int pageSize) {
+        String userId = this.getUserIdOfSecurity();
+        if ("".equals(userId)) {
+            return partyDuesBiz.getParamErrorVo();
+        }
+        else {
+            return partyDuesBiz.search(userId, key, pageNum, pageSize);
+        }
+    }
 }
