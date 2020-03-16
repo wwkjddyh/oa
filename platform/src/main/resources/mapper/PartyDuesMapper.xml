@@ -14,7 +14,7 @@
     <result column="record_id" property="recordId" jdbcType="VARCHAR"/>
     <result column="user_id" property="userId" jdbcType="VARCHAR"/>
     <result column="pay_time" property="payTime" jdbcType="VARCHAR"/>
-    <result column="pay_amount" property="payAmount" jdbcType="java.math.BigDecimal"/>
+    <result column="pay_amount" property="payAmount" jdbcType="DECIMAL"/>
     <result column="remark" property="remark" jdbcType="VARCHAR"/>
     <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
     <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
