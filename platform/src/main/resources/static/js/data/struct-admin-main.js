@@ -156,6 +156,30 @@ const formStructConfig = {
         sendMail: false,
     },
 
+    formArticle: {
+        isEdit: false,
+        recordId: '',
+        categoryId: '',
+        categoryName: '',
+        title: '',
+        intro: '',
+        content: '',
+        tags: '',
+        source: '',
+        authorName: '',
+        sourceSite: '',
+        creatorId: '',
+        creatorName: '',
+        updatorId: '',
+        updatorName: '',
+        updateTime: '',
+        recordTime: '',
+        commentsCount: 0,
+        viewCount: 0,
+        likeCount: 0,
+        stinkyEgg: 0
+    },
+
     searchForm: {
         memberUser: {
             name: '',
@@ -263,6 +287,28 @@ const formStructConfig = {
             viewedBtnType: '', // 已读按钮样式
             unViewedBtnType: '', // 未读按钮样式
         },
+        article: {
+            recordId: '',
+            categoryId: '',
+            categoryName: '',
+            title: '',
+            intro: '',
+            content: '',
+            tags: '',
+            source: '',
+            authorName: '',
+            sourceSite: '',
+            creatorId: '',
+            creatorName: '',
+            updatorId: '',
+            updatorName: '',
+            updateTime: '',
+            recordTime: '',
+            commentsCount: 0,
+            viewCount: 0,
+            likeCount: 0,
+            stinkyEgg: 0
+        },
     },
     dialogShow: {
         authModule: false,
@@ -284,6 +330,7 @@ const formStructConfig = {
         news: false,
         newsReceivers: false,
         viewNews: false,
+        article: false,
     },
     rules: {
         username: [

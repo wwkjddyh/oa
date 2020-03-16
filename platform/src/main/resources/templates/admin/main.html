@@ -65,8 +65,16 @@
                         <el-card shadow="never" v-if="showContent == 'hjfgzd'" key="hjfgzd">
                             <div th:replace="/common/admin/hjgl/hjfgzd :: content"/>
                         </el-card>
+                        <!--通知通告-->
                         <el-card shadow="never" v-if="showContent == 'announce'" key="announce">
                             <div th:replace="/common/admin/news/list :: content"/>
+                        </el-card>
+                        <!-- 简报 -->
+                        <el-card shadow="never" v-if="showContent == 'articles'" key="bulletin">
+                            <div th:replace="/common/admin/article/articles :: content"/>
+                        </el-card>
+                        <el-card shadow="never" v-show="showContent == 'formArticle'" key="formArticle">
+                            <div th:replace="/common/admin/article/add :: form"/>
                         </el-card>
                     </div>
                 </el-main>

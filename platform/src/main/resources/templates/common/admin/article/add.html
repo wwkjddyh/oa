@@ -1,0 +1,81 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+    <div th:fragment="form">
+        <el-tabs v-model="activeTabName" type="card">
+            <el-tab-pane label="文章信息" name="first">
+                <el-form ref="formArticle" :rules="rules" :model="formArticle" label-width="100px">
+                    <el-form-item label="文章类型" prop="categoryId">
+                        <el-select v-model="formArticle.categoryId" style="width: 300px;" placeholder="请选择类型">
+                            <el-option v-for="item in articleCategories" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>
+                        </el-select>
+                        <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">文章类型</div><i class="el-icon-question"></i></el-tooltip>
+                    </el-form-item>
+                    <el-form-item label="文章标题" prop="title">
+                        <el-input v-model="formArticle.title" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="文章标题"></el-input>
+                        <el-tooltip class="item" effect="dark" placement="top">
+                            <div slot="content">文章标题</div><i class="el-icon-question"></i></el-tooltip>
+                    </el-form-item>
+                    <el-form-item label="简介/摘要" prop="intro">
+                        <el-input type="textarea" v-model="formArticle.intro" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;"></el-input>
+                        <el-tooltip class="item" effect="dark" placement="top">
+                            <div slot="content">文章简介/摘要</div><i class="el-icon-question"></i></el-tooltip>
+                    </el-form-item>
+                    <el-form-item label="文章标签" prop="tags">
+                        <el-input v-model="formArticle.tags" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="标签以空格分隔"></el-input>
+                        <el-tooltip class="item" effect="dark" placement="top">
+                            <div slot="content">标签</div><i class="el-icon-question"></i></el-tooltip>
+                    </el-form-item>
+                    <el-form-item label="文章作者" prop="authorName">
+                        <el-input v-model="formArticle.authorName" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="作者"></el-input>
+                        <el-tooltip class="item" effect="dark" placement="top">
+                            <div slot="content">作者</div><i class="el-icon-question"></i></el-tooltip>
+                    </el-form-item>
+                    <el-form-item label="文章来源" prop="source">
+                        <el-input v-model="formArticle.source" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="文章来源"></el-input>
+                        <el-tooltip class="item" effect="dark" placement="top">
+                            <div slot="content">来源(网站名称或媒体名称)</div><i class="el-icon-question"></i></el-tooltip>
+                    </el-form-item>
+                    <el-form-item label="文章来源站点" prop="sourceSite">
+                        <el-input v-model="formArticle.sourceSite" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="文章来源站点"></el-input>
+                        <el-tooltip class="item" effect="dark" placement="top">
+                            <div slot="content">来源站点(网站网址或文章网址)</div><i class="el-icon-question"></i></el-tooltip>
+                    </el-form-item>
+                    <div v-if="formArticle.isEdit">
+                        <el-form-item label="创建者" prop="creatorName">
+                            <el-input readonly="readonly" v-model="formArticle.creatorName" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder=""></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">文章创建者</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="创建时间" prop="recordTime">
+                            <el-input readonly="readonly" v-model="formArticle.recordTime" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder=""></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">文章创建时间</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="更新者" prop="updatorName">
+                            <el-input readonly="readonly" v-model="formArticle.updatorName" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder=""></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">文章更新时间</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                        <el-form-item label="更新时间" prop="updateTime">
+                            <el-input readonly="readonly" v-model="formArticle.updateTime" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder=""></el-input>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">文章更新时间</div><i class="el-icon-question"></i></el-tooltip>
+                        </el-form-item>
+                    </div>
+                    <el-form-item label="文章内容" prop="content">
+                        <el-tooltip class="item" effect="dark" placement="top" style="margin-left: 658px">
+                            <div slot="content">文章内容</div><i class="el-icon-question"></i></el-tooltip>
+                    </el-form-item>
+                    <div style="margin-bottom: 20px;margin-left: 100px;margin-top:-50px;"><script id="articleEditor" type="text/plain"></script></div>
+
+                    <el-form-item>
+                        <el-button @click="resetForm('formArticle')" plain>取消</el-button>
+                        <el-button @click="submitForm('formArticle')" type="primary" plain>保存</el-button>
+                        <el-button v-if="currAction !== 'append'" @click="deleteForm('formArticle')" type="danger" plain>删除</el-button>
+                    </el-form-item>
+                </el-form>
+            </el-tab-pane>
+        </el-tabs>
+    </div>
+</html>

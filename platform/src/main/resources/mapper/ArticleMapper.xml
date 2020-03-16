@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oa.platform.repository.ArticleRepository" >
+
+  <cache type="org.mybatis.caches.ehcache.EhcacheCache"
+         eviction="LRU"
+         flushInterval="3600000"
+         size="1024"
+         readOnly="true"
+         blocking="true"
+  />
+
+  <resultMap id="article" type="com.oa.platform.entity.Article">
+    <result column="record_id" property="recordId" jdbcType="VARCHAR"/>
+    <result column="category_id" property="categoryId" jdbcType="VARCHAR"/>
+    <result column="category_name" property="categoryName" jdbcType="VARCHAR"/>
+    <result column="title" property="title" jdbcType="VARCHAR"/>
+    <result column="intro" property="intro" jdbcType="VARCHAR"/>
+    <result column="content" property="content" jdbcType="VARCHAR"/>
+    <result column="tags" property="tags" jdbcType="VARCHAR"/>
+    <result column="source" property="source" jdbcType="VARCHAR"/>
+    <result column="author_name" property="authorName" jdbcType="VARCHAR"/>
+    <result column="source_site" property="sourceSite" jdbcType="VARCHAR"/>
+    <result column="creator_id" property="creatorId" jdbcType="VARCHAR"/>
+    <result column="creator_name" property="creatorName" jdbcType="VARCHAR"/>
+    <result column="updator_id" property="updatorId" jdbcType="VARCHAR"/>
+    <result column="updator_name" property="updatorName" jdbcType="VARCHAR"/>
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
+    <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
+    <result column="comments_count" property="commentsCount" jdbcType="BIGINT"/>
+    <result column="view_count" property="viewCount" jdbcType="BIGINT"/>
+    <result column="like_count" property="likeCount" jdbcType="BIGINT"/>
+    <result column="stinky_egg" property="stinkyEgg" jdbcType="BIGINT"/>
+  </resultMap>
+
+  <!--插入信息-->
+  <insert id="insert" parameterType="article">
+    INSERT INTO t_article (record_id,category_id,`title`,`content`,`intro`,`tags`,
+                          `source`,`author_name`,source_site,creator_id,updator_id,update_time,record_time,flag)
+    VALUES (#{recordId},#{categoryId},#{title},#{content},#{intro},#{tags},#{source},#{authorName},#{sourceSite},
+                          #{creatorId},#{updatorId},#{updateTime},NOW(),#{flag})
+  </insert>
+
+  <!--更新类别信息-->
+  <update id="update" parameterType="article">
+    UPDATE t_article
+    <trim prefix="SET" suffixOverrides="," suffix=" WHERE record_id = #{recordId}">
+      <if test="categoryId != null and categoryId != ''">
+        category_id = #{categoryId},
+      </if>
+      <if test="title != null and title != ''">
+        `title` = #{title},
+      </if>
+      <if test="content != null and content != ''">
+        `content` = #{content},
+      </if>
+      <if test="intro != null and intro != ''">
+        `intro` = #{intro},
+      </if>
+      <if test="tags != null and tags != ''">
+        `tags` = #{tags},
+      </if>
+      <if test="source != null and source != ''">
+        `source` = #{source},
+      </if>
+      <if test="authorName != null and authorName != ''">
+        `author_name` = #{authorName},
+      </if>
+      <if test="sourceSite != null and sourceSite != ''">
+        `source_site` = #{sourceSite},
+      </if>
+      <if test="creatorId != null and creatorId != ''">
+        `creator_id` = #{creatorId},
+      </if>
+      <if test="updatorId != null and updatorId != ''">
+        `updator_id` = #{updatorId},
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        `update_time` = STR_TO_DATE(#{updateTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        record_time = STR_TO_DATE(#{recordTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+      <if test="flag != null">
+        flag = #{flag},
+      </if>
+      <if test="commentsCount != null">
+        comments_count = #{commentsCount},
+      </if>
+      <if test="viewCount != null">
+        view_count = #{viewCount},
+      </if>
+      <if test="likeCount != null">
+        like_count = #{likeCount},
+      </if>
+      <if test="stinkyEgg != null">
+        stinky_egg = #{stinkyEgg},
+      </if>
+    </trim>
+  </update>
+
+  <delete id="delete" parameterType="article">
+    DELETE FROM t_article
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="categoryId != null and categoryId != ''">
+        AND category_id = #{categoryId}
+      </if>
+      <if test="title != null and title != ''">
+        AND `title` = #{title}
+      </if>
+      <if test="content != null and content != ''">
+        AND `content` = #{content}
+      </if>
+      <if test="intro != null and intro != ''">
+        AND `intro` = #{intro}
+      </if>
+      <if test="tags != null and tags != ''">
+        AND `tags` = #{tags}
+      </if>
+      <if test="source != null and source != ''">
+        AND `source` = #{source}
+      </if>
+      <if test="authorName != null and authorName != ''">
+        AND `author_name` = #{authorName}
+      </if>
+      <if test="sourceSite != null and sourceSite != ''">
+        AND `source_site` = #{sourceSite}
+      </if>
+      <if test="creatorId != null and creatorId != ''">
+        AND `creator_id` = #{creatorId}
+      </if>
+      <if test="updatorId != null and updatorId != ''">
+        AND `updator_id` = #{updatorId}
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        AND DATE_FORMAT(update_time,'%Y-%m-%d') = #{updateTime},
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
+      </if>
+      <if test="flag != null">
+        AND flag = #{flag}
+      </if>
+    </trim>
+  </delete>
+
+  <!--查询-->
+  <select id="find" parameterType="article" resultMap="article">
+    SELECT
+        record_id,category_id,`title`,`content`,`intro`,`tags`,
+        `source`,`author_name`,source_site,creator_id,updator_id,
+        DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,
+        DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+        flag,category_name,creator_name,updator_name,comments_count,view_count,like_count,stinky_egg
+      FROM (
+        SELECT
+          t1.*,
+          t3.user_nickname creator_name,
+          t4.user_nickname updator_name,
+          t2.`name` category_name
+        FROM
+          t_article t1
+          LEFT JOIN (SELECT * FROM t_user WHERE record_flag = 1) t3 ON t1.creator_id = t3.user_id
+          LEFT JOIN (SELECT * FROM t_user WHERE record_flag = 1) t4 ON t1.updator_id = t4.user_id
+          LEFT JOIN (SELECT * FROM t_category WHERE flag = 1) t2 ON t1.category_id = t2.record_id
+    ) T
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="categoryId != null and categoryId != ''">
+        AND category_id = #{categoryId}
+      </if>
+      <if test="key != null and key != ''">
+        AND (UPPER(`title`) LIKE CONCAT('%',UPPER(#{key}),'%')
+              OR UPPER(`content`) LIKE CONCAT('%',UPPER(#{key}),'%')
+              OR UPPER(`intro`) LIKE CONCAT('%',UPPER(#{key}),'%')
+              OR UPPER(`tags`) LIKE CONCAT('%',UPPER(#{key}),'%')
+              OR UPPER(`source`) LIKE CONCAT('%',UPPER(#{key}),'%')
+              OR UPPER(`source_site`) LIKE CONCAT('%',UPPER(#{key}),'%')
+              OR UPPER(`author_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+              OR UPPER(`category_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
+            )
+      </if>
+      <if test="title != null and title != ''">
+        AND `title` = #{title}
+      </if>
+      <if test="content != null and content != ''">
+        AND `content` = #{content}
+      </if>
+      <if test="intro != null and intro != ''">
+        AND `intro` = #{intro}
+      </if>
+      <if test="tags != null and tags != ''">
+        AND `tags` = #{tags}
+      </if>
+      <if test="source != null and source != ''">
+        AND `source` = #{source}
+      </if>
+      <if test="authorName != null and authorName != ''">
+        AND `author_name` = #{authorName}
+      </if>
+      <if test="sourceSite != null and sourceSite != ''">
+        AND `source_site` = #{sourceSite}
+      </if>
+      <if test="creatorId != null and creatorId != ''">
+        AND `creator_id` = #{creatorId}
+      </if>
+      <if test="updatorId != null and updatorId != ''">
+        AND `updator_id` = #{updatorId}
+      </if>
+      <if test="updateTime != null and updateTime != ''">
+        AND DATE_FORMAT(update_time,'%Y-%m-%d') = #{updateTime},
+      </if>
+      <if test="recordTime != null and recordTime != ''">
+        AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
+      </if>
+      <if test="flag != null">
+        AND flag = #{flag}
+      </if>
+    </trim>
+  </select>
+</mapper>
