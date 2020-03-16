@@ -180,6 +180,21 @@ const formStructConfig = {
         stinkyEgg: 0
     },
 
+    formPartyDues: {
+        recordId: '',
+        userId: '',
+        payTime: '',
+        payAmount: '0.00',
+        remark: '',
+        recordTime: '',
+        recordFlag: '',
+        payPeriod: '',
+        userName: '',
+        userNickname: '',
+        userSex: '',
+        userOrgName: '',
+    },
+
     searchForm: {
         memberUser: {
             name: '',
@@ -309,6 +324,20 @@ const formStructConfig = {
             likeCount: 0,
             stinkyEgg: 0
         },
+        partyDues: {
+            recordId: '',
+            userId: '',
+            payTime: '',
+            payAmount: '0.00',
+            remark: '',
+            recordTime: '',
+            recordFlag: '',
+            payPeriod: '',
+            userName: '',
+            userNickname: '',
+            userSex: '',
+            userOrgName: '',
+        },
     },
     dialogShow: {
         authModule: false,
@@ -331,6 +360,7 @@ const formStructConfig = {
         newsReceivers: false,
         viewNews: false,
         article: false,
+        partyDues: false,
     },
     rules: {
         username: [

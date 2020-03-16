@@ -62,6 +62,10 @@
                         <el-card shadow="never" v-if="showContent == 'dffgzd'" key="dffgzd">
                             <div th:replace="/common/admin/dfgl/dffgzd :: content"/>
                         </el-card>
+                        <!--年度党费上缴情况-->
+                        <el-card shadow="never" v-if="showContent == 'ndsjdfqk'" key="ndsjdfqk">
+                            <div th:replace="/common/admin/dfgl/ndsjdfqk :: content"/>
+                        </el-card>
                         <el-card shadow="never" v-if="showContent == 'hjfgzd'" key="hjfgzd">
                             <div th:replace="/common/admin/hjgl/hjfgzd :: content"/>
                         </el-card>

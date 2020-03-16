@@ -238,6 +238,7 @@ new Vue({
         formLangConf: {},
         formNews: {},
         formArticle: {},
+        formPartyDues: {},
         loading:{},
         dyxxyear:{
         },
@@ -253,6 +254,7 @@ new Vue({
         formSearchLangConf: {},
         formSearchNews: {},
         formSearchArticle: {},
+        formSearchPartyDues: {},
         formdwjbxx:{},
         formLeader:{},
         formDept:{},
@@ -2856,6 +2858,8 @@ new Vue({
                 that.formDict = config.formDict;
                 that.formLangConf = config.formLangConf;
                 that.formNews = config.formNews;
+                that.formArticle = config.formArticle;
+                that.formPartyDues = config.formPartyDues;
 
                 that.dialogShow = config.dialogShow;
                 that.rules = config.rules;
@@ -2869,6 +2873,7 @@ new Vue({
                 that.formSearchLangConf = searchForm.langConf;
                 that.formSearchMemberUser = searchForm.memberUser;
                 that.formSearchNews = searchForm.news;
+                that.formSearchPartyDues = searchForm.partyDues;
             })
             .catch(function(err){/*异常*/
                 console.log(err);

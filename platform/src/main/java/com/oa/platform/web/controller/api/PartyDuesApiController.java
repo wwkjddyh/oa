@@ -33,7 +33,7 @@ public class PartyDuesApiController extends BaseController {
     public Map<String, Object> save(
             @RequestParam(defaultValue = "", required = false) String recordId,
             @RequestParam String payTime,
-            @RequestParam String payAmount,
+            @RequestParam(defaultValue = "0.00") String payAmount,
             @RequestParam(defaultValue = "", required = false) String remark,
             @RequestParam String payPeriod,
             Integer recordFlag) {
