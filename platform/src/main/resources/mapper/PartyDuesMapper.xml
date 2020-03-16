@@ -32,7 +32,7 @@
   <!--插入信息-->
   <insert id="insert" parameterType="partyDues">
     INSERT INTO t_party_dues (record_id,user_id,pay_time,pay_amount,remark,record_time,record_flag,pay_period)
-    VALUES (#{recordId},#{userId},#{payTime},#{payAmount},#{remark},NOW(),#{recordFlag},#{payPeriod})
+    VALUES (#{recordId},#{userId},STR_TO_DATE(#{payTime},'%Y-%m-%d'),#{payAmount},#{remark},NOW(),#{recordFlag},#{payPeriod})
   </insert>
 
   <!--更新信息-->
@@ -58,7 +58,7 @@
         updator_id = #{updatorId},
       </if>
       <if test="payTime != null and payTime != ''">
-        `pay_time` = STR_TO_DATE(#{payTime},'%Y-%m-%d %H:%i:%s'),
+        `pay_time` = STR_TO_DATE(#{payTime},'%Y-%m-%d'),
       </if>
       <if test="updateTime != null and updateTime != ''">
         `update_time` = STR_TO_DATE(#{updateTime},'%Y-%m-%d %H:%i:%s'),
@@ -71,7 +71,7 @@
 
   <!--根据dictId查询信息-->
   <select id="findById" resultMap="partyDues" parameterType="java.lang.String">
-    SELECT record_id, record_flag, user_id, DATE_FORMAT(pay_time,'%Y-%m-%d %H:%i:%s') pay_time,
+    SELECT record_id, record_flag, user_id, DATE_FORMAT(pay_time,'%Y-%m-%d') pay_time,
         pay_amount, DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time, remark,
 	    updator_id, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time, pay_period,
 	     user_name, user_nickname, user_sex, updator_name
@@ -120,7 +120,7 @@
 
   <!--查询-->
   <select id="find" parameterType="partyDues" resultMap="partyDues">
-    SELECT record_id, record_flag, user_id, DATE_FORMAT(pay_time,'%Y-%m-%d %H:%i:%s') pay_time,
+    SELECT record_id, record_flag, user_id, DATE_FORMAT(pay_time,'%Y-%m-%d') pay_time,
       pay_amount, DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time, remark,
       updator_id, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time, pay_period,
       user_name, user_nickname, user_sex, updator_name

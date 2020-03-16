@@ -14,7 +14,7 @@
                 </el-form-item>
             </el-form>
             <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
-            <el-button plain @click="edit('news','','',true)" size="mini"><i class="el-icon-plus"></i>&nbsp;新增</el-button>
+            <el-button plain @click="edit('news','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
             <!--
             <el-button plain @click="searchForm('formSearchNews')" size="mini"><i class="el-icon-refresh"></i>&nbsp;刷新</el-button>
             -->
@@ -115,10 +115,19 @@
         <el-dialog title="新增消息" :visible.sync="dialogShow.news" lock-scroll="true" width="800px">
             <el-card shadow="never" style="width: 100%;" type="card">
                 <el-form ref="formNews" :rules="rules" :model="formNews" label-width="100px">
-                    <el-form-item label="收件人" prop="receiverId">
+                    <el-form-item label="收件人" prop="receiverId" >
                         <div style="width: 600px;height: auto;float: left;display: flex;display: -webkit-flex; align-items:center;">
                             <div style="border-radius: 4px;border-width: 1px;border-color: #E0E0E0;width:470px;height:200px;border-style: solid;">
-                                <label v-for="reUser in formNews.receiveUsers" style="margin-left: 5px;padding: 2px;border-radius: 2px;border-width: 2px;border-color: #82848a;background-color: #d0d0d0;">{{reUser.userNickname}}&nbsp;<i class="el-icon-delete" @click="handleNewsRemoveReceiver(reUser.userId);" style="cursor: pointer;"></i></label>
+                                <el-tag style="margin-left: 5px;"
+                                        type="info"
+                                        size="mini"
+                                        :key="reUser.userId"
+                                        v-for="reUser in formNews.receiveUsers"
+                                        closable
+                                        :disable-transitions="false"
+                                        @close="handleNewsRemoveReceiver(reUser.userId);">
+                                    {{reUser.userNickname}}
+                                </el-tag>
                             </div>
                             <el-tooltip class="item" effect="dark" placement="top" style="margin-left: 2px">
                                 <div slot="content">收件人</div><i class="el-icon-question"></i></el-tooltip>
@@ -158,7 +167,7 @@
                 </div>
             </el-card>
         </el-dialog>
-        <el-dialog :title="currNewsSendRecord.title" :visible.sync="dialogShow.viewNews" lock-scroll="true" width="500">
+        <el-dialog :title="currNewsSendRecord.title" :visible.sync="dialogShow.viewNews" lock-scroll="true" width="500" center="true">
             <div style="width: 100%; text-align: center">
                 {{currNewsSendRecord.content}}
             </div>

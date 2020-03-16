@@ -664,6 +664,7 @@ new Vue({
                                 });
                             }else{
                             	that.$refs[formName].validate((valid) => {
+                            	    console.log('valid', valid);
                             	    if (valid) {
                             	      // 表单验证通过之后的操作
                             	    	switch (formName) {

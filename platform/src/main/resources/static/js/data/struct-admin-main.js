@@ -380,6 +380,10 @@ const formStructConfig = {
             { required: true, message: '请填写标题', trigger: 'blur' },
             { min: 3, max: 512, message: '长度在 3 到 512 个字符之间', trigger: 'blur' }
         ],
+        content: [
+            { required: true, message: '请填写内容', trigger: 'blur' },
+            { min: 3, max: 2000, message: '长度在 3 到 2000 个字符之间', trigger: 'blur' }
+        ],
         orgCode: [
         	{ required: true, message: '请填写党组织代码' , trigger: 'blur'}
         ],
@@ -409,8 +413,22 @@ const formStructConfig = {
         ],
         orgJobPhone:[
         	{ required: true, message: '请填写党组织办公电话' , trigger: 'blur'}
-        ]
-    }
+        ],
+        payTime: [
+            { required: true, message: '请选择上缴时间', trigger: 'blur'}
+        ],
+        payPeriod: [
+            { required: true, message: '请输入上缴哪季度党费', trigger: 'blur' },
+            { min: 3, max: 128, message: '长度在 3 到 128 个字符之间', trigger: 'blur' }
+        ],
+        payAmount: [
+            { required: true, message: '请输入金额', trigger: 'blur' },
+        ],
+
+    },
+    dateDickerOptions: {
+
+    },
 };
 
 let StructMock = Mock.mock('/api/admin/main/struct', {

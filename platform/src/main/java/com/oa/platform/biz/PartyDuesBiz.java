@@ -10,6 +10,7 @@ import com.oa.platform.util.ThreadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -90,6 +91,7 @@ public class PartyDuesBiz extends BaseBiz {
                     dues.setPayPeriod(payPeriod);
                     dues.setPayTime(payTime);
                     dues.setRemark(remark);
+                    dues.setPayAmount(new BigDecimal(payAmount));
                     String currTime = DateUtil.currDateFormat(null);
                     if ("".equals(recordId)) {
                         dues.setRecordId(StringUtil.getRandomUUID());
@@ -109,6 +111,7 @@ public class PartyDuesBiz extends BaseBiz {
                 }
 
             } catch (Exception e) {
+                e.printStackTrace();
                 loggerError(ThreadUtil.getCurrentFullMethodName(), e);
                 ret = this.getErrorVo();
             }

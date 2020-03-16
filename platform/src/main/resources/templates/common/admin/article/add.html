@@ -70,9 +70,8 @@
                     <div style="margin-bottom: 20px;margin-left: 100px;margin-top:-50px;"><script id="articleEditor" type="text/plain"></script></div>
 
                     <el-form-item>
-                        <el-button @click="resetForm('formArticle')" plain>取消</el-button>
-                        <el-button @click="submitForm('formArticle')" type="primary" plain>保存</el-button>
-                        <el-button v-if="currAction !== 'append'" @click="deleteForm('formArticle')" type="danger" plain>删除</el-button>
+                        <el-button @click="resetForm('formArticle')" plain icon="el-icon-close" size="mini">重置</el-button>
+                        <el-button @click="submitForm('formArticle')" type="primary" plain icon="el-icon-check" size="mini">保存</el-button>
                     </el-form-item>
                 </el-form>
             </el-tab-pane>
