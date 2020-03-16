@@ -88,6 +88,11 @@ new Vue({
                     break;
                 case 'nddyxxcj':
                 	that.setDyxxYear();
+                	break;
+
+                case 'ndsjdfqk':
+                    that.loadPartyDues('', 1, that.pager.partyDues.pageSize);
+                    break;
             }
         },
         
@@ -349,6 +354,7 @@ new Vue({
         dwjbxxDialog:{},
         langConfs: [],
         newsArray: [],
+        partyDuesArray: [],
         newsReceiveUsers: {
             '1fe30445-96ec-4a1d-88e2-749f29440bef2': {
                 userId: '1fe30445-96ec-4a1d-88e2-749f29440bef2',
@@ -592,6 +598,26 @@ new Vue({
                 //默认数据总数
                 totalCount: 1000,
             },
+
+            partyDues: {
+                //搜索条件
+                criteria: '',
+
+                //默认每页数据量
+                pageSize: 10,
+
+                //默认高亮行数据id
+                highlightId: -1,
+
+                //当前页码
+                currentPage: 1,
+
+                //查询的页码
+                start: 1,
+
+                //默认数据总数
+                totalCount: 1000,
+            },
         },
     },
     methods: {
@@ -655,6 +681,7 @@ new Vue({
 	                                        	
 	                                        	break;
                                             case 'formNews': that.submitNews(); break;
+                                            case 'formPartyDues': that.submitPartyDues(); break;
 	                                        default: break;
 	                                    }
 	                                    //提交成功之后
@@ -701,6 +728,12 @@ new Vue({
                 	break;
                 case 'formSearchNews':
                     that.loadNews(that.formSearchNews.title, 1, that.pager.news.pageSize);
+                    break;
+                case 'formSearchArticle':
+                    that.loadArticles(that.formSearchArticle.title, 1, that.pager.article.pageSize);
+                    break;
+                case 'formSearchPartyDues':
+                    that.loadPartyDues(that.formSearchPartyDues.key, 1, that.pager.partyDues.pageSize);
                     break;
             }
         },
@@ -1172,6 +1205,33 @@ new Vue({
             });
         },
 
+        /**
+         * 党费缴纳提交
+         */
+        submitPartyDues() {
+            let that = this;
+            let params = new URLSearchParams();
+            let operName = '添加';
+            params.append('payTime', that.formPartyDues.payTime);
+            params.append('payAmount',that.formPartyDues.payAmount || '0.00');
+            params.append('remark',that.formPartyDues.remark || '');
+            params.append('payPeriod',that.formPartyDues.payPeriod || '');
+            if(that.currAction === 'edit') {
+                operName = '修改';
+                params.append('recordId',that.formPartyDues.recordId || '');
+            }
+            axios.post("/api/dues/save",params)
+                .then(function(response){
+                    that.responseMessageHandler(response, '党费缴纳', operName, function() {
+                        that.dialogShow.partyDues = false;
+                        that.pager.partyDues.currentPage = 1;
+                        that.loadPartyDues('',1,that.pager.partyDues.pageSize);
+                    });
+                }).catch(function(err){
+                console.warn(err);
+            });
+        },
+
         show(type,scopeIndex,scopeRow) {
             let that = this;
             let rowId = scopeRow != undefined && scopeRow.id != undefined ? scopeRow.id : '';
@@ -1534,6 +1594,30 @@ new Vue({
                         }
                         //that.dialogShow.article = !that.dialogShow.article;
                         break;
+                    case 'partyDues':
+                        if(isAdd) {
+                            that.formPartyDues = {
+                            };
+                        }
+                        else {
+                            entry = that.partyDuesArray[scopeIndex];
+                            that.formPartyDues = {
+                                recordId: entry.recordId,
+                                userId: entry.userId,
+                                payTime: entry.payTime,
+                                payAmount: entry.payAmount || '0.00',
+                                remark: entry.remark || '',
+                                recordTime: entry.recordTime,
+                                recordFlag: entry.recordFlag,
+                                payPeriod: entry.payPeriod,
+                                userName: entry.userName,
+                                userNickname: entry.userNickname,
+                                userSex: entry.userSex,
+                                userOrgName: entry.userOrgName,
+                            };
+                        }
+                        that.dialogShow.partyDues = !that.dialogShow.partyDues;
+                        break;
 	                default: break;
 	            }
         	}
@@ -1773,6 +1857,33 @@ new Vue({
                                     console.warn(err);
                                 });
                                 break;
+                            case 'partyDues':
+                                entry = that.partyDuesArray[idx];
+                                params = new URLSearchParams();
+                                params.append('id', entry.recordId);
+                                params.append('flag','0');
+                                axios.post("/api/dues/deleteById",params)
+                                    .then(function(response){
+                                        if(parseInt(response.data.code) === 200){
+                                            that.partyDuesArray.splice(idx,1);
+                                            that.pager.partyDues.currentPage = 1;
+                                            that.loadPartyDues('', 1, that.pager.partyDues.pageSize);
+                                            that.$message({
+                                                message: '党费缴纳信息删除成功!',
+                                                type: 'success'
+                                            });
+                                        }
+                                        else {
+                                            that.$message({
+                                                message: '党费缴纳信息删除失败!',
+                                                type: 'error'
+                                            });
+                                        }
+                                    }).catch(function(err){
+                                    console.warn(err);
+                                });
+                                break;
+
 
                             default: break;
                         }
@@ -2831,6 +2942,38 @@ new Vue({
         handleArticleCurrentChange: function(val) {
             this.pager.article.currentPage = val;
             this.loadArticles(this.pager.article.criteria, this.pager.article.currentPage, this.pager.article.pageSize);
+        },
+
+        /**
+         * 加载(当前用户)党费缴纳信息
+         */
+        loadPartyDues(criteria, pageNum, pageSize) {
+            let that = this;
+            axios.get("/api/dues/getCurrUserDues", {params:{
+                    key: criteria,
+                    pageNum: pageNum,
+                    pageSize:pageSize,
+                }})
+                .then(function(response){/*成功*/
+                    if(parseInt(response.status) == 200 ) {
+                        that.partyDuesArray = response.data.data.list;
+                        that.pager.partyDues.totalCount = response.data.data.total;
+                    }
+                })
+                .catch(function(err){/*异常*/
+                    console.log(err);
+                });
+        },
+        //每页显示数据量变更
+        handlePartyDuesSizeChange: function(val) {
+            this.pager.partyDues.pageSize = val;
+            this.loadPartyDues(this.pager.partyDues.criteria, this.pager.partyDues.currentPage, this.pager.partyDues.pageSize);
+        },
+
+        //页码变更
+        handlePartyDuesCurrentChange: function(val) {
+            this.pager.partyDues.currentPage = val;
+            this.loadPartyDues(this.pager.partyDues.criteria, this.pager.partyDues.currentPage, this.pager.partyDues.pageSize);
         },
 
     },

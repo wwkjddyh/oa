@@ -247,7 +247,7 @@ const formStructConfig = {
             moduleId: '',
             parentModuleId: '',
             moduleName: '',
-            fullModuleName: ''
+            fullModuleName: '',
         },
         category: {
             recordId: '',
@@ -337,6 +337,7 @@ const formStructConfig = {
             userNickname: '',
             userSex: '',
             userOrgName: '',
+            key: '',
         },
     },
     dialogShow: {

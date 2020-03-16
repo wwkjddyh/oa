@@ -3,52 +3,49 @@
 <div th:fragment="content">
     <el-tabs v-model="activeTabName" type="card">
         <el-tab-pane label="年度党费上缴情况" name="first">
-            <el-form ref="formSearchCategory" :model="formSearchCategory" label-width="100px">
-                <el-form-item label="类别" prop="typeId">
-                    <el-select v-model="formSearchCategory.typeId" style="width: 300px;" placeholder="请选择类型">
-                        <el-option label="全部" value="">全部</el-option>
-                        <el-option v-for="item in allCategoryTypes" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>
-                    </el-select>
+            <el-form ref="formSearchPartyDues" :model="formSearchPartyDues" label-width="100px">
+                <el-form-item label="关键字" prop="key">
+                    <el-input v-model="formSearchPartyDues.key" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">分类类别</div><i class="el-icon-question"></i></el-tooltip>
-                </el-form-item>
-                <el-form-item label="名称" prop="name">
-                    <el-input v-model="formSearchCategory.name" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
-                    <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
+                        <div slot="content">关键字</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item>
-                    <el-button @click="searchForm('formSearchCategory')" type="primary" plain>检索</el-button>
+                    <el-button @click="searchForm('formSearchPartyDues')" type="primary" plain>检索</el-button>
                 </el-form-item>
             </el-form>
             <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
-            <el-button plain @click="edit('category','','',true)">新增</el-button>
+            <el-button plain @click="edit('partyDues','','',true)">新增</el-button>
             <div style="margin-top: 20px">
                 <el-table
-                        :data="categories"
+                        :data="partyDuesArray"
                         border
                         style="width: 100%">
                     <el-table-column
                             align="center"
-                            width="50"
+                            width="70"
                             label="序号">
                         <template slot-scope="scope">
                             {{scope.$index+1}}
                         </template>
                     </el-table-column>
                     <el-table-column
-                            prop="name"
-                            label="名称"
-                            width="200">
+                            prop="payTime"
+                            label="上缴时间"
+                            width="150">
                     </el-table-column>
                     <el-table-column
-                            prop="typeName"
-                            label="类别"
-                            width="200">
+                            prop="payPeriod"
+                            label="上缴哪季度党费"
+                            width="150">
                     </el-table-column>
                     <el-table-column
-                            prop="desc"
-                            label="描述">
+                            prop="payAmount"
+                            label="上缴金额"
+                            width="100">
+                    </el-table-column>
+                    <el-table-column
+                            prop="remark"
+                            label="备注">
                     </el-table-column>
                     <el-table-column
                             align="center"
@@ -56,27 +53,27 @@
                             label="操作">
                         <template slot-scope="scope">
                             <div style="display: flex;width:100%">
-                                <el-button size="mini" @click="edit('category',scope.$index,scope.row,false)">修改</el-button>
-                                <el-button size="mini" type="danger" @click="handleDel(scope.$index,'category')">删除</el-button>
+                                <el-button size="mini" @click="edit('partyDues',scope.$index,scope.row,false)">修改</el-button>
+                                <el-button size="mini" type="danger" @click="handleDel(scope.$index,'partyDues')">删除</el-button>
                             </div>
                         </template>
                     </el-table-column>
                 </el-table>
                 <div align="center">
                     <el-pagination
-                            @size-change="handleCategorySizeChange"
-                            @current-change="handleCategoryCurrentChange"
-                            :current-page="pager.category.currentPage"
+                            @size-change="handlePartyDuesSizeChange"
+                            @current-change="handlePartyDuesCurrentChange"
+                            :current-page="pager.partyDues.currentPage"
                             :page-sizes="[10, 20, 30, 40]"
-                            :page-size="pager.category.pageSize"
+                            :page-size="pager.partyDues.pageSize"
                             layout="total, sizes, prev, pager, next, jumper"
-                            :total="pager.category.totalCount">
+                            :total="pager.partyDues.totalCount">
                     </el-pagination>
                 </div>
             </div>
-            <el-dialog title="分类类别信息" :visible.sync="dialogShow.category" lock-scroll="true" width="800px">
+            <el-dialog title="上缴党费" :visible.sync="dialogShow.partyDues" lock-scroll="true" width="800px">
                 <el-card shadow="never" style="width: 100%;" type="card">
-                    <el-form ref="formCategory" :rules="rules" :model="formCategory" label-width="100px">
+                    <el-form ref="formPartyDues" :rules="rules" :model="formCategory" label-width="100px">
                         <el-form-item label="类别" prop="typeId">
                             <el-select v-model="formCategory.typeId" style="width: 300px;" placeholder="请选择类型">
                                 <el-option v-for="item in allCategoryTypes" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>
@@ -95,8 +92,8 @@
                                 <div slot="content">描述</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
                         <el-form-item>
-                            <el-button @click="dialogShow.category = false;resetForm('formCategory')" plain>取消</el-button>
-                            <el-button @click="submitForm('formCategory')" type="primary" plain>保存</el-button>
+                            <el-button @click="dialogShow.partyDues = false;resetForm('formPartyDues')" plain>取消</el-button>
+                            <el-button @click="submitForm('formPartyDues')" type="primary" plain>保存</el-button>
                         </el-form-item>
                     </el-form>
                 </el-card>
