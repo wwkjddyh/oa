@@ -19,7 +19,7 @@
     <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
     <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
     <result column="updator_id" property="updatorId" jdbcType="VARCHAR"/>
-    <result column="update_time" property="updatetTime" jdbcType="VARCHAR"/>
+    <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
     <result column="pay_period" property="payPeriod" jdbcType="VARCHAR"/>
 
     <result column="user_name" property="userName" jdbcType="VARCHAR"/>

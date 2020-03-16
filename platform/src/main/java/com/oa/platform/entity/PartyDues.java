@@ -58,7 +58,7 @@ public class PartyDues implements Serializable {
     /**
      * 编辑时间
      */
-    private String updatetTime;
+    private String updateTime;
 
     /**
      * 查询关键字
@@ -194,12 +194,12 @@ public class PartyDues implements Serializable {
         this.updatorId = updatorId;
     }
 
-    public String getUpdatetTime() {
-        return updatetTime;
+    public String getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdatetTime(String updatetTime) {
-        this.updatetTime = updatetTime;
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
     }
 
     public String getUpdatorName() {
@@ -233,7 +233,7 @@ public class PartyDues implements Serializable {
                 ", recordTime='" + recordTime + '\'' +
                 ", remark='" + remark + '\'' +
                 ", updatorId='" + updatorId + '\'' +
-                ", updatetTime='" + updatetTime + '\'' +
+                ", updateTime='" + updateTime + '\'' +
                 ", userName='" + userName + '\'' +
                 ", userNickname='" + userNickname + '\'' +
                 ", userSex='" + userSex + '\'' +

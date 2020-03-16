@@ -100,7 +100,7 @@ public class PartyDuesBiz extends BaseBiz {
                     else {
                         dues.setRecordId(recordId);
                         dues.setUpdatorId(userId);
-                        dues.setUpdatetTime(currTime);
+                        dues.setUpdateTime(currTime);
                         recordFlag = recordFlag == null ? Constants.INT_NORMAL : recordFlag;
                         dues.setRecordFlag(recordFlag);
                         partyDuesService.update(dues);
@@ -188,6 +188,7 @@ public class PartyDuesBiz extends BaseBiz {
             ret = this.getPageInfo(pageInfo);
         }
         catch(Exception e) {
+            e.printStackTrace();
             loggerError(ThreadUtil.getCurrentFullMethodName(), e);
             ret = this.getErrorVo();
         }
