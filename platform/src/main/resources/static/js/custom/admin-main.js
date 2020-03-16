@@ -650,56 +650,63 @@ new Vue({
         submitForm(formName) {
             let that = this;
             console.log("submit-formName:",formName);
-            
+            // 个别验证
+            /*
+            if (formName == 'formNews') {
+                if (that.formNews.receiverId == '') {
+                    this.$message.error('请选择接收人');
+                    return false;
+                }
+            }
+            */
                		
-                    that.$confirm('是否确认提交？', '警告', {
-                        confirmButtonText: '确定',
-                        cancelButtonText: '取消',
-                        type: 'warning',
-                        callback: action => {
-                            if(action === "cancel"){
-                                that.$message({
-                                    type: 'info',
-                                    message: "取消提交"
-                                });
-                            }else{
-                            	that.$refs[formName].validate((valid) => {
-                            	    console.log('valid', valid);
-                            	    if (valid) {
-                            	      // 表单验证通过之后的操作
-                            	    	switch (formName) {
-	                                        case 'formAuthRole' : that.sumbitAuthRole(); break;
-                                            case 'formArticle': that.submitArticle(); break;
-	                                        case 'formAuthModule': that.submitAuthModule(); break;
-	                                        case 'formUser': that.submitUser(false); break;
-	                                        case 'formSysUser': that.submitUser(true); break;
-	
-	                                        case 'formCategoryType': that.submitCategoryType(); break;
-	                                        case 'formCategory': that.submitCategory(); break;
-	
-	                                        case 'formLangConf': that.submitLangConf(); break;
-	                                        case 'formdwjbxx': 
-	                                        	that.submitDwjbxx();
-	                                        	
-	                                        	break;
-                                            case 'formNews': that.submitNews(); break;
-                                            case 'formPartyDues': that.submitPartyDues(); break;
-	                                        default: break;
-	                                    }
-	                                    //提交成功之后
-	                                    if(formName != 'formdwjbxx'){
-	                                    	that.resetForm(formName);
-	                                    }
-                            	    } else {
-                            	    	
-                            	    	this.$message.error('提交失败,请按要求填写表单内容');
-                            	      return false;
-                            	    }
-                            	  });
-                                
+            that.$confirm('是否确认提交？', '警告', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning',
+                callback: action => {
+                    if(action === "cancel"){
+                        that.$message({
+                            type: 'info',
+                            message: "取消提交"
+                        });
+                    }else{
+                        that.$refs[formName].validate((valid) => {
+                            console.log('valid', valid);
+                            if (valid) {
+                              // 表单验证通过之后的操作
+                                switch (formName) {
+                                    case 'formAuthRole' : that.sumbitAuthRole(); break;
+                                    case 'formArticle': that.submitArticle(); break;
+                                    case 'formAuthModule': that.submitAuthModule(); break;
+                                    case 'formUser': that.submitUser(false); break;
+                                    case 'formSysUser': that.submitUser(true); break;
+
+                                    case 'formCategoryType': that.submitCategoryType(); break;
+                                    case 'formCategory': that.submitCategory(); break;
+
+                                    case 'formLangConf': that.submitLangConf(); break;
+                                    case 'formdwjbxx':
+                                        that.submitDwjbxx();
+
+                                        break;
+                                    case 'formNews': that.submitNews(); break;
+                                    case 'formPartyDues': that.submitPartyDues(); break;
+                                    default: break;
+                                }
+                                //提交成功之后
+                                if(formName != 'formdwjbxx'){
+                                    that.resetForm(formName);
+                                }
+                            } else {
+                                this.$message.error('提交失败,请按要求填写表单内容');
+                                return false;
                             }
-                        }
-                    });
+                          });
+
+                    }
+                }
+            });
 
                 
             
