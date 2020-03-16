@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  *
  */
 
+import com.alibaba.fastjson.JSONArray;
 import com.oa.platform.biz.OrgBiz;
 import com.oa.platform.common.ResultVo;
 import com.oa.platform.common.StatusCode;
@@ -67,18 +68,24 @@ public class OrgApiController extends BaseController{
 	 */
 	@PostMapping("orgOpreate")
 	public ResultVo orgOpreate(Organization organization,
-			@RequestParam(value = "deptDetails")List<OrgDeptDetail> deptDetails,
-			@RequestParam(value = "rewardDetails")List<OrgRewardDetail> rewardDetails,
-			@RequestParam(value = "leaderDetails")List<OrgLeaderDetail> leaderDetails) {
+			@RequestParam(value = "deptDetails")String deptDetails,
+			@RequestParam(value = "rewardDetails")String rewardDetails,
+			@RequestParam(value = "leaderDetails")String leaderDetails) {
 		User user = getUserOfSecurity();
 		ResultVo resultVo = null;
 		organization.setCreateBy(user.getUserName());
 		organization.setUpdateBy(user.getUserName());
 		if(organization.getOrgId() == null || "".equals(organization.getOrgId())) {
-			orgBiz.orgAdd(organization,deptDetails,rewardDetails,leaderDetails);
+			 List<OrgDeptDetail> deptDetail = JSONArray.parseArray(deptDetails,OrgDeptDetail.class);
+			 List<OrgRewardDetail> rewardDetail = JSONArray.parseArray(rewardDetails,OrgRewardDetail.class);
+			 List<OrgLeaderDetail> leaderDetail = JSONArray.parseArray(leaderDetails,OrgLeaderDetail.class);
+			orgBiz.orgAdd(organization,deptDetail,rewardDetail,leaderDetail);
 			resultVo = getSuccessResultVo(null);
 		}else {
-			orgBiz.orgEdit(organization,deptDetails,rewardDetails,leaderDetails);
+			 List<OrgDeptDetail> deptDetail = JSONArray.parseArray(deptDetails,OrgDeptDetail.class);
+			 List<OrgRewardDetail> rewardDetail = JSONArray.parseArray(rewardDetails,OrgRewardDetail.class);
+			 List<OrgLeaderDetail> leaderDetail = JSONArray.parseArray(leaderDetails,OrgLeaderDetail.class);
+			orgBiz.orgEdit(organization,deptDetail,rewardDetail,leaderDetail);
 			resultVo = getSuccessResultVo(null);
 		}
 		return resultVo;
@@ -114,15 +121,23 @@ public class OrgApiController extends BaseController{
 		return getSuccessResultVo(result);
 	}
 	/**
-	 * 班子成员数据提交
-	 * @param orgLeaderDetails
-	 * @param orgId
+	 * 根据组织奖惩情况
+	 * @param org_id
 	 * @return
 	 */
-	@PostMapping("orgLeaderDetailSubmit")
-	public ResultVo orgLeaderDetailSubmit(List<OrgLeaderDetail> orgLeaderDetails,String orgId) {
-		User user = getUserOfSecurity();
-		orgBiz.orgLeaderDetailSubmit(orgLeaderDetails,user.getUserName(),orgId);
-		return getSuccessResultVo(null);
+	@GetMapping("getOrgRewardList")
+	public ResultVo getOrgRewardList(String orgId) {
+		List<OrgRewardDetail> result = orgBiz.getOrgRewardList(orgId);
+		return getSuccessResultVo(result);
+	}
+	/**
+	 * 根据组织奖惩情况
+	 * @param org_id
+	 * @return
+	 */
+	@GetMapping("getOrgDeptList")
+	public ResultVo getOrgDeptList(String orgId) {
+		List<OrgDeptDetail> result = orgBiz.getOrgDeptList(orgId);
+		return getSuccessResultVo(result);
 	}
 }

@@ -105,6 +105,12 @@ public class OrgBiz extends BaseBiz {
 	public List<OrgLeaderDetail> getOrgLeaderList(String orgId) {
 		return orgSerivce.getOrgLeaderList(orgId);
 	}
+	public List<OrgRewardDetail> getOrgRewardList(String orgId) {
+		return orgSerivce.getOrgRewardList(orgId);
+	}
+	public List<OrgDeptDetail> getOrgDeptList(String orgId) {
+		return orgSerivce.getOrgDeptList(orgId);
+	}
 	/**
 	 * 组织附加详情操作
 	 */
@@ -114,25 +120,22 @@ public class OrgBiz extends BaseBiz {
 		orgSerivce.delOrgLeaderById(organization.getOrgId());
 		//新增现有数据
 		for (OrgLeaderDetail orgLeaderDetail : leaderDetails) {
-			if(orgLeaderDetail.getStaticsId() == null || "".equals(orgLeaderDetail.getStaticsId())){
-				orgLeaderDetail.setStaticsId(StringUtil.getRandomUUID());
-			}
+			orgLeaderDetail.setStaticsId(StringUtil.getRandomUUID());
+			orgLeaderDetail.setOrgId(organization.getOrgId());
 			orgSerivce.saveOrgLeaderDetail(orgLeaderDetail);
 		}
 		//奖罚信息
 		orgSerivce.delOrgRewardById(organization.getOrgId());
 		for (OrgRewardDetail orgRewardDetail : rewardDetails) {
-			if(orgRewardDetail.getStaticsId() == null || "".equals(orgRewardDetail.getStaticsId())){
-				orgRewardDetail.setStaticsId(StringUtil.getRandomUUID());
-			}
+			orgRewardDetail.setStaticsId(StringUtil.getRandomUUID());
+			orgRewardDetail.setOrgId(organization.getOrgId());
 			orgSerivce.saveOrgRewardDetail(orgRewardDetail);
 		}
 		//单位信息
 		orgSerivce.delOrgDeptById(organization.getOrgId());
 		for (OrgDeptDetail orgDeptDetail : deptDetails) {
-			if(orgDeptDetail.getStaticsId() == null || "".equals(orgDeptDetail.getStaticsId())){
-				orgDeptDetail.setStaticsId(StringUtil.getRandomUUID());
-			}
+			orgDeptDetail.setStaticsId(StringUtil.getRandomUUID());
+			orgDeptDetail.setOrgId(organization.getOrgId());
 			orgSerivce.saveOrgDeptDetail(orgDeptDetail);
 		}
 		
@@ -155,5 +158,6 @@ public class OrgBiz extends BaseBiz {
 		}
 		
 	}
+	
 	
 }

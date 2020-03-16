@@ -3,10 +3,19 @@
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 <div th:fragment="content">
     <el-tabs v-model="activeTabName" type="card">
-        <el-tab-pane label="党委基本信息" name="first">
-            <el-button plain @click="edit('dwjbxx','','',true)" type="primary" size="mini"><i class="el-icon-plus"></i>新增</el-button>
-            <!-- <el-button plain type="danger" size="mini"><i class="el-icon-close" size=""></i>删除</el-button> -->
-            <el-button plain size="mini"  @click="searchForm('searchDwjbxx')" ><i class="el-icon-refresh"></i>刷新</el-button>
+        <el-tab-pane label="年度党员信息采集" name="first" style="width: 100%;">
+		            <el-button plain @click="edit('dwjbxx','','',true)" type="primary" size="mini"><i class="el-icon-plus"></i>新增</el-button>
+		            <!-- <el-button plain type="danger" size="mini"><i class="el-icon-close" size=""></i>删除</el-button> -->
+		            <el-button plain size="mini"  @click="searchForm('searchDwjbxx')" ><i class="el-icon-refresh"></i>刷新</el-button>
+		            <el-input placeholder="按姓名搜索"  class="input-with-select" size="mini" style="width: 30%">
+					    <el-button slot="append" icon="el-icon-search" ></el-button>
+					 </el-input>
+					 <el-radio-group  size="mini" v-model="dyxxyear.year">
+				      <el-radio-button :label="dyxxyear.index1" ></el-radio-button>
+				      <el-radio-button :label="dyxxyear.index2" ></el-radio-button>
+				      <el-radio-button :label="dyxxyear.index3" ></el-radio-button>
+				      <el-radio-button :label="dyxxyear.index4" ></el-radio-button>
+				    </el-radio-group>
             <div style="margin-top: 20px">
                 <el-table
                         :data="dwjbxxTableData"
