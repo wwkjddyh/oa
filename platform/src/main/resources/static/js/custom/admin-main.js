@@ -633,10 +633,11 @@ new Vue({
         },
         resetForm(formName) {
             console.log('resetForm',formName);
-            this.$refs[formName].resetFields();
-            if(this.showContent === 'formArticle') {
+            let that = this;
+            that.$refs[formName].resetFields();
+            if(that.showContent === 'formArticle') {
                 setTimeout(function() {
-                    this.ueditors.article.setContent("", false);
+                    that.ueditors.article.setContent("", false);
                 }, 500);
             }
             /*
