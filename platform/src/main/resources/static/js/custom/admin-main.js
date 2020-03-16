@@ -86,6 +86,8 @@ new Vue({
                         that.formArticle = {};
                     }
                     break;
+                case 'nddyxxcj':
+                	that.setDyxxYear();
             }
         },
         
@@ -236,7 +238,9 @@ new Vue({
         formLangConf: {},
         formNews: {},
         formArticle: {},
-
+        loading:{},
+        dyxxyear:{
+        },
         formSearchAuthUserRole: {},
         formSearchAuthRoleModule: {},
         formSearchAuthRole: {},
@@ -698,7 +702,16 @@ new Vue({
                     break;
             }
         },
-
+        setDyxxYear(){
+        	let that = this;
+        	let date = new Date();
+        	let currentYear = date.getFullYear();
+        	that.dyxxyear.year = currentYear;
+        	that.dyxxyear.index1 = currentYear;
+        	that.dyxxyear.index2 = currentYear-1;
+        	that.dyxxyear.index3 = currentYear-2;
+        	that.dyxxyear.index4 = currentYear-3;
+        },
         /**
          * 响应消息处理
          * @param response 响应对象（异步返回数据: 需有data=>{keys: code、data}）
@@ -939,7 +952,7 @@ new Vue({
         submitDwjbxx(){
         	let that = this;
         	let params = new URLSearchParams();
-        	console.log(that.formdwjbxx)
+        	that.loading.flag = true;
         	if(that.formdwjbxx.orgId != null){
             	params.append('orgId',that.formdwjbxx.orgId);
         	}
@@ -1012,9 +1025,9 @@ new Vue({
         	if(that.formdwjbxx.belongArea != null){
         		params.append('belongArea',that.formdwjbxx.belongArea);
         	}
-        	params.leaderDetails=that.leaderList;
-        	params.rewardDetails=that.rewardList;
-        	params.deptDetails=that.deptInfoList;
+        	params.append('leaderDetails',JSON.stringify(that.leaderList));
+        	params.append('rewardDetails',JSON.stringify(that.rewardList));
+        	params.append('deptDetails',JSON.stringify(that.deptInfoList));
 //        	params.append('leaderDetails',that.leaderList);
 //        	params.append('rewardDetails',that.rewardList);
 //        	params.append('deptDetails',that.deptInfoList);
@@ -1022,6 +1035,7 @@ new Vue({
         		.then(function(response){
         			console.log(response)
         			if(parseInt(response.data.code) === 200){
+        				that.loading.flag = false;
         				that.dialogShow.dwjbxx =false;
             			that.formdwjbxx={};
             			that.getUpperOrg();
@@ -1031,7 +1045,8 @@ new Vue({
                             type: 'success'
                         });
                     }else{
-                    	this.$message.error("chucuo");
+                    	that.loading.flag = false;
+                    	this.$message.error("提交失败");
                     }
         			
         		})
@@ -1254,6 +1269,9 @@ new Vue({
         		that.dwjbxxDialog={
         				title:scopeRow.orgName + '下级组织添加'
         		};
+        		that.leaderList = [];
+        		that.rewardList = [];
+        		that.deptInfoList = [];
         		that.getOptionDict();
         		that.dialogShow.dwjbxx = !that.dialogShow.dwjbxx;
         	}else{
@@ -1380,6 +1398,9 @@ new Vue({
 	                		that.dwjbxxDialog={
 	                				title: '党委基本信息新增(根层党委)'
 	                		};
+	                		that.leaderList = [];
+	                		that.rewardList = [];
+	                		that.deptInfoList = [];
 	                	}else{
 	                		that.dwjbxxDialog={
 	                				title: scopeRow.orgName
@@ -1396,7 +1417,45 @@ new Vue({
 	                        .catch(function(err){/*异常*/
 	                            console.log(err);
 	                        });
+	                		//领导班子
+	                		axios.get("/api/org/getOrgLeaderList",{params:{
+	                			orgId: scopeRow.orgId
+	                        }})
+	                        .then(function(response){/*成功*/
+	                            let data = response.data;
+	                            if(parseInt(data.code) === 200) {
+	                            	that.leaderList = response.data.result
+	                            }
+	                        })
+	                        .catch(function(err){/*异常*/
+	                        });
 	                		
+	                		
+	                		//奖惩情况
+	                		axios.get("/api/org/getOrgRewardList",{params:{
+	                			orgId: scopeRow.orgId
+	                        }})
+	                        .then(function(response){/*成功*/
+	                            let data = response.data;
+	                            if(parseInt(data.code) === 200) {
+	                            	that.rewardList = response.data.result
+	                            }
+	                        })
+	                        .catch(function(err){/*异常*/
+	                        });
+	                		
+	                		//单位信息
+	                		axios.get("/api/org/getOrgDeptList",{params:{
+	                			orgId: scopeRow.orgId
+	                        }})
+	                        .then(function(response){/*成功*/
+	                            let data = response.data;
+	                            if(parseInt(data.code) === 200) {
+	                            	that.deptInfoList = response.data.result
+	                            }
+	                        })
+	                        .catch(function(err){/*异常*/
+	                        });
 	                	}
 	                	that.dialogShow.dwjbxx = !that.dialogShow.dwjbxx;
 	                	break;
@@ -2360,12 +2419,17 @@ new Vue({
         loadDwjbxx(){
         	let that = this;
         	let treeTable =[];
+        	that.loading.flag = true;
         	axios.get("/api/org/getOrgList",null).then(function(response){
-        		if(parseInt(response.status) == 200 ){
+        		if(parseInt(response.data.code) == 200 ){
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.dwjbxxTreeLevel.level = 0;
         			that.dwjbxxTableData = that.getTreeData(response.data.result, parentArr);
         			console.log(that.dwjbxxTableData);
+        			that.loading.flag = false;
+        		}else{
+        			that.$message.error('数据加载失败');
+        			that.loading.flag = false;
         		}
         	});
         },
