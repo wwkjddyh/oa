@@ -21,18 +21,18 @@ spring:
     static-locations: file:/home/yuzaosen/data/uploads/platform/,classpath:/static/
   application:
     name: oa-platform
-    thymeleaf:
-      prefix: classpath:/templates/
-      suffix: .html
-      mode: HTML5
-      encoding: UTF-8
-      cache: false
-      servlet:
-        content-type: text/html
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    cache: false
     servlet:
-      multipart:
-        max-file-size: 20MB
-        max-request-size: 200MB
+      content-type: text/html
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
   mail:
     host: smtp.qq.com
     username: 445121408

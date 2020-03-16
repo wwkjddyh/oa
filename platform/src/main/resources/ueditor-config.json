@@ -94,7 +94,7 @@
     /*"customSaveDir": "/home/yuzaosen/data/uploads/platform",*/   /*生产环境配置*/
     "sftpNodes": [
         {
-            "active": true,
+            "active": false,
             "encrypt": false,   /*Base64加密*/
             "userName": "yuzaosen",
             "password": "123456",
