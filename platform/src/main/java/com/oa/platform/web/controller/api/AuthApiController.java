@@ -91,15 +91,15 @@ public class AuthApiController extends BaseController {
                         data.put("lastLogonTime", user.getLastLoginTime());
                         UserDtl userDtl = user.getUserDtl();
                         String email = "", addr = "", alipay = "", qq = "", wechat = "", weibo = "", blog = "";
-                        if(userDtl != null) {
-                            email = userDtl.getUserEmail();
-                            addr = userDtl.getUserAddr();
-                            alipay = userDtl.getUserAlipay();
-                            qq = userDtl.getUserQq();
-                            wechat = userDtl.getUserWechat();
-                            weibo = userDtl.getUserWeibo();
-                            blog = userDtl.getUserBlog();
-                        }
+//                        if(userDtl != null) {
+//                            email = userDtl.getUserEmail();
+//                            addr = userDtl.getUserAddr();
+//                            alipay = userDtl.getUserAlipay();
+//                            qq = userDtl.getUserQq();
+//                            wechat = userDtl.getUserWechat();
+//                            weibo = userDtl.getUserWeibo();
+//                            blog = userDtl.getUserBlog();
+//                        }
                         data.put("email", email);
                         data.put("addr", addr);
                         data.put("alipay", alipay);

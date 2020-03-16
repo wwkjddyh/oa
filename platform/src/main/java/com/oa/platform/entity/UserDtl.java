@@ -9,225 +9,146 @@ import java.io.Serializable;
  */
 public class UserDtl implements Serializable {
 
-    /**
+	
+	private static final long serialVersionUID = 1L;
+	/**
      * 主键，唯一标识(与t_user表的user_id一致)
      */
     private String userId;
-
-    /**
-     * 用户地址
-     */
-    private String userAddr;
-
-    /**
-     * 用户联系电话
-     */
-    private String userPhone;
-
-    /**
-     * 用户手机号码
-     */
-    private String userMobile;
-
-    /**
-     * 用户电子邮箱地址
-     */
-    private String userEmail;
-
-    /**
-     * 用户微信账号
-     */
-    private String userWechat;
-
-    /**
-     * 用户支付宝账号
-     */
-    private String userAlipay;
-
-    /**
-     * 用户微博账号
-     */
-    private String userWeibo;
-
-    /**
-     * 用户博客网址
-     */
-    private String userBlog;
-
-    /**
-     * 用户QQ号
-     */
-    private String userQq;
-
-    /**
-     * 个人站点网址
-     */
-    private String userSite;
-
-    /**
-     * 信息录入时间(格式：yyyy-MM-dd HH:mm:ss)
-     */
-    private String recordTime;
-
-    /**
-     * 信息修改时间(格式：yyyy-MM-dd HH:mm:ss)
-     */
-    private String updateTime;
-
-    /**
-     * 搜索关键字
-     */
-    private String key;
-
-    public UserDtl() {
-    }
-
-    public UserDtl(String userId, String userAddr, String userPhone, String userMobile, String userEmail,
-                      String userWechat, String userAlipay, String userWeibo, String userBlog, String userQq,
-                      String userSite, String recordTime, String updateTime) {
-        this.userId = userId;
-        this.userAddr = userAddr;
-        this.userPhone = userPhone;
-        this.userMobile = userMobile;
-        this.userEmail = userEmail;
-        this.userWechat = userWechat;
-        this.userAlipay = userAlipay;
-        this.userWeibo = userWeibo;
-        this.userBlog = userBlog;
-        this.userQq = userQq;
-        this.userSite = userSite;
-        this.recordTime = recordTime;
-        this.updateTime = updateTime;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getUserAddr() {
-        return userAddr;
-    }
-
-    public void setUserAddr(String userAddr) {
-        this.userAddr = userAddr;
-    }
-
-    public String getUserPhone() {
-        return userPhone;
-    }
-
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
-    }
-
-    public String getUserMobile() {
-        return userMobile;
-    }
-
-    public void setUserMobile(String userMobile) {
-        this.userMobile = userMobile;
-    }
-
-    public String getUserEmail() {
-        return userEmail;
-    }
-
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
-    }
-
-    public String getUserWechat() {
-        return userWechat;
-    }
-
-    public void setUserWechat(String userWechat) {
-        this.userWechat = userWechat;
-    }
-
-    public String getUserAlipay() {
-        return userAlipay;
-    }
-
-    public void setUserAlipay(String userAlipay) {
-        this.userAlipay = userAlipay;
-    }
-
-    public String getUserWeibo() {
-        return userWeibo;
-    }
-
-    public void setUserWeibo(String userWeibo) {
-        this.userWeibo = userWeibo;
-    }
-
-    public String getUserBlog() {
-        return userBlog;
-    }
-
-    public void setUserBlog(String userBlog) {
-        this.userBlog = userBlog;
-    }
-
-    public String getUserQq() {
-        return userQq;
-    }
-
-    public void setUserQq(String userQq) {
-        this.userQq = userQq;
-    }
-
-    public String getUserSite() {
-        return userSite;
-    }
-
-    public void setUserSite(String userSite) {
-        this.userSite = userSite;
-    }
-
-    public String getRecordTime() {
-        return recordTime;
-    }
-
-    public void setRecordTime(String recordTime) {
-        this.recordTime = recordTime;
-    }
-
-    public String getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(String updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
-
-    @Override
-    public String toString() {
-        return "UserDtl{" +
-                "userId='" + userId + '\'' +
-                ", userAddr='" + userAddr + '\'' +
-                ", userPhone='" + userPhone + '\'' +
-                ", userMobile='" + userMobile + '\'' +
-                ", userEmail='" + userEmail + '\'' +
-                ", userWechat='" + userWechat + '\'' +
-                ", userAlipay='" + userAlipay + '\'' +
-                ", userWeibo='" + userWeibo + '\'' +
-                ", userBlog='" + userBlog + '\'' +
-                ", userQq='" + userQq + '\'' +
-                ", userSite='" + userSite + '\'' +
-                ", recordTime=" + recordTime +
-                ", updateTime=" + updateTime +
-                '}';
-    }
+    //姓名
+    private String userName;
+    //性别
+    private String gender;
+    //联系电话
+    private String phone;
+    //出生日期
+    private String birthTime;
+    //民族
+    private String nation;
+    //入党时间
+    private String joinPartyTime;
+    //转正时间
+    private String turnRightTime;
+    //籍贯
+    private String hometown;
+    //学位
+    private String bachelor;
+    //学历
+    private String education;
+    //办公电话
+    private String officeNumber;
+    //现居住地
+    private String liveAddress;
+    //邮箱
+    private String mail;
+    //图片路径
+    private String imageUrl;
+    //创建人
+    private String createBy;
+    //更新人
+    private String updateBy;
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getBirthTime() {
+		return birthTime;
+	}
+	public void setBirthTime(String birthTime) {
+		this.birthTime = birthTime;
+	}
+	public String getNation() {
+		return nation;
+	}
+	public void setNation(String nation) {
+		this.nation = nation;
+	}
+	public String getJoinPartyTime() {
+		return joinPartyTime;
+	}
+	public void setJoinPartyTime(String joinPartyTime) {
+		this.joinPartyTime = joinPartyTime;
+	}
+	public String getTurnRightTime() {
+		return turnRightTime;
+	}
+	public void setTurnRightTime(String turnRightTime) {
+		this.turnRightTime = turnRightTime;
+	}
+	public String getHometown() {
+		return hometown;
+	}
+	public void setHometown(String hometown) {
+		this.hometown = hometown;
+	}
+	public String getBachelor() {
+		return bachelor;
+	}
+	public void setBachelor(String bachelor) {
+		this.bachelor = bachelor;
+	}
+	public String getEducation() {
+		return education;
+	}
+	public void setEducation(String education) {
+		this.education = education;
+	}
+	public String getOfficeNumber() {
+		return officeNumber;
+	}
+	public void setOfficeNumber(String officeNumber) {
+		this.officeNumber = officeNumber;
+	}
+	public String getLiveAddress() {
+		return liveAddress;
+	}
+	public void setLiveAddress(String liveAddress) {
+		this.liveAddress = liveAddress;
+	}
+	public String getMail() {
+		return mail;
+	}
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+	public String getImageUrl() {
+		return imageUrl;
+	}
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+	public String getCreateBy() {
+		return createBy;
+	}
+	public void setCreateBy(String createBy) {
+		this.createBy = createBy;
+	}
+	public String getUpdateBy() {
+		return updateBy;
+	}
+	public void setUpdateBy(String updateBy) {
+		this.updateBy = updateBy;
+	}
+    
+    
 }

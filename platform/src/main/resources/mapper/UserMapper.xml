@@ -23,18 +23,22 @@
 
   <resultMap id="userDtl" type="com.oa.platform.entity.UserDtl">
     <result column="user_id" property="userId" jdbcType="VARCHAR"/>
-    <result column="user_addr" property="userAddr" jdbcType="VARCHAR"/>
-    <result column="user_phone" property="userPhone" jdbcType="VARCHAR"/>
-    <result column="user_mobile" property="userMobile" jdbcType="VARCHAR"/>
-    <result column="user_email" property="userEmail" jdbcType="VARCHAR"/>
-    <result column="user_wechat" property="userWechat" jdbcType="VARCHAR"/>
-    <result column="user_alipay" property="userAlipay" jdbcType="VARCHAR"/>
-    <result column="user_weibo" property="userWeibo" jdbcType="VARCHAR"/>
-    <result column="user_blog" property="userBlog" jdbcType="VARCHAR"/>
-    <result column="user_qq" property="userQq" jdbcType="VARCHAR"/>
-    <result column="user_site" property="userSite" jdbcType="VARCHAR"/>
-    <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
-    <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
+    <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+    <result column="gender" property="gender" jdbcType="VARCHAR"/>
+    <result column="phone" property="phone" jdbcType="VARCHAR"/>
+    <result column="birth_time" property="birthTime" jdbcType="VARCHAR"/>
+    <result column="nation" property="nation" jdbcType="VARCHAR"/>
+    <result column="join_party_time" property="joinPartyTime" jdbcType="VARCHAR"/>
+    <result column="turn_right_time" property="turnRightTime" jdbcType="VARCHAR"/>
+    <result column="hometown" property="hometown" jdbcType="VARCHAR"/>
+    <result column="bachelor" property="bachelor" jdbcType="VARCHAR"/>
+    <result column="education" property="education" jdbcType="VARCHAR"/>
+    <result column="office_number" property="officeNumber" jdbcType="VARCHAR"/>
+    <result column="live_address" property="liveAddress" jdbcType="VARCHAR"/>
+    <result column="mail" property="mail" jdbcType="VARCHAR"/>
+    <result column="image_url" property="imageUrl" jdbcType="VARCHAR"/>
+    <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
   </resultMap>
 
   <insert id="insert" parameterType="user">
@@ -44,9 +48,29 @@
         #{langConfId},#{thirdPartyType},#{thirdPartyId},#{userSex})
   </insert>
 
-  <insert id="insertUserDtl" parameterType="user">
-    INSERT INTO t_user_dtl(user_id,user_addr,user_phone,user_mobile,user_email,user_wechat,user_alipay,user_weibo,user_blog,user_qq,user_site,record_time)
-    VALUES (#{userId},#{userAddr},#{userPhone},#{userMobile},#{userEmail},#{userWechat},#{userAlipay},#{userWeibo},#{userBlog},#{userQq},#{userSite},NOW())
+  <insert id="insertUserDtl" parameterType="userDtl">
+    INSERT INTO t_user_dtl(
+    	user_id,
+		gender,
+		phone,
+		birth_time,
+		nation,
+		join_party_time,
+		turn_right_time,
+		hometown,
+		bachelor,
+		education,
+		office_number,
+		live_address,
+		mail,
+		image_url,
+		create_on,
+		create_by
+    )
+    VALUES (
+    #{userId},#{gender},#{phone},#{birthTime},#{nation},#{joinPartyTime},
+    #{turnRightTime},#{hometown},#{bachelor},#{education},#{officenumber},#{liveAddress},
+    #{mail},#{imageUrl},now(),#{createBy})
   </insert>
 
   <select id="selectUsers" resultMap="user">
@@ -70,16 +94,43 @@
   </select>
 
   <select id="findDetailByUserId" parameterType="java.lang.String" resultMap="userDtl">
-    SELECT user_id,user_addr,user_phone,user_mobile,user_email,user_wechat,user_alipay,user_weibo,user_blog,user_qq,user_site,
-        DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
-        DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time
+    SELECT 
+    	user_id,
+		gender,
+		phone,
+		birth_time,
+		nation,
+		join_party_time,
+		turn_right_time,
+		hometown,
+		bachelor,
+		education,
+		office_number,
+		live_address,
+		mail,
+		image_url,
+        DATE_FORMAT(create_on,'%Y-%m-%d %H:%i:%s') createOn,
+        DATE_FORMAT(update_on,'%Y-%m-%d %H:%i:%s') updateOn
     FROM t_user_dtl WHERE user_id = #{userId}
   </select>
 
   <select id="findDetailByUserIds" parameterType="java.util.List" resultMap="userDtl">
-    SELECT user_id,user_addr,user_phone,user_mobile,user_email,user_wechat,user_alipay,user_weibo,user_blog,user_qq,user_site,
-        DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
-        DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time
+    SELECT user_id,
+		gender,
+		phone,
+		birth_time,
+		nation,
+		join_party_time,
+		turn_right_time,
+		hometown,
+		bachelor,
+		education,
+		office_number,
+		live_address,
+		mail,
+		image_url,
+        DATE_FORMAT(create_on,'%Y-%m-%d %H:%i:%s') createOn,
+        DATE_FORMAT(update_on,'%Y-%m-%d %H:%i:%s') updateOn
     FROM t_user_dtl WHERE user_id IN
     <foreach collection="userIds" index="index" item="itemId" open="(" separator="," close=")">
       #{itemId}
@@ -156,39 +207,47 @@
   <update id="updateUserDtl" parameterType="userDtl">
     UPDATE t_user_dtl
     <trim prefix="SET" suffixOverrides="," suffix=" WHERE user_id = #{userId}">
-      <if test="userAddr != null and userAddr != ''">
-        `user_addr` = #{userAddr},
+      <if test="gender != null and gender != ''">
+        gender = #{gender},
       </if>
-      <if test="userPhone != null and userPhone != ''">
-        `user_phone` = #{userPhone},
+      <if test="phone != null and phone != ''">
+        phone = #{phone},
       </if>
-      <if test="userMobile != null and userMobile != ''">
-        user_mobile = #{userMobile},
+      <if test="birthTime != null and birthTime != ''">
+        birth_time = #{birthTime},
       </if>
-      <if test="userEmail != null and userEmail != ''">
-        user_email = #{userEmail},
+      <if test="nation != null and nation != ''">
+        nation = #{nation},
       </if>
-      <if test="userWechat != null and userWechat != ''">
-        user_wechat = #{userWechat},
+      <if test="joinPartyTime != null and joinPartyTime != ''">
+        join_party_time = #{joinPartyTime},
       </if>
-      <if test="userAlipay != null and userAlipay != ''">
-        user_alipay = #{userAlipay},
+      <if test="turnRightTime != null and turnRightTime != ''">
+        turn_right_time = #{turnRightTime},
       </if>
-      <if test="userWeibo != null and userWeibo != ''">
-        user_weibo = #{userWeibo},
+      <if test="hometown != null and hometown != ''">
+        hometown = #{hometown},
       </if>
-      <if test="userBlog != null and userBlog != ''">
-        user_blog = #{userBlog},
+      <if test="bachelor != null and bachelor != ''">
+        bachelor = #{bachelor},
       </if>
-      <if test="userQq != null and userQq != ''">
-        user_qq = #{userQq},
+      <if test="education != null and education != ''">
+        education = #{education},
       </if>
-      <if test="userSite != null and userSite != ''">
-        user_site = #{userSite},
+      <if test="officeNumber != null and officeNumber != ''">
+        office_number = #{officeNumber},
       </if>
-      <if test="updateTime != null and updateTime != ''">
-        update_time = STR_TO_DATE(#{updateTime},'%Y-%m-%d %H:%i:%s'),
+      <if test="mail != null and mail != ''">
+        mail = #{mail},
       </if>
+      <if test="imageUrl != null and imageUrl != ''">
+        image_url = #{imageUrl},
+      </if>
+      <if test="updateBy != null and updateBy != ''">
+        update_by = #{updateBy},
+        update_on = now(),
+      </if>
+      
     </trim>
   </update>
 
