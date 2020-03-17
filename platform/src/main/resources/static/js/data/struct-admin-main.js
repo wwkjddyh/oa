@@ -362,6 +362,7 @@ const formStructConfig = {
         viewNews: false,
         article: false,
         partyDues: false,
+        nddyxxcj:false,
     },
     rules: {
         username: [
