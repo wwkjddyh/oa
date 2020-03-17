@@ -88,6 +88,7 @@ new Vue({
                     break;
                 case 'nddyxxcj':
                 	that.setDyxxYear();
+                	that.loadNddyxxcj();
                 	break;
 
                 case 'ndsjdfqk':
@@ -270,6 +271,7 @@ new Vue({
         orgAddressRelation:[],
         elctType:[],
         leadTime:[],
+        nddyxxcjTableData:[],
         changeOrgRelationAuth:[],
         isDelPartPersonAuth:[],
         belongArea:[],
@@ -2554,6 +2556,27 @@ new Vue({
         			that.loading.flag = false;
         		}
         	});
+        },
+        loadNddyxxcj(){
+        	let that = this;
+        	axios.get("/api/org/getOrgUserList",{params:{
+                userName: 'yu'
+            }}).then(function(response){
+        		if(parseInt(response.data.code) == 200 ){
+        			let parentArr = response.data.result.filter(l => l.upperOrg === null);
+        			if(parentArr == null){
+        				that.nddyxxcjTableData = response.data.result;
+        			}else{
+        				that.nddyxxcjTableData = that.getTreeData(response.data.result, parentArr);
+        			}
+        		}else{
+        			that.$message.error('数据加载失败');
+        			that.loading.flag = false;
+        		}
+        	})
+        	.catch(function(err){/*异常*/
+        		that.$message.error('请求失败');
+                });
         },
         getUpperOrg(){
         	let that = this;
