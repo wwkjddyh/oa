@@ -60,6 +60,11 @@ public class Res implements Serializable {
     private String announcerId;
 
     /**
+     * 资源发布时间
+     */
+    private String publishTime;
+
+    /**
      * 资源作者
      */
     private String resAuthor;
@@ -373,6 +378,14 @@ public class Res implements Serializable {
         this.key = key;
     }
 
+    public String getPublishTime() {
+        return publishTime;
+    }
+
+    public void setPublishTime(String publishTime) {
+        this.publishTime = publishTime;
+    }
+
     public Res() {
     }
 
@@ -406,6 +419,7 @@ public class Res implements Serializable {
                 ", announcerName='" + announcerName + '\'' +
                 ", editorName='" + editorName + '\'' +
                 ", auditorName='" + auditorName + '\'' +
+                ", publishTime='" + publishTime + '\'' +
                 '}';
     }
 }

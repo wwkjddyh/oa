@@ -39,6 +39,7 @@ public class ResBiz extends BaseBiz {
                 String recordId = StringUtil.trim(res.getRecordId());
                 if ("".equals(recordId)) {
                     res.setRecordId(StringUtil.getRandomUUID());
+                    res.setAnnouncerId(this.getUserIdOfSecurity());
                     res.setRecordFlag(Constants.INT_NORMAL);
                     resService.save(res);
                 }

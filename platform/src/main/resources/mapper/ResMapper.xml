@@ -32,6 +32,7 @@
     <result column="auditor_id" property="auditorId" jdbcType="VARCHAR"/>
     <result column="audit_time" property="auditTime" jdbcType="VARCHAR"/>
     <result column="audit_status" property="auditStatus" jdbcType="INTEGER"/>
+    <result column="publish_time" property="publishTime" jdbcType="VARCHAR"/>
 
     <result column="type_name" property="typeName" jdbcType="VARCHAR"/>
     <result column="ass_title" property="assTitle" jdbcType="VARCHAR"/>
@@ -63,10 +64,10 @@
   <insert id="insert" parameterType="res">
     INSERT INTO t_res (record_id,res_name,type_id,ass_id,ass_type_id,
         original_name,record_time,record_flag,res_size,
-        announcer_id,res_author,res_src,res_intro,res_desc,res_tags,access_url)
+        announcer_id,res_author,res_src,res_intro,res_desc,res_tags,access_url, publish_time)
     VALUES (#{recordId},#{resName},#{typeId},#{assId},#{assTypeId},
         #{originalName},NOW(),#{recordFlag},#{resSize},
-        #{announcerId},#{resAuthor},#{resSrc},#{resIntro},#{resDesc},#{resTags},#{accessUrl})
+        #{announcerId},#{resAuthor},#{resSrc},#{resIntro},#{resDesc},#{resTags},#{accessUrl}, #{publishTime})
   </insert>
 
   <insert id="insertResDl" parameterType="resDl">
@@ -133,6 +134,9 @@
       <if test="auditTime != null and auditTime != ''">
         audit_time = STR_TO_DATE(#{auditTime},'%Y-%m-%d %H:%i:%s'),
       </if>
+      <if test="publishTime != null and publishTime != ''">
+        publish_time = STR_TO_DATE(#{publishTime},'%Y-%m-%d'),
+      </if>
       <if test="auditStatus != null">
         audit_status = #{auditStatus},
       </if>
@@ -163,13 +167,13 @@
     </trim>
   </update>
 
-  <!--根据aread查询信息-->
+  <!--根据id查询信息-->
   <select id="findById" resultMap="res" parameterType="java.lang.String">
     SELECT record_id,res_name,type_id,ass_id,ass_type_id,original_name,
         DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,record_flag,res_size,
         announcer_id,res_author,res_src,res_intro,res_desc,res_tags,
         DATE_FORMAT(modify_time,'%Y-%m-%d %H:%i:%s') modify_time,editor_id,access_url,
-        auditor_id,DATE_FORMAT(audit_time,'%Y-%m-%d %H:%i:%s') audit_time,audit_status
+        auditor_id,DATE_FORMAT(audit_time,'%Y-%m-%d %H:%i:%s') audit_time,audit_status, publish_time
     FROM t_res WHERE record_id = #{recordId} AND record_flag = 1
   </select>
 
@@ -227,7 +231,7 @@
   <!--查询-->
   <select id="find" parameterType="res" resultMap="res">
     SELECT
-      record_id, res_name, type_id, ass_id, ass_type_id, original_name,
+      record_id, res_name, type_id, ass_id, ass_type_id, original_name, publish_time,
       DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time, record_flag,
       res_size, announcer_id, res_author, res_src, res_intro, res_desc, res_tags,
       DATE_FORMAT(modify_time,'%Y-%m-%d %H:%i:%s') modify_time,

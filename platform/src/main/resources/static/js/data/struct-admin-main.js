@@ -206,6 +206,7 @@ const formStructConfig = {
         recordFlag: '',
         resSize: '',
         announcerId: '',
+        publishTime: '',
         resAuthor: '',
         resSrc: '',
         resIntro: '',
@@ -415,6 +416,7 @@ const formStructConfig = {
             editorName: '',
             auditorName: '',
             key: '',
+            publishTime: '',
         },
 
         resDl: {

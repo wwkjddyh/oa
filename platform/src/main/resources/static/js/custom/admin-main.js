@@ -93,6 +93,14 @@ new Vue({
 
                 case 'ndsjdfqk':
                     that.loadPartyDues('', 1, that.pager.partyDues.pageSize);
+                    break;Re
+                case 'dfglzlxz':    //党费资源下载
+                    that.formSearchRes.key = '',
+                    that.formSearchRes.typeId = '',
+                    that.formSearchRes.assId = '',
+                    that.formSearchRes.assTypeId = '',
+                    that.formSearchRes.announcerId = '',
+                    that.loadResList('', 1, that.pager.res.pageSize);
                     break;
             }
         },
@@ -361,6 +369,8 @@ new Vue({
         langConfs: [],
         newsArray: [],
         partyDuesArray: [],
+        resArray: [],
+        resDlArray: [],
         newsReceiveUsers: {
             '1fe30445-96ec-4a1d-88e2-749f29440bef2': {
                 userId: '1fe30445-96ec-4a1d-88e2-749f29440bef2',
@@ -637,6 +647,46 @@ new Vue({
                 //默认数据总数
                 totalCount: 1000,
             },
+
+            res: {
+                //搜索条件
+                criteria: '',
+
+                //默认每页数据量
+                pageSize: 10,
+
+                //默认高亮行数据id
+                highlightId: -1,
+
+                //当前页码
+                currentPage: 1,
+
+                //查询的页码
+                start: 1,
+
+                //默认数据总数
+                totalCount: 1000,
+            },
+
+            resDl: {
+                //搜索条件
+                criteria: '',
+
+                //默认每页数据量
+                pageSize: 10,
+
+                //默认高亮行数据id
+                highlightId: -1,
+
+                //当前页码
+                currentPage: 1,
+
+                //查询的页码
+                start: 1,
+
+                //默认数据总数
+                totalCount: 1000,
+            },
         },
     },
     methods: {
@@ -717,6 +767,7 @@ new Vue({
                                         break;
                                     case 'formNews': that.submitNews(); break;
                                     case 'formPartyDues': that.submitPartyDues(); break;
+                                    case 'formRes': that.submitRes(); break;
                                     default: break;
                                 }
                                 //提交成功之后
@@ -768,6 +819,9 @@ new Vue({
                     break;
                 case 'formSearchPartyDues':
                     that.loadPartyDues(that.formSearchPartyDues.key, 1, that.pager.partyDues.pageSize);
+                    break;
+                case 'formSearchRes':
+                    that.loadResList(that.formSearchRes.key, 1, that.pager.partyDues.pageSize);
                     break;
             }
         },
@@ -1266,6 +1320,35 @@ new Vue({
             });
         },
 
+        /**
+         * 资源信息提交
+         */
+        submitRes() {
+            let that = this;
+            let params = new URLSearchParams();
+            let operName = '添加';
+            params.append("assId", that.formRes.assId);
+            params.append("assTypeId", that.formRes.assTypeId)
+            params.append('typeId', that.formRes.typeId);
+            params.append('publishTime', that.formRes.publishTime);
+            params.append('resName',that.formRes.resName || '');
+            params.append('originalName',that.formRes.originalName || '');
+            if(that.currAction === 'edit') {
+                operName = '修改';
+                params.append('recordId',that.formRes.recordId || '');
+            }
+            axios.post("/api/res/save",params)
+                .then(function(response){
+                    that.responseMessageHandler(response, '资源信息', operName, function() {
+                        that.dialogShow.res = false;
+                        that.pager.res.currentPage = 1;
+                        that.loadResList('',1,that.pager.res.pageSize);
+                    });
+                }).catch(function(err){
+                console.warn(err);
+            });
+        },
+
         show(type,scopeIndex,scopeRow) {
             let that = this;
             let rowId = scopeRow != undefined && scopeRow.id != undefined ? scopeRow.id : '';
@@ -1660,6 +1743,46 @@ new Vue({
                     	}
                     	that.dialogShow.nddyxxcj = !that.dialogShow.nddyxxcj;
                     	break;
+                    case 'res':
+                        if(isAdd) {
+                            that.formRes = {
+                            };
+                        }
+                        else {
+                            entry = that.resArray[scopeIndex];
+                            that.formRes = {
+                                recordId: entry.recordId,
+                                resName: entry.resName,
+                                typeId: entry.typeId,
+                                assId: entry.assId,
+                                assTypeId: entry.assTypeId,
+                                originalName: entry.originalName,
+                                recordTime: entry.recordTime,
+                                recordFlag: entry.recordFlag,
+                                resSize: entry.resSize,
+                                announcerId: entry.announcerId,
+                                publishTime: entry.publishTime,
+                                resAuthor: entry.resAuthor,
+                                resSrc: entry.resSrc,
+                                resIntro: entry.resIntro,
+                                resDesc: entry.resDesc,
+                                resTags: entry.resTags,
+                                modifyTime: entry.modifyTime,
+                                editorId: entry.editorId,
+                                accessUrl: entry.accessUrl,
+                                auditorId: entry.auditorId,
+                                auditTime: entry.auditTime,
+                                auditStatus: entry.auditStatus,
+                                typeName: entry.typeName,
+                                assTitle: entry.assTitle,
+                                assTypeName: entry.assTypeName,
+                                announcerName: entry.announcerName,
+                                editorName: entry.editorName,
+                                auditorName: entry.auditorName,
+                            };
+                        }
+                        that.dialogShow.res = !that.dialogShow.res;
+                        break;
 	                default: break;
 	            }
         	}
@@ -1925,7 +2048,32 @@ new Vue({
                                     console.warn(err);
                                 });
                                 break;
-
+                            case 'res':
+                                entry = that.resArray[idx];
+                                params = new URLSearchParams();
+                                params.append('resId', entry.recordId);
+                                params.append('flag','0');
+                                axios.post("/api/res/deleteById",params)
+                                    .then(function(response){
+                                        if(parseInt(response.data.code) === 200){
+                                            that.resArray.splice(idx,1);
+                                            that.pager.res.currentPage = 1;
+                                            that.loadResList('', 1, that.pager.res.pageSize);
+                                            that.$message({
+                                                message: '资源信息删除成功!',
+                                                type: 'success'
+                                            });
+                                        }
+                                        else {
+                                            that.$message({
+                                                message: '资源信息删除失败!',
+                                                type: 'error'
+                                            });
+                                        }
+                                    }).catch(function(err){
+                                    console.warn(err);
+                                });
+                                break;
 
                             default: break;
                         }
@@ -3042,6 +3190,74 @@ new Vue({
         handlePartyDuesCurrentChange: function(val) {
             this.pager.partyDues.currentPage = val;
             this.loadPartyDues(this.pager.partyDues.criteria, this.pager.partyDues.currentPage, this.pager.partyDues.pageSize);
+        },
+
+        /**
+         * 加载资源信息
+         */
+        loadResList(criteria, pageNum, pageSize) {
+            let that = this;
+            axios.get("/api/res/search", {params:{
+                    key: that.formSearchRes.key,
+                    typeId: that.formSearchRes.typeId,
+                    assId: that.formSearchRes.assId,
+                    assTypeId: that.formSearchRes.assTypeId,
+                    announcerId: that.formSearchRes.announcerId,
+                    pageNum: pageNum,
+                    pageSize:pageSize,
+                }})
+                .then(function(response){/*成功*/
+                    if(parseInt(response.status) == 200 ) {
+                        that.resArray = response.data.data.list;
+                        that.pager.res.totalCount = response.data.data.total;
+                    }
+                })
+                .catch(function(err){/*异常*/
+                    console.log(err);
+                });
+        },
+        //每页显示数据量变更
+        handleResSizeChange: function(val) {
+            this.pager.res.pageSize = val;
+            this.loadResList(this.pager.res.criteria, this.pager.res.currentPage, this.pager.res.pageSize);
+        },
+
+        //页码变更
+        handleResCurrentChange: function(val) {
+            this.pager.res.currentPage = val;
+            this.loadResList(this.pager.res.criteria, this.pager.res.currentPage, this.pager.res.pageSize);
+        },
+
+        /**
+         * 加载资源下载信息
+         */
+        loadResDlList(criteria, pageNum, pageSize) {
+            let that = this;
+            axios.get("/api/res/searchDl", {params:{
+                    key: that.formSearchResDl.key,
+                    pageNum: pageNum,
+                    pageSize:pageSize,
+                }})
+                .then(function(response){/*成功*/
+                    if(parseInt(response.status) == 200 ) {
+                        that.resDlArray = response.data.data.list;
+                        that.pager.resDl.totalCount = response.data.data.total;
+                    }
+                })
+                .catch(function(err){/*异常*/
+                    console.log(err);
+                });
+        },
+        //每页显示数据量变更
+        handleResDlSizeChange: function(val) {
+            this.pager.resDl.pageSize = val;
+            this.loadResDlList(this.pager.resDl.criteria, this.pager.resDl.currentPage, this.pager.resDl.pageSize);
+        },
+
+        //页码变更
+        handleResDlCurrentChange: function(val) {
+            this.pager.resDl.currentPage = val;
+            this.loadResDlList(this.pager.resDl.criteria, this.pager.resDl.currentPage, this.pager.resDl.pageSize);
         },
 
         /*
