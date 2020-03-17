@@ -7,7 +7,7 @@
              @open="handleOpen"
              @close="handleClose"
              :collapse="isCollapse"
-             @select="handleNavMenu">
+             @select="handleNavMenu" :unique-opened="true">
         <el-menu-item :index="__menu.moduleCode" v-for="__menu in userOwnedMenus" :key="__menu.moduleId" v-if="__menu.subs.length == 0">
             <i :class="__menu.moduleIcon"></i>
             <span slot="title">{{__menu.moduleName}}</span>
