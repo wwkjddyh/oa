@@ -232,7 +232,7 @@ new Vue({
         formUserDetail: {},
         formMember: {},
         formOperateLog: {},
-
+        formnddyxxcj:{},
         formAuthUserRole: {},
         formAuthRoleModule: {},
         formAuthRole: {},
@@ -1629,6 +1629,14 @@ new Vue({
                         }
                         that.dialogShow.partyDues = !that.dialogShow.partyDues;
                         break;
+                    case 'nddyxxcj':
+                    	if(isAdd){
+                    		that.formnddyxxcj={};
+                    	}else{
+                    		
+                    	}
+                    	that.dialogShow.nddyxxcj = !that.dialogShow.nddyxxcj;
+                    	break;
 	                default: break;
 	            }
         	}
