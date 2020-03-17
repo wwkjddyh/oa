@@ -379,6 +379,7 @@ new Vue({
         continent: '',
         nation: '',
         rules: {},
+        editableTabsOptions: {},
         chartsData: [
             {
                 chartType: 'column',
@@ -3012,6 +3013,34 @@ new Vue({
             this.loadPartyDues(this.pager.partyDues.criteria, this.pager.partyDues.currentPage, this.pager.partyDues.pageSize);
         },
 
+        handleAddTab(targetName) {
+            let newTabName = ++this.editableTabsOptions.tabIndex + '';
+            this.editableTabsOptions.editableTabs.push({
+                title: 'New Tab',
+                name: newTabName,
+                content: 'New Tab content'
+            });
+            this.editableTabsValue = newTabName;
+        },
+        handleRemoveTab(targetName) {
+            console.log('targetName=>', targetName, this.editableTabsOptions.editableTabsValue);
+            let tabs = this.editableTabsOptions.editableTabs;
+            let activeName = this.editableTabsOptions.editableTabsValue;
+            if (activeName === targetName) {
+                tabs.forEach((tab, index) => {
+                    if (tab.name === targetName) {
+                        let nextTab = tabs[index + 1] || tabs[index - 1];
+                        if (nextTab) {
+                            activeName = nextTab.name;
+                        }
+                    }
+                });
+            }
+
+            this.editableTabsOptions.editableTabsValue = activeName;
+            this.editableTabsOptions.editableTabs = tabs.filter(tab => tab.name !== targetName);
+        }
+
     },
     props: {
 
@@ -3042,6 +3071,7 @@ new Vue({
 
                 that.dialogShow = config.dialogShow;
                 that.rules = config.rules;
+                that.editableTabsOptions = config.editableTabsOptions;
               //  console.log('rules,',that.rules);
                 let searchForm = config.searchForm;
                 that.formSearchAuthModule = searchForm.authModule;
@@ -3053,6 +3083,7 @@ new Vue({
                 that.formSearchMemberUser = searchForm.memberUser;
                 that.formSearchNews = searchForm.news;
                 that.formSearchPartyDues = searchForm.partyDues;
+
             })
             .catch(function(err){/*异常*/
                 console.log(err);

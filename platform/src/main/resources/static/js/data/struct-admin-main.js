@@ -432,6 +432,29 @@ const formStructConfig = {
     dateDickerOptions: {
 
     },
+    editableTabsOptions: {
+        editableTabsValue: '2',
+        editableTabs: [
+            {
+                title: '首页',
+                name: '1',
+                content: '首页',
+                closable: false,
+            },
+            {
+                title: 'Tab 1',
+                name: '2',
+                content: 'Tab 1 content',
+                closable: true,
+            }, {
+                title: 'Tab 2',
+                name: '3',
+                content: 'Tab 2 content',
+                closable: true,
+            }],
+        tabIndex: 2,
+        activeName: 'first',
+    }
 };
 
 let StructMock = Mock.mock('/api/admin/main/struct', {
