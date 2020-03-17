@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.oa.platform.entity.OrgDeptDetail;
 import com.oa.platform.entity.OrgLeaderDetail;
 import com.oa.platform.entity.OrgRewardDetail;
+import com.oa.platform.entity.OrgUser;
 import com.oa.platform.entity.Organization;
 import com.oa.platform.service.OrgService;
 import com.oa.platform.util.StringUtil;
@@ -157,6 +158,22 @@ public class OrgBiz extends BaseBiz {
 			orgSerivce.saveOrgLeaderDetail(orgLeaderDetail);
 		}
 		
+	}
+	/**
+	 * 获取年度党员信息集合
+	 * @param userId
+	 * @return
+	 */
+	public List<OrgUser> getOrgUserList(String userId,String userName) {
+		String orgId = null;
+		//根据用户id获取所在组织主键
+		List<Organization> orgInfo = orgSerivce.getOrgIdByuserId(userId);
+		if(orgInfo == null || orgInfo.size() == 0) {
+			//用户无组织，无查询结果
+			return new ArrayList<OrgUser>();
+		}
+		List<OrgUser> result = orgSerivce.getOrgUserList(orgInfo.get(0).getOrgId(),userName);
+		return result;
 	}
 	
 	

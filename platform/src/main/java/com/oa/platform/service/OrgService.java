@@ -5,6 +5,7 @@ import java.util.List;
 import com.oa.platform.entity.OrgDeptDetail;
 import com.oa.platform.entity.OrgLeaderDetail;
 import com.oa.platform.entity.OrgRewardDetail;
+import com.oa.platform.entity.OrgUser;
 import com.oa.platform.entity.Organization;
 /**
  * orgservice
@@ -71,4 +72,6 @@ public interface OrgService extends BaseService<Organization, String> {
 	List<OrgDeptDetail> getOrgDeptList(String orgId);
 	void saveOrgDeptDetail(OrgDeptDetail orgDeptDetail);
 	void delOrgDeptById(String orgId);
+	
+	List<OrgUser> getOrgUserList(String orgId,String userName);
 }

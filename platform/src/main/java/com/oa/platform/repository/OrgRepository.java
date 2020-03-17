@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.oa.platform.entity.OrgDeptDetail;
 import com.oa.platform.entity.OrgLeaderDetail;
 import com.oa.platform.entity.OrgRewardDetail;
+import com.oa.platform.entity.OrgUser;
 import com.oa.platform.entity.Organization;
 /**
  * dao
@@ -71,4 +72,6 @@ public interface OrgRepository extends BaseRepository<Organization, String> {
 	List<OrgDeptDetail> getOrgDeptList(@Param("orgId") String orgId);
 	void saveOrgDeptDetail(OrgDeptDetail orgDeptDetail);
 	void delOrgDeptById(@Param("orgId") String orgId);
+
+	List<OrgUser> getOrgUserList(@Param("orgId") String orgId,@Param("userName") String userName);
 }

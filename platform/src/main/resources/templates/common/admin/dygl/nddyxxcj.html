@@ -4,9 +4,9 @@
 <div th:fragment="content">
     <el-tabs v-model="activeTabName" type="card">
         <el-tab-pane label="年度党员信息采集" name="first" style="width: 100%;">
-		            <el-button plain @click="edit('dwjbxx','','',true)" type="primary" size="mini"><i class="el-icon-plus"></i>新增</el-button>
+		            <el-button plain @click="edit('nddyxxcj','','',true)" type="primary" size="mini"><i class="el-icon-plus"></i>新增</el-button>
 		            <!-- <el-button plain type="danger" size="mini"><i class="el-icon-close" size=""></i>删除</el-button> -->
-		            <el-button plain size="mini"  @click="searchForm('searchDwjbxx')" ><i class="el-icon-refresh"></i>刷新</el-button>
+		            <el-button plain size="mini"  @click="searchForm('nddyxxcj')" ><i class="el-icon-refresh"></i>刷新</el-button>
 		            <el-input placeholder="按姓名搜索"  class="input-with-select" size="mini" style="width: 30%">
 					    <el-button slot="append" icon="el-icon-search" ></el-button>
 					 </el-input>
@@ -18,9 +18,8 @@
 				    </el-radio-group>
             <div style="margin-top: 20px">
                 <el-table
-                        :data="dwjbxxTableData"
+                        :data="nddyxxcjTableData"
                         border
-                        v-loading="loading.flag"
                         style="width: 100%"
                         row-key="orgId"
                         :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
@@ -31,33 +30,33 @@
                             width="200">
                     </el-table-column>
                     <el-table-column
-                            prop="orgType"
+                            prop="userName"
                             label="姓名"
                             align="center"
                             width="200">
                     </el-table-column>
                     <el-table-column
-                            prop="foundTime"
+                            prop="gender"
                             align="center"
                             label="性别">
                     </el-table-column>
                     <el-table-column
-                            prop="leader"
+                            prop="phone"
                             align="center"
                             label="联系方式">
                     </el-table-column>
                     <el-table-column
-                            prop="concatPersion"
+                            prop="birthTime"
                             align="center"
                             label="出生日期">
                     </el-table-column>
                     <el-table-column
-                            prop="phone"
+                            prop="nation"
                             align="center"
                             label="民族">
                     </el-table-column>
                     <el-table-column
-                            prop="phone"
+                            prop="education"
                             align="center"
                             label="学历">
                     </el-table-column>
@@ -67,9 +66,9 @@
                             label="操作">
                         <template slot-scope="scope" >
                             <div style="display: flex;width:100%" align="right">
-                            	<el-button size="mini" v-if="scope.row.level < 2" @click="edit('dwjbxx',scope.$index,scope.row,null)" >添加下级组织</el-button>
-                                <el-button size="mini" @click="edit('dwjbxx',scope.$index,scope.row,false)" >修改</el-button>
-                                <el-button size="mini" type="danger" @click="dwjbxxDel(scope.row,'dwjbxx')" >删除</el-button>
+                            	<el-button size="mini"  >查看</el-button>
+                                <el-button size="mini" @click="edit('nddyxxcj',scope.$index,scope.row,false)" >修改</el-button>
+                                <el-button size="mini" type="danger" @click="dwjbxxDel(scope.row,'nddyxxcj')" >删除</el-button>
                             </div>
                         </template>
                     </el-table-column>

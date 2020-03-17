@@ -66,6 +66,18 @@
 		<result column="create_by" property="createBy" jdbcType="VARCHAR"/>
 		<result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
 	</resultMap>
+	<resultMap type="com.oa.platform.entity.OrgUser" id="orgUserMap">
+		<result column="org_id" property="orgId" jdbcType="VARCHAR"/>
+		<result column="org_nm" property="orgName" jdbcType="VARCHAR"/>
+		<result column="upper_org" property="upperOrg" jdbcType="VARCHAR"/>
+		<result column="user_id" property="userId" jdbcType="VARCHAR"/>
+		<result column="user_name" property="userName" jdbcType="VARCHAR"/>
+		<result column="gender" property="gender" jdbcType="VARCHAR"/>
+		<result column="phone" property="phone" jdbcType="VARCHAR"/>
+		<result column="birth_Time" property="birthTime" jdbcType="VARCHAR"/>
+		<result column="nation" property="nation" jdbcType="VARCHAR"/>
+		<result column="education" property="education" jdbcType="VARCHAR"/>
+	</resultMap>
 	<insert id="orgAdd" parameterType="com.oa.platform.entity.Organization">
 		insert into t_sys_org (
 			org_id, 
@@ -302,6 +314,115 @@
 			t_org_user 
 		WHERE
 			user_id = #{userId} and status='1'
+	</select>
+	<select id="getOrgUserList" resultMap="orgUserMap">
+		SELECT
+			tmp.* 
+		FROM
+			(
+			(
+			WITH recursive org_cte AS (
+		SELECT
+			sorg.org_id,
+			sorg.org_nm,
+			sorg.upper_org,
+			usr.user_id,
+			usr.user_name,
+			userdtl.gender,
+			userdtl.phone,
+			userdtl.birth_time,
+			userdtl.nation,
+			userdtl.education 
+		FROM
+			t_sys_org sorg
+			LEFT JOIN t_org_user orguser ON sorg.org_id = orguser.org_id 
+			AND orguser.STATUS = '1' 
+			AND sorg.STATUS = '1'
+			LEFT JOIN t_user usr ON orguser.user_id = usr.user_id 
+			AND usr.record_flag = '1'
+			LEFT JOIN t_user_dtl userdtl ON orguser.user_id = userdtl.user_id 
+		WHERE
+			sorg.org_id = #{orgId} UNION ALL
+		SELECT
+			org.org_id,
+			org.org_nm,
+			org.upper_org,
+			usr.user_id,
+			usr.user_name,
+			userdtl.gender,
+			userdtl.phone,
+			userdtl.birth_time,
+			userdtl.nation,
+			userdtl.education 
+		FROM
+			t_sys_org org
+			LEFT JOIN t_org_user orguser ON org.org_id = orguser.org_id 
+			AND orguser.STATUS = '1' 
+			AND org.STATUS = '1'
+			LEFT JOIN t_user usr ON orguser.user_id = usr.user_id 
+			AND usr.record_flag = '1'
+			LEFT JOIN t_user_dtl userdtl ON orguser.user_id = userdtl.user_id
+			INNER JOIN org_cte sysorg ON org.org_id = sysorg.upper_org 
+			AND org.STATUS = '1' 
+			) SELECT
+			ote.* 
+		FROM
+			org_cte ote 
+			) UNION
+			(
+			WITH recursive org_cte AS (
+		SELECT
+			sorg.org_id,
+			sorg.org_nm,
+			sorg.upper_org,
+			usr.user_id,
+			usr.user_name,
+			userdtl.gender,
+			userdtl.phone,
+			userdtl.birth_time,
+			userdtl.nation,
+			userdtl.education 
+		FROM
+			t_sys_org sorg
+			LEFT JOIN t_org_user orguser ON sorg.org_id = orguser.org_id 
+			AND orguser.STATUS = '1' 
+			AND sorg.STATUS = '1'
+			LEFT JOIN t_user usr ON orguser.user_id = usr.user_id 
+			AND usr.record_flag = '1'
+			LEFT JOIN t_user_dtl userdtl ON orguser.user_id = userdtl.user_id 
+		WHERE
+			sorg.org_id = #{orgId} UNION ALL
+		SELECT
+			org.org_id,
+			org.org_nm,
+			org.upper_org,
+			usr.user_id,
+			usr.user_name,
+			userdtl.gender,
+			userdtl.phone,
+			userdtl.birth_time,
+			userdtl.nation,
+			userdtl.education 
+		FROM
+			t_sys_org org
+			LEFT JOIN t_org_user orguser ON org.org_id = orguser.org_id 
+			AND orguser.STATUS = '1' 
+			AND org.STATUS = '1'
+			LEFT JOIN t_user usr ON orguser.user_id = usr.user_id 
+			AND usr.record_flag = '1'
+			LEFT JOIN t_user_dtl userdtl ON orguser.user_id = userdtl.user_id
+			INNER JOIN org_cte sysorg ON sysorg.org_id = org.upper_org 
+			AND org.STATUS = '1' 
+			) SELECT
+			ote.* 
+		FROM
+			org_cte ote 
+			) 
+			) tmp 
+		WHERE 1=1 
+		<if test="userName != null and userName != ''">
+        	and INSTR( tmp.user_name, #{userName} ) > 0
+      	</if>	
 	</select>
 	<select id="getDeptList" resultMap="orgMap">
 	</select>

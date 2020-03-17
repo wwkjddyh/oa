@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.oa.platform.entity.OrgDeptDetail;
 import com.oa.platform.entity.OrgLeaderDetail;
 import com.oa.platform.entity.OrgRewardDetail;
+import com.oa.platform.entity.OrgUser;
 import com.oa.platform.entity.Organization;
 import com.oa.platform.repository.OrgRepository;
 import com.oa.platform.service.OrgService;
@@ -128,6 +129,10 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 	public void delOrgDeptById(String orgId) {
 		orgRepository.delOrgDeptById(orgId);
 		
+	}
+	@Override
+	public List<OrgUser> getOrgUserList(String orgId,String userName) {
+		return orgRepository.getOrgUserList(orgId,userName);
 	}
 
 }

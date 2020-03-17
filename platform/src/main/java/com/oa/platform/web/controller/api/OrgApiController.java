@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONArray;
 import com.oa.platform.biz.OrgBiz;
 import com.oa.platform.common.ResultVo;
-import com.oa.platform.common.StatusCode;
 import com.oa.platform.entity.OrgDeptDetail;
 import com.oa.platform.entity.OrgLeaderDetail;
 import com.oa.platform.entity.OrgRewardDetail;
+import com.oa.platform.entity.OrgUser;
 import com.oa.platform.entity.Organization;
 import com.oa.platform.entity.User;
 import com.oa.platform.web.controller.BaseController;
@@ -37,6 +37,17 @@ public class OrgApiController extends BaseController{
 	public ResultVo getOrgList() {
 		User user = getUserOfSecurity();
 		List<Organization> result = orgBiz.getOrgList(user.getUserId());
+		return getSuccessResultVo(result);
+	}
+	/**
+	 * 获取年度党员信息集合
+	 * @return
+	 */
+	@GetMapping("getOrgUserList")
+	public ResultVo getOrgUserList(
+			@RequestParam(defaultValue = "",required = false) String userName) {
+		User user = getUserOfSecurity();
+		List<OrgUser> result = orgBiz.getOrgUserList(user.getUserId(),userName);
 		return getSuccessResultVo(result);
 	}
 	/**
@@ -140,4 +151,5 @@ public class OrgApiController extends BaseController{
 		List<OrgDeptDetail> result = orgBiz.getOrgDeptList(orgId);
 		return getSuccessResultVo(result);
 	}
+	
 }
