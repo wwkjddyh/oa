@@ -2,14 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.oa.platform.repository.ResRepository" >
 
-  <cache type="org.mybatis.caches.ehcache.EhcacheCache"
-         eviction="LRU"
-         flushInterval="3600000"
-         size="1024"
-         readOnly="true"
-         blocking="true"
-  />
-
   <resultMap id="res" type="com.oa.platform.entity.Res">
     <result column="record_id" property="recordId" jdbcType="VARCHAR"/>
     <result column="res_name" property="resName" jdbcType="VARCHAR"/>
@@ -33,6 +25,7 @@
     <result column="audit_time" property="auditTime" jdbcType="VARCHAR"/>
     <result column="audit_status" property="auditStatus" jdbcType="INTEGER"/>
     <result column="publish_time" property="publishTime" jdbcType="VARCHAR"/>
+    <result column="curr_name" property="currName" jdbcType="VARCHAR"/>
 
     <result column="type_name" property="typeName" jdbcType="VARCHAR"/>
     <result column="ass_title" property="assTitle" jdbcType="VARCHAR"/>
@@ -64,10 +57,12 @@
   <insert id="insert" parameterType="res">
     INSERT INTO t_res (record_id,res_name,type_id,ass_id,ass_type_id,
         original_name,record_time,record_flag,res_size,
-        announcer_id,res_author,res_src,res_intro,res_desc,res_tags,access_url, publish_time)
+        announcer_id,res_author,res_src,res_intro,res_desc,res_tags,access_url,
+        publish_time, curr_name)
     VALUES (#{recordId},#{resName},#{typeId},#{assId},#{assTypeId},
         #{originalName},NOW(),#{recordFlag},#{resSize},
-        #{announcerId},#{resAuthor},#{resSrc},#{resIntro},#{resDesc},#{resTags},#{accessUrl}, #{publishTime})
+        #{announcerId},#{resAuthor},#{resSrc},#{resIntro},#{resDesc},#{resTags},#{accessUrl},
+        #{publishTime}, #{currName})
   </insert>
 
   <insert id="insertResDl" parameterType="resDl">
@@ -100,6 +95,9 @@
       </if>
       <if test="originalName != null and originalName != ''">
         original_name = #{originalName},
+      </if>
+      <if test="currName != null and currName != ''">
+        curr_name = #{currName},
       </if>
       <if test="resSize != null">
         res_size = #{resSize},
@@ -173,7 +171,8 @@
         DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,record_flag,res_size,
         announcer_id,res_author,res_src,res_intro,res_desc,res_tags,
         DATE_FORMAT(modify_time,'%Y-%m-%d %H:%i:%s') modify_time,editor_id,access_url,
-        auditor_id,DATE_FORMAT(audit_time,'%Y-%m-%d %H:%i:%s') audit_time,audit_status, publish_time
+        auditor_id,DATE_FORMAT(audit_time,'%Y-%m-%d %H:%i:%s') audit_time,audit_status,
+        DATE_FORMAT(publish_time,'%Y-%m-%d') publish_time, curr_name
     FROM t_res WHERE record_id = #{recordId} AND record_flag = 1
   </select>
 
@@ -231,12 +230,13 @@
   <!--查询-->
   <select id="find" parameterType="res" resultMap="res">
     SELECT
-      record_id, res_name, type_id, ass_id, ass_type_id, original_name, publish_time,
+      record_id, res_name, type_id, ass_id, ass_type_id, original_name, DATE_FORMAT(publish_time,'%Y-%m-%d') publish_time,
       DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time, record_flag,
       res_size, announcer_id, res_author, res_src, res_intro, res_desc, res_tags,
       DATE_FORMAT(modify_time,'%Y-%m-%d %H:%i:%s') modify_time,
       editor_id, access_url, auditor_id, DATE_FORMAT(audit_time,'%Y-%m-%d %H:%i:%s') audit_time,
-      audit_status, type_name, '' AS ass_title, ass_type_name, announcer_name, editor_name, auditor_name
+      audit_status, type_name, '' AS ass_title, ass_type_name, announcer_name, editor_name, auditor_name,
+      curr_name
     FROM (
       SELECT
         t1.*,
@@ -246,7 +246,7 @@
         t5.`name` type_name,
         t6.`name` ass_type_name
       FROM
-        t_res t1
+        (SELECT * FROM t_res ORDER BY publish_time, record_time DESC) t1
         LEFT JOIN t_user t2 ON t1.announcer_id = t2.user_id
         LEFT JOIN t_user t3 ON t1.editor_id = t3.user_id
         LEFT JOIN t_user t4 ON t1.auditor_id = t4.user_id
@@ -284,6 +284,7 @@
       <if test="key != null and key != ''">
         AND (UPPER(res_name) LIKE CONCAT('%',UPPER(#{key}),'%')
             OR UPPER(original_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+            OR UPPER(curr_name) LIKE CONCAT('%',UPPER(#{key}),'%')
             OR UPPER(type_name) LIKE CONCAT('%',UPPER(#{key}),'%')
             OR UPPER(announcer_name) LIKE CONCAT('%',UPPER(#{key}),'%')
             OR UPPER(editor_name) LIKE CONCAT('%',UPPER(#{key}),'%')
@@ -308,7 +309,7 @@
         t11.user_name,
         t12.res_name, t12.res_original_name, t12.type_id, t12.type_name,
         t12.ass_id, t12.ass_type_id, t12.ass_title, t12.ass_type_name
-      FROM t_res_dl t10
+      FROM (SELECT  * FROM t_res_dl ORDER BY dl_time DESC) t10
         LEFT JOIN t_user t11 ON t10.user_id = t11.user_id
         LEFT JOIN (
           SELECT

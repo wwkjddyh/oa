@@ -1,117 +1,127 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
-    <el-tabs v-model="activeTabName" type="card">
-        <el-tab-pane label="资料下载" name="first">
-            <el-form ref="formSearchNews" :model="formSearchNews" label-width="100px">
-                <el-form-item label="资料模糊搜索" prop="title">
-                    <el-input v-model="formSearchRes.key" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
-                    <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">关键字</div><i class="el-icon-question"></i></el-tooltip>
-                </el-form-item>
-                <el-form-item>
-                    <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search">检索</el-button>
-                </el-form-item>
-            </el-form>
-            <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
-            <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
+    <el-form ref="formSearchNews" :model="formSearchNews" label-width="100px">
+        <el-form-item label="资料模糊搜索:" prop="title">
+            <el-input v-model="formSearchRes.key" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
+            <!--
+            <el-tooltip class="item" effect="dark" placement="top">
+                <div slot="content">关键字</div><i class="el-icon-question"></i></el-tooltip>
+                -->
+            <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" style="float:right">检索</el-button>
+        </el-form-item>
+    </el-form>
+    <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
+    <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
 
-            <div style="margin-top: 20px">
-                <el-table
-                        :data="resArray"
-                        border
-                        style="width: 100%">
-                    <!--
-                    <el-table-column
-                            align="center"
-                            width="50"
-                            label="序号">
-                        <template slot-scope="scope">
-                            {{scope.$index+1}}
-                        </template>
-                    </el-table-column>
-                    -->
-                    <el-table-column
-                            prop="recordTime"
-                            label="发布日期"
-                            width="200">
-                    </el-table-column>
-                    <el-table-column
-                            prop="resName"
-                            label="资料名称">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            width="250"
-                            label="操作">
-                        <template slot-scope="scope">
-                            <div style="display: flex;width:100%">
-                                <el-button size="mini" @click="edit('res', scope.$index,scope.row, false)" icon="el-icon-edit">修改</el-button>
-                                <el-button size="mini" type="danger" @click="handleDel(scope.$index,'res')" icon="el-icon-delete">删除</el-button>
-                                <el-button size="mini" type="" icon="el-icon-view">预览</el-button>
-                                <el-button size="mini" type="" icon="el-icon-download">下载</el-button>
-                            </div>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div align="center" style="margin-top: 20px">
-                    <el-pagination
-                            @size-change="handleResSizeChange"
-                            @current-change="handleResCurrentChange"
-                            :current-page="pager.res.currentPage"
-                            :page-sizes="[10, 20, 30, 40]"
-                            :page-size="pager.res.pageSize"
-                            layout="total, sizes, prev, pager, next, jumper"
-                            :total="pager.res.totalCount">
-                    </el-pagination>
-                </div>
-            </div>
-        </el-tab-pane>
-        <el-dialog title="资料上传" :visible.sync="dialogShow.res" lock-scroll="true" width="800px">
-            <el-card shadow="never" style="width: 100%;" type="card">
-                <el-form ref="formRes" :rules="rules" :model="formRes" label-width="100px" :validate-on-rule-change="false">
-                    <el-form-item label="发布日期" prop="publishTime">
-                        <el-date-picker style="width: 300px;"
-                                        v-model="formRes.publishTime"
-                                        type="date"
-                                        value-format="yyyy-MM-dd"
-                                        placeholder="选择日期时间">
-                        </el-date-picker>
-                        <el-tooltip class="item" effect="dark" placement="top">
-                            <div slot="content">发布日期</div><i class="el-icon-question"></i></el-tooltip>
-                    </el-form-item>
-                    <el-form-item label="资料名称" prop="resName">
-                        <el-input v-model="formRes.resName" size="medium" auto-complete="off" style="width: 472px;" maxlength="512" placeholder="资料名称"></el-input>
-                        <el-tooltip class="item" effect="dark" placement="top">
-                            <div slot="content">资料名称</div><i class="el-icon-question"></i></el-tooltip>
-                    </el-form-item>
-                    <el-form-item label="上传附件" prop="originalName">
+    <div style="margin-top: 20px">
+        <el-table
+                :data="resArray"
+                border
+                style="width: 100%">
+            <!--
+            <el-table-column
+                    align="center"
+                    width="50"
+                    label="序号">
+                <template slot-scope="scope">
+                    {{scope.$index+1}}
+                </template>
+            </el-table-column>
+            -->
+            <el-table-column
+                    prop="publishTime"
+                    label="发布日期"
+                    width="150">
+            </el-table-column>
+            <el-table-column
+                    prop="resName"
+                    label="资料名称">
+            </el-table-column>
+            <el-table-column
+                    align="center"
+                    width="260"
+                    label="操作">
+                <template slot-scope="scope">
+                    <div style="display: flex;width:100%">
+                        <el-button size="mini" @click="edit('res', scope.$index,scope.row, false)" icon="el-icon-edit">修改</el-button>
                         <!--
-                        <el-upload style="width: 300px;"
-                                class="upload-demo"
-                                action="https://jsonplaceholder.typicode.com/posts/"
-                                :on-preview="handlePreview"
-                                :on-remove="handleRemove"
-                                :before-remove="beforeRemove"
-                                multiple
-                                :limit="1"
-                                :on-exceed="handleExceed"
-                                :file-list="fileList">
-                            <el-button size="small" type="primary">点击上传</el-button>
-                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                        </el-upload>
+                        <el-button size="mini" type="danger" @click="handleDel(scope.$index,'res')" icon="el-icon-delete">删除</el-button>
                         -->
+                        <el-button size="mini" type="" icon="el-icon-view">预览</el-button>
+                        <el-button size="mini" type="" icon="el-icon-download">下载</el-button>
+                    </div>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div align="center" style="margin-top: 20px">
+            <el-pagination
+                    @size-change="handleResSizeChange"
+                    @current-change="handleResCurrentChange"
+                    :current-page="pager.res.currentPage"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="pager.res.pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="pager.res.totalCount">
+            </el-pagination>
+        </div>
+    </div>
+    <el-dialog title="资料上传" :visible.sync="dialogShow.res" lock-scroll="true" width="800px">
+        <el-card shadow="never" style="width: 100%;" type="card">
+            <el-form ref="formRes" :rules="rules" :model="formRes" label-width="100px" :validate-on-rule-change="false">
+                <el-form-item label="发布日期" prop="publishTime">
+                    <el-date-picker style="width: 300px;"
+                                    v-model="formRes.publishTime"
+                                    type="date"
+                                    value-format="yyyy-MM-dd"
+                                    placeholder="选择日期时间">
+                    </el-date-picker>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">发布日期</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <el-form-item label="资料名称" prop="resName">
+                    <el-input v-model="formRes.resName" size="medium" auto-complete="off" style="width: 472px;" maxlength="512" placeholder="资料名称"></el-input>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">资料名称</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <el-form-item label="上传附件" prop="originalName">
+                    <el-upload style="width: 300px;"
+                               ref="uploadRes"
+                            class="upload-demo"
+                            action="/api/file/upload"
+                            :on-preview="handleUploadPreview"
+                            :on-remove="handleUploadRemove"
+                            :before-remove="beforeUploadRemove"
+                            multiple
+                            :limit="1" accept="image/gif, image/jpeg, text/plain, application/pdf"
+                            :on-exceed="handleUploadExceed"
+                            :file-list="uploadFileList"
+                               :on-success="handleUploadSuccess"
+                               :on-error="handleUploadError"
+                               :on-change="uploadFileChange"
+                               :auto-upload="false"
+                               :show-file-list="true"
+                            >
+                        <el-button size="mini" type="primary">选择文件</el-button>
                         <el-tooltip class="item" effect="dark" placement="top">
                             <div slot="content">上传附件</div><i class="el-icon-question"></i></el-tooltip>
-                    </el-form-item>
+                        <!--
+                        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                        -->
+                    </el-upload>
 
-                    <el-form-item>
-                        <el-button @click="submitForm('formRes')" type="primary" round size="small">新增/保存</el-button>
-                        <el-button @click="dialogShow.res = false;resetForm('formRes')" round size="small">取消</el-button>
-                    </el-form-item>
-                </el-form>
-            </el-card>
-        </el-dialog>
-    </el-tabs>
+                    <!--
+                    <el-button style="margin-left: 10px;" size="mini" type="success" @click="submitUpload">上传</el-button>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">上传附件</div><i class="el-icon-question"></i></el-tooltip>-->
+                </el-form-item>
+
+                <el-form-item>
+                    <el-button @click="submitUpload" type="primary" round size="small">新增/保存</el-button>
+                    <el-button @click="dialogShow.res = false;resetForm('formRes')" round size="small">取消</el-button>
+                </el-form-item>
+            </el-form>
+        </el-card>
+    </el-dialog>
 </div>
 </html>

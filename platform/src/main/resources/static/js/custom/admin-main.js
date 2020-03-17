@@ -95,11 +95,13 @@ new Vue({
                     that.loadPartyDues('', 1, that.pager.partyDues.pageSize);
                     break;Re
                 case 'dfglzlxz':    //党费资源下载
-                    that.formSearchRes.key = '',
-                    that.formSearchRes.typeId = '',
-                    that.formSearchRes.assId = '',
-                    that.formSearchRes.assTypeId = '',
-                    that.formSearchRes.announcerId = '',
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = '01ef5219-464e-44a3-890a-557e3bbabd4e';
+                    that.formSearchRes.typeId = '01ef5219-464e-44a3-890a-557e3bbabd4e';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '党费管理资源下载';
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
             }
@@ -390,6 +392,8 @@ new Vue({
         },   // 消息接收人(用于'选择接收人'dialog)
         newsReceiveUserIds: [],
         currNewsSendRecord: {},
+        //uploadFileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
+        uploadFileList: [],
         continent: '',
         nation: '',
         rules: {},
@@ -1325,19 +1329,44 @@ new Vue({
          */
         submitRes() {
             let that = this;
-            let params = new URLSearchParams();
             let operName = '添加';
+            /*
+            let params = new URLSearchParams();
             params.append("assId", that.formRes.assId);
             params.append("assTypeId", that.formRes.assTypeId)
             params.append('typeId', that.formRes.typeId);
             params.append('publishTime', that.formRes.publishTime);
             params.append('resName',that.formRes.resName || '');
             params.append('originalName',that.formRes.originalName || '');
+             */
+            let _data = {
+                "assId" : that.formRes.assId || '',
+                "assTypeId" : that.formRes.assTypeId || '',
+                "typeId" : that.formRes.typeId || '',
+                "publishTime" : that.formRes.publishTime || '',
+                "resName" : that.formRes.resName || '',
+                "originalName" : that.formRes.originalName || '',
+                "resSize" : that.formRes.resSize || '0',
+                "remark" : that.formRes.remark || '',
+                "announcerId" : that.formRes.announcerId || '',
+                "resAuthor" : that.formRes.resAuthor || '',
+                "resSrc" : that.formRes.resSrc || '',
+                "resIntro" : that.formRes.resIntro || '',
+                "resDesc" : that.formRes.resDesc || '',
+                "resTags" : that.formRes.resTags || '',
+                "accessUrl" : that.formRes.accessUrl || '',
+                "currName" : that.formRes.currName || '',
+                "recordFlag": that.formRes.recordFlag || '1',
+            };
             if(that.currAction === 'edit') {
                 operName = '修改';
                 params.append('recordId',that.formRes.recordId || '');
             }
-            axios.post("/api/res/save",params)
+            axios.post("/api/res/save",_data, {
+                    headers: {
+                        "Content-type": "application/json;charset=utf-8"
+                    }
+                })
                 .then(function(response){
                     that.responseMessageHandler(response, '资源信息', operName, function() {
                         that.dialogShow.res = false;
@@ -1744,9 +1773,15 @@ new Vue({
                     	that.dialogShow.nddyxxcj = !that.dialogShow.nddyxxcj;
                     	break;
                     case 'res':
+                        that.uploadFileList = [];
+                        //that.$refs.uploadRes.clearFiles();
                         if(isAdd) {
+                            console.log('that.formRes.typeId', that.formRes.typeId);
+                            let _typeId = that.formRes.typeId + '';
                             that.formRes = {
+                                typeId: _typeId,
                             };
+                            console.log('add=>that.formRes=>', that.formRes)
                         }
                         else {
                             entry = that.resArray[scopeIndex];
@@ -1779,6 +1814,8 @@ new Vue({
                                 announcerName: entry.announcerName,
                                 editorName: entry.editorName,
                                 auditorName: entry.auditorName,
+                                currName: entry.currName || '',
+                                publishTime: entry.publishTime || '',
                             };
                         }
                         that.dialogShow.res = !that.dialogShow.res;
@@ -3342,6 +3379,121 @@ new Vue({
             that.showContent = moduleCode;
             that.def_menu_id = moduleCode;
             that.$forceUpdate();
+        },
+
+        /**
+         * 上传移除操作
+         * @param file 文件
+         * @param fileList 文件列表
+         */
+        handleUploadRemove(file, fileList) {
+            console.log('handleUploadRemove', file, fileList);
+        },
+
+        /**
+         * 上传时预览
+         * @param file 文件
+         */
+        handleUploadPreview(file) {
+            console.log('handleUploadPreview', file);
+        },
+
+        /**
+         * 执行上传文件
+         * @param files 文件组
+         * @param fileList 文件列表
+         */
+        handleUploadExceed(files, fileList) {
+            // this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+            this.$message.warning(`当前限制选择多个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+        },
+
+        /**
+         * 文件上传之前
+         * @param file 文件
+         * @param fileList 文件列表
+         * @returns {*}
+         */
+        beforeUploadRemove(file, fileList) {
+            let that = this;
+            let originalName = '';
+            if (fileList && fileList instanceof Array) {
+                let _names = [];
+                for (let i = 0; i < fileList.length; i ++) {
+                    _names.push(fileList[i].name);
+                }
+                originalName = _names.join(";");
+            }
+            that.formRes.originalName = originalName;
+            return that.$confirm(`确定移除 ${ file.name }？`);
+        },
+
+        submitUpload() {
+            this.$refs.uploadRes.submit();
+        },
+
+        handleUploadSuccess(res, file, fileList) {
+            console.log('handleUploadSuccess', res);
+            let that = this;
+            if (parseInt(res.code) === 200) {
+                let data = res.data;
+                that.formRes.originalName = data.fileName || '';
+                that.formRes.currName = data.newFileName || '';
+                that.formRes.accessUrl = data.destName || '';
+                that.formRes.resSize = (data.size || 0) + '';
+                console.log('(handleUploadSuccess)that.formRes', that.formRes);
+                if (that.formRes.originalName != '' && that.formRes.currName != '') {
+                    that.submitForm('formRes');
+                }
+                else {
+                    this.$message.error('请重新选择文件上传!');
+                }
+                /*
+                that.$notify.success({
+                    title: '成功',
+                    message: `文件上传成功`
+                });
+
+                 */
+            }
+            else {
+                that.$notify.error({
+                    title: '错误',
+                    message: `文件上传失败`
+                });
+            }
+
+        },
+
+        handleUploadError(err, file, fileList) {
+            console.log('handleUploadError', err);
+            this.$notify.error({
+                title: '错误',
+                message: `文件上传失败`
+            });
+        },
+
+        uploadFileChange(file, fileList) {
+            console.log('uploadFileChange', file);
+            console.log('uploadFileChange', fileList);
+            /*
+            const isIMAGE = (file.raw.type === 'image/jpeg' || file.raw.type === 'image/jpg' || file.raw.type === 'image/png'|| file.raw.type === 'image/gif');
+            const isLt1M = file.size / 1024 / 1024 < 1;
+
+            if (!isIMAGE) {
+                this.$message.error('上传文件只能是图片格式!');
+                return false;
+            }
+            if (!isLt1M) {
+                this.$message.error('上传文件大小不能超过 1MB!');
+                return false;
+            }
+            let reader = new FileReader();
+            reader.readAsDataURL(file.raw);
+            reader.onload = function(e){
+                //console.log(this.result)//图片的base64数据
+            }
+             */
         },
 
     },

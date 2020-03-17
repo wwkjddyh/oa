@@ -25,7 +25,6 @@ import java.util.UUID;
  * @author feng
  * @date 2019/10/20
  */
-@Slf4j
 @Component
 public class FileBiz extends BaseBiz {
     private final Logger log = LoggerFactory.getLogger(FileBiz.class);
@@ -61,6 +60,12 @@ public class FileBiz extends BaseBiz {
             String fileName = file.getOriginalFilename();
             System.err.println("文件名： " + fileName);
 
+            // 过滤从MacOS获取的异常文件名: 如: ":Users:baby:Downloads:哈哈22.jpg"
+            int _index = fileName.lastIndexOf(":");
+            if (_index >= 0) {
+                fileName = fileName.substring(_index);
+            }
+
             // 文件后缀
             String suffixName = fileName.substring(fileName.lastIndexOf("."));
             System.err.println("文件后缀名： " + suffixName);
@@ -79,6 +84,7 @@ public class FileBiz extends BaseBiz {
             map.put("name", name);
             map.put("size", file.getSize());
             map.put("fileName", fileName);
+            map.put("newFileName", newFileName);
             map.put("destName", File.separator + type + File.separator + newFileName);
             File parentFile = dest.getParentFile();
             if (!parentFile.exists() && !parentFile.isDirectory()) {
@@ -129,6 +135,7 @@ public class FileBiz extends BaseBiz {
                     map.put("contentType", file.getContentType());
                     map.put("destName", File.separator + type + File.separator + newFileName);
                     map.put("fileName", fileName);
+                    map.put("newFileName", newFileName);
                     File parentFile = dest.getParentFile();
                     if (!parentFile.exists() && !parentFile.isDirectory()) {
                         parentFile.mkdirs();

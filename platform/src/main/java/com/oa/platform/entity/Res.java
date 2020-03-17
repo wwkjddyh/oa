@@ -35,9 +35,14 @@ public class Res implements Serializable {
     private String assTypeId;
 
     /**
-     * 原始名称
+     * 原始文件名
      */
     private String originalName;
+
+    /**
+     * 现在文件名
+     */
+    private String currName;
 
     /**
      * 信息录入时间
@@ -386,6 +391,14 @@ public class Res implements Serializable {
         this.publishTime = publishTime;
     }
 
+    public String getCurrName() {
+        return currName;
+    }
+
+    public void setCurrName(String currName) {
+        this.currName = currName;
+    }
+
     public Res() {
     }
 
@@ -420,6 +433,7 @@ public class Res implements Serializable {
                 ", editorName='" + editorName + '\'' +
                 ", auditorName='" + auditorName + '\'' +
                 ", publishTime='" + publishTime + '\'' +
+                ", currName='" + currName + '\'' +
                 '}';
     }
 }

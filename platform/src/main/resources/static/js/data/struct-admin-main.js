@@ -202,6 +202,7 @@ const formStructConfig = {
         assId: '',
         assTypeId: '',
         originalName: '',
+        currName: '',
         recordTime: '',
         recordFlag: '',
         resSize: '',
@@ -394,6 +395,7 @@ const formStructConfig = {
             assId: '',
             assTypeId: '',
             originalName: '',
+            currName: '',
             recordTime: '',
             recordFlag: '',
             resSize: '',
@@ -417,6 +419,8 @@ const formStructConfig = {
             auditorName: '',
             key: '',
             publishTime: '',
+            currTypeId: '',
+            currTypeName: '',
         },
 
         resDl: {
@@ -526,6 +530,16 @@ const formStructConfig = {
         ],
         receiverId: [
             { required: true, message: '请选择接收人', trigger: 'blur' },
+        ],
+        publishTime: [
+            { required: true, message: '请选择发布时间', trigger: 'blur'}
+        ],
+        resName: [
+            { required: true, message: '请填写名称', trigger: 'blur' },
+            { min: 3, max: 512, message: '长度在 3 到 512 个字符之间', trigger: 'blur' }
+        ],
+        originalName: [
+            { required: true, message: '请上传文件', trigger: 'blur' },
         ],
     },
     dateDickerOptions: {

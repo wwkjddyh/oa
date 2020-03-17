@@ -188,6 +188,7 @@ public class ResBiz extends BaseBiz {
             ret = this.getPageInfo(pageInfo);
         }
         catch(Exception e) {
+            e.printStackTrace();
             loggerError(ThreadUtil.getCurrentFullMethodName(), e);
             ret = this.getErrorVo();
         }
