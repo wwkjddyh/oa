@@ -425,7 +425,9 @@ const formStructConfig = {
         payAmount: [
             { required: true, message: '请输入金额', trigger: 'blur' },
         ],
-
+        receiverId: [
+            { required: true, message: '请选择接收人', trigger: 'blur' },
+        ],
     },
     dateDickerOptions: {
 

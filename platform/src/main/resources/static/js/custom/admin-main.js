@@ -652,15 +652,6 @@ new Vue({
         submitForm(formName) {
             let that = this;
             console.log("submit-formName:",formName);
-            // 个别验证
-            /*
-            if (formName == 'formNews') {
-                if (that.formNews.receiverId == '') {
-                    this.$message.error('请选择接收人');
-                    return false;
-                }
-            }
-            */
                		
             that.$confirm('是否确认提交？', '警告', {
                 confirmButtonText: '确定',
@@ -2851,7 +2842,7 @@ new Vue({
             let that = this;
             that.formNews.receiveUserIds = that.formNews.receiveUserIds || [];
             that.formNews.receiveUsers = that.formNews.receiveUsers || [];
-            console.log('newsReceiveUserIds => ', that.newsReceiveUserIds);
+            //console.log('newsReceiveUserIds => ', that.newsReceiveUserIds);
             let _len = that.newsReceiveUserIds.length;
             if (_len > 0) {
                 // 向表单中添加记录
@@ -2862,8 +2853,11 @@ new Vue({
                         that.formNews.receiveUsers.push(that.newsReceiveUsers[_newsReceiveUserId]);
                     }
                 }
-                console.log('that.formNews.receiveUserIds', that.formNews.receiveUserIds);
-                console.log('that.formNews.receiveUsers', that.formNews.receiveUsers);
+                that.formNews.receiverId = that.formNews.receiveUserIds.length > 0 ? that.formNews.receiveUserIds.join(",") : '';
+                // console.log('(handleNewsAddReceivers)that.formNews.receiveUserIds', that.formNews.receiveUserIds);
+                // console.log('(handleNewsAddReceivers)that.formNews.receiveUsers', that.formNews.receiveUsers);
+                // console.log('(handleNewsAddReceivers)that.formNews.receiverId', that.formNews.receiverId);
+                that.$forceUpdate();
             }
             that.dialogShow.newsReceivers = !that.dialogShow.newsReceivers;
         },
@@ -2893,6 +2887,8 @@ new Vue({
                 }
                 that.formNews.receiveUsers = _users;
                 that.formNews.receiveUserIds = _ids;
+                that.formNews.receiverId = _ids.length > 0 ? _ids.join(",") : '';
+                //console.log('(handleNewsRemoveReceiver)that.formNews.receiverId', that.formNews.receiverId);
                 that.$forceUpdate();
             }
         },
