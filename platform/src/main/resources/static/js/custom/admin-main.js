@@ -245,6 +245,8 @@ new Vue({
         formNews: {},
         formArticle: {},
         formPartyDues: {},
+        formRes: {},
+        formResDl: {},
         loading:{},
         dyxxyear:{
         },
@@ -261,6 +263,8 @@ new Vue({
         formSearchNews: {},
         formSearchArticle: {},
         formSearchPartyDues: {},
+        formSearchRes: {},
+        formSearchResDl: {},
         formdwjbxx:{},
         formLeader:{},
         formDept:{},
@@ -381,7 +385,7 @@ new Vue({
         rules: {},
         editableTabsOptions: {
 
-            editableTabsValue: '2',
+            editableTabsValue: 'firstPage',
             editableTabs: [
                 {
                     title: '首页',
@@ -655,6 +659,9 @@ new Vue({
                 if (_m2 && _m2.moduleCode) {
                     that.handleAddTab2(_m2);
                 }
+            }
+            else {
+                that.editableTabsOptions.editableTabsValue = 'firstPage';
             }
             that.showContent = tab;
         },
@@ -3056,20 +3063,26 @@ new Vue({
          * @param _module 模块信息
          */
         handleAddTab2(_module) {
+            let that = this;
             if (_module && _module.moduleName) {
                 let targetName = _module.moduleName || '';
                 let targetCode = _module.moduleCode || '';
+                let _tab = that.editableTabsOptions.editableTabs.find(function(_t){ return _t.name == targetCode});
                 if (targetName != '' && targetCode != '') {
-                    //let newTabName = ++this.editableTabsOptions.tabIndex + '';
-                    let __closable = targetCode === 'firstPage' ? false : true;
-                    this.editableTabsOptions.editableTabs.push({
-                        title: targetName,
-                        name: targetCode,
-                        content: '',
-                        closable: __closable,
-                    });
-                    this.editableTabsOptions.editableTabsValue = targetCode;
+                    if (!_tab) {
+                        let __closable = targetCode === 'firstPage' ? false : true;
+                        that.editableTabsOptions.editableTabs.push({
+                            title: targetName,
+                            name: targetCode,
+                            content: '',
+                            closable: __closable,
+                        });
+                    }
+                    that.editableTabsOptions.editableTabsValue = targetCode;
+                    that.showContent = that.editableTabsOptions.editableTabsValue;
+                    that.$forceUpdate();
                 }
+
             }
         },
 
@@ -3139,6 +3152,8 @@ new Vue({
                 that.formNews = config.formNews;
                 that.formArticle = config.formArticle;
                 that.formPartyDues = config.formPartyDues;
+                that.formRes = config.formRes;
+                that.formResDl = config.formResDl;
 
                 that.dialogShow = config.dialogShow;
                 that.rules = config.rules;
@@ -3153,6 +3168,8 @@ new Vue({
                 that.formSearchMemberUser = searchForm.memberUser;
                 that.formSearchNews = searchForm.news;
                 that.formSearchPartyDues = searchForm.partyDues;
+                that.formSearchRes = searchForm.res;
+                that.formSearchResDl = searchForm.resDl;
 
             })
             .catch(function(err){/*异常*/
