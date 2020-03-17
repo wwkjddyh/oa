@@ -3108,7 +3108,7 @@ new Vue({
 
             that.editableTabsOptions.editableTabsValue = activeName;
             that.editableTabsOptions.editableTabs = tabs.filter(tab => tab.name !== targetName);
-            let _tabLen = that.editableTabsOptions.editableTabs.length;
+            // let _tabLen = that.editableTabsOptions.editableTabs.length;
             console.log('handleRemoveTab => ', targetName, activeName);
             that.showContent = that.editableTabsOptions.editableTabsValue;
             that.$forceUpdate();
