@@ -3122,7 +3122,10 @@ new Vue({
         handleClickTab(tab, event) {
             //console.log('handleClickTab', tab, event);
             let that = this;
-            that.showContent = tab.name || 'firstPage';
+            let moduleCode = tab.name || 'firstPage';
+            that.showContent = moduleCode;
+            that.def_menu_id = moduleCode;
+            that.$forceUpdate();
         },
 
     },
