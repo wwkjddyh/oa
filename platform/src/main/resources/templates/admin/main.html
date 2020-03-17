@@ -25,14 +25,13 @@
             <el-container>
                 <el-main stype="width: 100%;height:100%">
                     <div style="width: 100%;height: auto;">
-                        <el-tabs v-model="editableTabsOptions.editableTabsValue" type="card"  @tab-remove="handleRemoveTab">
+                        <el-tabs v-model="editableTabsOptions.editableTabsValue" type="card" @tab-remove="handleRemoveTab" @tab-click="handleClickTab">
                             <el-tab-pane
                                     v-for="(item, index) in editableTabsOptions.editableTabs"
                                     :key="item.name"
                                     :label="item.title"
                                     :name="item.name"
                                     :closable="item.closable"
-
                             >
                             </el-tab-pane>
                         </el-tabs>

@@ -379,7 +379,19 @@ new Vue({
         continent: '',
         nation: '',
         rules: {},
-        editableTabsOptions: {},
+        editableTabsOptions: {
+
+            editableTabsValue: '2',
+            editableTabs: [
+                {
+                    title: '首页',
+                    name: 'firstPage',
+                    content: '',
+                    closable: false,
+                }],
+            tabIndex: 2,
+            activeName: 'first',
+        },
         chartsData: [
             {
                 chartType: 'column',
@@ -631,8 +643,20 @@ new Vue({
             console.log(key, keyPath);
         },
         handleNavMenu(tab, event, indexPath) {    //处理菜单选择
+            let that = this;
             console.log("handleNavMenu:", tab, event, indexPath);
-            this.showContent = tab;
+            if (tab != 'firstPage') {
+                let _m2 = that.userOwnedModules.find(function(m){ return m.moduleCode == tab});
+                console.log('m2 ==>', _m2);
+                /*
+                let tmpModules = that.userOwnedModules.filter(_module => _module.moduleCode == tab);
+                console.log('tmpModules', that.userOwnedModules, tmpModules);
+                 */
+                if (_m2 && _m2.moduleCode) {
+                    that.handleAddTab2(_m2);
+                }
+            }
+            that.showContent = tab;
         },
         resetForm(formName) {
             console.log('resetForm',formName);
@@ -3013,19 +3037,51 @@ new Vue({
             this.loadPartyDues(this.pager.partyDues.criteria, this.pager.partyDues.currentPage, this.pager.partyDues.pageSize);
         },
 
+        /*
         handleAddTab(targetName) {
             let newTabName = ++this.editableTabsOptions.tabIndex + '';
+            let __closable = targetName === 'firstPage' ? false : true;
             this.editableTabsOptions.editableTabs.push({
-                title: 'New Tab',
+                title: targetName,
                 name: newTabName,
-                content: 'New Tab content'
+                content: '',
+                closable: __closable,
             });
             this.editableTabsValue = newTabName;
         },
+         */
+
+        /**
+         * 添加tab
+         * @param _module 模块信息
+         */
+        handleAddTab2(_module) {
+            if (_module && _module.moduleName) {
+                let targetName = _module.moduleName || '';
+                let targetCode = _module.moduleCode || '';
+                if (targetName != '' && targetCode != '') {
+                    //let newTabName = ++this.editableTabsOptions.tabIndex + '';
+                    let __closable = targetCode === 'firstPage' ? false : true;
+                    this.editableTabsOptions.editableTabs.push({
+                        title: targetName,
+                        name: targetCode,
+                        content: '',
+                        closable: __closable,
+                    });
+                    this.editableTabsOptions.editableTabsValue = targetCode;
+                }
+            }
+        },
+
+        /**
+         * 移除tab
+         * @param targetName 名字
+         */
         handleRemoveTab(targetName) {
-            console.log('targetName=>', targetName, this.editableTabsOptions.editableTabsValue);
-            let tabs = this.editableTabsOptions.editableTabs;
-            let activeName = this.editableTabsOptions.editableTabsValue;
+            let that = this;
+            console.log('targetName=>', targetName, that.editableTabsOptions);
+            let tabs = that.editableTabsOptions.editableTabs;
+            let activeName = that.editableTabsOptions.editableTabsValue;
             if (activeName === targetName) {
                 tabs.forEach((tab, index) => {
                     if (tab.name === targetName) {
@@ -3037,9 +3093,24 @@ new Vue({
                 });
             }
 
-            this.editableTabsOptions.editableTabsValue = activeName;
-            this.editableTabsOptions.editableTabs = tabs.filter(tab => tab.name !== targetName);
-        }
+            that.editableTabsOptions.editableTabsValue = activeName;
+            that.editableTabsOptions.editableTabs = tabs.filter(tab => tab.name !== targetName);
+            let _tabLen = that.editableTabsOptions.editableTabs.length;
+            console.log('handleRemoveTab => ', targetName, activeName);
+            that.showContent = that.editableTabsOptions.editableTabsValue;
+            that.$forceUpdate();
+        },
+
+        /**
+         * 点击tab
+         * @param tab tab信息
+         * @param event 事件信息
+         */
+        handleClickTab(tab, event) {
+            //console.log('handleClickTab', tab, event);
+            let that = this;
+            that.showContent = tab.name || 'firstPage';
+        },
 
     },
     props: {
@@ -3071,7 +3142,6 @@ new Vue({
 
                 that.dialogShow = config.dialogShow;
                 that.rules = config.rules;
-                that.editableTabsOptions = config.editableTabsOptions;
               //  console.log('rules,',that.rules);
                 let searchForm = config.searchForm;
                 that.formSearchAuthModule = searchForm.authModule;
