@@ -1,177 +1,175 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
+    <!--
     <el-tabs v-model="activeTabName" type="card">
         <el-tab-pane label="通知公告" name="first">
-            <el-form ref="formSearchNews" :model="formSearchNews" label-width="100px">
-                <el-form-item label="关键字" prop="title">
-                    <el-input v-model="formSearchNews.title" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
+        </el-tab-pane>
+    </el-tabs>
+    -->
+    <el-form ref="formSearchNews" :model="formSearchNews" label-width="58px">
+        <el-form-item label="关键字" prop="title">
+            <el-input v-model="formSearchNews.title" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
+            <el-button size="mini" @click="searchForm('formSearchNews')" type="primary" plain icon="el-icon-search" style="float: right">检索</el-button>
+        </el-form-item>
+    </el-form>
+    <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
+    <el-button plain @click="edit('news','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
+    <!--
+    <el-button plain @click="searchForm('formSearchNews')" size="mini"><i class="el-icon-refresh"></i>&nbsp;刷新</el-button>
+    -->
+    <el-button round @click="handleNewsSearchByViewed('')" size="mini" :type="formSearchNews.allBtnType">全部</el-button>
+    <el-button round @click="handleNewsSearchByViewed('1')" size="mini" :type="formSearchNews.viewedBtnType">已读</el-button>
+    <el-button round @click="handleNewsSearchByViewed('0')" size="mini" :type="formSearchNews.unViewedBtnType">未读</el-button>
+
+    <div style="margin-top: 20px">
+        <!--
+        <el-table
+                :data="newsArray"
+                border
+                style="width: 100%">
+            <el-table-column
+                    align="center"
+                    width="50"
+                    label="序号">
+                <template slot-scope="scope">
+                    {{scope.$index+1}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="title"
+                    label="名称"
+                    width="200">
+            </el-table-column>
+            <el-table-column
+                    prop="content"
+                    label="描述">
+            </el-table-column>
+            <el-table-column
+                    align="center"
+                    width="230"
+                    label="操作">
+                <template slot-scope="scope">
+                    <div style="display: flex;width:100%">
+                        <el-button size="mini" @click="edit('news', scope.$index,scope.row, false)"><i class="el-icon-edit"></i>修改</el-button>
+                        <el-button size="mini" type="danger" @click="handleDel(scope.$index,'news')"><i class="el-icon-delete"></i>删除</el-button>
+                    </div>
+                </template>
+            </el-table-column>
+        </el-table>
+        -->
+        <div style="margin-top: 20px; width: 100%">
+            <!--
+            <div v-for="item in newsArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
+                <div style="width: 70%; height: auto">
+                    <div style="height: 20px; font-size: 15px;font-weight: bold;">
+                        <label v-if="item.status && item.status == 1" style="color: #82848a">[已读]</label>
+                        <label v-if="!item.status || item.status == 0">[未读]</label>
+                         <a style="color: #409EFF; margin-left: 20px">{{item.newsTitle || ''}}</a>
+                    </div>
+                    <div style="height: auto; min-height: 20px; margin-top: 10px; font-size: 13px; color: #8c939d; font-weight: bold;">
+                        {{item.newsContent}}
+                    </div>
+                </div>
+                <div style="width: 30%; font-size: 13px; color: #8c939d;">
+                    {{item.sendTime}}
+                </div>
+            </div>
+            -->
+            <div v-for="item in newsArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
+                <div style="width: 70%; height: auto" v-if="formSearchNews.isViewed == ''">
+                    <label v-if="item.status && item.status == 1" style="color: #82848a">[已读]</label>
+                    <label v-if="!item.status || item.status == 0">[未读]</label>
+                    <!--
+                    <el-popover
+                            placement="top-start"
+                            width="400"
+                            trigger="manual"
+                            :content="item.newsContent" v-model="item.dialogShow">
+                        <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" slot="reference" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
+                    </el-popover>
+                    -->
+                    <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
+                </div>
+                <div style="width: 70%; height: auto" v-if="formSearchNews.isViewed != ''">
+                    <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
+                </div>
+                <div style="width: 30%; font-size: 13px; color: #8c939d;">
+                    {{item.sendTime}}
+                </div>
+            </div>
+        </div>
+        <div align="center" style="margin-top: 20px">
+            <el-pagination
+                    @size-change="handleNewsSizeChange"
+                    @current-change="handleNewsCurrentChange"
+                    :current-page="pager.news.currentPage"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="pager.news.pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="pager.news.totalCount">
+            </el-pagination>
+        </div>
+    </div>
+    <el-dialog title="新增消息" :visible.sync="dialogShow.news" lock-scroll="true" width="800px">
+        <el-card shadow="never" style="width: 100%;" type="card">
+            <el-form ref="formNews" :rules="rules" :model="formNews" label-width="100px" :validate-on-rule-change="false">
+                <el-form-item label="收件人" prop="receiverId" >
+                    <div style="width: 600px;height: auto;float: left;display: flex;display: -webkit-flex; align-items:center;">
+                        <div style="border-radius: 4px;border-width: 1px;border-color: #E0E0E0;width:470px;height:200px;border-style: solid;">
+                            <el-tag style="margin-left: 5px;"
+                                    type="info"
+                                    size="mini"
+                                    :key="reUser.userId"
+                                    v-for="reUser in formNews.receiveUsers"
+                                    closable
+                                    :disable-transitions="false"
+                                    @close="handleNewsRemoveReceiver(reUser.userId);">
+                                {{reUser.userNickname}}
+                            </el-tag>
+                        </div>
+                        <el-tooltip class="item" effect="dark" placement="top" style="margin-left: 2px">
+                            <div slot="content">收件人</div><i class="el-icon-question"></i></el-tooltip>
+                        <el-button round @click="dialogShow.newsReceivers = !dialogShow.newsReceivers;" size="mini" type="info" style="height: 30px;margin-left: 2px">请选择人员</el-button>
+                    </div>
+                </el-form-item>
+                <el-form-item label="标题" prop="title">
+                    <el-input v-model="formNews.title" size="medium" auto-complete="off" style="width: 472px;" maxlength="512" placeholder="名称"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">关键字</div><i class="el-icon-question"></i></el-tooltip>
+                        <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <el-form-item label="内容" prop="content">
+                    <el-input v-model="formNews.content" type="textarea" size="medium" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="内容"></el-input>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">内容</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <el-form-item label="" prop="">
+                    <el-checkbox v-model="formNews.sendSms" :label="formNews.sendSms">是否发送短信</el-checkbox>
+                    <el-checkbox v-model="formNews.sendMail" :label="formNews.sendMail">是否发送邮件</el-checkbox>
                 </el-form-item>
                 <el-form-item>
-                    <el-button size="mini" @click="searchForm('formSearchNews')" type="primary" plain icon="el-icon-search">检索</el-button>
+                    <el-button @click="submitForm('formNews')" type="primary" round size="small">发送</el-button>
+                    <el-button @click="dialogShow.news = false;resetForm('formNews')" round size="small">取消</el-button>
                 </el-form-item>
             </el-form>
-            <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
-            <el-button plain @click="edit('news','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
-            <!--
-            <el-button plain @click="searchForm('formSearchNews')" size="mini"><i class="el-icon-refresh"></i>&nbsp;刷新</el-button>
-            -->
-            <el-button round @click="handleNewsSearchByViewed('')" size="mini" :type="formSearchNews.allBtnType">全部</el-button>
-            <el-button round @click="handleNewsSearchByViewed('1')" size="mini" :type="formSearchNews.viewedBtnType">已读</el-button>
-            <el-button round @click="handleNewsSearchByViewed('0')" size="mini" :type="formSearchNews.unViewedBtnType">未读</el-button>
+        </el-card>
+    </el-dialog>
 
-            <div style="margin-top: 20px">
-                <!--
-                <el-table
-                        :data="newsArray"
-                        border
-                        style="width: 100%">
-                    <el-table-column
-                            align="center"
-                            width="50"
-                            label="序号">
-                        <template slot-scope="scope">
-                            {{scope.$index+1}}
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="title"
-                            label="名称"
-                            width="200">
-                    </el-table-column>
-                    <el-table-column
-                            prop="content"
-                            label="描述">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            width="230"
-                            label="操作">
-                        <template slot-scope="scope">
-                            <div style="display: flex;width:100%">
-                                <el-button size="mini" @click="edit('news', scope.$index,scope.row, false)"><i class="el-icon-edit"></i>修改</el-button>
-                                <el-button size="mini" type="danger" @click="handleDel(scope.$index,'news')"><i class="el-icon-delete"></i>删除</el-button>
-                            </div>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                -->
-                <div style="margin-top: 20px; width: 100%">
-                    <!--
-                    <div v-for="item in newsArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
-                        <div style="width: 70%; height: auto">
-                            <div style="height: 20px; font-size: 15px;font-weight: bold;">
-                                <label v-if="item.status && item.status == 1" style="color: #82848a">[已读]</label>
-                                <label v-if="!item.status || item.status == 0">[未读]</label>
-                                 <a style="color: #409EFF; margin-left: 20px">{{item.newsTitle || ''}}</a>
-                            </div>
-                            <div style="height: auto; min-height: 20px; margin-top: 10px; font-size: 13px; color: #8c939d; font-weight: bold;">
-                                {{item.newsContent}}
-                            </div>
-                        </div>
-                        <div style="width: 30%; font-size: 13px; color: #8c939d;">
-                            {{item.sendTime}}
-                        </div>
-                    </div>
-                    -->
-                    <div v-for="item in newsArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
-                        <div style="width: 70%; height: auto" v-if="formSearchNews.isViewed == ''">
-                            <label v-if="item.status && item.status == 1" style="color: #82848a">[已读]</label>
-                            <label v-if="!item.status || item.status == 0">[未读]</label>
-                            <!--
-                            <el-popover
-                                    placement="top-start"
-                                    width="400"
-                                    trigger="manual"
-                                    :content="item.newsContent" v-model="item.dialogShow">
-                                <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" slot="reference" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
-                            </el-popover>
-                            -->
-                            <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
-                        </div>
-                        <div style="width: 70%; height: auto" v-if="formSearchNews.isViewed != ''">
-                            <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
-                        </div>
-                        <div style="width: 30%; font-size: 13px; color: #8c939d;">
-                            {{item.sendTime}}
-                        </div>
-                    </div>
-                </div>
-                <div align="center" style="margin-top: 20px">
-                    <el-pagination
-                            @size-change="handleNewsSizeChange"
-                            @current-change="handleNewsCurrentChange"
-                            :current-page="pager.news.currentPage"
-                            :page-sizes="[10, 20, 30, 40]"
-                            :page-size="pager.news.pageSize"
-                            layout="total, sizes, prev, pager, next, jumper"
-                            :total="pager.news.totalCount">
-                    </el-pagination>
-                </div>
+    <el-dialog title="选择接收人" :visible.sync="dialogShow.newsReceivers" lock-scroll="true" width="800">
+        <el-card shadow="never" style="width: 100%;" type="card">
+            <el-checkbox-group v-model="newsReceiveUserIds">
+                <el-checkbox v-for="(user, userId) in newsReceiveUsers" :label="userId" :key="userId">{{user.userNickname}}</el-checkbox>
+            </el-checkbox-group>
+            <div style="width: 100%; margin-top: 20px; display: flex;display: -webkit-flex;">
+                <el-button @click="handleNewsAddReceivers" type="primary" round size="small">确定</el-button>
+                <el-button @click="newsReceiveUserIds = [];dialogShow.newsReceivers = false;" type="info" round size="small">取消</el-button>
             </div>
-        </el-tab-pane>
-        <el-dialog title="新增消息" :visible.sync="dialogShow.news" lock-scroll="true" width="800px">
-            <el-card shadow="never" style="width: 100%;" type="card">
-                <el-form ref="formNews" :rules="rules" :model="formNews" label-width="100px" :validate-on-rule-change="false">
-                    <el-form-item label="收件人" prop="receiverId" >
-                        <div style="width: 600px;height: auto;float: left;display: flex;display: -webkit-flex; align-items:center;">
-                            <div style="border-radius: 4px;border-width: 1px;border-color: #E0E0E0;width:470px;height:200px;border-style: solid;">
-                                <el-tag style="margin-left: 5px;"
-                                        type="info"
-                                        size="mini"
-                                        :key="reUser.userId"
-                                        v-for="reUser in formNews.receiveUsers"
-                                        closable
-                                        :disable-transitions="false"
-                                        @close="handleNewsRemoveReceiver(reUser.userId);">
-                                    {{reUser.userNickname}}
-                                </el-tag>
-                            </div>
-                            <el-tooltip class="item" effect="dark" placement="top" style="margin-left: 2px">
-                                <div slot="content">收件人</div><i class="el-icon-question"></i></el-tooltip>
-                            <el-button round @click="dialogShow.newsReceivers = !dialogShow.newsReceivers;" size="mini" type="info" style="height: 30px;margin-left: 2px">请选择人员</el-button>
-                        </div>
-                    </el-form-item>
-                    <el-form-item label="标题" prop="title">
-                        <el-input v-model="formNews.title" size="medium" auto-complete="off" style="width: 472px;" maxlength="512" placeholder="名称"></el-input>
-                        <el-tooltip class="item" effect="dark" placement="top">
-                            <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
-                    </el-form-item>
-                    <el-form-item label="内容" prop="content">
-                        <el-input v-model="formNews.content" type="textarea" size="medium" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="内容"></el-input>
-                        <el-tooltip class="item" effect="dark" placement="top">
-                            <div slot="content">内容</div><i class="el-icon-question"></i></el-tooltip>
-                    </el-form-item>
-                    <el-form-item label="" prop="">
-                        <el-checkbox v-model="formNews.sendSms" :label="formNews.sendSms">是否发送短信</el-checkbox>
-                        <el-checkbox v-model="formNews.sendMail" :label="formNews.sendMail">是否发送邮件</el-checkbox>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button @click="submitForm('formNews')" type="primary" round size="small">发送</el-button>
-                        <el-button @click="dialogShow.news = false;resetForm('formNews')" round size="small">取消</el-button>
-                    </el-form-item>
-                </el-form>
-            </el-card>
-        </el-dialog>
-
-        <el-dialog title="选择接收人" :visible.sync="dialogShow.newsReceivers" lock-scroll="true" width="800">
-            <el-card shadow="never" style="width: 100%;" type="card">
-                <el-checkbox-group v-model="newsReceiveUserIds">
-                    <el-checkbox v-for="(user, userId) in newsReceiveUsers" :label="userId" :key="userId">{{user.userNickname}}</el-checkbox>
-                </el-checkbox-group>
-                <div style="width: 100%; margin-top: 20px; display: flex;display: -webkit-flex;">
-                    <el-button @click="handleNewsAddReceivers" type="primary" round size="small">确定</el-button>
-                    <el-button @click="newsReceiveUserIds = [];dialogShow.newsReceivers = false;" type="info" round size="small">取消</el-button>
-                </div>
-            </el-card>
-        </el-dialog>
-        <el-dialog :title="currNewsSendRecord.title" :visible.sync="dialogShow.viewNews" lock-scroll="true" width="500" center="true">
-            <div style="width: 100%; text-align: center">
-                {{currNewsSendRecord.content}}
-            </div>
-        </el-dialog>
-    </el-tabs>
+        </el-card>
+    </el-dialog>
+    <el-dialog :title="currNewsSendRecord.title" :visible.sync="dialogShow.viewNews" lock-scroll="true" width="500" center="true">
+        <div style="width: 100%; text-align: center">
+            {{currNewsSendRecord.content}}
+        </div>
+    </el-dialog>
 </div>
 </html>

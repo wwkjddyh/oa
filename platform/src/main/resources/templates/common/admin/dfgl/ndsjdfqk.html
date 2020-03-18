@@ -1,10 +1,14 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
+    <!--
     <el-tabs v-model="activeTabName" type="card">
         <el-tab-pane label="年度党费上缴情况" name="first">
-            <!--
-            <el-form ref="formSearchPartyDues" :model="formSearchPartyDues" label-width="100px">
+        </el-tab-pane>
+    </el-tabs>
+    -->
+    <!--
+            <el-form ref="formSearchPartyDues" :model="formSearchPartyDues" label-width="58px">
                 <el-form-item label="关键字" prop="key">
                     <el-input v-model="formSearchPartyDues.key" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
@@ -16,101 +20,99 @@
             </el-form>
             <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
             -->
-            <el-button plain @click="edit('partyDues','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
-            <el-button plain @click="searchForm('formSearchPartyDues')" size="mini" icon="el-icon-refresh">刷新</el-button>
-            <div style="margin-top: 20px">
-                <el-table
-                        :data="partyDuesArray"
-                        border
-                        style="width: 100%">
-                    <!--
-                    <el-table-column
-                            align="center"
-                            width="70"
-                            label="序号">
-                        <template slot-scope="scope">
-                            {{scope.$index+1}}
-                        </template>
-                    </el-table-column>
-                    -->
-                    <el-table-column
-                            prop="payTime"
-                            label="上缴时间"
-                            width="110">
-                    </el-table-column>
-                    <el-table-column
-                            prop="payPeriod"
-                            label="上缴哪季度党费">
-                    </el-table-column>
-                    <el-table-column
-                            prop="payAmount"
-                            label="上缴金额"
-                            width="100">
-                    </el-table-column>
-                    <el-table-column
-                            prop="remark"
-                            label="备注">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            width="200"
-                            label="操作">
-                        <template slot-scope="scope">
-                            <div style="display: flex;width:100%">
-                                <el-button size="mini" @click="edit('partyDues',scope.$index,scope.row,false)" icon="el-icon-edit">修改</el-button>
-                                <el-button size="mini" type="danger" @click="handleDel(scope.$index,'partyDues')" icon="el-icon-delete">删除</el-button>
-                            </div>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div align="center">
-                    <el-pagination
-                            @size-change="handlePartyDuesSizeChange"
-                            @current-change="handlePartyDuesCurrentChange"
-                            :current-page="pager.partyDues.currentPage"
-                            :page-sizes="[10, 20, 30, 40]"
-                            :page-size="pager.partyDues.pageSize"
-                            layout="total, sizes, prev, pager, next, jumper"
-                            :total="pager.partyDues.totalCount">
-                    </el-pagination>
-                </div>
-            </div>
-            <el-dialog title="上缴党费" :visible.sync="dialogShow.partyDues" lock-scroll="true" width="800px">
-                <el-card shadow="never" style="width: 100%;" type="card">
-                    <el-form ref="formPartyDues" :rules="rules" :model="formPartyDues" label-width="150px">
-                        <el-form-item label="上缴时间" prop="payTime">
-                            <el-date-picker style="width: 300px;"
+    <el-button plain @click="edit('partyDues','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
+    <el-button plain @click="searchForm('formSearchPartyDues')" size="mini" icon="el-icon-refresh">刷新</el-button>
+    <div style="margin-top: 20px">
+        <el-table
+                :data="partyDuesArray"
+                border
+                style="width: 100%">
+            <!--
+            <el-table-column
+                    align="center"
+                    width="70"
+                    label="序号">
+                <template slot-scope="scope">
+                    {{scope.$index+1}}
+                </template>
+            </el-table-column>
+            -->
+            <el-table-column
+                    prop="payTime"
+                    label="上缴时间"
+                    width="110">
+            </el-table-column>
+            <el-table-column
+                    prop="payPeriod"
+                    label="上缴哪季度党费">
+            </el-table-column>
+            <el-table-column
+                    prop="payAmount"
+                    label="上缴金额"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    prop="remark"
+                    label="备注">
+            </el-table-column>
+            <el-table-column
+                    align="center"
+                    width="200"
+                    label="操作">
+                <template slot-scope="scope">
+                    <div style="display: flex;width:100%">
+                        <el-button size="mini" @click="edit('partyDues',scope.$index,scope.row,false)" icon="el-icon-edit">修改</el-button>
+                        <el-button size="mini" type="danger" @click="handleDel(scope.$index,'partyDues')" icon="el-icon-delete">删除</el-button>
+                    </div>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div align="center">
+            <el-pagination
+                    @size-change="handlePartyDuesSizeChange"
+                    @current-change="handlePartyDuesCurrentChange"
+                    :current-page="pager.partyDues.currentPage"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="pager.partyDues.pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="pager.partyDues.totalCount">
+            </el-pagination>
+        </div>
+    </div>
+    <el-dialog title="上缴党费" :visible.sync="dialogShow.partyDues" lock-scroll="true" width="800px">
+        <el-card shadow="never" style="width: 100%;" type="card">
+            <el-form ref="formPartyDues" :rules="rules" :model="formPartyDues" label-width="150px">
+                <el-form-item label="上缴时间" prop="payTime">
+                    <el-date-picker style="width: 300px;"
                                     v-model="formPartyDues.payTime"
                                     type="date"
                                     value-format="yyyy-MM-dd"
                                     placeholder="选择日期时间">
-                            </el-date-picker>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">上缴时间</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="上缴哪季度党费" prop="payPeriod">
-                            <el-input v-model="formPartyDues.payPeriod" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="上缴哪季度党费"></el-input>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">上缴哪季度党费</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="上缴金额" prop="payAmount">
-                            <el-input type="number" step="0.01" v-model.number="formPartyDues.payAmount" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="上缴金额"></el-input>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">上缴金额</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="备注" prop="remark">
-                            <el-input v-model="formPartyDues.remark" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="备注"></el-input>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">备注</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button @click="dialogShow.partyDues = false;resetForm('formPartyDues')" plain icon="el-icon-close" size="mini">取消</el-button>
-                            <el-button @click="submitForm('formPartyDues')" type="primary" plain icon="el-icon-check" size="mini">保存</el-button>
-                        </el-form-item>
-                    </el-form>
-                </el-card>
-            </el-dialog>
-        </el-tab-pane>
-    </el-tabs>
+                    </el-date-picker>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">上缴时间</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <el-form-item label="上缴哪季度党费" prop="payPeriod">
+                    <el-input v-model="formPartyDues.payPeriod" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="上缴哪季度党费"></el-input>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">上缴哪季度党费</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <el-form-item label="上缴金额" prop="payAmount">
+                    <el-input type="number" step="0.01" v-model.number="formPartyDues.payAmount" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="上缴金额"></el-input>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">上缴金额</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <el-form-item label="备注" prop="remark">
+                    <el-input v-model="formPartyDues.remark" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="备注"></el-input>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">备注</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <el-form-item>
+                    <el-button @click="dialogShow.partyDues = false;resetForm('formPartyDues')" plain icon="el-icon-close" size="mini">取消</el-button>
+                    <el-button @click="submitForm('formPartyDues')" type="primary" plain icon="el-icon-check" size="mini">保存</el-button>
+                </el-form-item>
+            </el-form>
+        </el-card>
+    </el-dialog>
 </div>
 </html>

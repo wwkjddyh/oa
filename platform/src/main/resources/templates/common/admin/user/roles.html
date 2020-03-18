@@ -2,89 +2,91 @@
 <html xmlns:th="http://www.w3.org/1999/xhtml"
       xmlns:v-bind="http://www.w3.org/1999/xhtml" >
 <div th:fragment="content">
+    <!--
     <el-tabs v-model="activeTabName" type="card">
         <el-tab-pane label="角色管理" name="first">
-            <el-button plain @click="edit('role','','',true)">新增</el-button>
-            <div style="margin-top: 20px">
-                <el-table
-                        :data="roles"
-                        border
-                        style="width: 100%">
-                    <el-table-column
-                            align="center"
-                            width="50"
-                            label="序号">
-                        <template slot-scope="scope">
-                            {{scope.$index+1}}
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="roleName"
-                            label="名称"
-                            width="200">
-                    </el-table-column>
-                    <el-table-column
-                            prop="roleDesc"
-                            label="描述">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            label="操作"
-                            width="230">
-                        <template slot-scope="scope">
-                            <div style="display: flex;width:auto">
-                                <el-button size="mini" @click="handleSetRoleModule(scope.row)">模块设置</el-button>
-                                <el-button v-if="scope.row.roleName !== 'ROLE_ADMIN' && scope.row.roleName !== 'ROLE_USER'" size="mini" @click="edit('role',scope.$index,scope.row,false)">修改</el-button>
-                                <el-button v-if="scope.row.roleName !== 'ROLE_ADMIN' && scope.row.roleName !== 'ROLE_USER'"  size="mini" type="danger" @click="handleDel(scope.$index,'role')">删除</el-button>
-                            </div>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div align="center">
-                    <el-pagination
-                            @size-change="handleAuthRoleSizeChange"
-                            @current-change="handleAuthRoleCurrentChange"
-                            :current-page="pager.authRole.currentPage"
-                            :page-sizes="[10, 20, 30, 40]"
-                            :page-size="pager.authRole.pageSize"
-                            layout="total, sizes, prev, pager, next, jumper"
-                            :total="pager.authRole.totalCount">
-                    </el-pagination>
-                </div>
-            </div>
-            <el-dialog title="角色信息" :visible.sync="dialogShow.role" lock-scroll="true" width="800px">
-                <el-card shadow="never" style="width: 100%;" type="card">
-                    <el-form ref="formAuthRole" :rules="rules" :model="formAuthRole" label-width="100px">
-                        <el-form-item label="角色名称" prop="name">
-                            <el-input v-if="currAction == 'append'" v-model="formAuthRole.roleName" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
-                            <el-input v-else v-model="formAuthRole.roleName" readonly="true" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="角色描述" prop="roleDesc">
-                            <el-input v-model="formAuthRole.roleDesc" type="textarea" size="medium" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="描述"></el-input>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">描述</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button @click="dialogShow.role = false;resetForm('formAuthRole')" plain>取消</el-button>
-                            <el-button @click="submitForm('formAuthRole')" type="primary" plain>保存</el-button>
-                        </el-form-item>
-                    </el-form>
-                </el-card>
-            </el-dialog>
-            <el-dialog title="角色-模块配置" :visible.sync="dialogShow.roleModule" lock-scroll="true" width="800px">
-                <el-card shadow="never" style="width: 100%;" type="card">
-                    <el-checkbox :indeterminate="isIndeterminate.roleModule" v-model="checkBoxAll.roleModule" @change="handleRoleModuleCheckAllChange">全选</el-checkbox>
-                    <div style="margin: 15px 0;"></div>
-                    <el-checkbox-group v-model="checkBoxOptions.roleModule" @change="handleRoleModuleCheckedChange">
-                        <el-checkbox v-for="module in allModules" :label="module.moduleId" :key="module.moduleId">{{module.fullModuleName}}</el-checkbox>
-                    </el-checkbox-group>
-                    <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
-                    <el-button @click="handleCheckBoxSave('roleModule');" type="primary" size="small" plain style="margin-top:10px;">保存</el-button>
-                </el-card>
-            </el-dialog>
         </el-tab-pane>
     </el-tabs>
+    -->
+    <el-button plain @click="edit('role','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
+    <div style="margin-top: 20px">
+        <el-table
+                :data="roles"
+                border
+                style="width: 100%">
+            <el-table-column
+                    align="center"
+                    width="50"
+                    label="序号">
+                <template slot-scope="scope">
+                    {{scope.$index+1}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="roleName"
+                    label="名称"
+                    width="200">
+            </el-table-column>
+            <el-table-column
+                    prop="roleDesc"
+                    label="描述">
+            </el-table-column>
+            <el-table-column
+                    align="center"
+                    label="操作"
+                    width="284">
+                <template slot-scope="scope">
+                    <div style="display: flex;width:auto">
+                        <el-button size="mini" @click="handleSetRoleModule(scope.row)" icon="el-icon-setting">模块设置</el-button>
+                        <el-button v-if="scope.row.roleName !== 'ROLE_ADMIN' && scope.row.roleName !== 'ROLE_USER'" size="mini" @click="edit('role',scope.$index,scope.row,false)" icon="el-icon-edit">修改</el-button>
+                        <el-button v-if="scope.row.roleName !== 'ROLE_ADMIN' && scope.row.roleName !== 'ROLE_USER'"  size="mini" type="danger" @click="handleDel(scope.$index,'role')" icon="el-icon-delete">删除</el-button>
+                    </div>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div align="center">
+            <el-pagination
+                    @size-change="handleAuthRoleSizeChange"
+                    @current-change="handleAuthRoleCurrentChange"
+                    :current-page="pager.authRole.currentPage"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="pager.authRole.pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="pager.authRole.totalCount">
+            </el-pagination>
+        </div>
+    </div>
+    <el-dialog title="角色信息" :visible.sync="dialogShow.role" lock-scroll="true" width="800px">
+        <el-card shadow="never" style="width: 100%;" type="card">
+            <el-form ref="formAuthRole" :rules="rules" :model="formAuthRole" label-width="100px">
+                <el-form-item label="角色名称" prop="name">
+                    <el-input v-if="currAction == 'append'" v-model="formAuthRole.roleName" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+                    <el-input v-else v-model="formAuthRole.roleName" readonly="true" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <el-form-item label="角色描述" prop="roleDesc">
+                    <el-input v-model="formAuthRole.roleDesc" type="textarea" size="medium" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="描述"></el-input>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">描述</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <el-form-item>
+                    <el-button @click="dialogShow.role = false;resetForm('formAuthRole')" plain>取消</el-button>
+                    <el-button @click="submitForm('formAuthRole')" type="primary" plain>保存</el-button>
+                </el-form-item>
+            </el-form>
+        </el-card>
+    </el-dialog>
+    <el-dialog title="角色-模块配置" :visible.sync="dialogShow.roleModule" lock-scroll="true" width="800px">
+        <el-card shadow="never" style="width: 100%;" type="card">
+            <el-checkbox :indeterminate="isIndeterminate.roleModule" v-model="checkBoxAll.roleModule" @change="handleRoleModuleCheckAllChange">全选</el-checkbox>
+            <div style="margin: 15px 0;"></div>
+            <el-checkbox-group v-model="checkBoxOptions.roleModule" @change="handleRoleModuleCheckedChange">
+                <el-checkbox v-for="module in allModules" :label="module.moduleId" :key="module.moduleId">{{module.fullModuleName}}</el-checkbox>
+            </el-checkbox-group>
+            <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
+            <el-button @click="handleCheckBoxSave('roleModule');" type="primary" size="small" plain style="margin-top:10px;">保存</el-button>
+        </el-card>
+    </el-dialog>
 </div>
 </html>

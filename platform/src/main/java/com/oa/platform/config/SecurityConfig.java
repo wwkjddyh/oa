@@ -56,13 +56,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //登录成功后跳转到 /admin/main ,也可以使用defaultSuccessUrl 或 .successForwardUrl("/admin/main")；
                 // 如果不配置登录成功后跳转路径，
                 // 那么登录成功后默认就跳转到 orgiin url ， 也就是被跳转至loginPage 前我们尝试访问的那个 url。
-                .formLogin().loginPage("/login").successHandler(successHandler).failureHandler(failHandler).failureUrl("/login-error")
+                //.formLogin().loginPage("/login").successHandler(successHandler).failureHandler(failHandler).failureUrl("/login-error")
+                .formLogin().loginPage("/login").successHandler(successHandler).successForwardUrl("/admin/main").failureHandler(failHandler).failureUrl("/login-error")
                 .and()
                 .cors()
                 .and()
                 .exceptionHandling().accessDeniedPage("/401");
         // 自定义注销
-        http.logout().logoutSuccessUrl("/").clearAuthentication(true).invalidateHttpSession(true);
+//        http.logout().logoutSuccessUrl("/").clearAuthentication(true).invalidateHttpSession(true);
+        http.logout().logoutSuccessUrl("/login").clearAuthentication(true).invalidateHttpSession(true);
 
         //session管理 只允许一个用户登录,如果同一个账户两次登录,那么第一个账户将被踢下线,跳转到登录页面
         http.sessionManagement().sessionFixation().changeSessionId()
