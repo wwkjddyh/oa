@@ -926,15 +926,16 @@ new Vue({
          */
         submitUser(isAdmin) {
             let that = this;
-            let userType = isAdmin ? '(系统)' : '(会员)';
+            let userType = isAdmin ? '1' : '3';
             let params = new URLSearchParams();
-            params.append('name',that.formUser.name || '');
-            params.append('nickname',that.formUser.nickname || '');
-            params.append('passwordOrgi',that.formUser.passwordOrgi || '123456');
-            params.append('typeId',that.formUser.typeId || '');
-            params.append('isHeadhunting',that.formUser.isHeadhunting || 0);
+            params.append('userId',that.formUser.userId || '');
+            params.append('userType',that.formUser.userType || '');
+            params.append('userName',that.formUser.userName || '');
+            params.append('userNickname',that.formUser.userNickname || '');
+            params.append('userPwd',that.formUser.password || '');
+            params.append('langConfId','');
             if(that.currAction === 'append') {
-                axios.post("/api/auth/saveUserBaseInfo",params)
+                axios.post("/api/user/saveUserBaseInfo",params)
                     .then(function(response){
                         if(parseInt(response.data.code) === 200){
                             that.dialogShow.memberUser = false;

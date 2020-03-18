@@ -401,4 +401,26 @@ public class UserApiController extends BaseController {
     public Map<String, Object> findUserRoleByUserId(@RequestParam String userId) {
         return roleBiz.findUserRoleByUserId(userId);
     }
+
+    /**
+     * 保存用户基本信息
+     * @param userType 用户类型
+     * @param userName 用户名(登录名)
+     * @param userNickname 用户昵称
+     * @param userPwd 用户密码
+     * @param langConfId 语言配置ID
+     * @param recordFlag 信息标识
+     * @return
+     */
+    @PostMapping("saveUserBaseInfo")
+    public Map<String, Object> saveUserBaseInfo(
+            @RequestParam(defaultValue = "",required = false) String userId,
+            @RequestParam String userType,
+            @RequestParam String userName,
+            @RequestParam String userNickname,
+            @RequestParam(defaultValue = "123456",required = false) String userPwd,
+            @RequestParam(defaultValue = "",required = false) String langConfId,
+            @RequestParam(defaultValue = "1",required = false) Integer recordFlag) {
+        return userBiz.saveUserBaseInfo(userId, userType, userName, userNickname, userPwd, langConfId, recordFlag);
+    }
 }

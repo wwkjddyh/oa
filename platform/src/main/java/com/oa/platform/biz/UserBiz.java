@@ -1,7 +1,9 @@
 package com.oa.platform.biz;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.oa.platform.common.Constants;
+import com.oa.platform.entity.Area;
 import com.oa.platform.entity.User;
 import com.oa.platform.entity.UserDtl;
 import com.oa.platform.service.LogService;
@@ -11,6 +13,7 @@ import com.oa.platform.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -225,5 +228,94 @@ public class UserBiz extends BaseBiz {
         }
         user.setIsAdmin(isAdmin);
         return getPageInfo(userService.search(user,getPageNum(pageNum),getPageSize(pageSize)));
+    }
+
+    /**
+     * 是否重复
+     * @param userId 用户ID
+     * @param userName 用户名(登录名)
+     * @return
+     */
+    boolean validRepeat(String userId, String userName) {
+        boolean isRepeat = false;
+        userId = StringUtil.trim(userId);
+        userName = StringUtil.trim(userName);
+        User user = new User();
+        user.setUserId(userId);
+        user.setUserName(userName);
+        List<User> userList = userService.find(user);
+        if(userList != null && !userList.isEmpty()) {
+            List<User> users = Lists.newArrayList();
+            for (User u : userList) {
+                if (u.getRecordFlag() != Constants.INT_DEL) {
+                    users.add(u);
+                }
+            }
+            if (!users.isEmpty()) {
+                if("".equals(userId)) {
+                    isRepeat = true;
+                }
+                else {
+                    final String finalUserId = userId;
+                    isRepeat = users.parallelStream().anyMatch(e -> !e.getUserId().equals(finalUserId));
+                }
+            }
+
+        }
+        return isRepeat;
+    }
+
+    /**
+     * 保存用户基本信息
+     * @param userType 用户类型
+     * @param userName 用户名(登录名)
+     * @param userNickname 用户昵称
+     * @param userPwd 用户密码
+     * @param langConfId 语言配置ID
+     * @param recordFlag 信息标识
+     * @return
+     */
+    public Map<String, Object> saveUserBaseInfo(String userId, String userType, String userName, String userNickname,
+                                                String userPwd, String langConfId, Integer recordFlag) {
+        userId = StringUtil.trim(userId);
+        userName = StringUtil.trim(userName);
+        userType = StringUtil.trim(userType, User.TYPE_PERSON + "");
+        userPwd = StringUtil.trim(userPwd, "123456");
+        langConfId = StringUtil.trim("");
+        try {
+            if ("".equals(userName)) {
+                ret = this.getParamErrorVo();
+            }
+            else {
+                boolean isRepeat = validRepeat(userId, userName);
+                if (isRepeat) {
+                    ret = this.getParamRepeatErrorVo("用户名");
+                }
+                else {
+                    User user = new User();
+                    user.setUserName(userName);
+                    user.setUserNickname(StringUtil.trim(userNickname));
+                    user.setUserPwd(SecurityUtil.encodeBCryptPassword(userPwd));
+                    user.setUserPwdOrigi(userPwd);
+                    user.setLangConfId(langConfId);
+                    user.setUserType(Integer.parseInt(userType));
+                    if ("".equals(userId)) {
+                        user.setUserId(StringUtil.getRandomUUID());
+                        user.setRecordFlag(Constants.INT_NORMAL);
+                        userService.save(user);
+                    }
+                    else {
+                        user.setRecordFlag(recordFlag == null ? Constants.INT_NORMAL : recordFlag);
+                        user.setUserId(userId);
+                        userService.update(user);
+                    }
+                    ret = this.getSuccessVo("", "");
+                }
+            }
+        } catch (Exception e) {
+            ret = this.getErrorVo();
+            e.printStackTrace();
+        }
+        return ret;
     }
 }
