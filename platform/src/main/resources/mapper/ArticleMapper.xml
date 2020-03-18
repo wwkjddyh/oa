@@ -221,6 +221,12 @@
       <if test="flag != null">
         AND flag = #{flag}
       </if>
+      <if test="creatorIds != null and creatorIds.size() > 0">
+        AND creator_id IN
+        <foreach collection="creatorIds" index="index" item="itemId" open="(" separator="," close=")">
+          #{itemId}
+        </foreach>
+      </if>
     </trim>
   </select>
 </mapper>

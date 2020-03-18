@@ -1,6 +1,7 @@
 package com.oa.platform.biz;
 
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.oa.platform.common.Constants;
 import com.oa.platform.entity.Res;
 import com.oa.platform.entity.ResDl;
@@ -177,6 +178,7 @@ public class ResBiz extends BaseBiz {
         ret = null;
         try {
             Res res = new Res();
+            List<String> announcerIds = Lists.newArrayList(this.getUserIdOfSecurity());
             res.setTypeId(StringUtil.trim(typeId));
             res.setAssId(StringUtil.trim(assId));
             res.setAssTypeId(StringUtil.trim(assTypeId));
@@ -184,6 +186,7 @@ public class ResBiz extends BaseBiz {
             res.setEditorId(StringUtil.trim(editorId));
             res.setKey(StringUtil.trim(key));
             res.setRecordFlag(Constants.INT_NORMAL);
+            res.setAnnouncerIds(announcerIds);
             PageInfo<Res> pageInfo = resService.search(res, pageNum, pageSize);
             ret = this.getPageInfo(pageInfo);
         }

@@ -29,3 +29,7 @@
 [v-cloak] {
     display: none;
 }
+
+body,td,th {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}

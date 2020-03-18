@@ -206,6 +206,9 @@
       <if test="auditStatus != null">
         AND audit_status = #{auditStatus}
       </if>
+      <if test="announcerId != null and announcerId != ''">
+        AND announcer_id = #{announcerId}
+      </if>
     </trim>
   </delete>
 
@@ -281,6 +284,9 @@
       <if test="auditStatus != null">
         AND audit_status = #{auditStatus}
       </if>
+      <if test="announcerId != null and announcerId != ''">
+        AND announcer_id = #{announcerId}
+      </if>
       <if test="key != null and key != ''">
         AND (UPPER(res_name) LIKE CONCAT('%',UPPER(#{key}),'%')
             OR UPPER(original_name) LIKE CONCAT('%',UPPER(#{key}),'%')
@@ -295,6 +301,12 @@
             OR UPPER(res_desc) LIKE CONCAT('%',UPPER(#{key}),'%')
             OR UPPER(res_tags) LIKE CONCAT('%',UPPER(#{key}),'%')
         )
+      </if>
+      <if test="announcerIds != null and announcerIds.size() > 0">
+        AND announcer_id IN
+        <foreach collection="announcerIds" index="index" item="itemId" open="(" separator="," close=")">
+          #{itemId}
+        </foreach>
       </if>
     </trim>
   </select>

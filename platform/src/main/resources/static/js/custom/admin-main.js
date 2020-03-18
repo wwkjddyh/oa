@@ -94,14 +94,34 @@ new Vue({
                 case 'ndsjdfqk':
                     that.loadPartyDues('', 1, that.pager.partyDues.pageSize);
                     break;Re
-                case 'dfglzlxz':    //党费资源下载
+                case 'dfglzlxz':    //党费资料下载
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '01ef5219-464e-44a3-890a-557e3bbabd4e';
                     that.formSearchRes.typeId = '01ef5219-464e-44a3-890a-557e3bbabd4e';
                     that.formSearchRes.assId = '';
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
-                    that.formSearchRes.currTypeName = '党费管理资源下载';
+                    that.formSearchRes.currTypeName = '党费管理资料下载';
+                    that.loadResList('', 1, that.pager.res.pageSize);
+                    break;
+                case 'hjglzlxz':    // 换届管理资料下载
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = '3dea99ab-ec00-4633-b24c-7c44a5ce57b8';
+                    that.formSearchRes.typeId = '3dea99ab-ec00-4633-b24c-7c44a5ce57b8';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '换届管理资料下载';
+                    that.loadResList('', 1, that.pager.res.pageSize);
+                    break;
+                case 'dyglzlxz':    // 党员管理资料下载
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = '1e9941a0-2a6f-4c2f-b74c-970d0351469f';
+                    that.formSearchRes.typeId = '1e9941a0-2a6f-4c2f-b74c-970d0351469f';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '党员管理资料下载';
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
             }
@@ -3362,8 +3382,9 @@ new Vue({
             that.editableTabsOptions.editableTabsValue = activeName;
             that.editableTabsOptions.editableTabs = tabs.filter(tab => tab.name !== targetName);
             // let _tabLen = that.editableTabsOptions.editableTabs.length;
-            console.log('handleRemoveTab => ', targetName, activeName);
-            that.showContent = that.editableTabsOptions.editableTabsValue;
+            console.log('handleRemoveTab => ', targetName, activeName, that.editableTabsOptions.editableTabsValue);
+            that.def_menu_id = activeName;
+            that.showContent = activeName;
             that.$forceUpdate();
         },
 

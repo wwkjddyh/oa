@@ -1,6 +1,7 @@
 package com.oa.platform.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 文章信息
@@ -118,6 +119,11 @@ public class Article implements Serializable {
      * 搜索关键字(不需要存储入库)
      */
     private String key;
+
+    /**
+     * 创建者ID列表(查询用)
+     */
+    private List<String> creatorIds;
 
     public String getKey() {
         return key;
@@ -293,6 +299,14 @@ public class Article implements Serializable {
 
     public void setStinkyEgg(Long stinkyEgg) {
         this.stinkyEgg = stinkyEgg;
+    }
+
+    public List<String> getCreatorIds() {
+        return creatorIds;
+    }
+
+    public void setCreatorIds(List<String> creatorIds) {
+        this.creatorIds = creatorIds;
     }
 
     public Article() {

@@ -1,6 +1,7 @@
 package com.oa.platform.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 资源信息
@@ -158,6 +159,11 @@ public class Res implements Serializable {
      * 资源审核者姓名(查询时使用)
      */
     private String auditorName;
+
+    /**
+     * 资源发布者ID列表(查询时使用)
+     */
+    private List<String> announcerIds;
 
     public String getRecordId() {
         return recordId;
@@ -397,6 +403,14 @@ public class Res implements Serializable {
 
     public void setCurrName(String currName) {
         this.currName = currName;
+    }
+
+    public List<String> getAnnouncerIds() {
+        return announcerIds;
+    }
+
+    public void setAnnouncerIds(List<String> announcerIds) {
+        this.announcerIds = announcerIds;
     }
 
     public Res() {

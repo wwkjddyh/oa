@@ -97,6 +97,14 @@
                         <el-card shadow="never" v-show="showContent == 'formArticle'" key="formArticle">
                             <div th:replace="/common/admin/article/add :: form"/>
                         </el-card>
+                        <!--换届管理-->
+                        <el-card shadow="never" v-if="showContent == 'hjglzlxz'" key="hjglzlxz">
+                            <div th:replace="/common/admin/res/list :: content"/>
+                        </el-card>
+                        <!--党员管理资料下载-->
+                        <el-card shadow="never" v-if="showContent == 'dyglzlxz'" key="dyglzlxz">
+                            <div th:replace="/common/admin/res/list :: content"/>
+                        </el-card>
                     </div>
                     </keep-alive>
                 </el-main>
