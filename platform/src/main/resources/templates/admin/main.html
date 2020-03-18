@@ -14,29 +14,34 @@
 </head>
 <body>
 <div id="admin-main" v-cloak>
-    <el-container class="el-container">
-        <el-header style=" text-align: left;font-size: 12px;">
-            <div th:include="/common/admin/header :: header"></div>
-        </el-header>
+    <el-header style=" text-align: left;font-size: 12px;">
+        <div th:include="/common/admin/header :: header"></div>
+    </el-header>
+    <el-container style="height: 550px; border: 0;">
+        <el-aside style="width: auto;overflow-x: hidden ;background-color: rgb(238, 241, 246)">
+            <div th:replace="/common/admin/menu :: menu"></div>
+        </el-aside>
+
         <el-container>
-            <el-aside width="auto" height="600px" style="background-color: rgb(238, 241, 246);min-width: 64px">
-                <div th:replace="/common/admin/menu :: menu"></div>
-            </el-aside>
-            <keep-alive>
-                <el-main stype="width: 100%;height:100%">
-                    <div style="width: 100%;height: auto;">
-                        <el-tabs v-model="editableTabsOptions.editableTabsValue" type="card" @tab-remove="handleRemoveTab" @tab-click="handleClickTab">
-                            <el-tab-pane
-                                    v-for="(item, index) in editableTabsOptions.editableTabs"
-                                    :key="item.name"
-                                    :label="item.title"
-                                    :name="item.name"
-                                    :closable="item.closable"
-                            >
-                            </el-tab-pane>
-                        </el-tabs>
-                    </div>
-                    <keep-alive :max="30">
+            <el-main stype="width: 100%;">
+                <div style="width: 100%;">
+                    <el-tabs v-model="editableTabsOptions.editableTabsValue" type="card"
+                             @tab-remove="handleRemoveTab"
+                             @tab-click="handleClickTab"
+                             style="font-size: 12px; font-weight: bolder;"
+                    >
+                        <el-tab-pane
+                                v-for="(item, index) in editableTabsOptions.editableTabs"
+                                :key="item.name"
+                                :label="item.title"
+                                :name="item.name"
+                                :closable="item.closable"
+                                style="font-size: 12px; font-weight: bolder;"
+                        >
+                        </el-tab-pane>
+                    </el-tabs>
+                </div>
+                <keep-alive :max="30">
                     <div>
                         <el-card shadow="never" v-if="showContent == 'modules'" key="modules">
                             <div th:replace="/common/admin/user/modules :: content"/>
@@ -106,12 +111,13 @@
                             <div th:replace="/common/admin/res/list :: content"/>
                         </el-card>
                     </div>
-                    </keep-alive>
-                </el-main>
-                <el-footer style="background-color:#eee;margin-top:20px">
+                </keep-alive>
+            </el-main>
+            <!--
+            <el-footer style="background-color:#eee;margin-top:20px">
                     <div th:replace="/common/admin/footer :: footer"></div>
                 </el-footer>
-            </el-container>
+            -->
         </el-container>
     </el-container>
 </div>
