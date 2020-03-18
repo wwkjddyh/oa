@@ -197,19 +197,20 @@ public class UserBiz extends BaseBiz {
      * @param lastLoginTime
      * @param recordTime
      * @param updateTime
+     * @param key 关键字
      * @param pageNum
      * @param pageSize
      * @return
      */
     public Map<String,Object> search(String userId, Integer userType, String userName,
                                      String userNickname,Integer recordFlag, String lastLoginTime,
-                                     String recordTime, String updateTime,int pageNum,int pageSize) {
+                                     String recordTime, String updateTime, String key, int pageNum,int pageSize) {
         User user = new User();
         user.setUserId(StringUtil.trim(userId));
         user.setUserType(userType);
-        user.setKey(userNickname);
-        //user.setUserName(StringUtil.trim(userName));
-        //user.setUserNickname(StringUtil.trim(userNickname));
+        user.setKey(StringUtil.trim(key));
+        user.setUserName(StringUtil.trim(userName));
+        user.setUserNickname(StringUtil.trim(userNickname));
         user.setRecordFlag(recordFlag);
         lastLoginTime = StringUtil.trim(lastLoginTime);
         recordTime = StringUtil.trim(recordTime);

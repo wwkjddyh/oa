@@ -1,7 +1,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
-    <el-form ref="formSearchNews" :model="formSearchNews" label-width="130px">
+    <el-form ref="formSearchNews" :model="formSearchNews" label-width="100px">
         <el-form-item label="资料模糊搜索:" prop="title">
             <el-input v-model="formSearchRes.key" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
             <!--

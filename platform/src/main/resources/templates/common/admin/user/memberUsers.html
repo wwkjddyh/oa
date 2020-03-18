@@ -5,7 +5,7 @@
         <el-tab-pane label="会员/用户" name="first">
             <el-form ref="formSearchMemberUser" :model="formSearchMemberUser" label-width="100px">
                 <el-form-item label="名称" prop="name">
-                    <el-input v-model="formSearchMemberUser.name" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+                    <el-input v-model="formSearchMemberUser.key" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>

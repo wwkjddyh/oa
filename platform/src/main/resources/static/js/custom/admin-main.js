@@ -285,6 +285,7 @@ new Vue({
         formSearchAuthRole: {},
         formSearchAuthModule: {},
         formSearchAuthUserRoleModule: {},
+        formSearchSysUser: {},
         formSearchMemberUser: {},
         formSearchCategory: {},
         formSearchCategoryType: {},
@@ -819,8 +820,11 @@ new Vue({
                 case 'formSearchAuthModule':
                     that.loadAuthModules(that.formSearchAuthModule.moduleName,1,that.pager.authModule.pageSize);
                     break;
+                case 'formSearchSysUser':
+                    that.loadSysUsers(that.formSearchSysUser.key, 1, that.pager.sysUser.pageSize);
+                    break;
                 case 'formSearchMemberUser':
-                    that.loadMemberUsers(that.formSearchMemberUser.name, that.formSearchMemberUser.typeId,1,that.pager.user.pageSize);
+                    that.loadMemberUsers(that.formSearchMemberUser.key, that.formSearchMemberUser.typeId,1,that.pager.user.pageSize);
                     break;
 
                 case 'formSearchCategoryType':
@@ -2694,7 +2698,7 @@ new Vue({
         loadMemberUsers(criteria, typeId, pageNum, pageSize) {
             let that = this;
             axios.get("/api/user/search",{params:{
-                    userNickname: criteria,
+                    key: criteria,
                     userType: typeId,
                     pageNum: pageNum,
                     pageSize:pageSize
@@ -2727,10 +2731,10 @@ new Vue({
         loadSysUsers(criteria, pageNum, pageSize) {
             let that = this;
             axios.get("/api/user/search",{params:{
-                    userNickname: criteria,
+                    key: criteria,
                     pageNum: pageNum,
                     pageSize:pageSize,
-                    userType:1
+                    userType: 1
                 }})
                 .then(function(response){/*成功*/
                     if(parseInt(response.status) == 200 ) {
@@ -3650,6 +3654,7 @@ new Vue({
                 that.formSearchCategoryType = searchForm.categoryType;
                 that.formSearchDict = searchForm.dict;
                 that.formSearchLangConf = searchForm.langConf;
+                that.formSearchSysUser = searchForm.sysUser;
                 that.formSearchMemberUser = searchForm.memberUser;
                 that.formSearchNews = searchForm.news;
                 that.formSearchPartyDues = searchForm.partyDues;

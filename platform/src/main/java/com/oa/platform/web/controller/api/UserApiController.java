@@ -78,6 +78,7 @@ public class UserApiController extends BaseController {
      * @param lastLoginTime 最后登录时间
      * @param recordTime 信息录入时间
      * @param updateTime 更新时间
+     * @param key 关键字
      * @param pageNum 页码
      * @param pageSize 每页记录数
      * @return Map&lt;String,Object&gt;
@@ -91,10 +92,11 @@ public class UserApiController extends BaseController {
                                      @RequestParam(defaultValue = "",required = false) String lastLoginTime,
                                      @RequestParam(defaultValue = "",required = false) String recordTime,
                                      @RequestParam(defaultValue = "",required = false) String updateTime,
+                                     @RequestParam(defaultValue = "",required = false) String key,
                                      @RequestParam(defaultValue = PAGE_NUM_STR,required = false) int pageNum,
                                      @RequestParam(defaultValue = PAGE_SIZE_STR,required = false) int pageSize) {
         return userBiz.search(userId,userType,userName,userNickname,
-                recordFlag,lastLoginTime,recordTime,updateTime,pageNum,pageSize);
+                recordFlag,lastLoginTime,recordTime,updateTime, key, pageNum,pageSize);
     }
 
     /**

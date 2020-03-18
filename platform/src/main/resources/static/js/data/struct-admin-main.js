@@ -245,6 +245,16 @@ const formStructConfig = {
     },
 
     searchForm: {
+        sysUser: {
+            id: '',
+            name: '',
+            nickname: '',
+            typeId: '',
+            isHeadhunting: '0',
+            memberId: '',
+            status: '',
+            key: '',
+        },
         memberUser: {
             name: '',
             nickname: '',
@@ -252,6 +262,7 @@ const formStructConfig = {
             isHeadhunting: '0',
             memberId: '',
             status: '',
+            key: '',
         },
         authUserRole: {
             recordId: '',
