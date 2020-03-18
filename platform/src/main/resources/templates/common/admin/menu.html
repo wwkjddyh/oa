@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <div th:fragment="menu">
     <!-- # el-menu 中，default-active不能和:default-openeds；否则，default-active不起作用-->
-    <el-menu :default-active="def_menu_id"
+    <el-menu ref="menuRef" :default-active="def_menu_id"
              class="el-menu-vertical-demo"
              @open="handleOpen"
              @close="handleClose"

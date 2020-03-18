@@ -3371,7 +3371,7 @@ new Vue({
             if (activeName === targetName) {
                 tabs.forEach((tab, index) => {
                     if (tab.name === targetName) {
-                        let nextTab = tabs[index + 1] || tabs[index - 1];
+                        let nextTab = tabs[index - 1] || tabs[index + 1];
                         if (nextTab) {
                             activeName = nextTab.name;
                         }
@@ -3382,9 +3382,11 @@ new Vue({
             that.editableTabsOptions.editableTabsValue = activeName;
             that.editableTabsOptions.editableTabs = tabs.filter(tab => tab.name !== targetName);
             // let _tabLen = that.editableTabsOptions.editableTabs.length;
-            console.log('handleRemoveTab => ', targetName, activeName, that.editableTabsOptions.editableTabsValue);
+            console.log('handleRemoveTab => ', targetName, activeName, that.editableTabsOptions.editableTabsValue, that.editableTabsOptions.editableTabs);
+
             that.def_menu_id = activeName;
             that.showContent = activeName;
+            that.$refs['menuRef'].activeIndex = activeName;
             that.$forceUpdate();
         },
 
