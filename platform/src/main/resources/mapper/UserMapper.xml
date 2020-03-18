@@ -197,6 +197,9 @@
       <if test="lastLoginTime != null and lastLoginTime != ''">
         last_login_time = STR_TO_DATE(#{lastLoginTime},'%Y-%m-%d %H:%i:%s'),
       </if>
+      <if test="updateTime != null and updateTime != ''">
+        update_time = STR_TO_DATE(#{updateTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
       <if test="recordFlag != null">
         record_flag = #{recordFlag},
       </if>

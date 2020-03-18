@@ -3,6 +3,7 @@ package com.oa.platform.web.controller.api;
 import com.oa.platform.biz.LogBiz;
 import com.oa.platform.biz.RoleBiz;
 import com.oa.platform.biz.UserBiz;
+import com.oa.platform.common.Constants;
 import com.oa.platform.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -418,9 +419,33 @@ public class UserApiController extends BaseController {
             @RequestParam String userType,
             @RequestParam String userName,
             @RequestParam String userNickname,
-            @RequestParam(defaultValue = "123456",required = false) String userPwd,
+            @RequestParam(defaultValue = "",required = false) String userPwd,
             @RequestParam(defaultValue = "",required = false) String langConfId,
-            @RequestParam(defaultValue = "1",required = false) Integer recordFlag) {
-        return userBiz.saveUserBaseInfo(userId, userType, userName, userNickname, userPwd, langConfId, recordFlag);
+            @RequestParam(defaultValue = "1",required = false) Integer recordFlag,
+            @RequestParam(defaultValue = "",required = false) String oldPassword,
+            @RequestParam(defaultValue = "",required = false) String passwordOrgi) {
+        return userBiz.saveUserBaseInfo(userId, userType, userName, userNickname,
+                userPwd, langConfId, recordFlag, oldPassword, passwordOrgi);
+    }
+
+    /**
+     * 根据userId删除用户(逻辑)
+     * @param userId 用户ID
+     * @return
+     */
+    @PostMapping("deleteByUserId")
+    public Map<String, Object> deleteByUserId(@RequestParam String userId) {
+        return userBiz.updateUserRecordFlag(userId, Constants.INT_DEL);
+    }
+
+    /**
+     * 根据userId更新用户状态(逻辑)
+     * @param userId 用户ID
+     * @param flag
+     * @return
+     */
+    @PostMapping("updateUserFlag")
+    public Map<String, Object> updateUserFlag(@RequestParam String userId,@RequestParam Integer flag) {
+        return userBiz.updateUserRecordFlag(userId, flag);
     }
 }

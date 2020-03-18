@@ -820,7 +820,7 @@ new Vue({
                     that.loadAuthModules(that.formSearchAuthModule.moduleName,1,that.pager.authModule.pageSize);
                     break;
                 case 'formSearchMemberUser':
-                    that.loadMemberUsers(that.formSearchMemberUser.name,that.formSearchMemberUser.typeId,1,that.pager.user.pageSize);
+                    that.loadMemberUsers(that.formSearchMemberUser.name, that.formSearchMemberUser.typeId,1,that.pager.user.pageSize);
                     break;
 
                 case 'formSearchCategoryType':
@@ -926,48 +926,70 @@ new Vue({
          */
         submitUser(isAdmin) {
             let that = this;
-            let userType = isAdmin ? '1' : '3';
             let params = new URLSearchParams();
-            params.append('userId',that.formUser.userId || '');
-            params.append('userType',that.formUser.userType || '');
-            params.append('userName',that.formUser.userName || '');
-            params.append('userNickname',that.formUser.userNickname || '');
-            params.append('userPwd',that.formUser.password || '');
-            params.append('langConfId','');
-            if(that.currAction === 'append') {
-                axios.post("/api/user/saveUserBaseInfo",params)
-                    .then(function(response){
-                        if(parseInt(response.data.code) === 200){
-                            that.dialogShow.memberUser = false;
-                            that.loadMemberUsers('','',1,that.pager.authModule.pageSize);
-                            that.$message({
-                                message: userType + '用户信息添加成功!',
-                                type: 'success'
-                            });
-                        }
-                    }).catch(function(err){
-                    console.warn(err);
-                });
+            let userId = '';
+            let operName = '新增';
+            if(that.currAction !== 'append') {
+                operName = '更新';
+            }
+
+            if (isAdmin) {
+                userId = that.formSysUser.id || '';
+                params.append('userId', userId);
+                params.append('userType', '1');
+                params.append('userName', that.formSysUser.name || '');
+                params.append('userNickname', that.formSysUser.nickname || '');
+                params.append('userPwd', that.formSysUser.password || '');
+                params.append('oldPassword', that.formSysUser.oldPassword || '');
+                params.append('passwordOrgi', that.formSysUser.passwordOrgi || '');
+                params.append('langConfId', '');
             }
             else {
-                params.append('updateLoginTime',1);
-                params.append('status',that.formUser.status);
-                params.append('id',that.formUser.id);
-
-                axios.post("/api/auth/updateUserBaseInfoById",params)
-                    .then(function(response){
-                        if(parseInt(response.data.code) === 200){
-                            that.dialogShow.memberUser = false;
-                            that.loadMemberUsers('','',1,that.pager.authModule.pageSize);
-                            that.$message({
-                                message: userType + '用户信息修改成功!',
-                                type: 'success'
-                            });
-                        }
-                    }).catch(function(err){
-                    console.warn(err);
-                });
+                userId = that.formUser.id || '';
+                params.append('userId', userId);
+                params.append('userType', '3');
+                params.append('userName', that.formUser.name || '');
+                params.append('userNickname', that.formUser.nickname || '');
+                params.append('userPwd', that.formUser.password || '');
+                params.append('oldPassword', that.formUser.oldPassword || '');
+                params.append('passwordOrgi', that.formUser.passwordOrgi || '');
+                params.append('langConfId','');
             }
+
+            axios.post("/api/user/saveUserBaseInfo", params)
+                .then(function(response){
+                    let responseCode = parseInt(response.data.code);
+                    if(responseCode === 200){
+                        if (isAdmin) {
+                            that.dialogShow.sysUser = false;
+                            that.loadSysUsers('', 1, that.pager.sysUser.pageSize);
+                        }
+                        else {
+                            that.dialogShow.memberUser = false;
+                            that.loadMemberUsers('', '3', 1, that.pager.user.pageSize);
+                        }
+
+                        that.$message({
+                            message: operName + '用户信息成功!',
+                            type: 'success'
+                        });
+                    }
+                    else if (responseCode == 555) {
+                        that.$message.error( response.data.data +  '重复');
+                    }
+                    else if (responseCode === 411) {
+                        let _msg = response.data.msg;
+                        if (_msg === 'REQUEST_PARAM_ERROR') {
+                            //this.$message.error('请求参数异常');
+                            that.$message.error('请求参数异常');
+                        }
+                        else {
+                            that.$message.error( response.data.msg);
+                        }
+                    }
+                }).catch(function(err){
+                console.warn(err);
+            });
         },
 
         /**
@@ -1517,16 +1539,18 @@ new Vue({
 	                    else {
 	                        entry = that.memberUsers[scopeIndex];
 	                        that.formUser = {
-	                            id: entry.id,
-	                            name: entry.name,
-	                            nickname: entry.nickname,
+	                            id: entry.userId,
+	                            name: entry.userName,
+	                            nickname: entry.userNickname,
 	                            oldPassword: '',
 	                            password: '',
 	                            passwordOrgi: '',
 	                            typeId: entry.typeId,
 	                            isHeadhunting: entry.isHeadhunting,
 	                            memberId: entry.memberId,
-	                            status: entry.status,
+                                recordFlag: entry.recordFlag,
+                                userSex: entry.userSex,
+                                userSexName: entry.userSexName,
 	                        };
 	                    }
 	                    that.dialogShow.memberUser = !that.dialogShow.memberUser;
@@ -1537,13 +1561,17 @@ new Vue({
 	                    }
 	                    else {
 	                        entry = that.sysUsers[scopeIndex];
+	                        console.log('that.sysUsers', that.sysUsers, entry);
 	                        that.formSysUser = {
-	                            id: entry.id,
-	                            name: entry.name,
-	                            nickname: entry.nickname,
+	                            id: entry.userId,
+	                            name: entry.userName,
+	                            nickname: entry.userNickname,
 	                            oldPassword: '',
 	                            password: '',
 	                            passwordOrgi: '',
+                                recordFlag: entry.recordFlag,
+                                userSex: entry.userSex,
+                                userSexName: entry.userSexName,
 	                        };
 	                    }
 	                    that.dialogShow.sysUser = !that.dialogShow.sysUser;
@@ -1904,10 +1932,42 @@ new Vue({
                     }else{
                         switch (type) {
                             case 'sysUser':
-                                that.sysUsers.splice(idx,1);
+                                let sysUserEntry = that.sysUsers[idx];
+                                let sysUserParams = new URLSearchParams();
+                                sysUserParams.append("userId", sysUserEntry.userId);
+                                axios.post("/api/user/deleteByUserId", sysUserParams)
+                                    .then(function(response){
+                                        if(parseInt(response.data.code) === 200){
+                                            that.sysUsers.splice(idx, 1);
+                                            that.pager.sysUser.currentPage = 1;
+                                            that.loadSysUsers('', 1, that.pager.sysUser.pageSize);
+                                            that.$message({
+                                                message: '系统用户信息删除成功!',
+                                                type: 'success'
+                                            });
+                                        }
+                                    }).catch(function(err){
+                                    console.warn(err);
+                                });
                                 break;
                             case 'memberUser':
-                                that.memberUsers.splice(idx,1);
+                                let memberUserEntry = that.sysUsers[idx];
+                                let memberUserParams = new URLSearchParams();
+                                memberUserParams.append("userId", memberUserEntry.userId);
+                                axios.post("/api/user/deleteByUserId", memberUserParams)
+                                    .then(function(response){
+                                        if(parseInt(response.data.code) === 200){
+                                            that.memberUsers.splice(idx, );
+                                            that.pager.user.currentPage = 1;
+                                            that.loadMemberUsers('', '3', 1, that.pager.user.pageSize);
+                                            that.$message({
+                                                message: '用户信息删除成功!',
+                                                type: 'success'
+                                            });
+                                        }
+                                    }).catch(function(err){
+                                    console.warn(err);
+                                });
                                 break;
                             case 'authModule':
                                 let authModuleEntry = that.authModules[idx];
@@ -2631,7 +2691,7 @@ new Vue({
         /**
          * 加载(会员)用户信息
          */
-        loadMemberUsers(criteria,typeId,pageNum, pageSize) {
+        loadMemberUsers(criteria, typeId, pageNum, pageSize) {
             let that = this;
             axios.get("/api/user/search",{params:{
                     userNickname: criteria,

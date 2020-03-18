@@ -3,6 +3,7 @@ package com.oa.platform.biz;
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.oa.platform.common.Constants;
+import com.oa.platform.common.StatusCode;
 import com.oa.platform.entity.Area;
 import com.oa.platform.entity.User;
 import com.oa.platform.entity.UserDtl;
@@ -273,14 +274,17 @@ public class UserBiz extends BaseBiz {
      * @param userPwd 用户密码
      * @param langConfId 语言配置ID
      * @param recordFlag 信息标识
+     * @param oldPassword 原密码(密码修改时校验)
+     * @param passwordOrgi 再次密码(密码修改时校验)
      * @return
      */
     public Map<String, Object> saveUserBaseInfo(String userId, String userType, String userName, String userNickname,
-                                                String userPwd, String langConfId, Integer recordFlag) {
+                                                String userPwd, String langConfId, Integer recordFlag,
+                                                String oldPassword, String passwordOrgi) {
         userId = StringUtil.trim(userId);
         userName = StringUtil.trim(userName);
         userType = StringUtil.trim(userType, User.TYPE_PERSON + "");
-        userPwd = StringUtil.trim(userPwd, "123456");
+        userPwd = StringUtil.trim(userPwd);
         langConfId = StringUtil.trim("");
         try {
             if ("".equals(userName)) {
@@ -300,21 +304,92 @@ public class UserBiz extends BaseBiz {
                     user.setLangConfId(langConfId);
                     user.setUserType(Integer.parseInt(userType));
                     if ("".equals(userId)) {
+                        user.setUserPwd(StringUtil.trim(userPwd, "123456"));
                         user.setUserId(StringUtil.getRandomUUID());
                         user.setRecordFlag(Constants.INT_NORMAL);
                         userService.save(user);
+                        ret = this.getSuccessVo("", "");
                     }
                     else {
-                        user.setRecordFlag(recordFlag == null ? Constants.INT_NORMAL : recordFlag);
-                        user.setUserId(userId);
-                        userService.update(user);
+                        oldPassword = StringUtil.trim(oldPassword);
+                        passwordOrgi = StringUtil.trim(passwordOrgi);
+                        User tUser = userService.getById(userId);
+                        boolean isValidPwd = true;
+                        String msg = "";
+                        if ("".equals(userPwd) && "".equals(oldPassword) && "".equals(passwordOrgi)) {
+                            isValidPwd = true;
+                        }
+                        else {
+                            if ("".equals(userPwd) || "".equals(oldPassword) || "".equals(passwordOrgi)) {
+                                msg = "'密码'、'原始密码'、'重复密码'均不能为空或空格";
+                                isValidPwd = false;
+                            }
+                            else if (userPwd.length() > 128 || userPwd.length() < 6) {
+                                msg = "'密码'的长度在 6 到 128 个字符之间";
+                                isValidPwd = false;
+                            }
+                            else if (oldPassword.length() > 128 || oldPassword.length() < 6) {
+                                msg = "'原始密码'的长度在 6 到 128 个字符之间";
+                                isValidPwd = false;
+                            }
+                            else if (passwordOrgi.length() > 128 || passwordOrgi.length() < 6) {
+                                msg = "'重复密码'的长度在 6 到 128 个字符之间";
+                                isValidPwd = false;
+                            }
+                            else if (!userPwd.equals(passwordOrgi)) {
+                                msg = "'密码'与'重复密码'不相同";
+                                isValidPwd = false;
+                            }
+                            else if (!oldPassword.equals(tUser.getUserPwdOrigi())) {
+                                msg = "'旧密码'与'原始密码'不相同";
+                                isValidPwd = false;
+                            }
+                        }
+
+                        if (isValidPwd) {
+                            user.setRecordFlag(recordFlag == null ? Constants.INT_NORMAL : recordFlag);
+                            user.setUserId(userId);
+                            userService.update(user);
+                            ret = this.getSuccessVo("", "");
+                        }
+                        else {
+                            ret = StringUtil.getResultVo(StatusCode.REQUEST_PARAM_ERROR, msg, "");
+                        }
+
                     }
-                    ret = this.getSuccessVo("", "");
+
                 }
             }
         } catch (Exception e) {
             ret = this.getErrorVo();
             e.printStackTrace();
+        }
+        return ret;
+    }
+
+    /**
+     * 更新用户状态
+     * @param userId 用户ID
+     * @param recordFlag 状态(1,正常;0,删除;-1,冻结)
+     * @return
+     */
+    public Map<String, Object> updateUserRecordFlag(String userId, Integer recordFlag) {
+        userId = StringUtil.trim(userId);
+        if ("".equals(userId) || recordFlag == null) {
+            ret = this.getParamErrorVo();
+        }
+        else {
+            try {
+                User user = new User();
+                user.setUserId(userId);
+                user.setRecordFlag(recordFlag);
+                user.setUpdateTime(DateUtil.currDateFormat(null));
+                userService.update(user);
+                ret = this.getSuccessVo("", "");
+            } catch (Exception e) {
+                ret = this.getErrorVo();
+                e.printStackTrace();
+            }
         }
         return ret;
     }

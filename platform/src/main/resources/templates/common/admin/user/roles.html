@@ -34,8 +34,8 @@
                         <template slot-scope="scope">
                             <div style="display: flex;width:auto">
                                 <el-button size="mini" @click="handleSetRoleModule(scope.row)">模块设置</el-button>
-                                <el-button size="mini" @click="edit('role',scope.$index,scope.row,false)">修改</el-button>
-                                <el-button v-if="scope.row.name !== 'ROLE_ADMIN'"  size="mini" type="danger" @click="handleDel(scope.$index,'role')">删除</el-button>
+                                <el-button v-if="scope.row.roleName !== 'ROLE_ADMIN' && scope.row.roleName !== 'ROLE_USER'" size="mini" @click="edit('role',scope.$index,scope.row,false)">修改</el-button>
+                                <el-button v-if="scope.row.roleName !== 'ROLE_ADMIN' && scope.row.roleName !== 'ROLE_USER'"  size="mini" type="danger" @click="handleDel(scope.$index,'role')">删除</el-button>
                             </div>
                         </template>
                     </el-table-column>

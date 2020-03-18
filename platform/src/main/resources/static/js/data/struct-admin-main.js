@@ -468,6 +468,10 @@ const formStructConfig = {
         resDl: false,
     },
     rules: {
+        name: [
+            { required: true, message: '请输入姓名', trigger: 'blur' },
+            { min: 3, max: 64, message: '长度在 3 到 64 个字符之间', trigger: 'blur' }
+        ],
         username: [
             { required: true, message: '请输入姓名', trigger: 'blur' },
             { min: 3, max: 64, message: '长度在 3 到 64 个字符之间', trigger: 'blur' }
@@ -478,6 +482,14 @@ const formStructConfig = {
         ],
         password: [
             { required: true, message: '请输入密码', trigger: 'blur' },
+            { min: 6, max: 128, message: '长度在 6 到 128 个字符之间', trigger: 'blur' }
+        ],
+        oldPassword: [
+            { required: true, message: '请输入原密码', trigger: 'blur' },
+            { min: 6, max: 128, message: '长度在 6 到 128 个字符之间', trigger: 'blur' }
+        ],
+        passwordOrgi: [
+            { required: true, message: '请再次输入原密码', trigger: 'blur' },
             { min: 6, max: 128, message: '长度在 6 到 128 个字符之间', trigger: 'blur' }
         ],
         title: [
