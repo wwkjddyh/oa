@@ -3519,6 +3519,36 @@ new Vue({
              */
         },
 
+        /**
+         * tabs关闭下拉菜单
+         * @param command 命令
+         */
+        handleTabsDropdown(command) {
+            let that = this;
+            console.log('handleTabsDropdown', command)
+            command = command || 'all';
+            let tabs = that.editableTabsOptions.editableTabs;
+            let moduleCode = 'firstPage';
+
+            if (command === 'all' || tabs.length == 1) {
+                that.editableTabsOptions.editableTabs = tabs.filter(tab => tab.name === moduleCode);
+            }
+            else {
+                if (that.editableTabsOptions.editableTabsValue === moduleCode) {
+                    that.editableTabsOptions.editableTabs = tabs.filter(tab => tab.name === moduleCode);
+                }
+                else {
+                    moduleCode = that.editableTabsOptions.editableTabsValue;
+                    that.editableTabsOptions.editableTabs = tabs.filter(tab => (tab.name === moduleCode || tab.name === 'firstPage'));
+                }
+            }
+            that.def_menu_id = moduleCode;
+            that.showContent = moduleCode;
+            that.$refs['menuRef'].activeIndex = moduleCode;
+            that.editableTabsOptions.editableTabsValue = moduleCode;
+            that.$forceUpdate();
+        },
+
     },
     props: {
 
