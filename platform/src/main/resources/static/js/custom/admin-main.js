@@ -2291,9 +2291,9 @@ new Vue({
                         }
                         else { //保存提交
                             let roleModuleParams = new URLSearchParams();
-                            roleModuleParams.append('roleId',that.checkBoxRelationId.roleModule);
+                            roleModuleParams.append('roleId', that.checkBoxRelationId.roleModule);
                             roleModuleParams.append('moduleIds',that.checkBoxOptions.roleModule);
-                            axios.post("/api/user/saveRoleModule",roleModuleParams)
+                            axios.post("/api/user/saveRoleModule", roleModuleParams)
                                 .then(function(response){
                                     if(parseInt(response.data.code) === 200){
                                         that.dialogShow.roleModule = false;
@@ -2317,9 +2317,9 @@ new Vue({
                         }
                         else {  //保存提交
                             let userRoleParams = new URLSearchParams();
-                            userRoleParams.append('userId',that.checkBoxRelationId.userRole);
-                            userRoleParams.append('roleIds',that.checkBoxOptions.userRole);
-                            axios.post("/api/user/saveUserRole",userRoleParams)
+                            userRoleParams.append('userId', that.checkBoxRelationId.userRole);
+                            userRoleParams.append('roleIds', that.checkBoxOptions.userRole);
+                            axios.post("/api/user/saveUserRole", userRoleParams)
                                 .then(function(response){
                                     if(parseInt(response.data.code) === 200){
                                         that.dialogShow.userRole = false;
@@ -2343,9 +2343,9 @@ new Vue({
                         }
                         else {  //保存提交
                             let sysUserRoleParams = new URLSearchParams();
-                            sysUserRoleParams.append('userId',that.checkBoxRelationId.sysUserRole);
-                            sysUserRoleParams.append('roleIds',that.checkBoxOptions.sysUserRole);
-                            axios.post("/api/user/saveUserRole",sysUserRoleParams)
+                            sysUserRoleParams.append('userId', that.checkBoxRelationId.sysUserRole);
+                            sysUserRoleParams.append('roleIds', that.checkBoxOptions.sysUserRole);
+                            axios.post("/api/user/saveUserRole", sysUserRoleParams)
                                 .then(function(response){
                                     if(parseInt(response.data.code) === 200){
                                         that.dialogShow.userRole = false;

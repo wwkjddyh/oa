@@ -289,17 +289,6 @@
       </if>
       <if test="key != null and key != ''">
         AND (UPPER(res_name) LIKE CONCAT('%',UPPER(#{key}),'%')
-            OR UPPER(original_name) LIKE CONCAT('%',UPPER(#{key}),'%')
-            OR UPPER(curr_name) LIKE CONCAT('%',UPPER(#{key}),'%')
-            OR UPPER(type_name) LIKE CONCAT('%',UPPER(#{key}),'%')
-            OR UPPER(announcer_name) LIKE CONCAT('%',UPPER(#{key}),'%')
-            OR UPPER(editor_name) LIKE CONCAT('%',UPPER(#{key}),'%')
-            OR UPPER(auditor_name) LIKE CONCAT('%',UPPER(#{key}),'%')
-            OR UPPER(res_author) LIKE CONCAT('%',UPPER(#{key}),'%')
-            OR UPPER(res_src) LIKE CONCAT('%',UPPER(#{key}),'%')
-            OR UPPER(res_intro) LIKE CONCAT('%',UPPER(#{key}),'%')
-            OR UPPER(res_desc) LIKE CONCAT('%',UPPER(#{key}),'%')
-            OR UPPER(res_tags) LIKE CONCAT('%',UPPER(#{key}),'%')
         )
       </if>
       <if test="announcerIds != null and announcerIds.size() > 0">

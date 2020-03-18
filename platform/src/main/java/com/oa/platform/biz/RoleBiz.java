@@ -241,7 +241,7 @@ public class RoleBiz extends BaseBiz {
                     UserRole userRole = new UserRole();
                     userRole.setRecordId(StringUtil.getRandomUUID());
                     userRole.setUserId(userId);
-                    userRole.setRecordId(roleId);
+                    userRole.setRoleId(roleId);
                     userRole.setRecordTime(dateTime);
                     userRoles.add(userRole);
                 }
@@ -249,6 +249,7 @@ public class RoleBiz extends BaseBiz {
                 ret = this.getSuccessVo("", "");
             }
             catch (Exception e) {
+                e.printStackTrace();
                 loggerError(ThreadUtil.getCurrentFullMethodName(), e);
                 ret = this.getErrorVo();
             }
