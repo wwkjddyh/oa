@@ -1,7 +1,9 @@
 package com.oa.platform.biz;
 
 import com.oa.platform.aspect.LogRecordAdvice;
+import com.oa.platform.common.Constants;
 import com.oa.platform.util.FileUtil;
+import com.oa.platform.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import org.slf4j.Logger;
@@ -156,65 +158,71 @@ public class FileBiz extends BaseBiz {
 
     /**
      * 文件下载
-     * @param response
-     * @param fname
+     * @param response 响应对象
+     * @param fileName 文件名(若为空，则不下载)
      */
-    public void dl(HttpServletResponse response, String fname) {
-        String fileName = "铁鸡斗蜈蚣之将军令.mp4";
-        String filePath = "/Users/baby/Downloads";
-        BufferedInputStream bis = null;
-        OutputStream os = null;
-        try {
+    public void dl(HttpServletResponse response, String fileName) {
+        dl(response, saveDir, fileName, fileName);
+    }
 
-            System.err.println("fname:" + fname);
+    /**
+     * 文件下载
+     * @param response 响应对象
+     * @param filePath 文件所在目录(默认为系统设置：saveDir)
+     * @param fileRealName 文件真实名称(若为空，则不下载)
+     * @param viewName 显示名称(若为空，则设置为fileRealName)
+     */
+    public void dl(HttpServletResponse response, String filePath, String fileRealName, String viewName) {
+        fileRealName = StringUtil.trim(fileRealName);
+        if (!"".equals(fileRealName)) {
+            BufferedInputStream bis = null;
+            OutputStream os = null;
+            try {
+                filePath = StringUtil.trim(filePath, saveDir);
+                System.err.println("fileRealName:" + fileRealName);
+                viewName = StringUtil.trim(viewName, fileRealName);
 
-            fname = "".equals(fname) ? fileName : fname;
-
-            File file = FileUtil.createFile(filePath, fname);
-            byte[] buff = new byte[1024];
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("text/html;charset=utf-8");
+                File file = FileUtil.createFile(filePath, fileRealName);
+                byte[] buff = new byte[1024];
+                response.setCharacterEncoding(Constants.DEFAULT_CHARSET);
+                response.setContentType("text/html;charset=" + Constants.DEFAULT_CHARSET);
 //            response.setContentType("multipart/form-data");
-            // 设置被下载而不是被打开
-            response.setContentType("application/gorce-download");
-            // 设置被第三方工具打开,设置下载的文件名
-            response.setHeader("Content-Disposition", "attachment; fileName="+  fname +";filename*=utf-8''"+ URLEncoder.encode(fname,"UTF-8"));
+                // 设置被下载而不是被打开
+                response.setContentType("application/gorce-download");
+                // 设置被第三方工具打开,设置下载的文件名
+                response.setHeader("Content-Disposition", "attachment; fileName="
+                        + viewName +";filename*=" + Constants.DEFAULT_CHARSET + "''"
+                        + URLEncoder.encode(viewName, Constants.DEFAULT_CHARSET));
 
-            os = response.getOutputStream();
-            bis = new BufferedInputStream(new FileInputStream(file));
+                os = response.getOutputStream();
+                bis = new BufferedInputStream(new FileInputStream(file));
 
-            //方式一
-            int i = bis.read(buff);
-            while (i != -1) {
-                os.write(buff,0,buff.length);
-                os.flush();
-                i = bis.read(buff);
-            }
-
-            //方式二
-//            int len = 0;
-//            while ((len = bis.read(buff)) != -1) {
-//                os.write(buff,0,len);
-//            }
-        }
-        catch(IOException ioe) {
-            //ioe.printStackTrace();
-            log.error(ioe.getMessage());
-        }
-        finally {
-            if (os != null) {
-                try {
-                    os.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                int i = bis.read(buff);
+                while (i != -1) {
+                    os.write(buff,0,buff.length);
+                    os.flush();
+                    i = bis.read(buff);
                 }
             }
-            if (bis != null) {
-                try {
-                    bis.close();
+            catch(IOException ioe) {
+                //ioe.printStackTrace();
+                log.error(ioe.getMessage());
+            }
+            finally {
+                if (os != null) {
+                    try {
+                        os.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-                catch (IOException e) {
-                    e.printStackTrace();
+                if (bis != null) {
+                    try {
+                        bis.close();
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
