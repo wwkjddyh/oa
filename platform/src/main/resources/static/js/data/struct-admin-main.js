@@ -225,6 +225,7 @@ const formStructConfig = {
         announcerName: '',
         editorName: '',
         auditorName: '',
+        isShowFileOriginalName: false,  // 是否显示文件原始名称(仅当编辑时，且未选择新文件)
     },
 
     formResDl: {

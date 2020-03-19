@@ -1407,6 +1407,7 @@ new Vue({
             params.append('originalName',that.formRes.originalName || '');
              */
             let _data = {
+                "recordId" : that.formRes.recordId || '',
                 "assId" : that.formRes.assId || '',
                 "assTypeId" : that.formRes.assTypeId || '',
                 "typeId" : that.formRes.typeId || '',
@@ -1427,7 +1428,7 @@ new Vue({
             };
             if(that.currAction === 'edit') {
                 operName = '修改';
-                params.append('recordId',that.formRes.recordId || '');
+                // params.append('recordId',that.formRes.recordId || '');
             }
             axios.post("/api/res/save",_data, {
                     headers: {
@@ -1888,7 +1889,7 @@ new Vue({
                                 editorName: entry.editorName,
                                 auditorName: entry.auditorName,
                                 currName: entry.currName || '',
-                                publishTime: entry.publishTime || '',
+                                isShowFileOriginalName: true,  // 是否显示文件原始名称(当编辑时，且未选择新文件)
                             };
                         }
                         that.dialogShow.res = !that.dialogShow.res;
@@ -3495,7 +3496,11 @@ new Vue({
          * @param fileList 文件列表
          */
         handleUploadRemove(file, fileList) {
-            console.log('handleUploadRemove', file, fileList);
+            let that = this;
+            console.log('handleUploadRemove', file, fileList, that.$refs.uploadRes.uploadFiles);
+            if (that.currAction === 'edit' && that.$refs.uploadRes.uploadFiles.length === 0) {
+                that.formRes.isShowFileOriginalName = true;
+            }
         },
 
         /**
@@ -3550,16 +3555,17 @@ new Vue({
             }
 
             if (that.currAction === 'edit') {
-                if (that.uploadFileList.length === 0) {
+                if (that.$refs.uploadRes.uploadFiles.length === 0) {
                     that.submitForm('formRes');
                 }
                 else {
                     that.$refs.uploadRes.submit();
                 }
             }
-            else {
-                if (that.uploadFileList.length === 0) {
-                    this.$message.error('请选择文件上传!');
+            else {  // 新增
+                console.log('uploadRes=>', that.$refs.uploadRes, that.$refs.uploadRes.uploadFiles);
+                if (that.$refs.uploadRes.uploadFiles.length === 0) {
+                    this.$message.error('请选择上传文件!');
                     return false;
                 }
                 else {
@@ -3614,6 +3620,11 @@ new Vue({
             let that = this;
             console.log('uploadFileChange', file);
             console.log('uploadFileChange', fileList);
+
+            if (that.currAction === 'edit' && that.$refs.uploadRes.uploadFiles.length !== 0) {
+                that.formRes.isShowFileOriginalName = false;
+            }
+
             /*
             const isIMAGE = (file.raw.type === 'image/jpeg' || file.raw.type === 'image/jpg' || file.raw.type === 'image/png'|| file.raw.type === 'image/gif');
             const isLt1M = file.size / 1024 / 1024 < 1;

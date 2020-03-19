@@ -112,7 +112,7 @@
                         <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                         -->
                     </el-upload>
-                    <el-card v-if="currAction == 'edit'" shadow="hover" style="width: 470px" body-style="{padding: '2px'}">
+                    <el-card v-if="currAction == 'edit' && formRes.isShowFileOriginalName == true" shadow="hover" style="width: 470px" body-style="{padding: '2px'}">
                         <div>文件名：{{formRes.currName || ''}}</div>
                         <div>原始文件名：{{formRes.originalName || ''}}</div>
                     </el-card>
