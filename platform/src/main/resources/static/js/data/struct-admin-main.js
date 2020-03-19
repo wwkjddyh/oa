@@ -225,6 +225,8 @@ const formStructConfig = {
         announcerName: '',
         editorName: '',
         auditorName: '',
+        orgId: '',
+        orgName: '',
         isShowFileOriginalName: false,  // 是否显示文件原始名称(仅当编辑时，且未选择新文件)
     },
 
@@ -433,6 +435,8 @@ const formStructConfig = {
             publishTime: '',
             currTypeId: '',
             currTypeName: '',
+            orgId: '',
+            orgName: '',
         },
 
         resDl: {
@@ -480,10 +484,11 @@ const formStructConfig = {
         resDl: false,
         nddyxxcjdetail:false,
         nddyxxcjYear:false,
+        resUpload: false,
     },
     rules: {
         name: [
-            { required: true, message: '请输入姓名', trigger: 'blur' },
+            { required: true, message: '请输入名称(标题或姓名)', trigger: 'blur' },
             { min: 3, max: 64, message: '长度在 3 到 64 个字符之间', trigger: 'blur' }
         ],
         username: [

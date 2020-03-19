@@ -78,6 +78,7 @@ public class ResApiController extends BaseController {
      * @param assTypeId 关联类型ID
      * @param announcerId 发布者ID
      * @param editorId 编辑者ID
+     * @param orgId 组织ID
      * @param key 关键字
      * @param pageNum 页码
      * @param pageSize 每页记录数
@@ -90,10 +91,11 @@ public class ResApiController extends BaseController {
             @RequestParam(defaultValue = "", required = false) String assTypeId,
             @RequestParam(defaultValue = "", required = false) String announcerId,
             @RequestParam(defaultValue = "", required = false) String editorId,
+            @RequestParam(defaultValue = "", required = false) String orgId,
             @RequestParam(defaultValue = "", required = false) String key,
             @RequestParam(defaultValue = PAGE_NUM_STR, required = false) int pageNum,
             @RequestParam(defaultValue = PAGE_SIZE_STR, required = false) int pageSize) {
-        return resBiz.search(typeId, assId, assTypeId, announcerId, editorId, key, pageNum, pageSize);
+        return resBiz.search(typeId, assId, assTypeId, announcerId, editorId, orgId, key, pageNum, pageSize);
     }
 
     /**

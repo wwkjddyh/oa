@@ -122,6 +122,29 @@
                         <el-card shadow="never" v-if="showContent == 'dyglzlxz'" key="dyglzlxz">
                             <div th:replace="/common/admin/res/list :: content"/>
                         </el-card>
+
+                        <!--年度党费收支情况公示-->
+                        <el-card shadow="never" v-if="showContent == 'nddfszqkgs'" key="nddfszqkgs">
+                            <div th:replace="/common/admin/res/list2 :: content"/>
+                        </el-card>
+                        <!--年度党费收支结存情况-->
+                        <el-card shadow="never" v-if="showContent == 'nddfszjcqk'" key="nddfszjcqk">
+                            <div th:replace="/common/admin/res/list2 :: content"/>
+                        </el-card>
+                        <!--年度换届工作计划-->
+                        <el-card shadow="never" v-if="showContent == 'ndhjgzjh'" key="ndhjgzjh">
+                            <div th:replace="/common/admin/res/list2 :: content"/>
+                        </el-card>
+                        <!--换届工作台账-->
+                        <el-card shadow="never" v-if="showContent == 'hjgztz'" key="hjgztz">
+                            <div th:replace="/common/admin/res/list2 :: content"/>
+                        </el-card>
+                        <!--发展党员-->
+                        <el-card shadow="never" v-if="showContent == 'fzdy'" key="fzdy">
+                            <div th:replace="/common/admin/res/list2 :: content"/>
+                        </el-card>
+
+
                     </div>
                 </keep-alive>
             </el-main>

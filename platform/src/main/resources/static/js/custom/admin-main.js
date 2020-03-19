@@ -137,6 +137,76 @@ new Vue({
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
+                case 'nddfszqkgs':    // 年度党费收支情况公示
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = '4bfeb907-05c0-48a5-9719-70d07eb640a2';
+                    that.formSearchRes.typeId = '4bfeb907-05c0-48a5-9719-70d07eb640a2';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '年度党费收支情况公示';
+                    that.uploadData = {
+                        name: '',
+                        type: 'res2-nddfszqkgs',
+                    };
+                    that.loadResList('', 1, that.pager.res.pageSize);
+                    break;
+                case 'nddfszjcqk':    // 年度党费收支结存情况
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = '0737d01e-b6f9-4567-8892-63fa9071903f';
+                    that.formSearchRes.typeId = '0737d01e-b6f9-4567-8892-63fa9071903f';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '年度党费收支结存情况';
+                    that.uploadData = {
+                        name: '',
+                        type: 'res2-nddfszjcqk',
+                    };
+                    that.loadResList('', 1, that.pager.res.pageSize);
+                    break;
+                case 'ndhjgzjh':    // 年度换届工作计划
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = '3d4565b4-041d-44e0-b411-b441865047c7';
+                    that.formSearchRes.typeId = '3d4565b4-041d-44e0-b411-b441865047c7';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '年度换届工作计划';
+                    that.uploadData = {
+                        name: '',
+                        type: 'res2-ndhjgzjh',
+                    };
+                    that.loadResList('', 1, that.pager.res.pageSize);
+                    break;
+                case 'hjgztz':    // 换届工作台账
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = '4a056958-6d34-4dbc-ac12-1385b0745023';
+                    that.formSearchRes.typeId = '4a056958-6d34-4dbc-ac12-1385b0745023';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '换届工作台账';
+                    that.uploadData = {
+                        name: '',
+                        type: 'res2-hjgztz',
+                    };
+                    that.loadResList('', 1, that.pager.res.pageSize);
+                    break;
+                case 'fzdy':    // 发展党员
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = 'ed535138-6ec2-468c-8083-d967a24c2f33';
+                    that.formSearchRes.typeId = 'ed535138-6ec2-468c-8083-d967a24c2f33';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '发展党员';
+                    that.uploadData = {
+                        name: '',
+                        type: 'res2-fzdy',
+                    };
+                    that.loadResList('', 1, that.pager.res.pageSize);
+                    break;
             }
         },
         
@@ -944,7 +1014,7 @@ new Vue({
                     that.loadPartyDues(that.formSearchPartyDues.key, 1, that.pager.partyDues.pageSize);
                     break;
                 case 'formSearchRes':
-                    that.loadResList(that.formSearchRes.key, 1, that.pager.partyDues.pageSize);
+                    that.loadResList(that.formSearchRes.key, 1, that.pager.res.pageSize);
                     break;
             }
         },
@@ -1584,6 +1654,7 @@ new Vue({
                 "resTags" : that.formRes.resTags || '',
                 "accessUrl" : that.formRes.accessUrl || '',
                 "currName" : that.formRes.currName || '',
+                "orgId" : that.formRes.orgId || '',
                 "recordFlag": that.formRes.recordFlag || '1',
             };
             if(that.currAction === 'edit') {
@@ -2132,11 +2203,14 @@ new Vue({
                                 editorName: entry.editorName,
                                 auditorName: entry.auditorName,
                                 currName: entry.currName || '',
+                                orgId: entry.orgId || '',
+                                orgName: entry.orgName || '',
                                 isShowFileOriginalName: true,  // 是否显示文件原始名称(当编辑时，且未选择新文件)
                             };
                         }
                         that.dialogShow.res = !that.dialogShow.res;
                         break;
+
 	                default: break;
 	            }
         	}
@@ -3912,6 +3986,17 @@ new Vue({
             return that.$confirm(`确定移除 ${ file.name }？`);
         },
 
+        /**
+         * 文件上传之前
+         * @param file 文件
+         * @param fileList 文件列表
+         * @returns {*}
+         */
+        beforeUploadRemove2(file, fileList) {
+            let that = this;
+            return that.$confirm(`确定移除 ${ file.name }？`);
+        },
+
         submitUpload() {
             let that = this;
             console.log('uploadFileList', that.uploadFileList, that.formRes);
@@ -3946,6 +4031,30 @@ new Vue({
 
         },
 
+        submitUpload2() {
+            let that = this;
+            console.log('uploadFileList', that.uploadFileList, that.formRes);
+            if (that.$refs.uploadRes2.uploadFiles.length === 0) {
+                this.$message.error('请选择上传文件!');
+            }
+            else {
+                that.$refs.uploadRes2.submit();
+            }
+
+        },
+
+        handleUpload2() {
+            let that = this;
+            that.dialogShow.resUpload = !that.dialogShow.resUpload;
+            that.$refs.uploadRes2.clearFiles();
+        },
+
+        closeUpload2() {
+            let that = this;
+            that.dialogShow.resUpload = false;
+            that.$refs.uploadRes2.clearFiles();
+        },
+
         handleUploadSuccess(res, file, fileList) {
             console.log('handleUploadSuccess', res);
             let that = this;
@@ -3969,6 +4078,30 @@ new Vue({
                 });
 
                  */
+            }
+            else {
+                that.$notify.error({
+                    title: '错误',
+                    message: `文件上传失败`
+                });
+            }
+
+        },
+
+        handleUploadSuccess2(res, file, fileList) {
+            console.log('handleUploadSuccess', res);
+            let that = this;
+            if (parseInt(res.code) === 200) {
+                let data = res.data;
+                console.log('handleUploadSuccess2', data);
+                that.formRes.originalName = data.fileName || '';
+                that.formRes.currName = data.newFileName || '';
+                that.formRes.accessUrl = data.destName || '';
+                that.formRes.resSize = (data.size || 0) + '';
+                that.$notify.success({
+                    title: '成功',
+                    message: `文件上传成功`
+                });
             }
             else {
                 that.$notify.error({

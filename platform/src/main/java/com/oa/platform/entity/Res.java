@@ -165,6 +165,21 @@ public class Res implements Serializable {
      */
     private List<String> announcerIds;
 
+    /**
+     * 组织ID
+     */
+    private String orgId;
+
+    /**
+     * 组织ID列表(查询时使用)
+     */
+    private List<String> orgIds;
+
+    /**
+     * 组织名字
+     */
+    private String orgName;
+
     public String getRecordId() {
         return recordId;
     }
@@ -413,6 +428,30 @@ public class Res implements Serializable {
         this.announcerIds = announcerIds;
     }
 
+    public String getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(String orgId) {
+        this.orgId = orgId;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
+    }
+
+    public List<String> getOrgIds() {
+        return orgIds;
+    }
+
+    public void setOrgIds(List<String> orgIds) {
+        this.orgIds = orgIds;
+    }
+
     public Res() {
     }
 
@@ -448,6 +487,8 @@ public class Res implements Serializable {
                 ", auditorName='" + auditorName + '\'' +
                 ", publishTime='" + publishTime + '\'' +
                 ", currName='" + currName + '\'' +
+                ", orgId='" + orgId + '\'' +
+                ", orgName='" + orgName + '\'' +
                 '}';
     }
 }

@@ -42,6 +42,9 @@ public class ResBiz extends BaseBiz {
                     res.setRecordId(StringUtil.getRandomUUID());
                     res.setAnnouncerId(this.getUserIdOfSecurity());
                     res.setRecordFlag(Constants.INT_NORMAL);
+                    // 获取组织ID
+                    String orgId = "";
+                    res.setOrgId(orgId);
                     resService.save(res);
                 }
                 else {
@@ -168,25 +171,35 @@ public class ResBiz extends BaseBiz {
      * @param assTypeId 关联类型ID
      * @param announcerId 发布者ID
      * @param editorId 编辑者ID
+     * @param orgId 组织ID
      * @param key 关键字
      * @param pageNum 页码
      * @param pageSize 每页记录数
      * @return
      */
     public Map<String, Object> search(String typeId, String assId, String assTypeId, String announcerId,
-                                      String editorId, String key, int pageNum, int pageSize) {
+                                      String editorId, String orgId, String key, int pageNum, int pageSize) {
         ret = null;
         try {
             Res res = new Res();
-            List<String> announcerIds = Lists.newArrayList(this.getUserIdOfSecurity());
+
             res.setTypeId(StringUtil.trim(typeId));
             res.setAssId(StringUtil.trim(assId));
             res.setAssTypeId(StringUtil.trim(assTypeId));
-            res.setAnnouncerId(StringUtil.trim(announcerId));
             res.setEditorId(StringUtil.trim(editorId));
             res.setKey(StringUtil.trim(key));
             res.setRecordFlag(Constants.INT_NORMAL);
-            res.setAnnouncerIds(announcerIds);
+            orgId = StringUtil.trim(orgId);
+            if (!"".equals(orgId)) {
+                List<String> orgIds = Lists.newArrayList();
+                orgIds.add(orgId);
+                res.setOrgIds(orgIds);
+            }
+            else {
+                //res.setAnnouncerId(StringUtil.trim(announcerId));
+                List<String> announcerIds = Lists.newArrayList(this.getUserIdOfSecurity());
+                res.setAnnouncerIds(announcerIds);
+            }
             PageInfo<Res> pageInfo = resService.search(res, pageNum, pageSize);
             ret = this.getPageInfo(pageInfo);
         }

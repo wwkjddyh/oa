@@ -1,20 +1,25 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
-    <el-form ref="formSearchNews" :model="formSearchNews" label-width="70px" size="small">
-        <el-form-item label="模糊搜索" prop="title">
+    <el-form ref="formSearchNews" :model="formSearchNews" label-width="85px" size="small">
+        <el-form-item label="党组织机构">
+            <el-select v-model="formSearchRes.orgId" style="width: 300px;" placeholder="请选择党组织机构" size="small">
+                <el-option label="全部" value="">全部</el-option>
+<!--                <el-option v-for="item in allCategoryTypes" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>-->
+            </el-select>
+        </el-form-item>
+        <el-form-item label="年月">
+            <el-select v-model="formSearchRes.publishTime" style="width: 300px;" placeholder="请选择年月" size="small">
+                <el-option label="全部" value="">全部</el-option>
+                <!--                <el-option v-for="item in allCategoryTypes" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>-->
+            </el-select>
+        </el-form-item>
+        <el-form-item label="模糊搜索">
             <el-input v-model="formSearchRes.key" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
-            <!--
-            <el-tooltip class="item" effect="dark" placement="top">
-                <div slot="content">关键字</div><i class="el-icon-question"></i></el-tooltip>
-                -->
             <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" style="float:right">检索</el-button>
         </el-form-item>
     </el-form>
-    <!--
-    <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
-    -->
-    <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
+    <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
     <el-button plain @click="searchForm('formSearchRes')" size="mini" icon="el-icon-refresh">刷新</el-button>
 
     <div style="margin-top: 20px">
@@ -47,10 +52,11 @@
                     label="操作">
                 <template slot-scope="scope">
                     <div style="display: flex;width:100%">
-                        <el-button size="mini" @click="edit('res', scope.$index,scope.row, false)" icon="el-icon-edit">修改</el-button>
-                        <el-button size="mini" type="danger" @click="handleDel(scope.$index,'res')" icon="el-icon-delete">删除</el-button>
+                        <!--<el-button size="mini" @click="edit('res', scope.$index,scope.row, false)" icon="el-icon-edit">修改</el-button>-->
                         <el-button size="mini" type="" icon="el-icon-view" @click="handleViewRes(scope.row)">预览</el-button>
-                        <el-button size="mini" type="" icon="el-icon-download" @click="handleDownloadRes(scope.row)">下载</el-button>
+                        <el-button size="mini" :disabled="scope.row.originalName !== ''" type="" icon="el-icon-download" @click="handleDownloadRes(scope.row)">下载</el-button>
+                        <el-button size="mini" :disabled="scope.row.originalName === ''" @click="handleUpload2" icon="el-icon-upload2">上传</el-button>
+                        <el-button size="mini" type="danger" @click="handleDel(scope.$index, 'res')" icon="el-icon-delete">删除</el-button>
                     </div>
                 </template>
             </el-table-column>
@@ -67,7 +73,7 @@
             </el-pagination>
         </div>
     </div>
-    <el-dialog title="上传" :visible.sync="dialogShow.res" lock-scroll="true" width="800px">
+    <el-dialog title="新增" :visible.sync="dialogShow.res" lock-scroll="true" width="800px">
         <el-card shadow="never" style="width: 100%;" type="card">
             <el-form ref="formRes" :rules="rules" :model="formRes" label-width="100px" :validate-on-rule-change="false" size="small">
                 <el-form-item label="发布日期" prop="publishTime">
@@ -85,48 +91,45 @@
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">资料名称</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
-                <el-form-item label="上传附件" prop="originalName">
-                    <el-upload style="width: 300px;" size="small"
-                               ref="uploadRes"
-                            class="upload-demo"
-                            action="/api/file/upload"
-                            :on-preview="handleUploadPreview"
-                            :on-remove="handleUploadRemove"
-                            :before-remove="beforeUploadRemove"
-                            multiple
-                            :limit="1" :accept="uploadAccept"
-                            :on-exceed="handleUploadExceed"
-                            :file-list="uploadFileList"
-                               :on-success="handleUploadSuccess"
-                               :on-error="handleUploadError"
-                               :on-change="uploadFileChange"
-                               :auto-upload="false"
-                               :show-file-list="true"
-                               :data="uploadData"
-                            >
-                        <el-button size="mini" type="primary">选择文件</el-button>
-                        <el-tooltip class="item" effect="dark" placement="top">
-                            <div slot="content">上传附件</div><i class="el-icon-question"></i></el-tooltip>
-                        <!--
-                        <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-                        -->
-                    </el-upload>
-                    <el-card v-if="currAction == 'edit' && formRes.isShowFileOriginalName == true" shadow="hover" style="width: 470px" body-style="{padding: '2px'}">
-                        <div>文件名：{{formRes.currName || ''}}</div>
-                        <div>原始文件名：{{formRes.originalName || ''}}</div>
-                    </el-card>
-
-                    <!--
-                    <el-button style="margin-left: 10px;" size="mini" type="success" @click="submitUpload">上传</el-button>
-                    <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">上传附件</div><i class="el-icon-question"></i></el-tooltip>-->
-                </el-form-item>
-
                 <el-form-item>
                     <el-button @click="dialogShow.res = false;resetForm('formRes')" plain size="mini" icon="el-icon-close">取消</el-button>
                     <el-button @click="submitUpload" type="primary" plain size="mini" icon="el-icon-check">新增/保存</el-button>
                 </el-form-item>
             </el-form>
+        </el-card>
+    </el-dialog>
+    <el-dialog title="上传" :visible.sync="dialogShow.resUpload" lock-scroll="true" width="800px">
+        <el-card shadow="never" style="width: 100%;" type="card">
+            <el-upload style="width: 300px;" size="small"
+                       ref="uploadRes2"
+                       class="upload-demo"
+                       action="/api/file/upload"
+                       :on-preview="handleUploadPreview"
+                       :on-remove="handleUploadRemove"
+                       :before-remove="beforeUploadRemove2"
+                       multiple
+                       :limit="1" :accept="uploadAccept"
+                       :on-exceed="handleUploadExceed"
+                       :file-list="uploadFileList"
+                       :on-success="handleUploadSuccess2"
+                       :on-error="handleUploadError"
+                       :on-change="uploadFileChange"
+                       :auto-upload="false"
+                       :show-file-list="true"
+                       :data="uploadData"
+            >
+                <el-button size="mini" type="primary">选择文件</el-button>
+                <el-tooltip class="item" effect="dark" placement="top">
+                    <div slot="content">上传附件</div><i class="el-icon-question"></i></el-tooltip>
+            </el-upload>
+            <!--
+            <el-card v-if="currAction == 'edit' && formRes.isShowFileOriginalName == true" shadow="hover" style="width: 470px" body-style="{padding: '2px'}">
+                <div>文件名：{{formRes.currName || ''}}</div>
+                <div>原始文件名：{{formRes.originalName || ''}}</div>
+            </el-card>
+            -->
+            <el-button @click="closeUpload2" plain size="mini" icon="el-icon-close">取消</el-button>
+            <el-button @click="submitUpload2" type="primary" plain size="mini" icon="el-icon-check">上传</el-button>
         </el-card>
     </el-dialog>
 </div>
