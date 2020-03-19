@@ -478,6 +478,8 @@ const formStructConfig = {
         nddyxxcj:false,
         res: false,
         resDl: false,
+        nddyxxcjdetail:false,
+        nddyxxcjYear:false,
     },
     rules: {
         name: [
@@ -568,6 +570,27 @@ const formStructConfig = {
         roleName: [
             { required: true, message: '请输入角色名称', trigger: 'blur' },
             { min: 3, max: 64, message: '长度在 3 到 64 个字符之间', trigger: 'blur' }
+        ],
+        userName: [
+            { required: true, message: '请输入姓名', trigger: 'blur' },
+        ],
+        birthTime: [
+            { required: true, message: '请选择出生日期', trigger: 'blur' },
+        ],
+        gender: [
+            { required: true, message: '请选择性别', trigger: 'blur' },
+        ],
+        joinPartyTime: [
+            { required: true, message: '请选择入党时间', trigger: 'blur' },
+        ],
+        nation: [
+            { required: true, message: '请选择民族', trigger: 'blur' },
+        ],
+        hometown: [
+            { required: true, message: '请选择籍贯', trigger: 'blur' },
+        ],
+        education: [
+            { required: true, message: '请填写学历', trigger: 'blur' },
         ],
     },
     dateDickerOptions: {

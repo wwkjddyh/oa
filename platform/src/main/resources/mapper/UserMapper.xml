@@ -246,6 +246,12 @@
       <if test="imageUrl != null and imageUrl != ''">
         image_url = #{imageUrl},
       </if>
+      <if test="imageUrl == null or imageUrl == ''">
+        image_url = null,
+      </if>
+      <if test="liveAddress != null and liveAddress != ''">
+        live_address = #{liveAddress},
+      </if>
       <if test="updateBy != null and updateBy != ''">
         update_by = #{updateBy},
         update_on = now(),

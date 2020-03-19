@@ -54,7 +54,6 @@ new Vue({
                     that.loadSysUsers('',1, that.pager.sysUser.pageSize);
                     break;
                 case 'dwjbxx':
-                	that.getUpperOrg();
                 	that.getTreeDict();
                 	that.loadDwjbxx();
                 	break;
@@ -88,6 +87,8 @@ new Vue({
                     break;
                 case 'nddyxxcj':
                 	that.setDyxxYear();
+                	that.getUpperOrg();
+                	that.getNddyxxOptions();
                 	that.loadNddyxxcj();
                 	break;
 
@@ -290,8 +291,31 @@ new Vue({
         formRes: {},
         formResDl: {},
         loading:{},
+        nddyxxcjLoading:false,
+        dwjbxxLoading: false,
         dyxxyear:{
+        	year:''
         },
+        yearList:[],
+        nddyxxcjYear:false,
+        nddyxxSearchCondition:'',
+        formnddyxxcjyear:{},
+        formPartInfo:{},
+        gender:[
+        	{
+        		value: '1',
+        		label: '男'
+        	},
+        	{
+        		value: '0',
+        		label: '女'
+        	}
+        ],
+        imageInfo:[],
+        dialogImageUrl: '',
+        dialogVisible: false,
+        singleImg:true,
+        nddyxxcTableText:'',
         formSearchAuthUserRole: {},
         formSearchAuthRoleModule: {},
         formSearchAuthRole: {},
@@ -323,6 +347,9 @@ new Vue({
         isDelPartPersonAuth:[],
         belongArea:[],
         formReward:[],
+        education:[],
+        bachelor:[],
+        nation:[],
         authModules: [],
         deptOrgType:[],
         leaderList:[
@@ -813,6 +840,7 @@ new Vue({
                                     case 'formNews': that.submitNews(); break;
                                     case 'formPartyDues': that.submitPartyDues(); break;
                                     case 'formRes': that.submitRes(); break;
+                                    case 'formnddyxxcj': that.submitNddyxxcj();break;
                                     default: break;
                                 }
                                 //提交成功之后
@@ -833,6 +861,24 @@ new Vue({
             
             //勿删，特意写下此句
             console.log('submitForm-formName,',formName,new Date().getTime());
+        },
+        getGenderValue(genderId){
+        	let list = this.gender.filter(x=>x.value == genderId);
+        	if(list && list.length > 0){
+        		return list[0].label;
+        	}
+        },
+        getNationValue(nationId){
+        	let list = this.nation.filter(x=>x.dictId == nationId);
+        	if(list && list.length > 0){
+        		return list[0].dictName;
+        	}
+        },
+        getEducationValue(educationId){
+        	let list = this.education.filter(x=>x.dictId == educationId);
+        	if(list && list.length > 0){
+        		return list[0].dictName;
+        	}
         },
         searchForm(formName) {
             let that = this;
@@ -859,6 +905,9 @@ new Vue({
                 case 'searchDwjbxx':
                 	that.loadDwjbxx();
                 	break;
+                case 'nddyxxcj':
+                	that.loadNddyxxcj();
+                	break;
                 case 'formSearchNews':
                     that.loadNews(that.formSearchNews.title, 1, that.pager.news.pageSize);
                     break;
@@ -878,10 +927,11 @@ new Vue({
         	let date = new Date();
         	let currentYear = date.getFullYear();
         	that.dyxxyear.year = currentYear;
-        	that.dyxxyear.index1 = currentYear;
-        	that.dyxxyear.index2 = currentYear-1;
-        	that.dyxxyear.index3 = currentYear-2;
-        	that.dyxxyear.index4 = currentYear-3;
+        	that.yearList=[];
+        	that.yearList.push(currentYear);
+        	that.yearList.push(currentYear-1);
+        	that.yearList.push(currentYear-2);
+        	that.yearList.push(currentYear-3);
         },
         /**
          * 响应消息处理
@@ -1049,7 +1099,12 @@ new Vue({
                 console.warn(err);
             });
         },
-
+        addYear(){
+        	if(this.formnddyxxcjyear.year != null && this.formnddyxxcjyear.year != ''){
+        		this.yearList.push(this.formnddyxxcjyear.year);
+        	}
+        	this.dialogShow.nddyxxcjYear = false;
+        },
         /**
          * 角色信息提交
          */
@@ -1141,6 +1196,77 @@ new Vue({
             });
         },
         /**
+         * 党员信息提交
+         */
+        submitNddyxxcj(){
+        	let that = this;
+        	let params = new URLSearchParams();
+        	if(that.formnddyxxcj.userId != null){
+            	params.append('userId',that.formnddyxxcj.userId);
+        	}
+        	if(that.formnddyxxcj.orgId != null){
+            	params.append('orgId',that.formnddyxxcj.orgId);
+        	}
+        	if(that.formnddyxxcj.userName != null){
+            	params.append('userName',that.formnddyxxcj.userName);
+        	}
+        	if(that.formnddyxxcj.gender != null){
+            	params.append('gender',that.formnddyxxcj.gender);
+        	}
+        	if(that.formnddyxxcj.birthTime != null){
+            	params.append('birthTime',that.formnddyxxcj.birthTime);
+        	}
+        	if(that.formnddyxxcj.nation != null){
+            	params.append('nation',that.formnddyxxcj.nation);
+        	}
+        	if(that.formnddyxxcj.joinPartyTime != null){
+            	params.append('joinPartyTime',that.formnddyxxcj.joinPartyTime);
+        	}
+        	if(that.formnddyxxcj.turnRightTime != null){
+            	params.append('turnRightTime',that.formnddyxxcj.turnRightTime);
+        	}
+        	if(that.formnddyxxcj.hometown != null){
+            	params.append('hometown',that.formnddyxxcj.hometown);
+        	}
+        	if(that.formnddyxxcj.bachelor != null){
+            	params.append('bachelor',that.formnddyxxcj.bachelor);
+        	}
+        	
+        	if(that.formnddyxxcj.education != null){
+            	params.append('education',that.formnddyxxcj.education);
+        	}
+        	if(that.formnddyxxcj.officeNumber != null){
+            	params.append('officeNumber',that.formnddyxxcj.officeNumber);
+        	}
+        	if(that.formnddyxxcj.liveAddress != null){
+            	params.append('liveAddress',that.formnddyxxcj.liveAddress);
+        	}
+        	if(that.formnddyxxcj.mail != null){
+            	params.append('mail',that.formnddyxxcj.mail);
+        	}
+        	if(that.formnddyxxcj.imageUrl != null){
+            	params.append('imageUrl',that.formnddyxxcj.imageUrl);
+        	}
+        	if(that.formnddyxxcj.phone != null){
+            	params.append('phone',that.formnddyxxcj.phone);
+        	}
+        	axios.post("/api/org/orgUserOpreate",params)
+    		.then(function(response){
+    			console.log(response)
+    			if(parseInt(response.data.code) === 200){
+    				that.dialogShow.nddyxxcj =false;
+        			that.loadNddyxxcj();
+                    that.$message({
+                        message: '操作成功',
+                        type: 'success'
+                    });
+                }else{
+                	that.$message.error("提交失败,请联系管理员");
+                }
+    			
+    		})
+        },
+        /**
          * 党委信息提交
          */
         submitDwjbxx(){
@@ -1227,7 +1353,6 @@ new Vue({
 //        	params.append('deptDetails',that.deptInfoList);
         	axios.post("/api/org/orgOpreate",params)
         		.then(function(response){
-        			console.log(response)
         			if(parseInt(response.data.code) === 200){
         				that.loading.flag = false;
         				that.dialogShow.dwjbxx =false;
@@ -1536,6 +1661,33 @@ new Vue({
         			break;
         	}
         },
+        viewDetail(scopeIndex, scopeRow){
+        	let that = this;
+        	that.formPartInfo=scopeRow;
+        	let url = "/api/user/getDtl/" +scopeRow.userId;
+    		axios.get(url,null)
+            .then(function(response){/*成功*/
+                let data = response.data.data;
+                let jsonData = JSON.parse(data);
+                that.formPartInfo.birthTime = jsonData.birthTime;
+                that.formPartInfo.joinPartyTime = jsonData.joinPartyTime;
+                that.formPartInfo.turnRightTime = jsonData.turnRightTime;
+                that.formPartInfo.hometown = jsonData.hometown;
+                that.formPartInfo.bachelor = jsonData.bachelor;
+                that.formPartInfo.education = jsonData.education;
+                that.formPartInfo.officeNumber = jsonData.officeNumber;
+                that.formPartInfo.liveAddress = jsonData.liveAddress;
+                that.formPartInfo.mail = jsonData.mail;
+                that.formPartInfo.imageUrl = jsonData.imageUrl;
+                that.formPartInfo.phone = jsonData.phone;
+                that.formPartInfo.userName = scopeRow.userName;
+                that.dialogShow.nddyxxcjdetail = !that.dialogShow.nddyxxcjdetail;
+            })
+            .catch(function(err){/*异常*/
+            	this.$message.error('个人信息加载失败');
+            });
+    		
+        },
         edit(type,scopeIndex, scopeRow, isAdd) {
         	if(isAdd == null && type == 'dwjbxx'){
         		let that = this
@@ -1672,6 +1824,56 @@ new Vue({
 	                    }
 	                    that.dialogShow.category = !that.dialogShow.category;
 	                    break;
+	                case 'nddyxxcj':
+                    	
+                    	if(isAdd){
+                    		that.formnddyxxcj={};  
+                    	}else{
+                    		
+                        	let url = "/api/user/getDtl/" +scopeRow.userId;
+                    		axios.get(url,null)
+                            .then(function(response){/*成功*/
+                                let data = response.data.data;
+                                let jsonData = JSON.parse(data);
+                                jsonData.userName = scopeRow.userName;
+                                jsonData.orgId = scopeRow.actOrg;
+                                if(jsonData.imageUrl != null){
+                                	let trueUrl = window.location.protocol+'//'+window.location.host+jsonData.imageUrl;
+                                	that.imageInfo=[{name:'image.JPG',url: trueUrl}];
+                                }else{
+                                	that.imageInfo=[];
+                                }
+                                that.formnddyxxcj = jsonData;
+//                                that.formnddyxxcj.orgId = scopeRow.upperOrg;
+//                                that.formnddyxxcj.userId = scopeRow.userId;
+//                                that.formnddyxxcj.userName = scopeRow.userName;
+//                                that.formnddyxxcj.gender = scopeRow.gender;
+//                                that.formnddyxxcj.nation = scopeRow.nation;
+//                                that.formnddyxxcj.birthTime = jsonData.birthTime;
+//                                that.formnddyxxcj.joinPartyTime = jsonData.joinPartyTime;
+//                                that.formnddyxxcj.turnRightTime = jsonData.turnRightTime;
+//                                that.formnddyxxcj.hometown = jsonData.hometown;
+//                                that.formnddyxxcj.bachelor = jsonData.bachelor;
+//                                that.formnddyxxcj.education = jsonData.education;
+//                                that.formnddyxxcj.officeNumber = jsonData.officeNumber;
+//                                that.formnddyxxcj.liveAddress = jsonData.liveAddress;
+//                                that.formnddyxxcj.mail = jsonData.mail;
+//                                if(jsonData.imageUrl != null){
+//                                	that.formnddyxxcj.imageUrl = jsonData.imageUrl;
+//                                	let trueUrl = window.location.protocol+'//'+window.location.host+jsonData.imageUrl;
+//                                	that.imageInfo=[{name:'image.JPG',url: trueUrl}];
+//                                }else{
+//                                	that.formnddyxxcj.imageUrl = null;
+//                                	that.imageInfo=[];
+//                                }
+//                                that.formnddyxxcj.phone = jsonData.phone;
+                            })
+                            .catch(function(err){/*异常*/
+                            	this.$message.error('个人信息加载失败');
+                            });
+                    	}
+                    	that.dialogShow.nddyxxcj = !that.dialogShow.nddyxxcj;
+                    	break;
 	                case 'dwjbxx':
 	                	//党委基本信息新增修改
 	                	that.getOptionDict();
@@ -1898,6 +2100,50 @@ new Vue({
 	            }
         	}
         },
+        handleRemove(file, fileList) {
+        	let that = this;
+        	that.formnddyxxcj.imageUrl=null;
+            this.singleImg=true;
+          },
+          handlePictureCardPreview(file) {
+            this.dialogImageUrl = file.url;
+            this.dialogVisible = true;
+            this.singleImg=false;
+          },
+        outMaxFile(){
+        	  this.$message.error('无法上传多张图片');
+        },
+        beforeAvatarUpload(file) {
+            let isImg = false ;
+            if(file.type === 'image/jpeg' || file.type === 'image/png'){
+            	isImg = true;
+            }
+            let isLt2M = file.size / 1024 / 1024 < 2;
+
+            if (!isImg) {
+              this.$message.error('上传图片只能是 JPG或PNG格式!');
+            }
+            if (!isLt2M) {
+              this.$message.error('上传图片大小不能超过 2MB!');
+            }
+            
+            return isImg && isLt2M;
+        },
+        setImgUrl(response, file, fileList){
+        	let that = this;
+        	
+        	that.formnddyxxcj.imageUrl = response.data.destName;
+        },
+        renderHeader (h,{column}) { // h即为cerateElement的简写，具体可看vue官方文档
+        	  return h(
+        	   'div',
+        	   [ 
+        	   h('img', {
+        		   src:'https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png'
+        	   })
+        	   ]
+        	  );
+        },
         dwjbxxDel(row,type){
         	let that = this;
             let entry = null, params = null;
@@ -1932,7 +2178,23 @@ new Vue({
                                     console.warn(err);
                                 });
                                 break;
-
+                            case 'nddyxxcj':
+                            	let userId = row.userId;
+                            	let params2 = new URLSearchParams();
+                            	params2.append("userId",userId);
+                                axios.post("/api/org/delOrgUser",params2)
+                                    .then(function(response){
+                                        if(parseInt(response.data.code) === 200){
+                                        	that.loadNddyxxcj();
+                                            that.$message({
+                                                message: '删除成功',
+                                                type: 'success'
+                                            });
+                                        }
+                                    }).catch(function(err){
+                                    	that.$message.error('删除失败');
+                                });
+                                break;
                             
                             default: break;
                         }
@@ -2865,39 +3127,52 @@ new Vue({
         loadDwjbxx(){
         	let that = this;
         	let treeTable =[];
-        	that.loading.flag = true;
+        	that.dwjbxxLoading = true;
         	axios.get("/api/org/getOrgList",null).then(function(response){
         		if(parseInt(response.data.code) == 200 ){
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.dwjbxxTreeLevel.level = 0;
         			that.dwjbxxTableData = that.getTreeData(response.data.result, parentArr);
         			console.log(that.dwjbxxTableData);
-        			that.loading.flag = false;
+        			that.dwjbxxLoading = false;
         		}else{
         			that.$message.error('数据加载失败');
-        			that.loading.flag = false;
+        			that.dwjbxxLoading = false;
         		}
-        	});
+        	}).catch(function(err){/*异常*/
+        		that.$message.error('请求失败');
+        		that.dwjbxxLoading = false;
+                });
         },
         loadNddyxxcj(){
         	let that = this;
+        	that.nddyxxcjLoading = true;
+        	let searchName = '';
+        	if(that.nddyxxSearchCondition == null || that.nddyxxSearchCondition == ''){
+        		searchName = null;
+        	}else{
+        		searchName = that.nddyxxSearchCondition;
+        	}
         	axios.get("/api/org/getOrgUserList",{params:{
-                userName: 'yu'
+                userName: searchName,
+                year: that.dyxxyear.year
             }}).then(function(response){
         		if(parseInt(response.data.code) == 200 ){
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			if(parentArr == null){
         				that.nddyxxcjTableData = response.data.result;
         			}else{
-        				that.nddyxxcjTableData = that.getTreeData(response.data.result, parentArr);
+        				that.nddyxxcjTableData = that.getNddyxxTreeData(response.data.result, parentArr,that);
         			}
+        			that.nddyxxcjLoading = false;
         		}else{
         			that.$message.error('数据加载失败');
-        			that.loading.flag = false;
+        			that.nddyxxcjLoading = false;
         		}
         	})
         	.catch(function(err){/*异常*/
         		that.$message.error('请求失败');
+        		that.nddyxxcjLoading = false;
                 });
         },
         getUpperOrg(){
@@ -2912,6 +3187,30 @@ new Vue({
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.upperOrg = that.getTreeData(response.data.result, parentArr);
         			console.log(that.upperOrg);
+        		}
+        	});
+        },
+        getNddyxxOptions(){
+        	let that = this;
+        	axios.get("/api/dict/search",{params:{
+        		dictType:'nation'
+            }}).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			that.nation = response.data.data.list;
+        		}
+        	});
+        	axios.get("/api/dict/search",{params:{
+        		dictType:'bachelor'
+            }}).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			that.bachelor = response.data.data.list;
+        		}
+        	});
+        	axios.get("/api/dict/search",{params:{
+        		dictType:'education'
+            }}).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			that.education = response.data.data.list;
         		}
         	});
         },
@@ -2930,6 +3229,7 @@ new Vue({
         		}
         	});
         },
+        
         getOptionDict(){
         	let that = this;
         	axios.get("/api/dict/search",{params:{
@@ -2981,6 +3281,35 @@ new Vue({
               }
             })
             return dataArr
+          },
+          getNddyxxTreeData(list, dataArr,that){
+        	  
+        	  dataArr.map((pNode, i) => {
+              	if(pNode.userId == that.currentUser.userId){
+              		pNode.isOperate = 1 ;
+              	}
+                let childObj = []
+                list.map((cNode, j) => {
+                  if (pNode.orgId === cNode.upperOrg) {
+    
+                  	if(pNode.isOperate == 1){
+                  		cNode.isOperate = 1;
+                  	}
+                  	if(cNode.userId == that.currentUser.userId){
+                  		cNode.isOperate = 1;
+                  	}
+                    childObj.push(cNode)
+                  }
+                })
+                pNode.children = childObj
+                if(pNode.children.length ==0){
+              	  pNode.children = null;
+                }
+                if (childObj.length > 0) {
+                  this.getNddyxxTreeData(list, childObj,that)
+                }
+              })
+              return dataArr
           },
         /**
          * 处理没有children结构的数据
