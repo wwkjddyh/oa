@@ -26,7 +26,7 @@
             -->
             <el-button plain @click="edit('article', '', '', true)" size="mini" icon="el-icon-plus">新增</el-button>
             <div style="margin-top: 20px">
-                <el-table
+                <el-table size="small"
                         :data="articles"
                         border
                         style="width: 100%">
@@ -96,7 +96,7 @@
                     </el-table-column>
                 </el-table>
                 <div align="center" style="margin-top: 10px">
-                    <el-pagination
+                    <el-pagination size="small"
                             @size-change="handleArticleSizeChange"
                             @current-change="handleArticleCurrentChange"
                             :current-page="pager.article.currentPage"
@@ -109,9 +109,9 @@
             </div>
             <el-dialog title="文章信息" :visible.sync="dialogShow.article" lock-scroll="true" width="800px">
                 <el-card shadow="never" style="width: 100%;" type="card">
-                    <el-form ref="formArticle" :rules="rules" :model="formArticle" label-width="100px">
+                    <el-form ref="formArticle" :rules="rules" :model="formArticle" label-width="100px" size="small">
                         <el-form-item label="文章类型" prop="categoryId">
-                            <el-select v-model="formArticle.categoryId" style="width: 300px;" placeholder="请选择类型">
+                            <el-select v-model="formArticle.categoryId" style="width: 300px;" placeholder="请选择类型" size="small">
                                 <el-option label="热点资讯" value="hotNews"></el-option>
                                 <el-option label="法律法规" value="regulation"></el-option>
                             </el-select>
@@ -119,37 +119,37 @@
                                 <div slot="content">文章类型</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
                         <el-form-item label="文章标题" prop="title">
-                            <el-input v-model="formArticle.title" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="文章标题"></el-input>
+                            <el-input v-model="formArticle.title" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="文章标题"></el-input>
                             <el-tooltip class="item" effect="dark" placement="top">
                                 <div slot="content">文章标题</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
                         <el-form-item label="文章简介" prop="intro">
-                            <el-input type="textarea" v-model="formArticle.intro" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;"></el-input>
+                            <el-input type="textarea" v-model="formArticle.intro" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" size="small"></el-input>
                             <el-tooltip class="item" effect="dark" placement="top">
                                 <div slot="content">文章简介</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
                         <el-form-item label="文章内容" prop="content">
-                            <el-input id="formArticleContent" type="textarea" v-model="formArticle.content" :autosize="{minRows: 20, maxRows: 20}" style="width:600px;"></el-input>
+                            <el-input id="formArticleContent" type="textarea" v-model="formArticle.content" :autosize="{minRows: 20, maxRows: 20}" style="width:600px;" size="small"></el-input>
                             <el-tooltip class="item" effect="dark" placement="top">
                                 <div slot="content">文章内容</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
                         <el-form-item label="文章标签" prop="tags">
-                            <el-input v-model="formArticle.tags" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="标签以空格分隔"></el-input>
+                            <el-input v-model="formArticle.tags" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="标签以空格分隔"></el-input>
                             <el-tooltip class="item" effect="dark" placement="top">
                                 <div slot="content">标签</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
                         <el-form-item label="原始作者" prop="authorName">
-                            <el-input v-model="formArticle.authorName" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="作者"></el-input>
+                            <el-input v-model="formArticle.authorName" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="作者"></el-input>
                             <el-tooltip class="item" effect="dark" placement="top">
                                 <div slot="content">作者</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
                         <el-form-item label="文章来源" prop="source">
-                            <el-input v-model="formArticle.source" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="来源"></el-input>
+                            <el-input v-model="formArticle.source" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="来源"></el-input>
                             <el-tooltip class="item" effect="dark" placement="top">
                                 <div slot="content">来源(网站名称或媒体名称)</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>
                         <el-form-item label="文章来源站点" prop="sourceSite">
-                            <el-input v-model="formArticle.sourceSite" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="来源"></el-input>
+                            <el-input v-model="formArticle.sourceSite" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="来源"></el-input>
                             <el-tooltip class="item" effect="dark" placement="top">
                                 <div slot="content">来源站点(网站网址或文章网址)</div><i class="el-icon-question"></i></el-tooltip>
                         </el-form-item>

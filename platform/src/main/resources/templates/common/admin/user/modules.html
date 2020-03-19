@@ -7,9 +7,9 @@
         </el-tab-pane>
     </el-tabs>
     -->
-    <el-form ref="formSearchAuthModule" :model="formSearchAuthModule" label-width="70px">
+    <el-form ref="formSearchAuthModule" :model="formSearchAuthModule" label-width="70px" size="small">
         <el-form-item label="父级模块" prop="parentId">
-            <el-select v-model="formSearchAuthModule.parentId" style="width: 300px;">
+            <el-select v-model="formSearchAuthModule.parentId" style="width: 300px;" size="small">
                 <el-option label="请选择" value=""></el-option>
                 <el-option v-for="item in allModules" :key="item.moduleId" :label="item.fullModuleName" :value="item.moduleId"></el-option>
             </el-select>
@@ -17,12 +17,12 @@
                 <div slot="content">父级模块</div><i class="el-icon-question"></i></el-tooltip>
         </el-form-item>
         <el-form-item label="模块名称" prop="name">
-            <el-input v-model="formSearchAuthModule.moduleName" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+            <el-input v-model="formSearchAuthModule.moduleName" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
             <el-tooltip class="item" effect="dark" placement="top">
                 <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
         </el-form-item>
         <el-form-item label="是否菜单" prop="isMenu">
-            <el-select v-model="formSearchAuthModule.isMenu" style="width: 300px;" placeholder="请是否为菜单">
+            <el-select v-model="formSearchAuthModule.isMenu" style="width: 300px;" placeholder="请是否为菜单" size="small">
                 <el-option label="请选择" value=""></el-option>
                 <el-option label="是" value="1"></el-option>
                 <el-option label="否" value="0"></el-option>
@@ -48,7 +48,7 @@
     -->
     <el-button plain @click="edit('authModule','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
     <div style="margin-top: 20px">
-        <el-table
+        <el-table size="small"
                 :data="authModules"
                 border
                 style="width: 100%">
@@ -112,7 +112,7 @@
             </el-table-column>
         </el-table>
         <div align="center">
-            <el-pagination
+            <el-pagination size="small"
                     @size-change="handleAuthModuleSizeChange"
                     @current-change="handleAuthModuleCurrentChange"
                     :current-page="pager.authModule.currentPage"
@@ -125,9 +125,9 @@
     </div>
     <el-dialog title="权限/模块" :visible.sync="dialogShow.authModule" lock-scroll="true" width="800px">
         <el-card shadow="never" style="width: 100%;" type="card">
-            <el-form ref="formAuthModule" :rules="rules" :model="formAuthModule" label-width="100px">
+            <el-form ref="formAuthModule" :rules="rules" :model="formAuthModule" label-width="100px" size="small">
                 <el-form-item label="父级模块" prop="parentId">
-                    <el-select v-model="formAuthModule.parentId" style="width: 300px;">
+                    <el-select v-model="formAuthModule.parentId" style="width: 300px;" size="small">
                         <el-option label="请选择" value=""></el-option>
                         <el-option v-for="item in allModules" :key="item.moduleId" :label="item.fullModuleName" :value="item.moduleId"></el-option>
                     </el-select>
@@ -135,22 +135,22 @@
                         <div slot="content">父级模块</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="模块代码" prop="moduleCode">
-                    <el-input v-model="formAuthModule.moduleCode" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="代码"></el-input>
+                    <el-input v-model="formAuthModule.moduleCode" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="代码"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">代码</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="模块名称" prop="moduleName">
-                    <el-input v-model="formAuthModule.moduleName" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+                    <el-input v-model="formAuthModule.moduleName" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="关联路径" prop="moduleUrl">
-                    <el-input v-model="formAuthModule.moduleUrl" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="路径"></el-input>
+                    <el-input v-model="formAuthModule.moduleUrl" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="路径"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">路径</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="模块类型" prop="isLeaf">
-                    <el-select v-model="formAuthModule.isLeaf" style="width: 300px;" placeholder="请选择类型">
+                    <el-select v-model="formAuthModule.isLeaf" style="width: 300px;" placeholder="请选择类型" size="small">
                         <el-option label="请选择" value=""></el-option>
                         <el-option label="叶子" value="1"></el-option>
                         <el-option label="节点" value="0"></el-option>
@@ -159,27 +159,27 @@
                         <div slot="content">叶子：没有子节点;节点：还有子节点</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="模块描述" prop="moduleDesc">
-                    <el-input v-model="formAuthModule.moduleDesc" type="textarea" size="medium" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="描述"></el-input>
+                    <el-input v-model="formAuthModule.moduleDesc" type="textarea" size="small" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="描述"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">模块描述</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="模块排序" prop="order">
-                    <el-input v-model="formAuthModule.order" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="排序代码" @blur="handleInputNumber"></el-input>
+                    <el-input v-model="formAuthModule.order" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="排序代码" @blur="handleInputNumber"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">模块排序(仅输入数字)</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="模块ICON" prop="moduleIcon">
-                    <el-input v-model="formAuthModule.moduleIcon" type="textarea" size="medium" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="ICON"></el-input>
+                    <el-input v-model="formAuthModule.moduleIcon" type="textarea" size="small" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="ICON"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">模块ICON</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="模块样式" prop="moduleStyle">
-                    <el-input v-model="formAuthModule.moduleStyle" type="textarea" size="medium" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="样式"></el-input>
+                    <el-input v-model="formAuthModule.moduleStyle" type="textarea" size="small" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="样式"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">模块样式</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="是否菜单" prop="isMenu">
-                    <el-select v-model="formAuthModule.isMenu" style="width: 300px;" placeholder="请是否为菜单">
+                    <el-select v-model="formAuthModule.isMenu" style="width: 300px;" placeholder="请是否为菜单" size="small">
                         <el-option label="是" value="1"></el-option>
                         <el-option label="否" value="0"></el-option>
                     </el-select>
@@ -187,8 +187,8 @@
                         <div slot="content">确定是否为菜单</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item>
-                    <el-button @click="dialogShow.authModule = false;resetForm('formAuthModule')" plain>取消</el-button>
-                    <el-button @click="submitForm('formAuthModule')" type="primary" plain>保存</el-button>
+                    <el-button @click="dialogShow.authModule = false;resetForm('formAuthModule')" plain size="small" icon="el-icon-close">取消</el-button>
+                    <el-button @click="submitForm('formAuthModule')" type="primary" plain size="small" icon="el-icon-check">保存</el-button>
                 </el-form-item>
             </el-form>
         </el-card>
@@ -201,7 +201,7 @@
                 <el-checkbox v-for="role in allRoles" :label="role.roleId" :key="role.roleId">{{role.roleName}}</el-checkbox>
             </el-checkbox-group>
             <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
-            <el-button @click="" type="primary" size="small" plain style="margin-top:10px;">保存</el-button>
+            <el-button @click="" type="primary" size="small" plain style="margin-top:10px;" icon="el-icon-check">保存</el-button>
         </el-card>
     </el-dialog>
 </div>

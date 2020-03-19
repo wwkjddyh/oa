@@ -23,7 +23,7 @@
     <el-button plain @click="edit('partyDues','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
     <el-button plain @click="searchForm('formSearchPartyDues')" size="mini" icon="el-icon-refresh">刷新</el-button>
     <div style="margin-top: 20px">
-        <el-table
+        <el-table size="small"
                 :data="partyDuesArray"
                 border
                 style="width: 100%">
@@ -68,7 +68,7 @@
             </el-table-column>
         </el-table>
         <div align="center">
-            <el-pagination
+            <el-pagination size="small"
                     @size-change="handlePartyDuesSizeChange"
                     @current-change="handlePartyDuesCurrentChange"
                     :current-page="pager.partyDues.currentPage"
@@ -81,7 +81,7 @@
     </div>
     <el-dialog title="上缴党费" :visible.sync="dialogShow.partyDues" lock-scroll="true" width="800px">
         <el-card shadow="never" style="width: 100%;" type="card">
-            <el-form ref="formPartyDues" :rules="rules" :model="formPartyDues" label-width="150px">
+            <el-form ref="formPartyDues" :rules="rules" :model="formPartyDues" label-width="150px" size="small">
                 <el-form-item label="上缴时间" prop="payTime">
                     <el-date-picker style="width: 300px;"
                                     v-model="formPartyDues.payTime"
@@ -93,17 +93,17 @@
                         <div slot="content">上缴时间</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="上缴哪季度党费" prop="payPeriod">
-                    <el-input v-model="formPartyDues.payPeriod" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="上缴哪季度党费"></el-input>
+                    <el-input v-model="formPartyDues.payPeriod" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="上缴哪季度党费"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">上缴哪季度党费</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="上缴金额" prop="payAmount">
-                    <el-input type="number" step="0.01" v-model.number="formPartyDues.payAmount" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="上缴金额"></el-input>
+                    <el-input type="number" step="0.01" v-model.number="formPartyDues.payAmount" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="上缴金额"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">上缴金额</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="备注" prop="remark">
-                    <el-input v-model="formPartyDues.remark" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="备注"></el-input>
+                    <el-input v-model="formPartyDues.remark" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="备注"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">备注</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>

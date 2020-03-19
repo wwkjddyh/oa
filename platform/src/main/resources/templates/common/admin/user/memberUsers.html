@@ -8,9 +8,9 @@
     </el-tabs>
     -->
 
-    <el-form ref="formSearchMemberUser" :model="formSearchMemberUser" label-width="58px">
+    <el-form ref="formSearchMemberUser" :model="formSearchMemberUser" label-width="58px" size="small">
         <el-form-item label="关键字">
-            <el-input v-model="formSearchMemberUser.key" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
+            <el-input v-model="formSearchMemberUser.key" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
 <!--            <el-tooltip class="item" effect="dark" placement="top">-->
 <!--                <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>-->
             <el-button @click="searchForm('formSearchMemberUser')" type="primary" plain size="mini" icon="el-icon-search" style="float: right">检索</el-button>
@@ -67,7 +67,7 @@
     -->
     <el-button plain @click="edit('memberUser','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
     <div style="margin-top: 20px">
-        <el-table
+        <el-table size="small"
                 :data="memberUsers"
                 border
                 style="width: 100%">
@@ -117,7 +117,7 @@
             </el-table-column>
         </el-table>
         <div align="center">
-            <el-pagination
+            <el-pagination size="small"
                     @size-change="handleMemberUserSizeChange"
                     @current-change="handleMemberUserCurrentChange"
                     :current-page="pager.user.currentPage"
@@ -130,45 +130,45 @@
     </div>
     <el-dialog title="会员/用户" :visible.sync="dialogShow.memberUser" lock-scroll="true" width="800px">
         <el-card shadow="never" style="width: 100%;" type="card">
-            <el-form ref="formUser" :rules="rules" :model="formUser" label-width="100px">
+            <el-form ref="formUser" :rules="rules" :model="formUser" label-width="100px" size="small">
                 <el-form-item label="名称" prop="name">
-                    <el-input v-model="formUser.name" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+                    <el-input v-model="formUser.name" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="昵称" prop="nickname">
-                    <el-input v-model="formUser.nickname" size="medium" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="昵称"></el-input>
+                    <el-input v-model="formUser.nickname" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="昵称"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">昵称</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="密码" prop="password" v-if="currAction !== 'edit'">
-                    <el-input v-model="formUser.password" type="password" size="medium" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="密码"></el-input>
+                    <el-input v-model="formUser.password" type="password" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="密码"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">密码</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="重复密码" prop="passwordOrgi" v-if="currAction !== 'edit'">
-                    <el-input v-model="formUser.passwordOrgi" type="password" size="medium" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="重复密码"></el-input>
+                    <el-input v-model="formUser.passwordOrgi" type="password" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="重复密码"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">重复密码</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="原始密码" v-if="currAction === 'edit'">
-                    <el-input v-model="formUser.oldPassword" type="password" size="medium" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="原始密码"></el-input>
+                    <el-input v-model="formUser.oldPassword" type="password" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="原始密码"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">原始密码</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="密码"  v-if="currAction === 'edit'">
-                    <el-input v-model="formUser.password" type="password" size="medium" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="密码"></el-input>
+                    <el-input v-model="formUser.password" type="password" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="密码"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">密码</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="重复密码"  v-if="currAction === 'edit'">
-                    <el-input v-model="formUser.passwordOrgi" type="password" size="medium" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="重复密码"></el-input>
+                    <el-input v-model="formUser.passwordOrgi" type="password" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="重复密码"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">重复密码</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <!--
                 <el-form-item label="用户类型" prop="typeId">
-                    <el-select v-model="formUser.typeId" style="width: 300px;" >
+                    <el-select v-model="formUser.typeId" style="width: 300px;" size="small">
                         <el-option label="一般用户" value="0002">一般用户</el-option>
                         <el-option label="一般会员" value="0003">一般会员</el-option>
                         <el-option label="企业会员" value="0008">企业会员</el-option>
@@ -177,7 +177,7 @@
                         <div slot="content">用户类型</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="是否为猎头" prop="isHeadhunting">
-                    <el-select v-model="formUser.isHeadhunting" style="width: 300px;" >
+                    <el-select v-model="formUser.isHeadhunting" style="width: 300px;" size="small">
                         <el-option label="是" value="1">是</el-option>
                         <el-option label="否" value="0">否</el-option>
                     </el-select>
@@ -186,15 +186,15 @@
                 </el-form-item>
                 -->
                 <!--<el-form-item label="会员等级" prop="memberId" v-if="formUser.typeId==='0003'">-->
-                <!--<el-select v-model="formUser.memberId" style="width: 300px;" >-->
+                <!--<el-select v-model="formUser.memberId" style="width: 300px;" size="small">-->
                 <!--<el-option label="请选择" value="">请选择</el-option>-->
                 <!--</el-select>-->
                 <!--<el-tooltip class="item" effect="dark" placement="top">-->
                 <!--<div slot="content">会员等级</div><i class="el-icon-question"></i></el-tooltip>-->
                 <!--</el-form-item>-->
                 <el-form-item>
-                    <el-button @click="dialogShow.memberUser = false;resetForm('formUser')" plain>取消</el-button>
-                    <el-button @click="submitForm('formUser')" type="primary" plain>保存</el-button>
+                    <el-button @click="dialogShow.memberUser = false;resetForm('formUser')" plain size="mini" icon="el-icon-close">取消</el-button>
+                    <el-button @click="submitForm('formUser')" type="primary" plain size="mini" icon="el-icon-check">保存</el-button>
                 </el-form-item>
             </el-form>
         </el-card>
@@ -207,7 +207,7 @@
                 <el-checkbox v-for="module in allRoles" :label="module.roleId" :key="module.roleId" v-if="module.roleName != 'ROLE_ADMIN'">{{module.roleName}}</el-checkbox>
             </el-checkbox-group>
             <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
-            <el-button @click="handleCheckBoxSave('userRole');" type="primary" size="small" plain style="margin-top:10px;">保存</el-button>
+            <el-button @click="handleCheckBoxSave('userRole');" type="primary" size="small" plain style="margin-top:10px;" icon="el-icon-check">保存</el-button>
         </el-card>
     </el-dialog>
 </div>

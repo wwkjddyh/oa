@@ -1,9 +1,9 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
-    <el-form ref="formSearchNews" :model="formSearchNews" label-width="100px">
+    <el-form ref="formSearchNews" :model="formSearchNews" label-width="100px" size="small">
         <el-form-item label="资料模糊搜索" prop="title">
-            <el-input v-model="formSearchRes.key" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
+            <el-input v-model="formSearchRes.key" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
             <!--
             <el-tooltip class="item" effect="dark" placement="top">
                 <div slot="content">关键字</div><i class="el-icon-question"></i></el-tooltip>
@@ -17,7 +17,7 @@
     <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
 
     <div style="margin-top: 20px">
-        <el-table
+        <el-table size="small"
                 :data="resArray"
                 border
                 style="width: 100%">
@@ -57,7 +57,7 @@
             </el-table-column>
         </el-table>
         <div align="center" style="margin-top: 20px">
-            <el-pagination
+            <el-pagination size="small"
                     @size-change="handleResSizeChange"
                     @current-change="handleResCurrentChange"
                     :current-page="pager.res.currentPage"
@@ -70,9 +70,9 @@
     </div>
     <el-dialog title="资料上传" :visible.sync="dialogShow.res" lock-scroll="true" width="800px">
         <el-card shadow="never" style="width: 100%;" type="card">
-            <el-form ref="formRes" :rules="rules" :model="formRes" label-width="100px" :validate-on-rule-change="false">
+            <el-form ref="formRes" :rules="rules" :model="formRes" label-width="100px" :validate-on-rule-change="false" size="small">
                 <el-form-item label="发布日期" prop="publishTime">
-                    <el-date-picker style="width: 300px;"
+                    <el-date-picker style="width: 300px;" size="small"
                                     v-model="formRes.publishTime"
                                     type="date"
                                     value-format="yyyy-MM-dd"
@@ -82,12 +82,12 @@
                         <div slot="content">发布日期</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="资料名称" prop="resName">
-                    <el-input v-model="formRes.resName" size="medium" auto-complete="off" style="width: 472px;" maxlength="512" placeholder="资料名称"></el-input>
+                    <el-input v-model="formRes.resName" size="small" auto-complete="off" style="width: 472px;" maxlength="512" placeholder="资料名称"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">资料名称</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="上传附件" prop="originalName">
-                    <el-upload style="width: 300px;"
+                    <el-upload style="width: 300px;" size="small"
                                ref="uploadRes"
                             class="upload-demo"
                             action="/api/file/upload"
@@ -124,8 +124,8 @@
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button @click="submitUpload" type="primary" round size="small">新增/保存</el-button>
-                    <el-button @click="dialogShow.res = false;resetForm('formRes')" round size="small">取消</el-button>
+                    <el-button @click="dialogShow.res = false;resetForm('formRes')" round size="small" icon="el-icon-close">取消</el-button>
+                    <el-button @click="submitUpload" type="primary" round size="small" icon="el-icon-check">新增/保存</el-button>
                 </el-form-item>
             </el-form>
         </el-card>

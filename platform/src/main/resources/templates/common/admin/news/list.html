@@ -7,9 +7,9 @@
         </el-tab-pane>
     </el-tabs>
     -->
-    <el-form ref="formSearchNews" :model="formSearchNews" label-width="58px">
+    <el-form ref="formSearchNews" :model="formSearchNews" label-width="58px" size="small">
         <el-form-item label="关键字" prop="title">
-            <el-input v-model="formSearchNews.title" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
+            <el-input v-model="formSearchNews.title" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
             <el-button size="mini" @click="searchForm('formSearchNews')" type="primary" plain icon="el-icon-search" style="float: right">检索</el-button>
         </el-form-item>
     </el-form>
@@ -102,7 +102,7 @@
             </div>
         </div>
         <div align="center" style="margin-top: 20px">
-            <el-pagination
+            <el-pagination size="small"
                     @size-change="handleNewsSizeChange"
                     @current-change="handleNewsCurrentChange"
                     :current-page="pager.news.currentPage"
@@ -115,7 +115,7 @@
     </div>
     <el-dialog title="新增消息" :visible.sync="dialogShow.news" lock-scroll="true" width="800px">
         <el-card shadow="never" style="width: 100%;" type="card">
-            <el-form ref="formNews" :rules="rules" :model="formNews" label-width="100px" :validate-on-rule-change="false">
+            <el-form ref="formNews" :rules="rules" :model="formNews" label-width="100px" :validate-on-rule-change="false" size="small">
                 <el-form-item label="收件人" prop="receiverId" >
                     <div style="width: 600px;height: auto;float: left;display: flex;display: -webkit-flex; align-items:center;">
                         <div style="border-radius: 4px;border-width: 1px;border-color: #E0E0E0;width:470px;height:200px;border-style: solid;">
@@ -136,12 +136,12 @@
                     </div>
                 </el-form-item>
                 <el-form-item label="标题" prop="title">
-                    <el-input v-model="formNews.title" size="medium" auto-complete="off" style="width: 472px;" maxlength="512" placeholder="名称"></el-input>
+                    <el-input v-model="formNews.title" size="small" auto-complete="off" style="width: 472px;" maxlength="512" placeholder="名称"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="内容" prop="content">
-                    <el-input v-model="formNews.content" type="textarea" size="medium" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="内容"></el-input>
+                    <el-input v-model="formNews.content" type="textarea" size="small" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="内容"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">内容</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
@@ -150,8 +150,8 @@
                     <el-checkbox v-model="formNews.sendMail" :label="formNews.sendMail">是否发送邮件</el-checkbox>
                 </el-form-item>
                 <el-form-item>
-                    <el-button @click="submitForm('formNews')" type="primary" round size="small">发送</el-button>
-                    <el-button @click="dialogShow.news = false;resetForm('formNews')" round size="small">取消</el-button>
+                    <el-button @click="dialogShow.news = false;resetForm('formNews')" round size="small" icon="el-icon-close">取消</el-button>
+                    <el-button @click="submitForm('formNews')" type="primary" round size="small" icon="el-icon-position">发送</el-button>
                 </el-form-item>
             </el-form>
         </el-card>
@@ -163,8 +163,8 @@
                 <el-checkbox v-for="(user, userId) in newsReceiveUsers" :label="userId" :key="userId">{{user.userNickname}}</el-checkbox>
             </el-checkbox-group>
             <div style="width: 100%; margin-top: 20px; display: flex;display: -webkit-flex;">
-                <el-button @click="handleNewsAddReceivers" type="primary" round size="small">确定</el-button>
-                <el-button @click="newsReceiveUserIds = [];dialogShow.newsReceivers = false;" type="info" round size="small">取消</el-button>
+                <el-button @click="newsReceiveUserIds = [];dialogShow.newsReceivers = false;" type="info" round size="small" icon="el-icon-close">取消</el-button>
+                <el-button @click="handleNewsAddReceivers" type="primary" round size="small" icon="el-icon-check">确定</el-button>
             </div>
         </el-card>
     </el-dialog>

@@ -8,9 +8,9 @@
         </el-tab-pane>
     </el-tabs>
     -->
-    <el-form ref="formSearchCategory" :model="formSearchCategory" label-width="50px">
+    <el-form ref="formSearchCategory" :model="formSearchCategory" label-width="50px" size="small">
         <el-form-item label="类别" prop="typeId">
-            <el-select v-model="formSearchCategory.typeId" style="width: 300px;" placeholder="请选择类型">
+            <el-select v-model="formSearchCategory.typeId" style="width: 300px;" placeholder="请选择类型" size="small">
                 <el-option label="全部" value="">全部</el-option>
                 <el-option v-for="item in allCategoryTypes" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>
             </el-select>
@@ -18,7 +18,7 @@
                 <div slot="content">分类类别</div><i class="el-icon-question"></i></el-tooltip>
         </el-form-item>
         <el-form-item label="名称" prop="name">
-            <el-input v-model="formSearchCategory.name" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+            <el-input v-model="formSearchCategory.name" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
             <el-tooltip class="item" effect="dark" placement="top">
                 <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
         </el-form-item>
@@ -31,7 +31,7 @@
     -->
     <el-button plain @click="edit('category','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
     <div style="margin-top: 20px">
-        <el-table
+        <el-table size="small"
                 :data="categories"
                 border
                 style="width: 100%">
@@ -70,7 +70,7 @@
             </el-table-column>
         </el-table>
         <div align="center">
-            <el-pagination
+            <el-pagination size="small"
                     @size-change="handleCategorySizeChange"
                     @current-change="handleCategoryCurrentChange"
                     :current-page="pager.category.currentPage"
@@ -83,21 +83,21 @@
     </div>
     <el-dialog title="分类类别信息" :visible.sync="dialogShow.category" lock-scroll="true" width="800px">
         <el-card shadow="never" style="width: 100%;" type="card">
-            <el-form ref="formCategory" :rules="rules" :model="formCategory" label-width="100px">
+            <el-form ref="formCategory" :rules="rules" :model="formCategory" label-width="100px" size="small">
                 <el-form-item label="类别" prop="typeId">
-                    <el-select v-model="formCategory.typeId" style="width: 300px;" placeholder="请选择类型">
+                    <el-select v-model="formCategory.typeId" style="width: 300px;" placeholder="请选择类型" size="small">
                         <el-option v-for="item in allCategoryTypes" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>
                     </el-select>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">分类类别</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="名称" prop="name">
-                    <el-input v-model="formCategory.name" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+                    <el-input v-model="formCategory.name" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="描述" prop="desc">
-                    <el-input v-model="formCategory.desc" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="描述"></el-input>
+                    <el-input v-model="formCategory.desc" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="描述"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">描述</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
