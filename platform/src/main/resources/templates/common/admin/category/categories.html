@@ -1,107 +1,112 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
+    <!--
     <el-tabs v-model="activeTabName" type="card">
         <el-tab-pane label="分类管理" name="first">
-            <el-form ref="formSearchCategory" :model="formSearchCategory" label-width="100px">
+
+        </el-tab-pane>
+    </el-tabs>
+    -->
+    <el-form ref="formSearchCategory" :model="formSearchCategory" label-width="50px">
+        <el-form-item label="类别" prop="typeId">
+            <el-select v-model="formSearchCategory.typeId" style="width: 300px;" placeholder="请选择类型">
+                <el-option label="全部" value="">全部</el-option>
+                <el-option v-for="item in allCategoryTypes" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>
+            </el-select>
+            <el-tooltip class="item" effect="dark" placement="top">
+                <div slot="content">分类类别</div><i class="el-icon-question"></i></el-tooltip>
+        </el-form-item>
+        <el-form-item label="名称" prop="name">
+            <el-input v-model="formSearchCategory.name" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+            <el-tooltip class="item" effect="dark" placement="top">
+                <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
+        </el-form-item>
+        <el-form-item>
+            <el-button @click="searchForm('formSearchCategory')" type="primary" plain icon="el-icon-search" size="mini">检索</el-button>
+        </el-form-item>
+    </el-form>
+    <!--
+    <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
+    -->
+    <el-button plain @click="edit('category','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
+    <div style="margin-top: 20px">
+        <el-table
+                :data="categories"
+                border
+                style="width: 100%">
+            <el-table-column
+                    align="center"
+                    width="50"
+                    label="序号">
+                <template slot-scope="scope">
+                    {{scope.$index+1}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="name"
+                    label="名称"
+                    width="200">
+            </el-table-column>
+            <el-table-column
+                    prop="typeName"
+                    label="类别"
+                    width="200">
+            </el-table-column>
+            <el-table-column
+                    prop="desc"
+                    label="描述">
+            </el-table-column>
+            <el-table-column
+                    align="center"
+                    width="178"
+                    label="操作">
+                <template slot-scope="scope">
+                    <div style="display: flex;width:100%">
+                        <el-button size="mini" @click="edit('category',scope.$index,scope.row,false)" icon="el-icon-edit">修改</el-button>
+                        <el-button size="mini" type="danger" @click="handleDel(scope.$index,'category')" icon="el-icon-delete">删除</el-button>
+                    </div>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div align="center">
+            <el-pagination
+                    @size-change="handleCategorySizeChange"
+                    @current-change="handleCategoryCurrentChange"
+                    :current-page="pager.category.currentPage"
+                    :page-sizes="[10, 20, 30, 40]"
+                    :page-size="pager.category.pageSize"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="pager.category.totalCount">
+            </el-pagination>
+        </div>
+    </div>
+    <el-dialog title="分类类别信息" :visible.sync="dialogShow.category" lock-scroll="true" width="800px">
+        <el-card shadow="never" style="width: 100%;" type="card">
+            <el-form ref="formCategory" :rules="rules" :model="formCategory" label-width="100px">
                 <el-form-item label="类别" prop="typeId">
-                    <el-select v-model="formSearchCategory.typeId" style="width: 300px;" placeholder="请选择类型">
-                        <el-option label="全部" value="">全部</el-option>
+                    <el-select v-model="formCategory.typeId" style="width: 300px;" placeholder="请选择类型">
                         <el-option v-for="item in allCategoryTypes" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>
                     </el-select>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">分类类别</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="名称" prop="name">
-                    <el-input v-model="formSearchCategory.name" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+                    <el-input v-model="formCategory.name" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
+                <el-form-item label="描述" prop="desc">
+                    <el-input v-model="formCategory.desc" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="描述"></el-input>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">描述</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
                 <el-form-item>
-                    <el-button @click="searchForm('formSearchCategory')" type="primary" plain>检索</el-button>
+                    <el-button @click="dialogShow.category = false;resetForm('formCategory')" plain size="mini" icon="el-icon-close">取消</el-button>
+                    <el-button @click="submitForm('formCategory')" type="primary" plain size="mini" icon="el-icon-check">保存</el-button>
                 </el-form-item>
             </el-form>
-            <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
-            <el-button plain @click="edit('category','','',true)">新增</el-button>
-            <div style="margin-top: 20px">
-                <el-table
-                        :data="categories"
-                        border
-                        style="width: 100%">
-                    <el-table-column
-                            align="center"
-                            width="50"
-                            label="序号">
-                        <template slot-scope="scope">
-                            {{scope.$index+1}}
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="name"
-                            label="名称"
-                            width="200">
-                    </el-table-column>
-                    <el-table-column
-                            prop="typeName"
-                            label="类别"
-                            width="200">
-                    </el-table-column>
-                    <el-table-column
-                            prop="desc"
-                            label="描述">
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            width="230"
-                            label="操作">
-                        <template slot-scope="scope">
-                            <div style="display: flex;width:100%">
-                                <el-button size="mini" @click="edit('category',scope.$index,scope.row,false)">修改</el-button>
-                                <el-button size="mini" type="danger" @click="handleDel(scope.$index,'category')">删除</el-button>
-                            </div>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div align="center">
-                    <el-pagination
-                            @size-change="handleCategorySizeChange"
-                            @current-change="handleCategoryCurrentChange"
-                            :current-page="pager.category.currentPage"
-                            :page-sizes="[10, 20, 30, 40]"
-                            :page-size="pager.category.pageSize"
-                            layout="total, sizes, prev, pager, next, jumper"
-                            :total="pager.category.totalCount">
-                    </el-pagination>
-                </div>
-            </div>
-            <el-dialog title="分类类别信息" :visible.sync="dialogShow.category" lock-scroll="true" width="800px">
-                <el-card shadow="never" style="width: 100%;" type="card">
-                    <el-form ref="formCategory" :rules="rules" :model="formCategory" label-width="100px">
-                        <el-form-item label="类别" prop="typeId">
-                            <el-select v-model="formCategory.typeId" style="width: 300px;" placeholder="请选择类型">
-                                <el-option v-for="item in allCategoryTypes" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>
-                            </el-select>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">分类类别</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="名称" prop="name">
-                            <el-input v-model="formCategory.name" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="描述" prop="desc">
-                            <el-input v-model="formCategory.desc" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="描述"></el-input>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">描述</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button @click="dialogShow.category = false;resetForm('formCategory')" plain>取消</el-button>
-                            <el-button @click="submitForm('formCategory')" type="primary" plain>保存</el-button>
-                        </el-form-item>
-                    </el-form>
-                </el-card>
-            </el-dialog>
-        </el-tab-pane>
-    </el-tabs>
+        </el-card>
+    </el-dialog>
 </div>
 </html>

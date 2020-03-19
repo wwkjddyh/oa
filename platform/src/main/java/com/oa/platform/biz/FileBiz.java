@@ -162,23 +162,39 @@ public class FileBiz extends BaseBiz {
      * @param fileName 文件名(若为空，则不下载)
      */
     public void dl(HttpServletResponse response, String fileName) {
-        dl(response, saveDir, fileName, fileName);
+        dl(response, saveDir, "", fileName, fileName);
+    }
+
+    /**
+     * 文件下载
+     * @param response 响应对象
+     * @param type 文件所属类型(如：res)
+     * @param fileName 文件名(若为空，则不下载)
+     * @param viewName 显示名称(若为空，则设置为fileName)
+     */
+    public void dl(HttpServletResponse response, String type, String fileName, String viewName) {
+        dl(response, saveDir, type, fileName, viewName);
     }
 
     /**
      * 文件下载
      * @param response 响应对象
      * @param filePath 文件所在目录(默认为系统设置：saveDir)
+     * @param type 文件所属类型(如：res)
      * @param fileRealName 文件真实名称(若为空，则不下载)
      * @param viewName 显示名称(若为空，则设置为fileRealName)
      */
-    public void dl(HttpServletResponse response, String filePath, String fileRealName, String viewName) {
+    public void dl(HttpServletResponse response, String filePath, String type, String fileRealName, String viewName) {
         fileRealName = StringUtil.trim(fileRealName);
         if (!"".equals(fileRealName)) {
             BufferedInputStream bis = null;
             OutputStream os = null;
             try {
                 filePath = StringUtil.trim(filePath, saveDir);
+                type = StringUtil.trim(type);
+                if (!"".equals(type)) {
+                    filePath = filePath + File.separator + type;
+                }
                 System.err.println("fileRealName:" + fileRealName);
                 viewName = StringUtil.trim(viewName, fileRealName);
 

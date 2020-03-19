@@ -11,7 +11,9 @@
             <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" style="float:right">检索</el-button>
         </el-form-item>
     </el-form>
+    <!--
     <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
+    -->
     <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
 
     <div style="margin-top: 20px">
@@ -49,7 +51,7 @@
                         <el-button size="mini" type="danger" @click="handleDel(scope.$index,'res')" icon="el-icon-delete">删除</el-button>
                         -->
                         <el-button size="mini" type="" icon="el-icon-view">预览</el-button>
-                        <el-button size="mini" type="" icon="el-icon-download">下载</el-button>
+                        <el-button size="mini" type="" icon="el-icon-download" @click="handleDownloadRes(scope.row)">下载</el-button>
                     </div>
                 </template>
             </el-table-column>
@@ -93,7 +95,7 @@
                             :on-remove="handleUploadRemove"
                             :before-remove="beforeUploadRemove"
                             multiple
-                            :limit="1" accept="image/gif, image/jpeg, text/plain, application/pdf"
+                            :limit="1" :accept="uploadAccept"
                             :on-exceed="handleUploadExceed"
                             :file-list="uploadFileList"
                                :on-success="handleUploadSuccess"
@@ -101,6 +103,7 @@
                                :on-change="uploadFileChange"
                                :auto-upload="false"
                                :show-file-list="true"
+                               :data="uploadData"
                             >
                         <el-button size="mini" type="primary">选择文件</el-button>
                         <el-tooltip class="item" effect="dark" placement="top">

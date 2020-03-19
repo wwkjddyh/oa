@@ -102,6 +102,10 @@ new Vue({
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
                     that.formSearchRes.currTypeName = '党费管理资料下载';
+                    that.uploadData = {
+                        name: '',
+                        type: 'res-dfgl',
+                    };
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
                 case 'hjglzlxz':    // 换届管理资料下载
@@ -112,6 +116,10 @@ new Vue({
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
                     that.formSearchRes.currTypeName = '换届管理资料下载';
+                    that.uploadData = {
+                        name: '',
+                        type: 'res-hjgl',
+                    };
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
                 case 'dyglzlxz':    // 党员管理资料下载
@@ -122,6 +130,10 @@ new Vue({
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
                     that.formSearchRes.currTypeName = '党员管理资料下载';
+                    that.uploadData = {
+                        name: '',
+                        type: 'res-dygl',
+                    };
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
             }
@@ -418,6 +430,14 @@ new Vue({
         continent: '',
         nation: '',
         rules: {},
+        uploadData: {},
+        uploadAccept: 'image/gif, image/jpeg, text/plain, application/pdf, image/gif, image/png, ' +
+            'application/vnd.ms-powerpoint, application/vnd.ms-powerpoint, application/vnd.ms-powerpoint, ' +
+            'application/rtf, text/rtf, application/vnd.ms-works, application/vnd.ms-excel, application/vnd.ms-excel,' +
+            'application/vnd.ms-excel, application/vnd.ms-excel, application/vnd.ms-excel, text/xml, application/xml,' +
+            'aplication/zip, audio/3gpp, video/3gpp, audio/ac3, allpication/vnd.ms-asf, audio/basic, text/csv,' +
+            'application/msword, application/msword, application/xml-dtd, image/vnd.dwg, image/vnd.dxf, audio/mpeg,' +
+            'audio/mp4, video/mp4, video/mpeg, application/vnd.ms-project, application/ogg, audio/ogg',
         editableTabsOptions: {
 
             editableTabsValue: 'firstPage',
@@ -3613,6 +3633,19 @@ new Vue({
             that.editableTabsOptions.editableTabsValue = moduleCode;
             that.$forceUpdate();
         },
+
+        /**
+         * 下载资源
+         * @param res
+         */
+        handleDownloadRes(res) {
+            console.log('资源信息', res);
+            let that = this;
+            if (res) {
+                window.open('/api/file/dlRes/' + that.uploadData.type + '/'
+                    + res.currName + '/' + (res.originalName || res.currName));
+            }
+        }
 
     },
     props: {
