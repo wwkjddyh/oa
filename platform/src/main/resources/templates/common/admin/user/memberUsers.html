@@ -8,17 +8,19 @@
     </el-tabs>
     -->
 
-    <el-form ref="formSearchMemberUser" :model="formSearchMemberUser" label-width="100px">
-        <el-form-item label="名称" prop="name">
-            <el-input v-model="formSearchMemberUser.key" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
-            <el-tooltip class="item" effect="dark" placement="top">
-                <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
+    <el-form ref="formSearchMemberUser" :model="formSearchMemberUser" label-width="58px">
+        <el-form-item label="关键字">
+            <el-input v-model="formSearchMemberUser.key" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
+<!--            <el-tooltip class="item" effect="dark" placement="top">-->
+<!--                <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>-->
+            <el-button @click="searchForm('formSearchMemberUser')" type="primary" plain size="mini" icon="el-icon-search" style="float: right">检索</el-button>
         </el-form-item>
         <!--<el-form-item label="昵称" prop="nickname">-->
         <!--<el-input v-model="formSearchMemberUser.nickname" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="昵称"></el-input>-->
         <!--<el-tooltip class="item" effect="dark" placement="top">-->
         <!--<div slot="content">昵称</div><i class="el-icon-question"></i></el-tooltip>-->
         <!--</el-form-item>-->
+        <!--
         <el-form-item label="会员类型" prop="typeId">
             <el-select v-model="formSearchMemberUser.typeId" style="width: 300px;" >
                 <el-option label="全部" value="">全部</el-option>
@@ -28,6 +30,7 @@
             <el-tooltip class="item" effect="dark" placement="top">
                 <div slot="content">用户类型</div><i class="el-icon-question"></i></el-tooltip>
         </el-form-item>
+        -->
         <!--<el-form-item label="是否为猎头" prop="isHeadhunting">-->
         <!--<el-select v-model="formSearchMemberUser.isHeadhunting" style="width: 300px;" >-->
         <!--<el-option label="是" value="1">是</el-option>-->
@@ -53,9 +56,11 @@
         <!--<el-tooltip class="item" effect="dark" placement="top">-->
         <!--<div slot="content">用户状态</div><i class="el-icon-question"></i></el-tooltip>-->
         <!--</el-form-item>-->
+        <!--
         <el-form-item>
             <el-button @click="searchForm('formSearchMemberUser')" type="primary" plain size="mini" icon="el-icon-search">检索</el-button>
         </el-form-item>
+        -->
     </el-form>
     <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
     <el-button plain @click="edit('memberUser','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
@@ -103,9 +108,8 @@
                 <template slot-scope="scope">
                     <div style="display: flex;width:100%">
                         <el-button size="mini" @click="handleSetUserRole(scope.row,false)" icon="el-icon-setting">角色设置</el-button>
-                        <!--
                         <el-button size="mini" @click="edit('memberUser',scope.$index,scope.row,false)" icon="el-icon-edit">修改</el-button>
-                        <el-button size="mini" type="danger" @click="handleDel(scope.$index,'memberUser')" icon="el-icon-delete">删除</el-button>-->
+                        <el-button size="mini" type="danger" @click="handleDel(scope.$index,'memberUser')" icon="el-icon-delete">删除</el-button>
                     </div>
                 </template>
             </el-table-column>
@@ -160,6 +164,7 @@
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">重复密码</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
+                <!--
                 <el-form-item label="用户类型" prop="typeId">
                     <el-select v-model="formUser.typeId" style="width: 300px;" >
                         <el-option label="一般用户" value="0002">一般用户</el-option>
@@ -177,6 +182,7 @@
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">是否为猎头</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
+                -->
                 <!--<el-form-item label="会员等级" prop="memberId" v-if="formUser.typeId==='0003'">-->
                 <!--<el-select v-model="formUser.memberId" style="width: 300px;" >-->
                 <!--<el-option label="请选择" value="">请选择</el-option>-->
