@@ -50,7 +50,7 @@
                         <!--
                         <el-button size="mini" type="danger" @click="handleDel(scope.$index,'res')" icon="el-icon-delete">删除</el-button>
                         -->
-                        <el-button size="mini" type="" icon="el-icon-view">预览</el-button>
+                        <el-button size="mini" type="" icon="el-icon-view" @click="handleViewRes(scope.row)">预览</el-button>
                         <el-button size="mini" type="" icon="el-icon-download" @click="handleDownloadRes(scope.row)">下载</el-button>
                     </div>
                 </template>
@@ -112,7 +112,7 @@
                         <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                         -->
                     </el-upload>
-                    <el-card shadow="hover" style="width: 470px" body-style="{padding: '2px'}">
+                    <el-card v-if="currAction == 'edit'" shadow="hover" style="width: 470px" body-style="{padding: '2px'}">
                         <div>文件名：{{formRes.currName || ''}}</div>
                         <div>原始文件名：{{formRes.originalName || ''}}</div>
                     </el-card>

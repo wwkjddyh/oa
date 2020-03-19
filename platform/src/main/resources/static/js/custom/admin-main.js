@@ -3537,7 +3537,36 @@ new Vue({
         },
 
         submitUpload() {
-            this.$refs.uploadRes.submit();
+            let that = this;
+            console.log('uploadFileList', that.uploadFileList, that.formRes);
+            //this.$refs.uploadRes.submit();
+            if (that.formRes.publishTime == '') {
+                this.$message.error('请选择发布日期!');
+                return false;
+            }
+            if (that.formRes.resName == '') {
+                this.$message.error('请填写资料名称!');
+                return false;
+            }
+
+            if (that.currAction === 'edit') {
+                if (that.uploadFileList.length === 0) {
+                    that.submitForm('formRes');
+                }
+                else {
+                    that.$refs.uploadRes.submit();
+                }
+            }
+            else {
+                if (that.uploadFileList.length === 0) {
+                    this.$message.error('请选择文件上传!');
+                    return false;
+                }
+                else {
+                    that.$refs.uploadRes.submit();
+                }
+            }
+
         },
 
         handleUploadSuccess(res, file, fileList) {
@@ -3582,6 +3611,7 @@ new Vue({
         },
 
         uploadFileChange(file, fileList) {
+            let that = this;
             console.log('uploadFileChange', file);
             console.log('uploadFileChange', fileList);
             /*
@@ -3644,6 +3674,26 @@ new Vue({
             if (res) {
                 window.open('/api/file/dlRes/' + that.uploadData.type + '/'
                     + res.currName + '/' + (res.originalName || res.currName));
+            }
+        },
+
+        /**
+         * 预览资源
+         * @param res
+         */
+        handleViewRes(res) {
+            console.log('资源信息（handleViewRes）', res);
+            //let that = this;
+            if (res) {
+                let _url = window.location.protocol + '//' + window.location.host;
+                let _accessUrl = res.accessUrl;
+                if (_accessUrl.startsWith('/')) {
+                    _url += _accessUrl.substring(1);
+                }
+                else {
+                    _url += _accessUrl;
+                }
+                window.open(_url);
             }
         }
 
