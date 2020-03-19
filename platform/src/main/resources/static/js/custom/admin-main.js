@@ -275,7 +275,9 @@ new Vue({
         formUserDetail: {},
         formMember: {},
         formOperateLog: {},
-        formnddyxxcj:{},
+        formnddyxxcj:{
+        	isLeader:'0'
+        },
         formAuthUserRole: {},
         formAuthRoleModule: {},
         formAuthRole: {},
@@ -309,6 +311,16 @@ new Vue({
         	{
         		value: '0',
         		label: '女'
+        	}
+        ],
+        isLeader:[
+        	{
+        		value: '1',
+        		label: '是'
+        	},
+        	{
+        		value: '0',
+        		label: '否'
         	}
         ],
         imageInfo:[],
@@ -433,6 +445,7 @@ new Vue({
         partyDuesArray: [],
         resArray: [],
         resDlArray: [],
+        orignUpperOrg:[],
         newsReceiveUsers: {
             '1fe30445-96ec-4a1d-88e2-749f29440bef2': {
                 userId: '1fe30445-96ec-4a1d-88e2-749f29440bef2',
@@ -880,6 +893,19 @@ new Vue({
         		return list[0].dictName;
         	}
         },
+        getOrgValue(orgid){
+        	
+        	let list = this.orignUpperOrg.filter(x=>x.orgId == orgid);
+        	if(list && list.length > 0){
+        		return list[0].orgName;
+        	}
+        },
+        getBachelorValue(bachelorId){
+        	let list = this.bachelor.filter(x=>x.dictId == bachelorId);
+        	if(list && list.length > 0){
+        		return list[0].dictName;
+        	}
+        },
         searchForm(formName) {
             let that = this;
             switch (formName) {
@@ -1250,6 +1276,12 @@ new Vue({
         	if(that.formnddyxxcj.phone != null){
             	params.append('phone',that.formnddyxxcj.phone);
         	}
+        	if(that.formnddyxxcj.leader != null){
+            	params.append('leader',that.formnddyxxcj.leader);
+        	}
+        	if(that.formnddyxxcj.idCard != null){
+            	params.append('idCard',that.formnddyxxcj.idCard);
+        	}
         	axios.post("/api/org/orgUserOpreate",params)
     		.then(function(response){
     			console.log(response)
@@ -1260,7 +1292,10 @@ new Vue({
                         message: '操作成功',
                         type: 'success'
                     });
-                }else{
+                }else if(parseInt(response.data.code) === 2000){
+                	that.$message.error(response.data.msg);
+                }
+    			else{
                 	that.$message.error("提交失败,请联系管理员");
                 }
     			
@@ -1663,18 +1698,21 @@ new Vue({
         },
         viewDetail(scopeIndex, scopeRow){
         	let that = this;
-        	that.formPartInfo=scopeRow;
         	let url = "/api/user/getDtl/" +scopeRow.userId;
     		axios.get(url,null)
             .then(function(response){/*成功*/
                 let data = response.data.data;
                 let jsonData = JSON.parse(data);
+                that.formPartInfo.gender = that.getGenderValue(scopeRow.gender);
+                that.formPartInfo.nation = that.getNationValue(scopeRow.nation);
+                that.formPartInfo.education = that.getEducationValue(jsonData.education);
+                that.formPartInfo.bachelor = that.getBachelorValue(jsonData.bachelor);
+                that.formPartInfo.orgName = that.getOrgValue(scopeRow.actOrg);
                 that.formPartInfo.birthTime = jsonData.birthTime;
                 that.formPartInfo.joinPartyTime = jsonData.joinPartyTime;
                 that.formPartInfo.turnRightTime = jsonData.turnRightTime;
                 that.formPartInfo.hometown = jsonData.hometown;
-                that.formPartInfo.bachelor = jsonData.bachelor;
-                that.formPartInfo.education = jsonData.education;
+                that.formPartInfo.idCard = jsonData.idCard;
                 that.formPartInfo.officeNumber = jsonData.officeNumber;
                 that.formPartInfo.liveAddress = jsonData.liveAddress;
                 that.formPartInfo.mail = jsonData.mail;
@@ -1684,7 +1722,8 @@ new Vue({
                 that.dialogShow.nddyxxcjdetail = !that.dialogShow.nddyxxcjdetail;
             })
             .catch(function(err){/*异常*/
-            	this.$message.error('个人信息加载失败');
+            	console.log(err)
+            	that.$message.error('个人信息加载失败');
             });
     		
         },
@@ -1827,7 +1866,9 @@ new Vue({
 	                case 'nddyxxcj':
                     	
                     	if(isAdd){
-                    		that.formnddyxxcj={};  
+                    		that.formnddyxxcj={
+                    				leader:'0'
+                    		};  
                     	}else{
                     		
                         	let url = "/api/user/getDtl/" +scopeRow.userId;
@@ -3186,6 +3227,7 @@ new Vue({
         			}
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.upperOrg = that.getTreeData(response.data.result, parentArr);
+        			that.orignUpperOrg = response.data.result;
         			console.log(that.upperOrg);
         		}
         	});

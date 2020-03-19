@@ -49,9 +49,24 @@ public class UserDtl implements Serializable {
     private String updateBy;
     //所在党组织
     private String orgId;
-    
-    
+    //是否为部门负责人
+    private String leader;
+    //身份证号码
+    private String idCard;
 	
+	
+	public String getLeader() {
+		return leader;
+	}
+	public void setLeader(String leader) {
+		this.leader = leader;
+	}
+	public String getIdCard() {
+		return idCard;
+	}
+	public void setIdCard(String idCard) {
+		this.idCard = idCard;
+	}
 	public String getOrgId() {
 		return orgId;
 	}

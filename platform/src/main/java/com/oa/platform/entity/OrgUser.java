@@ -31,7 +31,15 @@ public class OrgUser implements Serializable{
 	private String actOrg;
 	//星标
 	private String starFlag;
+	//省份证号码
+	private String idCard;
 	
+	public String getIdCard() {
+		return idCard;
+	}
+	public void setIdCard(String idCard) {
+		this.idCard = idCard;
+	}
 	public String getStarFlag() {
 		return starFlag;
 	}

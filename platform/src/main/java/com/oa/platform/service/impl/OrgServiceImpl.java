@@ -162,5 +162,14 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 		orgRepository.delUserOrg(userId);
 		
 	}
+	@Override
+	public void downOrgUserById(String orgId) {
+		orgRepository.downOrgUserById(orgId);
+	}
+	@Override
+	public void updateOrgUser(String orgId,String userId) {
+		orgRepository.updateOrgUser(orgId,userId);
+		
+	}
 
 }

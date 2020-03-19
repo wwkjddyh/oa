@@ -795,4 +795,15 @@
 	<update id="delUserOrg">
 		update t_org_user set status='0' where user_id=#{userId} and status='0'
 	</update>
+	<update id="downOrgUserById">
+		UPDATE t_user_dtl dtl
+			LEFT JOIN t_org_user orguser ON dtl.user_id = orguser.user_id 
+			AND orguser.STATUS = '1' 
+			SET dtl.is_leader = '0' 
+			WHERE
+				orguser.org_id = #{orgId}
+	</update>
+	<update id="updateOrgUser">
+		update t_org_user set org_id=#{orgId} where user_id=#{userId} and status='1'
+	</update>
 </mapper>

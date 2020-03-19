@@ -592,6 +592,9 @@ const formStructConfig = {
         education: [
             { required: true, message: '请填写学历', trigger: 'blur' },
         ],
+        leader:[
+            { required: true, message: '请选择是否为部门领导人', trigger: 'blur' },
+            ],
     },
     dateDickerOptions: {
 

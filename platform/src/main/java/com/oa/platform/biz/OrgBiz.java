@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.oa.platform.common.ResultVo;
 import com.oa.platform.entity.OrgDeptDetail;
 import com.oa.platform.entity.OrgLeaderDetail;
 import com.oa.platform.entity.OrgRewardDetail;
@@ -210,6 +211,10 @@ public class OrgBiz extends BaseBiz {
 		user.setUserPwdOrigi("123456");
 		user.setRecordFlag(1);
 		user.setUserType(3);
+		if("1".equals(userDtl.getLeader())) {
+			//将原来的部门负责人换下
+			orgSerivce.downOrgUserById(userDtl.getOrgId());
+		}
 		userService.save(user);
 		//保存详情
 		userService.saveUserDtl(userDtl);
@@ -217,12 +222,38 @@ public class OrgBiz extends BaseBiz {
 		orgSerivce.saveOrgUser(userDtl.getUserId(),userDtl.getOrgId());
 	}
 	@Transactional
-	public void orgUserEdit(UserDtl userDtl) {
+	public ResultVo orgUserEdit(UserDtl userDtl) {
 		User user = new User();
 		user.setUserId(userDtl.getUserId());
 		user.setUserName(userDtl.getUserName());
+		//查询用户信息
+		UserDtl findDetailByUserId = userService.findDetailByUserId(userDtl.getUserId());
+		//判断此次修改是否修改组织
+		List<Organization> orgIdByuserId = orgSerivce.getOrgIdByuserId(userDtl.getUserId());
+		//该用户为某组织负责人
+		if(findDetailByUserId != null && "1".equals(findDetailByUserId.getLeader())) {
+			
+			if(orgIdByuserId != null && orgIdByuserId.size() != 0) {
+				if(!userDtl.getOrgId().equals(orgIdByuserId.get(0).getOrgId())) {
+					//已修改组织，先返回，不做编辑
+					return getErroResultVo(2000, "该党员为组织部门负责人,更换组织部门时请先更换部门负责人", null);
+				}
+			}
+		}
+		if(orgIdByuserId != null && orgIdByuserId.size() != 0) {
+			if(userDtl.getOrgId() != null && !"".equals(userDtl.getOrgId()) && !userDtl.getOrgId().equals(orgIdByuserId.get(0).getOrgId())) {
+				//组织修改
+				orgSerivce.updateOrgUser(userDtl.getOrgId(),userDtl.getUserId());
+			}
+		}
+			
+		if("1".equals(userDtl.getLeader()) && !"1".equals(findDetailByUserId.getLeader())) {
+			//将原来的部门负责人换下
+			orgSerivce.downOrgUserById(userDtl.getOrgId());
+		}
 		userService.update(user);
 		userService.updateUserDtl(userDtl);
+		return getSuccessResultVo(null);
 	}
 	/**
 	 * 删除党员信息

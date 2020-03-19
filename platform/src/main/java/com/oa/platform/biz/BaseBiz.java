@@ -3,6 +3,7 @@ package com.oa.platform.biz;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.oa.platform.common.Constants;
+import com.oa.platform.common.ResultVo;
 import com.oa.platform.common.StatusCode;
 import com.oa.platform.entity.Module;
 import com.oa.platform.entity.Role;
@@ -143,7 +144,32 @@ public abstract class BaseBiz {
     public int getPageSize(int pageSize) {
         return pageSize < 1 ? PAGE_SIZE : pageSize;
     }
-
+    /**
+     * 获取成功返回
+     * @param result
+     * @return
+     */
+    public ResultVo getSuccessResultVo(Object result) {
+    	ResultVo resultVo = new ResultVo();
+    	resultVo.setCode(StatusCode.SUCCESS);
+    	resultVo.setMsg(Constants.STR_SUCCESS);
+    	resultVo.setResult(result);
+    	return resultVo;
+    }
+    /**
+     * 获取错误返回
+     * @param code
+     * @param msg
+     * @param result
+     * @return
+     */
+    public ResultVo getErroResultVo(Integer code,String msg,Object result) {
+    	ResultVo resultVo = new ResultVo();
+    	resultVo.setCode(code);
+    	resultVo.setMsg(msg);
+    	resultVo.setResult(result);
+    	return resultVo;
+    }
     /**
      * 获得HttpServletRequest
      * @return

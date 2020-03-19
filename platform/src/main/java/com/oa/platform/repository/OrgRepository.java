@@ -84,4 +84,8 @@ public interface OrgRepository extends BaseRepository<Organization, String> {
 	void delOrgUserDtl(@Param("userId") String userId);
 
 	void delUserOrg(@Param("userId") String userId);
+
+	void downOrgUserById(@Param("orgId") String orgId);
+
+	void updateOrgUser(@Param("orgId") String orgId,@Param("userId")String userId);
 }

@@ -93,8 +93,7 @@ public class OrgApiController extends BaseController{
 			resultVo = getSuccessResultVo(null);
 		}else {
 			//修改
-			orgBiz.orgUserEdit(userDtl);
-			resultVo = getSuccessResultVo(null);
+			resultVo = orgBiz.orgUserEdit(userDtl);
 		}
 		return resultVo;
 	}

@@ -39,6 +39,8 @@
     <result column="image_url" property="imageUrl" jdbcType="VARCHAR"/>
     <result column="create_by" property="createBy" jdbcType="VARCHAR"/>
     <result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
+    <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+    <result column="is_leader" property="leader" jdbcType="VARCHAR"/>
   </resultMap>
 
   <insert id="insert" parameterType="user">
@@ -64,13 +66,15 @@
 		live_address,
 		mail,
 		image_url,
+		id_card,
+		is_leader,
 		create_on,
 		create_by
     )
     VALUES (
     #{userId},#{gender},#{phone},#{birthTime},#{nation},#{joinPartyTime},
-    #{turnRightTime},#{hometown},#{bachelor},#{education},#{officenumber},#{liveAddress},
-    #{mail},#{imageUrl},now(),#{createBy})
+    #{turnRightTime},#{hometown},#{bachelor},#{education},#{officeNumber},#{liveAddress},
+    #{mail},#{imageUrl},#{idCard},#{leader},now(),#{createBy})
   </insert>
 
   <select id="selectUsers" resultMap="user">
@@ -109,6 +113,8 @@
 		live_address,
 		mail,
 		image_url,
+		id_card,
+		is_leader,
         DATE_FORMAT(create_on,'%Y-%m-%d %H:%i:%s') createOn,
         DATE_FORMAT(update_on,'%Y-%m-%d %H:%i:%s') updateOn
     FROM t_user_dtl WHERE user_id = #{userId}
@@ -129,6 +135,8 @@
 		live_address,
 		mail,
 		image_url,
+		id_card,
+		is_leader,
         DATE_FORMAT(create_on,'%Y-%m-%d %H:%i:%s') createOn,
         DATE_FORMAT(update_on,'%Y-%m-%d %H:%i:%s') updateOn
     FROM t_user_dtl WHERE user_id IN
@@ -251,6 +259,12 @@
       </if>
       <if test="liveAddress != null and liveAddress != ''">
         live_address = #{liveAddress},
+      </if>
+      <if test="idCard != null and idCard != ''">
+        id_card = #{idCard},
+      </if>
+      <if test="leader != null and leader != ''">
+        is_leader = #{leader},
       </if>
       <if test="updateBy != null and updateBy != ''">
         update_by = #{updateBy},

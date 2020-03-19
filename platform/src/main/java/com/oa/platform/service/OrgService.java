@@ -81,4 +81,6 @@ public interface OrgService extends BaseService<Organization, String> {
 	void delUser(String userId);
 	void delOrgUserDtl(String userId);
 	void delUserOrg(String userId);
+	void downOrgUserById(String orgId);
+	void updateOrgUser(String orgId,String userId);
 }

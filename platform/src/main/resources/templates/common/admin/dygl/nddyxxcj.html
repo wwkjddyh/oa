@@ -36,7 +36,7 @@
                             width="200">
                             <template v-slot="scope">
 						         {{ scope.row.userName}}
-						         <i class="el-icon-star-on" v-if="scope.row.starFlag == 1" size="medium"></i>
+						         <i class="el-icon-star-on" style="color: red" v-if="scope.row.starFlag == 1" size="medium"></i>
 						    </template>
                             
                     </el-table-column>
@@ -289,6 +289,34 @@
                         </el-col>
                     </el-row>
                     <el-row>
+                    	<el-col :span="11">
+	                        <el-form-item label="是否为党组织(部门)负责人" prop="leader"  size="mini" style="width: 100%;">
+	                            
+								  <el-select v-model="formnddyxxcj.leader" placeholder="请选择" style="width: 421.66px;"
+								    	size="medium">
+								    <el-option
+								      v-for="item in isLeader"
+								      :key="item.value"
+								      
+								      :label="item.label"
+								      :value="item.value">
+								    </el-option>
+								  </el-select>
+	                        </el-form-item>
+	                        </el-col>
+	                     <el-col :span="2">
+	                        <el-form-item  style="width: 100%;">
+	                         
+	                        </el-form-item>
+                        </el-col>                        
+                        <el-col :span="11">
+	                        <el-form-item label="身份证号码" prop="idCard"  size="mini" style="width: 100%;">
+	                            <el-input v-model="formnddyxxcj.idCard"  size="medium" 
+                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="身份证号码"  ></el-input>
+	                        </el-form-item>
+                        </el-col>
+	                 </el-row>
+                    <el-row>
                     	<el-col :span="24">
 	                        <el-form-item label="上传照片(最多可上传一张jpg/png格式的图片)" prop="imageUrl"  size="mini" style="width: 100%;">
 	                            
@@ -395,10 +423,10 @@
 									      :label="formPartInfo.education"
 									      width="240">
 										      <el-table-column
-											      label="财务部"
+											      :label="formPartInfo.orgName"
 											      width="240">
 											      <el-table-column
-												      label="362334199308200717"
+												      :label="formPartInfo.idCard"
 												      width="240">
 												      	<el-table-column
 														      :label="formPartInfo.phone"
