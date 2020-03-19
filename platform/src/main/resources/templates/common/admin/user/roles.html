@@ -59,7 +59,7 @@
     <el-dialog title="角色信息" :visible.sync="dialogShow.role" lock-scroll="true" width="800px">
         <el-card shadow="never" style="width: 100%;" type="card">
             <el-form ref="formAuthRole" :rules="rules" :model="formAuthRole" label-width="100px">
-                <el-form-item label="角色名称" prop="name">
+                <el-form-item label="角色名称" prop="roleName">
                     <el-input v-if="currAction == 'append'" v-model="formAuthRole.roleName" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
                     <el-input v-else v-model="formAuthRole.roleName" readonly="true" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">

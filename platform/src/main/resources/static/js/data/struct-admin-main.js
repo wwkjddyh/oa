@@ -564,6 +564,10 @@ const formStructConfig = {
         originalName: [
             { required: true, message: '请上传文件', trigger: 'blur' },
         ],
+        roleName: [
+            { required: true, message: '请输入角色名称', trigger: 'blur' },
+            { min: 3, max: 64, message: '长度在 3 到 64 个字符之间', trigger: 'blur' }
+        ],
     },
     dateDickerOptions: {
 
