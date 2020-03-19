@@ -22,6 +22,7 @@ import com.oa.platform.entity.OrgRewardDetail;
 import com.oa.platform.entity.OrgUser;
 import com.oa.platform.entity.Organization;
 import com.oa.platform.entity.User;
+import com.oa.platform.entity.UserDtl;
 import com.oa.platform.web.controller.BaseController;
 @RestController
 @RequestMapping("/api/org")
@@ -29,6 +30,8 @@ public class OrgApiController extends BaseController{
 	
 	@Autowired
 	private OrgBiz orgBiz;
+	
+	
 	/**
 	 * 党委组织列表
 	 * @return
@@ -45,9 +48,10 @@ public class OrgApiController extends BaseController{
 	 */
 	@GetMapping("getOrgUserList")
 	public ResultVo getOrgUserList(
+			@RequestParam(defaultValue = "",required = false) String year,
 			@RequestParam(defaultValue = "",required = false) String userName) {
 		User user = getUserOfSecurity();
-		List<OrgUser> result = orgBiz.getOrgUserList(user.getUserId(),userName);
+		List<OrgUser> result = orgBiz.getOrgUserList(user.getUserId(),userName,year);
 		return getSuccessResultVo(result);
 	}
 	/**
@@ -71,6 +75,28 @@ public class OrgApiController extends BaseController{
 			return getSuccessResultVo(null);
 		}
 		return getSuccessResultVo(result.get(0));
+	}
+	/**
+	 * 党员操作
+	 * @param userDtl
+	 * @return
+	 */
+	@PostMapping("orgUserOpreate")
+	public ResultVo orgUserOpreate(UserDtl userDtl) {
+		User user = getUserOfSecurity();
+		ResultVo resultVo = null;
+		userDtl.setCreateBy(user.getUserName());
+		userDtl.setUpdateBy(user.getUserName());
+		if(userDtl.getUserId() == null || "".equals(userDtl.getUserId())) {
+			//新增
+			orgBiz.orgUserAdd(userDtl);
+			resultVo = getSuccessResultVo(null);
+		}else {
+			//修改
+			orgBiz.orgUserEdit(userDtl);
+			resultVo = getSuccessResultVo(null);
+		}
+		return resultVo;
 	}
 	/**
 	 * 党组织操作
@@ -109,6 +135,16 @@ public class OrgApiController extends BaseController{
 	@PostMapping("delOrg")
 	public ResultVo delOrg(String orgId) {
 		orgBiz.orgDel(orgId);
+		return getSuccessResultVo(null);
+	}
+	/**
+	 * 删除党员信息
+	 * @param userId
+	 * @return
+	 */
+	@PostMapping("delOrgUser")
+	public ResultVo delOrgUser(String userId) {
+		orgBiz.delOrgUser(userId);
 		return getSuccessResultVo(null);
 	}
 	/**
@@ -151,5 +187,14 @@ public class OrgApiController extends BaseController{
 		List<OrgDeptDetail> result = orgBiz.getOrgDeptList(orgId);
 		return getSuccessResultVo(result);
 	}
-	
+	/**
+	 * 根据id获取党员信息详情
+	 * @param userId
+	 * @return
+	 */
+	@GetMapping("getOrgUserDetailByUserId")
+	public ResultVo getOrgUserDetailByUserId(String userId) {
+		UserDtl userDtl = orgBiz.getOrgUserDetailByUserId(userId);
+		return getSuccessResultVo(userDtl);
+	}
 }

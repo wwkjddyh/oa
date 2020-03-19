@@ -10,6 +10,7 @@ import com.oa.platform.entity.OrgLeaderDetail;
 import com.oa.platform.entity.OrgRewardDetail;
 import com.oa.platform.entity.OrgUser;
 import com.oa.platform.entity.Organization;
+import com.oa.platform.entity.UserDtl;
 import com.oa.platform.repository.OrgRepository;
 import com.oa.platform.service.OrgService;
 /**
@@ -133,6 +134,33 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 	@Override
 	public List<OrgUser> getOrgUserList(String orgId,String userName) {
 		return orgRepository.getOrgUserList(orgId,userName);
+	}
+	@Override
+	public List<OrgUser> getOrgUserListByOrgIds(List<String> orgIds,String userName,String year) {
+		return orgRepository.getOrgUserListByOrgIds(orgIds,userName,year);
+	}
+	@Override
+	public UserDtl getOrgUserDetailByUserId(String userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void saveOrgUser(String userId, String org_id) {
+		orgRepository.saveOrgUser(userId,org_id);
+	}
+	@Override
+	public void delUser(String userId) {
+		orgRepository.delUser(userId);
+	}
+	@Override
+	public void delOrgUserDtl(String userId) {
+		orgRepository.delOrgUserDtl(userId);
+		
+	}
+	@Override
+	public void delUserOrg(String userId) {
+		orgRepository.delUserOrg(userId);
+		
 	}
 
 }

@@ -25,6 +25,31 @@ public class OrgUser implements Serializable{
 	private String nation;
 	//学历
 	private String education;
+	//是否为组织负责人
+	private String isLeader;
+	//所在部门
+	private String actOrg;
+	//星标
+	private String starFlag;
+	
+	public String getStarFlag() {
+		return starFlag;
+	}
+	public void setStarFlag(String starFlag) {
+		this.starFlag = starFlag;
+	}
+	public String getActOrg() {
+		return actOrg;
+	}
+	public void setActOrg(String actOrg) {
+		this.actOrg = actOrg;
+	}
+	public String getIsLeader() {
+		return isLeader;
+	}
+	public void setIsLeader(String isLeader) {
+		this.isLeader = isLeader;
+	}
 	public String getOrgId() {
 		return orgId;
 	}

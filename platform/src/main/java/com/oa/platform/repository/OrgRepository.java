@@ -74,4 +74,14 @@ public interface OrgRepository extends BaseRepository<Organization, String> {
 	void delOrgDeptById(@Param("orgId") String orgId);
 
 	List<OrgUser> getOrgUserList(@Param("orgId") String orgId,@Param("userName") String userName);
+	List<OrgUser> getOrgUserListByOrgIds(@Param("list")List<String> orgIds
+			,@Param("userName") String userName, @Param("year")String year);
+
+	void saveOrgUser(@Param("userId") String userId, @Param("orgId") String orgId);
+
+	void delUser(@Param("userId") String userId);
+
+	void delOrgUserDtl(@Param("userId") String userId);
+
+	void delUserOrg(@Param("userId") String userId);
 }

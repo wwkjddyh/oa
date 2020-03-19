@@ -11,7 +11,7 @@
                 <el-table
                         :data="dwjbxxTableData"
                         border
-                        v-loading="loading.flag"
+                        v-loading="dwjbxxLoading"
                         style="width: 100%"
                         row-key="orgId"
                         :tree-props="{children: 'children', hasChildren: 'hasChildren'}">

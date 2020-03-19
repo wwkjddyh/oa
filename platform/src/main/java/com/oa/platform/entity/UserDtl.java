@@ -47,6 +47,17 @@ public class UserDtl implements Serializable {
     private String createBy;
     //更新人
     private String updateBy;
+    //所在党组织
+    private String orgId;
+    
+    
+	
+	public String getOrgId() {
+		return orgId;
+	}
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
+	}
 	public String getUserId() {
 		return userId;
 	}

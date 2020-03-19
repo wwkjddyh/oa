@@ -6,20 +6,20 @@
         <el-tab-pane label="年度党员信息采集" name="first" style="width: 100%;">
 		            <el-button plain @click="edit('nddyxxcj','','',true)" type="primary" size="mini"><i class="el-icon-plus"></i>新增</el-button>
 		            <!-- <el-button plain type="danger" size="mini"><i class="el-icon-close" size=""></i>删除</el-button> -->
-		            <el-button plain size="mini"  @click="searchForm('nddyxxcj')" ><i class="el-icon-refresh"></i>刷新</el-button>
-		            <el-input placeholder="按姓名搜索"  class="input-with-select" size="mini" style="width: 30%">
-					    <el-button slot="append" icon="el-icon-search" ></el-button>
+		            <el-button plain size="mini"  @click="loadNddyxxcj()" ><i class="el-icon-refresh"></i>刷新</el-button>
+		            <el-input placeholder="按姓名搜索"  class="input-with-select" size="mini" style="width: 30%" v-model="nddyxxSearchCondition">
+					    <el-button slot="append" icon="el-icon-search" @click="loadNddyxxcj()"></el-button>
 					 </el-input>
 					 <el-radio-group  size="mini" v-model="dyxxyear.year">
-				      <el-radio-button :label="dyxxyear.index1" ></el-radio-button>
-				      <el-radio-button :label="dyxxyear.index2" ></el-radio-button>
-				      <el-radio-button :label="dyxxyear.index3" ></el-radio-button>
-				      <el-radio-button :label="dyxxyear.index4" ></el-radio-button>
+				      <el-radio-button :label="yearIndex" v-for="yearIndex in yearList"></el-radio-button>
+				      
 				    </el-radio-group>
+				    <el-button plain @click="dialogShow.nddyxxcjYear = !dialogShow.nddyxxcjYear" type="primary" size="mini"><i class="el-icon-plus">添加年份</i></el-button>
             <div style="margin-top: 20px">
                 <el-table
                         :data="nddyxxcjTableData"
                         border
+                        v-loading="nddyxxcjLoading"
                         style="width: 100%"
                         row-key="orgId"
                         :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
@@ -34,11 +34,19 @@
                             label="姓名"
                             align="center"
                             width="200">
+                            <template v-slot="scope">
+						         {{ scope.row.userName}}
+						         <i class="el-icon-star-on" v-if="scope.row.starFlag == 1" size="medium"></i>
+						    </template>
+                            
                     </el-table-column>
                     <el-table-column
-                            prop="gender"
+                            prop="genderName"
                             align="center"
                             label="性别">
+                            <template v-slot="scope">
+						         {{ getGenderValue(scope.row.gender)}}
+						    </template>
                     </el-table-column>
                     <el-table-column
                             prop="phone"
@@ -51,14 +59,20 @@
                             label="出生日期">
                     </el-table-column>
                     <el-table-column
-                            prop="nation"
+                            prop="nationName"
                             align="center"
                             label="民族">
+                            <template v-slot="scope">
+						         {{ getNationValue(scope.row.nation)}}
+						    </template>
                     </el-table-column>
                     <el-table-column
-                            prop="education"
+                            prop="educationName"
                             align="center"
                             label="学历">
+                            <template v-slot="scope">
+						         {{ getEducationValue(scope.row.education)}}
+						    </template>
                     </el-table-column>
                     <el-table-column
                             align="center"
@@ -66,33 +80,25 @@
                             label="操作">
                         <template slot-scope="scope" >
                             <div style="display: flex;width:100%" align="right">
-                            	<el-button size="mini"  >查看</el-button>
-                                <el-button size="mini" @click="edit('nddyxxcj',scope.$index,scope.row,false)" >修改</el-button>
-                                <el-button size="mini" type="danger" @click="dwjbxxDel(scope.row,'nddyxxcj')" >删除</el-button>
+                            	<el-button size="mini"  v-if="scope.row.isOperate == 1" @click="viewDetail(scope.$index,scope.row)">查看</el-button>
+                                <el-button size="mini" v-if="scope.row.isOperate == 1" @click="edit('nddyxxcj',scope.$index,scope.row,false)" >修改</el-button>
+                                <el-button size="mini" v-if="scope.row.isOperate == 1" type="danger" @click="dwjbxxDel(scope.row,'nddyxxcj')" >删除</el-button>
                             </div>
                         </template>
                     </el-table-column>
                 </el-table>
                 
             </div>
-            <el-dialog :visible.sync="dialogShow.dwjbxx" foot-center lock-scroll="true" width="1000px" :title.sync="dwjbxxDialog.title">
+            <el-dialog :visible.sync="dialogShow.nddyxxcj" foot-center lock-scroll="true" width="1000px" :title.sync="dwjbxxDialog.title">
             	 <el-card shadow="always" style="width: 100%;" type="card">
-                    <el-form ref="formdwjbxx"  :rules="rules" :model="formdwjbxx" style="width: 100%;" label-position="top">
-                    <el-divider content-position="left">基本信息</el-divider>
-                    <el-row>
-                    	<el-col :span="24">
-                        <el-form-item label="党组织代码" prop="orgCode"  size="mini">                       
-                            <el-input v-model="formdwjbxx.orgCode"  id="orgCode"   size="medium"                         		
-                            	auto-complete="off" style="width: 100%;" maxlength="255">
-                            	<i class="el-icon-copy-document" slot="suffix" @click="copyCode()"></i>
-                            </el-input>               
-                        </el-form-item>                    
-                    </el-row>
+                    <el-form ref="formnddyxxcj"  :rules="rules" :model="formnddyxxcj" style="width: 100%;" label-position="top">
+                    <el-divider content-position="left">党员信息</el-divider>
+                    
                     <el-row>
                     	<el-col :span="11">
-                        <el-form-item label="党组织名称" prop="orgName"  size="mini" style="width: 100%;">
-                            <el-input v-model="formdwjbxx.orgName"  size="medium"
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="党组织名称" ></el-input>                           
+                        <el-form-item label="姓名" prop="userName"  size="mini" style="width: 100%;">
+                            <el-input v-model="formnddyxxcj.userName"  size="medium"
+                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="姓名" ></el-input>                           
                         </el-form-item>
                         </el-col>
                         <el-col :span="2">
@@ -101,9 +107,9 @@
                         </el-form-item>
                         </el-col>
                         <el-col :span="11">
-                        <el-form-item label="批准建立党组织日期" prop="foundTime" size="mini" >
+                        <el-form-item label="出生日期" prop="birthTime" size="mini" >
                             <el-date-picker
-							      v-model="formdwjbxx.foundTime"
+							      v-model="formnddyxxcj.birthTime"
 							      size="medium"
 							      format="yyyy-MM-dd"
 							      value-format="yyyy-MM-dd"
@@ -115,16 +121,16 @@
                     </el-row>
                     <el-row>
                     	<el-col :span="11">
-	                        <el-form-item label="党组织类型" prop="orgType"  size="mini" style="width: 100%;">
+	                        <el-form-item label="性别" prop="gender"  size="mini" style="width: 100%;">
 	                            
-								  <el-select v-model="formdwjbxx.orgType" placeholder="请选择" style="width: 421.66px;"
+								  <el-select v-model="formnddyxxcj.gender" placeholder="请选择" style="width: 421.66px;"
 								    	size="medium">
 								    <el-option
-								      v-for="item in orgType"
-								      :key="item.dictId"
+								      v-for="item in gender"
+								      :key="item.value"
 								      
-								      :label="item.dictName"
-								      :value="item.dictId">
+								      :label="item.label"
+								      :value="item.value">
 								    </el-option>
 								  </el-select>
 	                        </el-form-item>
@@ -135,78 +141,9 @@
 	                        </el-form-item>
                         </el-col>                        
                         <el-col :span="11">
-	                        <el-form-item label="党组织属地关系" prop="orgAddressRelation"  size="mini" style="width: 100%;">
-	                            <el-cascader
-								    v-model="formdwjbxx.orgAddressRelation"
-								    :options="orgAddressRelation"
-								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
-								    style="width: 421.66px;"
-								    size="medium"
-								    filterable
-								    clearable
-								    ></el-cascader>
-	                        </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                    	<el-col :span="11">
-	                        <el-form-item label="选举方式" prop="elctType"  size="mini" style="width: 100%;">
-	                           
-								    <el-select v-model="formdwjbxx.elctType" placeholder="请选择" style="width: 421.66px;"
-								    	size="medium">
-								    <el-option
-								      v-for="item in elctType"
-								      :key="item.dictId"
-								      
-								      :label="item.dictName"
-								      :value="item.dictId">
-								    </el-option>
-								  </el-select>
-	                        </el-form-item>
-                        </el-col>
-                        <el-col :span="2">
-	                        <el-form-item  style="width: 100%;">
-	                         
-	                        </el-form-item>
-                        </el-col>                        
-                        <el-col :span="11">
-	                        <el-form-item label="任期年限" prop="leadTime"  size="mini" style="width: 100%;">
-	                            
-								    <el-select v-model="formdwjbxx.leadTime" placeholder="请选择" style="width: 421.66px;"
-								    	size="medium">
-								    <el-option
-								      v-for="item in leadTime"
-								      :key="item.dictId"
-								      
-								      :label="item.dictName"
-								      :value="item.dictId">
-								    </el-option>
-								  </el-select>
-	                        </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                    	<el-col :span="11">
-	                        <el-form-item label="本届班子当选日期" prop="currentLeaderTime" size="mini" >
-                            <el-date-picker
-							      v-model="formdwjbxx.currentLeaderTime"
-							      size="medium"
-							      format="yyyy-MM-dd"
-							      value-format="yyyy-MM-dd"
-							      type="date"
-							      placeholder="选择日期" style="width: 421.66px;">
-							    </el-date-picker>
-                        </el-form-item>
-                        </el-col>
-                        <el-col :span="2">
-	                        <el-form-item  style="width: 100%;">
-	                         
-	                        </el-form-item>
-                        </el-col>                        
-                        <el-col :span="11">
-	                        <el-form-item label="本届班子届满日期" prop="currentLeadOutTime"  size="mini" style="width: 100%;">
+	                        <el-form-item label="入党时间" prop="joinPartyTime"  size="mini" style="width: 100%;">
 	                            <el-date-picker
-							      v-model="formdwjbxx.currentLeadOutTime"
+							      v-model="formnddyxxcj.joinPartyTime"
 							      size="medium"
 							      format="yyyy-MM-dd"
 							      value-format="yyyy-MM-dd"
@@ -218,50 +155,12 @@
                     </el-row>
                     <el-row>
                     	<el-col :span="11">
-                        <el-form-item label="选举应到人数" prop="elctShoudPeopleCount"  size="mini" style="width: 100%;">
-                            <el-input v-model="formdwjbxx.elctShoudPeopleCount"  size="medium" type="number"
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="选举应到人数" ></el-input>                           
-                        </el-form-item>
-                        </el-col>
-                        <el-col :span="2">
-                        <el-form-item  style="width: 100%;">
-                         
-                        </el-form-item>
-                        </el-col>
-                        <el-col :span="11">
-                        <el-form-item label="选举实到人数" prop="elctActPeopleCount" size="mini" >
-                            <el-input v-model="formdwjbxx.elctActPeopleCount"  size="medium" type="number"
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="选举实到人数" ></el-input>
-                        </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                    	<el-col :span="11">
-                        <el-form-item label="上级核定委员会名额" prop="upperSureOrgCount"  size="mini" style="width: 100%;">
-                            <el-input v-model="formdwjbxx.upperSureOrgCount"  size="medium"  type="number"
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="上级核定委员会名额" ></el-input>                           
-                        </el-form-item>
-                        </el-col>
-                        <el-col :span="2">
-                        <el-form-item  style="width: 100%;">
-                         
-                        </el-form-item>
-                        </el-col>
-                        <el-col :span="11">
-                        <el-form-item label="实有委员数" prop="actUpperOrgPerCount" size="mini" >
-                            <el-input v-model="formdwjbxx.actUpperOrgPerCount"  size="medium" type="number"
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="实有委员数"  ></el-input>
-                        </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                    	<el-col :span="11">
-	                        <el-form-item label="转接组织关系权限" prop="changeOrgRelationAuth"  size="mini" style="width: 100%;">
-	                            
-								    <el-select v-model="formdwjbxx.changeOrgRelationAuth" placeholder="请选择" style="width: 421.66px;"
+	                        <el-form-item label="民族" prop="nation"  size="mini" style="width: 100%;">
+	                           
+								    <el-select v-model="formnddyxxcj.nation" placeholder="请选择" style="width: 421.66px;"
 								    	size="medium">
 								    <el-option
-								      v-for="item in isDelPartPersonAuth"
+								      v-for="item in nation"
 								      :key="item.dictId"
 								      
 								      :label="item.dictName"
@@ -276,12 +175,39 @@
 	                        </el-form-item>
                         </el-col>                        
                         <el-col :span="11">
-	                        <el-form-item label="是否拥有党员删除权限" prop="isDelPartPersonAuth"  size="mini" style="width: 100%;">
-	                            <el-select v-model="formdwjbxx.isDelPartPersonAuth" placeholder="请选择" style="width: 421.66px;"
+	                        <el-form-item label="转正时间" prop="turnRightTime"  size="mini" style="width: 100%;">
+	                            
+								    <el-date-picker
+							      v-model="formnddyxxcj.turnRightTime"
+							      size="medium"
+							      format="yyyy-MM-dd"
+							      value-format="yyyy-MM-dd"
+							      type="date"
+							      placeholder="选择日期" style="width: 421.66px;">
+							    </el-date-picker>
+	                        </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                    	<el-col :span="11">
+	                        <el-form-item label="籍贯" prop="hometown" size="mini" >
+                            	<el-input v-model="formnddyxxcj.hometown"  size="medium" 
+                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="籍贯" ></el-input>
+                        </el-form-item>
+                        </el-col>
+                        <el-col :span="2">
+	                        <el-form-item  style="width: 100%;">
+	                         
+	                        </el-form-item>
+                        </el-col>                        
+                        <el-col :span="11">
+	                        <el-form-item label="学位" prop="bachelor"  size="mini" style="width: 100%;">
+	                            <el-select v-model="formnddyxxcj.bachelor" placeholder="请选择" style="width: 421.66px;"
 								    	size="medium">
 								    <el-option
-								      v-for="item in isDelPartPersonAuth"
+								      v-for="item in bachelor"
 								      :key="item.dictId"
+								      
 								      :label="item.dictName"
 								      :value="item.dictId">
 								    </el-option>
@@ -289,275 +215,283 @@
 	                        </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-divider content-position="left">联系方式</el-divider>
                     <el-row>
                     	<el-col :span="11">
-	                        <el-form-item label="党组织联系人" prop="concatPersion"  size="mini" style="width: 100%;">
-	                            <el-input v-model="formdwjbxx.concatPersion"  size="medium" clearable 
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="党组织联系人"  ></el-input>
-	                        </el-form-item>
+                        <el-form-item label="学历" prop="education"  size="mini" style="width: 100%;">
+                            <el-select v-model="formnddyxxcj.education" placeholder="请选择" style="width: 421.66px;"
+								    	size="medium">
+								    <el-option
+								      v-for="item in education"
+								      :key="item.dictId"
+								      
+								      :label="item.dictName"
+								      :value="item.dictId">
+								    </el-option>
+								  </el-select>                           
+                        </el-form-item>
                         </el-col>
                         <el-col :span="2">
-	                        <el-form-item  style="width: 100%;">
-	                         
-	                        </el-form-item>
-                        </el-col>                        
+                        <el-form-item  style="width: 100%;">
+                         
+                        </el-form-item>
+                        </el-col>
                         <el-col :span="11">
-	                        <el-form-item label="党组织联系人手机号" prop="phone"  size="mini" style="width: 100%;">
-	                             <el-input v-model="formdwjbxx.phone"  size="medium" clearable 
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="党组织联系人手机号"  ></el-input>
-	                        </el-form-item>
+                        <el-form-item label="手机号码" prop="phone" size="mini" >
+                            <el-input v-model="formnddyxxcj.phone"  size="medium" 
+                            	 style="width: 421.66px;" maxlength="255" placeholder="手机号码" ></el-input>
+                        </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                     	<el-col :span="11">
-	                        <el-form-item label="党组织办公电话" prop="orgJobPhone"  size="mini" style="width: 100%;">
-	                            <el-input v-model="formdwjbxx.orgJobPhone"  size="medium" clearable 
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="党组织办公电话"  ></el-input>
-	                        </el-form-item>
-                        </el-col>
-                        <el-col :span="2">
-	                        <el-form-item  style="width: 100%;">
-	                         
-	                        </el-form-item>
-                        </el-col>                        
-                        <el-col :span="11">
-	                        <el-form-item label="传真" prop="fixPhone"  size="mini" style="width: 100%;">
-	                             <el-input v-model="formdwjbxx.fixPhone"  size="medium" clearable
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="传真"  ></el-input>
-	                        </el-form-item>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                    	<el-col :span="11">
-	                        <el-form-item label="所属地区" prop="belongArea"  size="mini" style="width: 100%;">
-	                            <el-cascader
-								    v-model="formdwjbxx.belongArea"
-								    :options="belongArea"
+                        <el-form-item label="所在党组织" prop="orgId"  size="mini" style="width: 100%;">
+                            <el-cascader
+								    v-model="formnddyxxcj.orgId"
+								    :options="upperOrg"
 								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
 								    style="width: 421.66px;"
 								    size="medium"
 								    filterable
 								    clearable
-								    ></el-cascader>
+								    ></el-cascader>                           
+                        </el-form-item>
+                        </el-col>
+                        <el-col :span="2">
+                        <el-form-item  style="width: 100%;">
+                         
+                        </el-form-item>
+                        </el-col>
+                        <el-col :span="11">
+                        <el-form-item label="工作电话" prop="officeNumber" size="mini" >
+                            <el-input v-model="formnddyxxcj.officeNumber"  size="medium" 
+                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="工作电话"  ></el-input>
+                        </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                    	<el-col :span="11">
+	                        <el-form-item label="现居住地" prop="liveAddress"  size="mini" style="width: 100%;">
+	                            
+								    <el-input v-model="formnddyxxcj.liveAddress"  size="medium" 
+                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="现居住地"  ></el-input>
 	                        </el-form-item>
                         </el-col>
                         <el-col :span="2">
 	                        <el-form-item  style="width: 100%;">
 	                         
 	                        </el-form-item>
-                        </el-col>                      
+                        </el-col>                        
                         <el-col :span="11">
-	                        <el-form-item label="邮政编码" prop="transCode"  size="mini" style="width: 100%;">
-	                             <el-input v-model="formdwjbxx.transCode"  size="medium" clearable
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="邮政编码"  ></el-input>
+	                        <el-form-item label="电子邮件" prop="mail"  size="mini" style="width: 100%;">
+	                            <el-input v-model="formnddyxxcj.mail"  size="medium" 
+                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="电子邮件"  ></el-input>
 	                        </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                     	<el-col :span="24">
-	                        <el-form-item label="详细地址" prop="address"  size="mini" style="width: 100%;">
-	                            <el-input v-model="formdwjbxx.address" size="medium" clearable
-                            	auto-complete="off" style="width: 100%;" maxlength="1024" placeholder="详细地址"  ></el-input>
+	                        <el-form-item label="上传照片(最多可上传一张jpg/png格式的图片)" prop="imageUrl"  size="mini" style="width: 100%;">
+	                            
+								<el-upload
+								  action="/api/file/upload"
+								  list-type="picture-card"
+								  :on-preview="handlePictureCardPreview"
+								  :on-success="setImgUrl"
+								  :file-list="imageInfo"
+								  multiple = "false"
+								  limit=1
+								  accept=".jpg,.jpeg,.png,.JPG,.JPEG"
+								  :before-upload="beforeAvatarUpload"
+								  :on-exceed="outMaxFile"
+								  :on-remove="handleRemove">
+								  
+								  <i class="el-icon-plus" ></i>
+								</el-upload>    
+										
 	                        </el-form-item>
-                        </el-col>                   
+                        </el-col>
                     </el-row>
-                    <el-divider content-position="left" style="width: 80%;">班子成员</el-divider>
-                    <el-row>
-                    	<el-col align="right">
-                    		<el-button size="mini" @click="addLine('leader')" align="right" type="danger">新增</el-button>
-                    	</el-col >                         
-                    </el-row>
-                    <el-row>
-                    	<el-col :span="24">
-		                    <el-table :data="leaderList" border>
-							    <el-table-column property="userName" label="姓名" width="150" align="center" ></el-table-column>
-							    <el-table-column property="positon" label="职务名称" width="200" align="center" ></el-table-column>
-							    <el-table-column property="allowLeaderTime" label="批准任职日期" align="center" >
-							   
-							    </el-table-column>
-							    <el-table-column
-		                            align="center"
-		                            width="260"
-		                            label="操作">
-		                        	<template slot-scope="scope" >
-		                                <el-button size="mini" @click="dwjgxxEdit('leader',scope.$index,scope.row)" align="center">编辑</el-button>
-		                                <el-button size="mini" type="danger" @click="deleteLine('leader',scope.$index)" align="center">删除</el-button>
-		                         	</template>
-		                    	</el-table-column>
-							</el-table>
-						</el-col>
-					</el-row>
-					<el-divider content-position="left" style="width: 80%;">奖惩情况</el-divider>
-                    <el-row>
-                    	<el-col align="right">
-                    		<el-button size="mini" @click="addLine('reward')" align="right" type="danger">新增</el-button>
-                    	</el-col >                         
-                    </el-row>
-                    <el-row>
-                    	<el-col :span="24">
-		                    <el-table :data="rewardList" border>
-							    <el-table-column property="rewardName" label="奖惩名称" width="150" align="center" ></el-table-column>
-							    <el-table-column property="allowOrg" label="批准组织" width="200" align="center" ></el-table-column>
-							    <el-table-column property="allowTime" label="批准时间" align="center" ></el-table-column>
-							    <el-table-column
-		                            align="center"
-		                            width="260"
-		                            label="操作">
-		                        
-		                            <template slot-scope="scope" >
-		                                <el-button size="mini"  @click="dwjgxxEdit('reward',scope.$index,scope.row)" align="center">编辑</el-button>
-		                                <el-button size="mini" type="danger" @click="deleteLine('reward',scope.$index)" align="center">删除</el-button>
-		                         	</template>
-		                    	</el-table-column>
-							</el-table>
-						</el-col>
-					</el-row>
-					<el-divider content-position="left" style="width: 80%;">单位信息</el-divider>
-                    <el-row>
-                    	<el-col align="right">
-                    		<el-button size="mini" @click="addLine('dept')" align="right" type="danger">新增</el-button>
-                    	</el-col >                         
-                    </el-row>
-                    <el-row>
-                    	<el-col :span="24">
-		                    <el-table :data="deptInfoList" border>
-							    <el-table-column property="deptName" label="单位名称" width="150" align="center" ></el-table-column>
-							    <el-table-column property="deptNatureType" label="单位性质类别" width="200" align="center" ></el-table-column>
-							    <el-table-column property="deptType" label="单位(机构)类型" align="center" ></el-table-column>
-							    <el-table-column
-		                            align="center"
-		                            width="260"
-		                            label="操作" >
-		                        	<template slot-scope="scope" >
-		                                <el-button size="mini"  @click="dwjgxxEdit('dept',scope.$index,scope.row)" align="center">编辑</el-button>
-		                                <el-button size="mini" type="danger" @click="deleteLine('dept',scope.$index)" align="center">删除</el-button>
-		                         	</template>
-		                    	</el-table-column>
-							</el-table>
-						</el-col>
-					</el-row>
                     </el-form>
                  </el-card>
-                 
                  <span slot="footer" class="dialog-footer" align="center">
                  <div align="center">
-				    <el-button @click="submitForm('formdwjbxx')"  type="primary" plain align="center" >确定</el-button>
-                    <el-button @click="dialogShow.dwjbxx = false" type="cancel" plain align="center">取消</el-button>
+				    <el-button @click="submitForm('formnddyxxcj')"  type="primary" plain align="center" >确定</el-button>
+                    <el-button @click="dialogShow.nddyxxcj = false" type="cancel" plain align="center">取消</el-button>
 				 </div> 
 				 </span>
-			<el-dialog
-		      width="50%"
-		      title="班子成员"
-		      :visible.sync="dialogShow.leader"
-		      append-to-body>
-		      <el-card shadow="always" style="width: 100%;" type="card">
-	              <el-form ref="formLeader"   style="width: 100%;" label-position="top">
-	              	<el-form-item label="姓名" prop="userName"  size="mini" style="width: 100%;">
-                            <el-input v-model="formLeader.userName"  size="medium" 
-                            	auto-complete="off"  maxlength="255" placeholder="姓名" ></el-input>                           
-                    </el-form-item>
-                    <el-form-item label="职务名称" prop="positon"  size="mini" style="width: 100%;">
-                            <el-input v-model="formLeader.positon"  size="medium" 
-                            	auto-complete="off"  maxlength="255" placeholder="职务名称" ></el-input>                           
-                    </el-form-item>
-                    <el-form-item label="批准任职时间" prop="allowLeaderTime"  size="mini" style="width: 100%;">
-                            <el-date-picker
-							      v-model="formLeader.allowLeaderTime"
-							      size="medium"
-							      format="yyyy-MM-dd"
-							      value-format="yyyy-MM-dd"
-							      type="date"
-							      style="width: 100%;"
-							      placeholder="选择日期" >
-							    </el-date-picker>                          
-                    </el-form-item>
-	              </el-form>
-              </el-card>
-              <span slot="footer" class="dialog-footer" align="center">
-                 <div align="center">
-				    <el-button @click="formTaleConfirm('leader')" type="primary" plain align="center">确定</el-button>
-                    <el-button @click="dialogShow.leader = false" type="cancel" plain align="center">取消</el-button>
-				 </div> 
-				 </span>
-		    </el-dialog>
-		    <el-dialog
-		      width="50%"
-		      title="奖惩情况"
-		      :visible.sync="dialogShow.reward"
-		      append-to-body>
-		      <el-card shadow="always" style="width: 100%;" type="card">
-	              <el-form ref="formReward"   style="width: 100%;" label-position="top">
-	              	<el-form-item label="奖惩名称" prop="rewardName"  size="mini" style="width: 100%;">
-                            <el-input v-model="formReward.rewardName"  size="medium" 
-                            	auto-complete="off"  maxlength="255" placeholder="姓名" ></el-input>                           
-                    </el-form-item>
-                    <el-form-item label="批准组织" prop="positon"  size="mini" style="width: 100%;">
-                            <el-input v-model="formReward.allowOrg"  size="medium" 
-                            	auto-complete="off"  maxlength="255" placeholder="职务名称" ></el-input>                           
-                    </el-form-item>
-                    <el-form-item label="批准时间" prop="allowTime"  size="mini" style="width: 100%;">
-                            <el-date-picker
-							      v-model="formReward.allowTime"
-							      size="medium"
-							      format="yyyy-MM-dd"
-							      value-format="yyyy-MM-dd"
-							      type="date"
-							      style="width: 100%;"
-							      placeholder="选择日期" >
-							    </el-date-picker>                          
-                    </el-form-item>
-	              </el-form>
-              </el-card>
-              <span slot="footer" class="dialog-footer" align="center">
-                 <div align="center">
-				    <el-button @click="formTaleConfirm('reward')" type="primary" plain align="center">确定</el-button>
-                    <el-button @click="dialogShow.reward = false" type="cancel" plain align="center">取消</el-button>
-				 </div> 
-				 </span>
-		    </el-dialog>
-		    <el-dialog
-		      width="50%"
-		      title="单位信息"
-		      :visible.sync="dialogShow.dept"
-		      append-to-body>
-		      <el-card shadow="always" style="width: 100%;" type="card">
-	              <el-form ref="formDept"   style="width: 100%;" label-position="top">
-	              	<el-form-item label="单位名称" prop="deptName"  size="mini" style="width: 100%;">
-                            <el-input v-model="formDept.deptName"  size="medium" 
-                            	auto-complete="off"  maxlength="255" placeholder="姓名" ></el-input>                           
-                    </el-form-item>
-                    <el-form-item label="单位性质类别" prop="deptNatureType"  size="mini" style="width: 100%;">
-                            <el-input v-model="formDept.deptNatureType"  size="medium" 
-                            	auto-complete="off"  maxlength="255" placeholder="职务名称" ></el-input>                           
-                    </el-form-item>
-                    <el-form-item label="单位(机构)类型" prop="deptType"  size="mini" style="width: 100%;">                          
-							    <el-cascader
-								    v-model="formDept.deptType"
-								    :options="deptOrgType"
-								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
-								    style="width: 100%;"
-								    size="medium"
-								    filterable
-								    clearable
-								    ></el-cascader>                         
-                    </el-form-item>
-	              </el-form>
-              </el-card>
-              <span slot="footer" class="dialog-footer" align="center">
-                 <div align="center">
-				    <el-button @click="formTaleConfirm('dept')" type="primary" plain align="center">确定</el-button>
-                    <el-button @click="dialogShow.dept = false" type="cancel" plain align="center">取消</el-button>
-				 </div> 
-				 </span>
-		    </el-dialog>
+			<el-dialog :visible.sync="dialogVisible">
+			  <img width="100%" :src="dialogImageUrl" alt="">
+			</el-dialog>
             </el-dialog>
+            <el-dialog :visible.sync="dialogShow.nddyxxcjYear" width="500px">
+				<el-form ref="formnddyxxcjyear"  :rules="rules" :model="formnddyxxcjyear" style="width: 100%;" >
+			  		<el-form-item label="年份" prop="year"  size="mini" style="width: 100%;">
+				  		<el-date-picker
+					      v-model="formnddyxxcjyear.year"
+					      type="year"
+					      style="width: 100%;"
+					      value-format="yyyy"
+					      placeholder="选择年">
+					    </el-date-picker>
+					</el-form-item>
+			  	</el-form>
+			  	<div align="center">
+				    <el-button @click="addYear"  type="primary" plain align="center" >确定</el-button>
+                    <el-button @click="dialogShow.nddyxxcjYear = false" type="cancel" plain align="center">取消</el-button>
+				</div> 
+			</el-dialog>
+            <el-dialog :visible.sync="dialogShow.nddyxxcjdetail" foot-center lock-scroll="true" width="1000px" :title.sync="dwjbxxDialog.title">
+            	 <el-card shadow="never" style="width: 100%;" type="card">
+                    <el-table style="width: 100%" :data="nddyxxcjTableData" border="true" empty-text="" align="">
+                    	<el-table-column
+					      label="姓名"
+					      width="120">
+						    <el-table-column
+						      label="性别"
+						      width="120">
+							      <el-table-column
+							      label="民族"
+							      width="120">
+							      	<el-table-column
+								      label="籍贯"
+								      width="120">
+									      <el-table-column
+									      label="学历"
+									      width="120">
+									      	<el-table-column
+										      label="所在党支部"
+										      width="120">
+										      	<el-table-column
+											      label="身份证号码"
+											      width="120">
+												    <el-table-column
+												      label="手机号码"
+												      width="120">
+												      	<el-table-column
+													      label="现居住地"
+													      width="120">
+												    	</el-table-column>
+											    	</el-table-column>
+										    	</el-table-column>
+									    	</el-table-column>
+								    	  </el-table-column>
+							    	</el-table-column>
+						    	  </el-table-column>
+					    	</el-table-column>
+					    </el-table-column>
+                    <el-table-column
+				      :label="formPartInfo.userName"
+				      >
+					      <el-table-column
+						      :label="formPartInfo.gender"
+						      width="240">
+							      <el-table-column
+							      :label="formPartInfo.nation"
+							      width="240">
+							      	<el-table-column
+								      :label="formPartInfo.hometown"
+								      width="240">
+								      	<el-table-column
+									      :label="formPartInfo.education"
+									      width="240">
+										      <el-table-column
+											      label="财务部"
+											      width="240">
+											      <el-table-column
+												      label="362334199308200717"
+												      width="240">
+												      	<el-table-column
+														      :label="formPartInfo.phone"
+														      width="240">
+														      <el-table-column
+															      :label="formPartInfo.liveAddress"
+															      width="240">
+													    	  </el-table-column>
+												    	</el-table-column>
+										    	  </el-table-column>
+									    	  </el-table-column>
+							    	 	</el-table-column>
+						    	 	</el-table-column>
+					    	 	  </el-table-column>
+				    	 </el-table-column>
+				    	 <el-table-column
+						      label="出生日期"
+						      width="120">
+						      <el-table-column
+								      label="入党时间"
+								      width="120">
+								      <el-table-column
+										      label="转正时间"
+										      width="120">
+										      <el-table-column
+												      label="学位"
+												      width="120">
+												      <el-table-column
+														      label=""
+														      width="120">
+														      <el-table-column
+																      label="电子邮箱"
+																      width="120">
+																      <el-table-column
+																		      label="工作电话"
+																		      width="120">
+																		      <el-table-column
+																				      label=""
+																				      width="120">
+																		      </el-table-column>
+																      </el-table-column>
+														      </el-table-column>
+												      </el-table-column>
+										      </el-table-column>
+								      </el-table-column>
+						      </el-table-column>
+				    	 </el-table-column>
+				    	 <el-table-column
+						      :label="formPartInfo.birthTime"
+						      width="120">
+						      <el-table-column
+							      :label="formPartInfo.joinPartyTime"
+							      width="120">
+							      <el-table-column
+								      :label="formPartInfo.turnRightTime"
+								      width="120">
+								      <el-table-column
+									      :label="formPartInfo.bachelor"
+									      width="240">
+										  <el-table-column
+										      label=""
+										      width="240">
+										      <el-table-column
+											      :label="formPartInfo.mail"
+											      width="240">
+											      <el-table-column
+												      :label="formPartInfo.officeNumber"
+												      width="240">
+												      <el-table-column
+													      label=""
+													      width="240">
+													      
+										    	 	  </el-table-column>
+									    	 	  </el-table-column>
+								    	 	  </el-table-column>
+							    	 	  </el-table-column>
+						    	 	  </el-table-column>
+					    	 	  </el-table-column>
+				    	 	  </el-table-column>
+				    	 </el-table-column>
+			    	</el-table-column>
+                    	<el-table-column width="199" :render-header="renderHeader">
+                    	</el-table-column>
+                    	
+                    	<template slot="empty">
+					      <el-button plain  type="primary" @click="dialogShow.nddyxxcjdetail = false" size="mini"><i class="el-icon-close"></i>关闭</el-button>
+					    </template>
+                    </el-table>
+                 </el-card>
+             </el-dialog>
         </el-tab-pane>
     </el-tabs>
+    
 </div>
-<style>
-  body {
-    margin: 0;
-  }
-</style>
+
 </html>

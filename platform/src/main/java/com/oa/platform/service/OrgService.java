@@ -7,6 +7,7 @@ import com.oa.platform.entity.OrgLeaderDetail;
 import com.oa.platform.entity.OrgRewardDetail;
 import com.oa.platform.entity.OrgUser;
 import com.oa.platform.entity.Organization;
+import com.oa.platform.entity.UserDtl;
 /**
  * orgservice
  * @author 俞灶森
@@ -74,4 +75,10 @@ public interface OrgService extends BaseService<Organization, String> {
 	void delOrgDeptById(String orgId);
 	
 	List<OrgUser> getOrgUserList(String orgId,String userName);
+	List<OrgUser> getOrgUserListByOrgIds(List<String> orgIds,String userName,String year);
+	UserDtl getOrgUserDetailByUserId(String userId);
+	void saveOrgUser(String userId, String org_id);
+	void delUser(String userId);
+	void delOrgUserDtl(String userId);
+	void delUserOrg(String userId);
 }

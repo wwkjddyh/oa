@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +13,10 @@ import com.oa.platform.entity.OrgLeaderDetail;
 import com.oa.platform.entity.OrgRewardDetail;
 import com.oa.platform.entity.OrgUser;
 import com.oa.platform.entity.Organization;
+import com.oa.platform.entity.User;
+import com.oa.platform.entity.UserDtl;
 import com.oa.platform.service.OrgService;
+import com.oa.platform.service.UserService;
 import com.oa.platform.util.StringUtil;
 
 /**
@@ -23,9 +27,14 @@ import com.oa.platform.util.StringUtil;
 @Component
 public class OrgBiz extends BaseBiz {
 	
+	@Autowired
+    UserService userService;
 	
 	@Autowired
 	private OrgService orgSerivce;
+	
+	@Value("${userDefaultPwd}")
+	private String userDefaultPwd;
 	/**
 	 * 获取党组织列表
 	 * @param userId
@@ -164,7 +173,7 @@ public class OrgBiz extends BaseBiz {
 	 * @param userId
 	 * @return
 	 */
-	public List<OrgUser> getOrgUserList(String userId,String userName) {
+	public List<OrgUser> getOrgUserList(String userId,String userName,String year) {
 		String orgId = null;
 		//根据用户id获取所在组织主键
 		List<Organization> orgInfo = orgSerivce.getOrgIdByuserId(userId);
@@ -173,7 +182,61 @@ public class OrgBiz extends BaseBiz {
 			return new ArrayList<OrgUser>();
 		}
 		List<OrgUser> result = orgSerivce.getOrgUserList(orgInfo.get(0).getOrgId(),userName);
-		return result;
+		if(result == null || result.size() == 0) {
+			return new ArrayList<OrgUser>();
+		}
+		List<String> orgIds = new ArrayList<String>();
+		for (OrgUser orgUser : result) {
+			orgIds.add(orgUser.getOrgId());
+		}
+		List<OrgUser> users = orgSerivce.getOrgUserListByOrgIds(orgIds,userName,year);
+		if(users == null || users.size() == 0) {
+			return result;
+		}
+		users.addAll(result);
+		return users;
+	}
+	public UserDtl getOrgUserDetailByUserId(String userId) {
+		
+		return orgSerivce.getOrgUserDetailByUserId(userId);
+	}
+	@Transactional
+	public void orgUserAdd(UserDtl userDtl) {
+		userDtl.setUserId(StringUtil.getRandomUUID());
+		User user = new User();
+		user.setUserId(userDtl.getUserId());
+		user.setUserName(userDtl.getUserName());
+		user.setUserPwd(userDefaultPwd);
+		user.setUserPwdOrigi("123456");
+		user.setRecordFlag(1);
+		user.setUserType(3);
+		userService.save(user);
+		//保存详情
+		userService.saveUserDtl(userDtl);
+		//保存用户部门关系
+		orgSerivce.saveOrgUser(userDtl.getUserId(),userDtl.getOrgId());
+	}
+	@Transactional
+	public void orgUserEdit(UserDtl userDtl) {
+		User user = new User();
+		user.setUserId(userDtl.getUserId());
+		user.setUserName(userDtl.getUserName());
+		userService.update(user);
+		userService.updateUserDtl(userDtl);
+	}
+	/**
+	 * 删除党员信息
+	 * @param userId
+	 */
+	@Transactional
+	public void delOrgUser(String userId) {
+		
+		//删除党员用户
+		orgSerivce.delUser(userId);
+		//删除党员用户详情
+		orgSerivce.delOrgUserDtl(userId);
+		//删除党员与组织关系
+		orgSerivce.delUserOrg(userId);
 	}
 	
 	

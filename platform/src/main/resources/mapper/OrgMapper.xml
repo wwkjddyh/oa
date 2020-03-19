@@ -77,6 +77,9 @@
 		<result column="birth_Time" property="birthTime" jdbcType="VARCHAR"/>
 		<result column="nation" property="nation" jdbcType="VARCHAR"/>
 		<result column="education" property="education" jdbcType="VARCHAR"/>
+		<result column="is_leader" property="isLeader" jdbcType="VARCHAR"/>
+		<result column="act_org" property="actOrg" jdbcType="VARCHAR"/>
+		<result column="star_flag" property="starFlag" jdbcType="VARCHAR"/>
 	</resultMap>
 	<insert id="orgAdd" parameterType="com.oa.platform.entity.Organization">
 		insert into t_sys_org (
@@ -315,13 +318,38 @@
 		WHERE
 			user_id = #{userId} and status='1'
 	</select>
+	<select id="getOrgUserListByOrgIds" parameterType="java.util.List" resultMap="orgUserMap">
+		select
+			usrdtl.user_id org_id,
+			orguser.org_id upper_org,
+			usr.user_id,
+			usr.user_name,
+			usrdtl.gender,
+			usrdtl.phone,
+			usrdtl.birth_time,
+			usrdtl.nation,
+			usrdtl.education,
+			usrdtl.is_leader,
+			orguser.org_id act_org
+		from 
+			t_user usr
+		left join t_user_dtl usrdtl on usr.user_id = usrdtl.user_id and usr.record_flag='1'
+		left join t_org_user orguser on usr.user_id=orguser.user_id and orguser.status='1'
+		where usrdtl.is_leader='0'
+		<if test="userName != null and userName != ''">
+		and instr(usr.user_name,#{userName})>0
+		</if>
+		<if test="year != null and year != ''">
+		and left(usrdtl.join_party_time,4) = #{year}
+		</if>
+		and orguser.org_id in
+		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+	</select>
 	<select id="getOrgUserList" resultMap="orgUserMap">
-		SELECT
-			tmp.* 
-		FROM
-			(
-			(
-			WITH recursive org_cte AS (
+		
+		( WITH recursive org_cte AS (
 		SELECT
 			sorg.org_id,
 			sorg.org_nm,
@@ -332,7 +360,10 @@
 			userdtl.phone,
 			userdtl.birth_time,
 			userdtl.nation,
-			userdtl.education 
+			userdtl.education,
+			userdtl.is_leader,
+			sorg.org_id act_org,
+			'1' star_flag
 		FROM
 			t_sys_org sorg
 			LEFT JOIN t_org_user orguser ON sorg.org_id = orguser.org_id 
@@ -342,7 +373,8 @@
 			AND usr.record_flag = '1'
 			LEFT JOIN t_user_dtl userdtl ON orguser.user_id = userdtl.user_id 
 		WHERE
-			sorg.org_id = #{orgId} UNION ALL
+			sorg.org_id = '43150795-5c6e-4caf-9952-658c6878c957' 
+			AND userdtl.is_leader = '1' UNION ALL
 		SELECT
 			org.org_id,
 			org.org_nm,
@@ -353,7 +385,10 @@
 			userdtl.phone,
 			userdtl.birth_time,
 			userdtl.nation,
-			userdtl.education 
+			userdtl.education,
+			userdtl.is_leader,
+			org.org_id act_org,
+			'1' star_flag 
 		FROM
 			t_sys_org org
 			LEFT JOIN t_org_user orguser ON org.org_id = orguser.org_id 
@@ -364,6 +399,8 @@
 			LEFT JOIN t_user_dtl userdtl ON orguser.user_id = userdtl.user_id
 			INNER JOIN org_cte sysorg ON org.org_id = sysorg.upper_org 
 			AND org.STATUS = '1' 
+		WHERE
+			userdtl.is_leader = '1' 
 			) SELECT
 			ote.* 
 		FROM
@@ -381,7 +418,10 @@
 			userdtl.phone,
 			userdtl.birth_time,
 			userdtl.nation,
-			userdtl.education 
+			userdtl.education,
+			userdtl.is_leader,
+			sorg.org_id act_org,
+			'1' star_flag 
 		FROM
 			t_sys_org sorg
 			LEFT JOIN t_org_user orguser ON sorg.org_id = orguser.org_id 
@@ -391,7 +431,8 @@
 			AND usr.record_flag = '1'
 			LEFT JOIN t_user_dtl userdtl ON orguser.user_id = userdtl.user_id 
 		WHERE
-			sorg.org_id = #{orgId} UNION ALL
+			sorg.org_id = '43150795-5c6e-4caf-9952-658c6878c957' 
+			AND userdtl.is_leader = '1' UNION ALL
 		SELECT
 			org.org_id,
 			org.org_nm,
@@ -402,7 +443,10 @@
 			userdtl.phone,
 			userdtl.birth_time,
 			userdtl.nation,
-			userdtl.education 
+			userdtl.education,
+			userdtl.is_leader,
+			org.org_id act_org,
+			'1' star_flag 
 		FROM
 			t_sys_org org
 			LEFT JOIN t_org_user orguser ON org.org_id = orguser.org_id 
@@ -413,16 +457,14 @@
 			LEFT JOIN t_user_dtl userdtl ON orguser.user_id = userdtl.user_id
 			INNER JOIN org_cte sysorg ON sysorg.org_id = org.upper_org 
 			AND org.STATUS = '1' 
+		WHERE
+			userdtl.is_leader = '1' 
 			) SELECT
 			ote.* 
 		FROM
 			org_cte ote 
 			) 
-			) tmp 
-		WHERE 1=1 
-		<if test="userName != null and userName != ''">
-        	and INSTR( tmp.user_name, #{userName} ) > 0
-      	</if>	
+			
 	</select>
 	<select id="getDeptList" resultMap="orgMap">
 	</select>
@@ -452,6 +494,10 @@
 			org_cte 
 			)
 	</update>
+	<insert id="saveOrgUser">
+		insert into t_org_user (user_id,org_id,status)
+		values(#{userId},#{orgId},'1')
+	</insert>
 	<!-- 删除指定组织及下属组织的人员关联 -->
 	<update id="delOrgUser">
 		UPDATE t_org_user 
@@ -739,5 +785,14 @@
 	<update id="delOrgDeptById">
 		update t_org_dept_detail set status='0' 
 		where org_id=#{orgId} and status='1'
+	</update>
+	<update id="delUser">
+		update t_user set record_flag =0 where user_id=#{userId} and record_flag =1
+	</update>
+	<delete id="delOrgUserDtl">
+		delete from t_user_dtl where user_id=#{userId}
+	</delete>
+	<update id="delUserOrg">
+		update t_org_user set status='0' where user_id=#{userId} and status='0'
 	</update>
 </mapper>

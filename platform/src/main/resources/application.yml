@@ -28,3 +28,4 @@ platform:
 spring:
   profiles:
     active: dev
+userDefaultPwd: $2a$10$ELoQRmGUvr0/81JdAHyHfewt6h.zqjlaIjM1NUNN.Fwcy5mkP4qp2
