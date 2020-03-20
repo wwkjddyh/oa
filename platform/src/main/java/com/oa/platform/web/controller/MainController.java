@@ -50,12 +50,12 @@ public class MainController {
 		return "redirect:/index";
 	}*/
 
-	@RequestMapping(value = {"/index", "/"})
+	@RequestMapping(value = {"/index", "/"}, method = {RequestMethod.POST, RequestMethod.GET})
 	public String index() {
 		return "index";
 	}
 
-	@RequestMapping("/user/index")
+	@RequestMapping(value = "/user/index", method = {RequestMethod.POST, RequestMethod.GET})
 	public String userIndex() {
 		return "redirect:/admin/main/";
 	}
@@ -74,14 +74,16 @@ public class MainController {
 		return "redirect:/login";
 	}
 
-	@RequestMapping("/login-error")
+	@RequestMapping(value = "/login-error", method = {RequestMethod.POST, RequestMethod.GET})
 	public String loginError(Model model) {
 		model.addAttribute("loginError", true);
 		return "login";
 	}
-	@GetMapping("/401")
+
+	@RequestMapping(value = "/401", method = {RequestMethod.POST, RequestMethod.GET})
 	public String accesssDenied() {
-		return "401";
+//		return "401";
+		return "login";
 	}
 
 	@GetMapping("/test")
@@ -183,7 +185,7 @@ public class MainController {
 		return "cron";
 	}
 
-	@RequestMapping("/ueditor/config")
+	@RequestMapping(value = "/ueditor/config", method = {RequestMethod.POST, RequestMethod.GET})
 	public void config(HttpServletRequest request, HttpServletResponse response) {
 		response.setContentType("application/json");
 		String rootPath = ClassUtils.getDefaultClassLoader().getResource("").getPath() + "static/js/ueditor/jsp";

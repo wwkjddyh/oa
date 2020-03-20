@@ -126,6 +126,7 @@ public class ResApiController extends BaseController {
      * @param currName 当前文件名
      * @param accessUrl 访问路径
      * @param resSize 资源大小
+     * @param attaContent 附件内容
      * @return
      */
     @PostMapping("uploadAttachmentInfo")
@@ -134,7 +135,8 @@ public class ResApiController extends BaseController {
             @RequestParam String originalName,
             @RequestParam String currName,
             @RequestParam String accessUrl,
-            @RequestParam(defaultValue = "0", required = false) String resSize) {
-        return resBiz.uploadAttachmentInfo(recordId, originalName, currName, accessUrl, resSize);
+            @RequestParam(defaultValue = "0", required = false) String resSize,
+            @RequestParam(defaultValue = "", required = false) String attaContent) {
+        return resBiz.uploadAttachmentInfo(recordId, originalName, currName, accessUrl, resSize, attaContent);
     }
 }

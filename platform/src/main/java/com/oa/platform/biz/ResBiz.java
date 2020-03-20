@@ -257,8 +257,8 @@ public class ResBiz extends BaseBiz {
      * @param resSize 资源大小
      * @return
      */
-    public Map<String, Object> uploadAttachmentInfo(String recordId, String originalName,
-                                                    String currName, String accessUrl, String resSize) {
+    public Map<String, Object> uploadAttachmentInfo(String recordId, String originalName, String currName,
+                                                    String accessUrl, String resSize, String attaContent) {
         recordId = StringUtil.trim(recordId);
         originalName = StringUtil.trim(originalName);
         currName = StringUtil.trim(currName);
@@ -277,6 +277,7 @@ public class ResBiz extends BaseBiz {
                 res.setCurrName(currName);
                 res.setAccessUrl(accessUrl);
                 res.setResSize(resSize);
+                res.setAttaContent(StringUtil.trim(attaContent));
                 resService.update(res);
                 ret = this.getSuccessVo("", "");
             } catch (Exception e) {

@@ -106,6 +106,7 @@ new Vue({
                     that.uploadData = {
                         name: '',
                         type: 'res-dfgl',
+                        parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
@@ -120,6 +121,7 @@ new Vue({
                     that.uploadData = {
                         name: '',
                         type: 'res-hjgl',
+                        parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
@@ -134,6 +136,7 @@ new Vue({
                     that.uploadData = {
                         name: '',
                         type: 'res-dygl',
+                        parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
@@ -149,6 +152,7 @@ new Vue({
                     that.uploadData = {
                         name: '',
                         type: 'res2-nddfszqkgs',
+                        parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
@@ -164,6 +168,7 @@ new Vue({
                     that.uploadData = {
                         name: '',
                         type: 'res2-nddfszjcqk',
+                        parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
@@ -179,6 +184,7 @@ new Vue({
                     that.uploadData = {
                         name: '',
                         type: 'res2-ndhjgzjh',
+                        parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
@@ -194,6 +200,7 @@ new Vue({
                     that.uploadData = {
                         name: '',
                         type: 'res2-hjgztz',
+                        parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
@@ -209,6 +216,7 @@ new Vue({
                     that.uploadData = {
                         name: '',
                         type: 'res2-fzdy',
+                        parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
@@ -1661,6 +1669,7 @@ new Vue({
                 "currName" : that.formRes.currName || '',
                 "orgId" : that.formRes.orgId || '',
                 "recordFlag": that.formRes.recordFlag || '1',
+                "attaContent" : that.formRes.attaContent || '',
             };
             if(that.currAction === 'edit') {
                 operName = '修改';
@@ -1693,6 +1702,7 @@ new Vue({
             params.append("currName", entry.currName || '')
             params.append('accessUrl', entry.accessUrl || '');
             params.append('resSize', entry.resSize || '0');
+            params.append('attaContent', entry.attaContent || '');
             axios.post("/api/res/uploadAttachmentInfo", params)
                 .then(function(response){
                     if(parseInt(response.data.code) === 200){
@@ -2249,6 +2259,7 @@ new Vue({
                                 currName: entry.currName || '',
                                 orgId: entry.orgId || '',
                                 orgName: entry.orgName || '',
+                                attaContent: entry.attaContent || '',
                                 isShowFileOriginalName: true,  // 是否显示文件原始名称(当编辑时，且未选择新文件)
                             };
                         }
@@ -4147,7 +4158,8 @@ new Vue({
                 that.formRes.currName = data.newFileName || '';
                 that.formRes.accessUrl = data.destName || '';
                 that.formRes.resSize = (data.size || 0) + '';
-                console.log('(handleUploadSuccess)that.formRes', that.formRes);
+                that.formRes.attaContent = data.content || '';
+                console.log('(handleUploadSuccess)that.formRes', that.formRes, data);
                 if (that.formRes.originalName != '' && that.formRes.currName != '') {
                     that.submitForm('formRes');
                 }
@@ -4177,10 +4189,6 @@ new Vue({
             if (parseInt(res.code) === 200) {
                 let data = res.data;
                 console.log('handleUploadSuccess2', data);
-                that.formRes.originalName = data.fileName || '';
-                that.formRes.currName = data.newFileName || '';
-                that.formRes.accessUrl = data.destName || '';
-                that.formRes.resSize = (data.size || 0) + '';
                 // that.$notify.success({
                 //     title: '成功',
                 //     message: `文件上传成功`
@@ -4192,6 +4200,7 @@ new Vue({
                     currName: data.newFileName || '',
                     accessUrl: data.destName || '',
                     resSize: (data.size || 0) + '',
+                    attaContent: data.content || '',
                 };
 
                 that.uploadResAttachmentInfo(entry);

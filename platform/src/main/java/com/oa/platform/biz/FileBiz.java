@@ -2,10 +2,12 @@ package com.oa.platform.biz;
 
 import com.oa.platform.aspect.LogRecordAdvice;
 import com.oa.platform.common.Constants;
+import com.oa.platform.common.FileType;
 import com.oa.platform.util.FileUtil;
 import com.oa.platform.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 
+import org.apache.tika.Tika;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -93,6 +95,25 @@ public class FileBiz extends BaseBiz {
                 parentFile.mkdirs();
             }
             file.transferTo(dest);
+
+            String content = "";
+            // 是否解析文件(0, 不解析;1, 解析)
+            String parse = StringUtil.trim(request.getParameter("parse"), "0");
+            if ("1".equals(parse)) {
+                String _fileName = fileName.toLowerCase(Constants.LOCALE_DEFAULT);
+                if (_fileName.endsWith(FileType.PDF.getFormat()) ||
+                        _fileName.endsWith(FileType.DOC.getFormat()) ||
+                        _fileName.endsWith(FileType.DOCX.getFormat())) {
+                    try {
+                        Tika tika = new Tika();
+                        content = tika.parseToString(dest);
+                    } catch (Exception e) {
+                        System.err.println("文件解析失败：" + fileName);
+                        e.printStackTrace();
+                    }
+                }
+            }
+            map.put("content", content);
             ret = this.getSuccessVo("", map);
         } catch (IOException e) {
             ret = this.getErrorVo();

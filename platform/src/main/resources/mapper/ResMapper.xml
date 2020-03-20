@@ -27,6 +27,7 @@
     <result column="publish_time" property="publishTime" jdbcType="VARCHAR"/>
     <result column="curr_name" property="currName" jdbcType="VARCHAR"/>
     <result column="org_id" property="orgId" jdbcType="VARCHAR"/>
+    <result column="atta_content" property="attaContent" jdbcType="VARCHAR"/>
 
     <result column="type_name" property="typeName" jdbcType="VARCHAR"/>
     <result column="ass_title" property="assTitle" jdbcType="VARCHAR"/>
@@ -60,11 +61,11 @@
     INSERT INTO t_res (record_id,res_name,type_id,ass_id,ass_type_id,
         original_name,record_time,record_flag,res_size,
         announcer_id,res_author,res_src,res_intro,res_desc,res_tags,access_url,
-        publish_time, curr_name, org_id)
+        publish_time, curr_name, org_id, atta_content)
     VALUES (#{recordId},#{resName},#{typeId},#{assId},#{assTypeId},
         #{originalName},NOW(),#{recordFlag},#{resSize},
         #{announcerId},#{resAuthor},#{resSrc},#{resIntro},#{resDesc},#{resTags},#{accessUrl},
-        #{publishTime}, #{currName}, #{orgId})
+        #{publishTime}, #{currName}, #{orgId}, #{attaContent})
   </insert>
 
   <insert id="insertResDl" parameterType="resDl">
@@ -95,10 +96,10 @@
       <if test="assTypeId != null and assTypeId != ''">
         ass_type_id = #{assTypeId},
       </if>
-      <if test="originalName != null and originalName != ''">
+      <if test="originalName != null">
         original_name = #{originalName},
       </if>
-      <if test="currName != null and currName != ''">
+      <if test="currName != null">
         curr_name = #{currName},
       </if>
       <if test="resSize != null">
@@ -106,9 +107,6 @@
       </if>
       <if test="recordFlag != null">
         record_flag = #{recordFlag},
-      </if>
-      <if test="originalName != null and originalName != ''">
-        original_name = #{originalName},
       </if>
       <if test="announcerId != null and announcerId != ''">
         announcer_id = #{announcerId},
@@ -146,11 +144,14 @@
       <if test="auditorId != null and auditorId != ''">
         auditor_id = #{auditorId},
       </if>
-      <if test="accessUrl != null and accessUrl != ''">
+      <if test="accessUrl != null">
         access_url = #{accessUrl},
       </if>
       <if test="orgId != null and orgId != ''">
         org_id = #{orgId},
+      </if>
+      <if test="attaContent != null">
+        atta_content = #{attaContent},
       </if>
     </trim>
   </update>
@@ -177,7 +178,7 @@
         announcer_id,res_author,res_src,res_intro,res_desc,res_tags,
         DATE_FORMAT(modify_time,'%Y-%m-%d %H:%i:%s') modify_time,editor_id,access_url,
         auditor_id,DATE_FORMAT(audit_time,'%Y-%m-%d %H:%i:%s') audit_time,audit_status,
-        DATE_FORMAT(publish_time,'%Y-%m-%d') publish_time, curr_name, org_id
+        DATE_FORMAT(publish_time,'%Y-%m-%d') publish_time, curr_name, org_id, atta_content
     FROM t_res WHERE record_id = #{recordId} AND record_flag = 1
   </select>
 
@@ -217,6 +218,9 @@
       <if test="orgId != null and orgId != ''">
         AND org_id = #{orgId}
       </if>
+      <if test="attaContent != null and attaContent != ''">
+        AND atta_content = #{attaContent}
+      </if>
     </trim>
   </delete>
 
@@ -247,7 +251,7 @@
       DATE_FORMAT(modify_time,'%Y-%m-%d %H:%i:%s') modify_time,
       editor_id, access_url, auditor_id, DATE_FORMAT(audit_time,'%Y-%m-%d %H:%i:%s') audit_time,
       audit_status, type_name, '' AS ass_title, ass_type_name, announcer_name, editor_name, auditor_name,
-      curr_name, org_id
+      curr_name, org_id, atta_content
     FROM (
       SELECT
         t1.*,

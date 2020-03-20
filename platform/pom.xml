@@ -38,6 +38,7 @@
 		<jersey-client.version>1.19.4</jersey-client.version>
 		<jsch.version>0.1.55</jsch.version>
 		<org.json.version>20190722</org.json.version>
+		<org.apache.tika.version>1.24</org.apache.tika.version>
 	</properties>
 
 	<dependencies>
@@ -201,6 +202,21 @@
 			<artifactId>json</artifactId>
 			<version>${org.json.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-core</artifactId>
+			<version>${org.apache.tika.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-parsers</artifactId>
+			<version>${org.apache.tika.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-xmp</artifactId>
+			<version>${org.apache.tika.version}</version>
+		</dependency>
 <!--		<dependency>-->
 <!--			<groupId>com.baidu</groupId>-->
 <!--			<artifactId>ueditor</artifactId>-->
@@ -208,6 +224,14 @@
 <!--			<scope>system</scope>-->
 <!--			<systemPath>${project.basedir}/libs/ueditor-0.0.1-SNAPSHOT.jar</systemPath>-->
 <!--		</dependency>-->
+		<dependency>
+			<groupId>com.baidu</groupId>
+			<artifactId>ueditor</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/lib/ueditor-0.0.1-SNAPSHOT.jar</systemPath>
+		</dependency>
+
 		<!-- ueditor end -->
 	</dependencies>
 

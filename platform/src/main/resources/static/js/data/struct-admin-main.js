@@ -227,6 +227,7 @@ const formStructConfig = {
         auditorName: '',
         orgId: '',
         orgName: '',
+        attaContent: '',
         isShowFileOriginalName: false,  // 是否显示文件原始名称(仅当编辑时，且未选择新文件)
     },
 
@@ -437,6 +438,7 @@ const formStructConfig = {
             currTypeName: '',
             orgId: '',
             orgName: '',
+            attaContent: '',
         },
 
         resDl: {

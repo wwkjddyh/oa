@@ -176,9 +176,14 @@ public class Res implements Serializable {
     private List<String> orgIds;
 
     /**
-     * 组织名字
+     * 组织名字(查询时使用)
      */
     private String orgName;
+
+    /**
+     * 资料附件内容
+     */
+    private String attaContent;
 
     public String getRecordId() {
         return recordId;
@@ -452,6 +457,14 @@ public class Res implements Serializable {
         this.orgIds = orgIds;
     }
 
+    public String getAttaContent() {
+        return attaContent;
+    }
+
+    public void setAttaContent(String attaContent) {
+        this.attaContent = attaContent;
+    }
+
     public Res() {
     }
 
@@ -489,6 +502,7 @@ public class Res implements Serializable {
                 ", currName='" + currName + '\'' +
                 ", orgId='" + orgId + '\'' +
                 ", orgName='" + orgName + '\'' +
+                ", attaContent='" + attaContent + '\'' +
                 '}';
     }
 }
