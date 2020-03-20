@@ -60,7 +60,7 @@ public class MainController {
 		return "redirect:/admin/main/";
 	}
 
-	@RequestMapping("/login")
+	@RequestMapping(value = "/login", method = {RequestMethod.POST, RequestMethod.GET})
 	public String login() {
 		return "login";
 	}

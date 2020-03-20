@@ -4204,7 +4204,7 @@ new Vue({
                 if (!_url.endsWith('/')) {
                     _url += '/';
                 }
-                let _accessUrl = res.accessUrl;
+                let _accessUrl = (res.accessUrl || '').replace(/\\/g, "/");
                 if (_accessUrl.startsWith('/')) {
                     _url += _accessUrl.substring(1);
                 }
