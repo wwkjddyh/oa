@@ -318,6 +318,9 @@
           #{itemId}
         </foreach>
       </if>
+      <if test="yearMonth != null and yearMonth != ''">
+        AND DATE_FORMAT(publish_time, '%Y-%m') = #{yearMonth}
+      </if>
     </trim>
   </select>
 

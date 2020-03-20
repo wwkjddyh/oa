@@ -141,6 +141,7 @@ new Vue({
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
                 case 'nddfszqkgs':    // 年度党费收支情况公示
+                    that.getResOtherTypes();
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '4bfeb907-05c0-48a5-9719-70d07eb640a2';
                     that.formRes.typeName = '年度党费收支情况公示';
@@ -157,6 +158,7 @@ new Vue({
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
                 case 'nddfszjcqk':    // 年度党费收支结存情况
+                    that.getResOtherTypes();
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '0737d01e-b6f9-4567-8892-63fa9071903f';
                     that.formRes.typeName = '年度党费收支结存情况';
@@ -173,6 +175,7 @@ new Vue({
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
                 case 'ndhjgzjh':    // 年度换届工作计划
+                    that.getResOtherTypes();
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '3d4565b4-041d-44e0-b411-b441865047c7';
                     that.formRes.typeName = '年度换届工作计划';
@@ -189,6 +192,7 @@ new Vue({
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
                 case 'hjgztz':    // 换届工作台账
+                    that.getResOtherTypes();
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '4a056958-6d34-4dbc-ac12-1385b0745023';
                     that.formRes.typeName = '换届工作台账';
@@ -205,6 +209,7 @@ new Vue({
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
                 case 'fzdy':    // 发展党员
+                    that.getResOtherTypes();
                     that.formSearchRes.key = '';
                     that.formRes.typeId = 'ed535138-6ec2-468c-8083-d967a24c2f33';
                     that.formRes.typeName = '发展党员';
@@ -434,6 +439,7 @@ new Vue({
         	}
         ],
         yearList:[],
+        yearMonths: [],
         nddyxxcjYear:false,
         nddyxxSearchCondition:'',
         formnddyxxcjyear:{},
@@ -556,6 +562,8 @@ new Vue({
         		count: '10'
         	}
         ],
+        typeDicts: [],      // 用于存储按type查询的字典信息
+        resOtherTypes: [],  // 资源其他分类
         allRoles: [],
         allModules: [],
         articleCategories: [],
@@ -2267,6 +2275,7 @@ new Vue({
                     	that.dialogShow.nddyxxcj = !that.dialogShow.nddyxxcj;
                     	break;
                     case 'res':
+                        that.getResOtherTypes();
                         that.uploadFileList = [];
                         //that.$refs.uploadRes.clearFiles();
                         if(isAdd) {
@@ -2888,6 +2897,65 @@ new Vue({
                     }
                 })
                 .catch(function(err){/!*异常*!/
+                    console.log(err);
+                });
+        },
+
+        /**
+         * 根据类型获得字典信息
+         * @param _type 若为空，则查询所有
+         */
+        getDictByType(_type) {
+            let that = this;
+            that.typeDicts = [];
+            axios.get("/api/dict/getByType", {params:{
+                    type: _type
+                }})
+                .then(function(response){/!*成功*!/
+                    let data = response.data;
+                    if(parseInt(data.code) === 200) {
+                        that.typeDicts = data.data;
+                    }
+                })
+                .catch(function(err){/!*异常*!/
+                    console.log(err);
+                });
+        },
+
+        /**
+         * 获取资源其他分类
+         */
+        getResOtherTypes() {
+            let that = this;
+            that.resOtherTypes = [];
+            axios.get("/api/dict/getByType", {params:{
+                    type: 'resOtherType'
+                }})
+                .then(function(response){/!*成功*!/
+                    let data = response.data;
+                    if(parseInt(data.code) === 200) {
+                        that.resOtherTypes = data.data;
+                    }
+                })
+                .catch(function(err){/!*异常*!/
+                    console.log(err);
+                });
+        },
+
+        /**
+         * 获得年月信息
+         */
+        getYearMonths() {
+            let that = this;
+            that.yearMonths = [];
+            axios.get("/api/dict/getYearMonths")
+                .then(function(response){/*成功*/
+                    let data = response.data;
+                    if(parseInt(data.code) === 200) {
+                        that.yearMonths = data.data;
+                    }
+                })
+                .catch(function(err){/*异常*/
                     console.log(err);
                 });
         },
@@ -3898,8 +3966,10 @@ new Vue({
                     assId: that.formSearchRes.assId,
                     assTypeId: that.formSearchRes.assTypeId,
                     announcerId: that.formSearchRes.announcerId,
+                    publishTime: that.formSearchRes.publishTime,
+                    yearMonth: that.formSearchRes.yearMonth,
                     pageNum: pageNum,
-                    pageSize:pageSize,
+                    pageSize: pageSize,
                 }})
                 .then(function(response){/*成功*/
                     if(parseInt(response.status) == 200 ) {
@@ -4457,7 +4527,7 @@ new Vue({
     },
     mounted: function () {
         let that = this;
-
+        that.getYearMonths();
         that.getAllAuthRole();
         that.loadMemberUsers('','',0, that.pager.user.pageSize);
         that.ueditors.article = UE.getEditor('articleEditor', that.ueditorConfig);

@@ -439,6 +439,7 @@ const formStructConfig = {
             orgId: '',
             orgName: '',
             attaContent: '',
+            yearMonth: '',
         },
 
         resDl: {
@@ -599,7 +600,10 @@ const formStructConfig = {
         ],
         leader:[
             { required: true, message: '请选择是否为部门领导人', trigger: 'blur' },
-            ],
+        ],
+        assTypeId: [
+            { required: true, message: '请选择其他分类', trigger: 'blur' },
+        ],
     },
     dateDickerOptions: {
 

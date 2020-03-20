@@ -1,5 +1,7 @@
 package com.oa.platform.util;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,6 +100,9 @@ public class DateUtil {
 
     /**yyyy-MM*/
     public static final SimpleDateFormat FORMAT_YEAR_MONTH = new SimpleDateFormat("yyyy-MM");
+
+    /**yyyy-MM*/
+    public static final SimpleDateFormat FORMAT_YEAR_MONTH_CN = new SimpleDateFormat("yyyy年MM月");
 
     /**yyyyMMddHHmmss*/
     public static final SimpleDateFormat FORMAT_NUMBER = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -864,7 +869,138 @@ public class DateUtil {
         return flag;
     }
 
+    /**
+     * 计算日期之间的所有月份数
+     * @param minDate 最小时间
+     * @param maxDate 最大时间
+     * @return
+     */
+    public static List<String> getMonthBetween(Date minDate, Date maxDate)  {
+        ArrayList<String> result = Lists.newArrayList();
+        try {
+            Calendar min = Calendar.getInstance();
+            Calendar max = Calendar.getInstance();
+
+            min.setTime(minDate);
+            min.set(min.get(Calendar.YEAR), min.get(Calendar.MONTH), 1);
+
+            max.setTime(maxDate);
+            max.set(max.get(Calendar.YEAR), max.get(Calendar.MONTH), 2);
+
+            Calendar curr = min;
+            while (curr.before(max)) {
+                result.add(FORMAT_YEAR_MONTH.format(curr.getTime()));
+                curr.add(Calendar.MONTH, 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    /**
+     * 计算日期之间的所有月份数
+     * @param minDate 最小时间
+     * @param maxDate 最大时间
+     * @return
+     */
+    public static List<String> getMonthBetween(String minDate, String maxDate)  {
+        ArrayList<String> result = Lists.newArrayList();
+        try {
+            Calendar min = Calendar.getInstance();
+            Calendar max = Calendar.getInstance();
+
+            min.setTime(FORMAT_YEAR_MONTH.parse(minDate));
+            min.set(min.get(Calendar.YEAR), min.get(Calendar.MONTH), 1);
+
+            max.setTime(FORMAT_YEAR_MONTH.parse(maxDate));
+            max.set(max.get(Calendar.YEAR), max.get(Calendar.MONTH), 2);
+
+            Calendar curr = min;
+            while (curr.before(max)) {
+                result.add(FORMAT_YEAR_MONTH.format(curr.getTime()));
+                curr.add(Calendar.MONTH, 1);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    /**
+     * 计算日期之间的所有月份数
+     * @param minDate 最小时间
+     * @param maxDate 最大时间
+     * @return 如：[{value: '2010-01', text: '2020年1月'}]
+     */
+    public static List<Map<String, String>> getMonthBetweens(Date minDate, Date maxDate)  {
+        List<Map<String, String>> result = Lists.newArrayList();
+        try {
+            Calendar min = Calendar.getInstance();
+            Calendar max = Calendar.getInstance();
+
+            min.setTime(minDate);
+            min.set(min.get(Calendar.YEAR), min.get(Calendar.MONTH), 1);
+
+            max.setTime(maxDate);
+            max.set(max.get(Calendar.YEAR), max.get(Calendar.MONTH), 2);
+
+            Calendar curr = min;
+            while (curr.before(max)) {
+                Map<String, String> entry = Maps.newHashMap();
+                entry.put("value", FORMAT_YEAR_MONTH.format(curr.getTime()));
+                entry.put("text", FORMAT_YEAR_MONTH_CN.format(curr.getTime()));
+                result.add(entry);
+                curr.add(Calendar.MONTH, 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    /**
+     * 计算日期之间的所有月份数
+     * @param minDate 最小时间
+     * @param maxDate 最大时间
+     * @return
+     */
+    public static List<Map<String, String>> getMonthBetweens(String minDate, String maxDate)  {
+        List<Map<String, String>> result = Lists.newArrayList();
+        try {
+            Calendar min = Calendar.getInstance();
+            Calendar max = Calendar.getInstance();
+
+            min.setTime(FORMAT_YEAR_MONTH.parse(minDate));
+            min.set(min.get(Calendar.YEAR), min.get(Calendar.MONTH), 1);
+
+            max.setTime(FORMAT_YEAR_MONTH.parse(maxDate));
+            max.set(max.get(Calendar.YEAR), max.get(Calendar.MONTH), 2);
+
+            Calendar curr = min;
+            while (curr.before(max)) {
+                Map<String, String> entry = Maps.newHashMap();
+                entry.put("value", FORMAT_YEAR_MONTH.format(curr.getTime()));
+                entry.put("text", FORMAT_YEAR_MONTH_CN.format(curr.getTime()));
+                result.add(entry);
+                curr.add(Calendar.MONTH, 1);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
     public static void main(String[] args) {
         //System.out.println(limitCallTime());
+        Date currDate = new Date();
+        Date minDate = addYear(currDate, -5);
+        Date maxDate = addYear(currDate, 2);
+        List<Map<String, String>> yearMonths = getMonthBetweens(minDate, maxDate);
+        yearMonths.forEach(c -> System.err.println(c));
     }
 }

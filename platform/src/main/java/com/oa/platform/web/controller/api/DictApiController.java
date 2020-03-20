@@ -73,4 +73,23 @@ public class DictApiController extends BaseController {
                                      @RequestParam(defaultValue = PAGE_SIZE_STR,required = false) int pageSize) {
         return dictBiz.search(dictType,key,pageNum,pageSize);
     }
+
+    /**
+     * 根据字典类型查询
+     * @param type 字典类型(若为空，则查询所有)
+     * @return
+     */
+    @GetMapping("getByType")
+    public Map<String, Object> getByType(@RequestParam(defaultValue = "",required = false) String type) {
+        return dictBiz.getByType(type);
+    }
+
+    /**
+     * 获取年月信息
+     * @return
+     */
+    @GetMapping("getYearMonths")
+    public Map<String, Object> getYearMonths() {
+        return dictBiz.getYearMonths();
+    }
 }

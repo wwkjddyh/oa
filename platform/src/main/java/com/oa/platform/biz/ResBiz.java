@@ -172,13 +172,14 @@ public class ResBiz extends BaseBiz {
      * @param announcerId 发布者ID
      * @param editorId 编辑者ID
      * @param orgId 组织ID
+     * @param yearMonth 年月(格式: yyyy-MM)
      * @param key 关键字
      * @param pageNum 页码
      * @param pageSize 每页记录数
      * @return
      */
     public Map<String, Object> search(String typeId, String assId, String assTypeId, String announcerId,
-                                      String editorId, String orgId, String key, int pageNum, int pageSize) {
+                                      String editorId, String orgId, String yearMonth, String key, int pageNum, int pageSize) {
         ret = null;
         try {
             Res res = new Res();
@@ -187,6 +188,7 @@ public class ResBiz extends BaseBiz {
             res.setAssId(StringUtil.trim(assId));
             res.setAssTypeId(StringUtil.trim(assTypeId));
             res.setEditorId(StringUtil.trim(editorId));
+            res.setYearMonth(StringUtil.trim(yearMonth));
             res.setKey(StringUtil.trim(key));
             res.setRecordFlag(Constants.INT_NORMAL);
             orgId = StringUtil.trim(orgId);

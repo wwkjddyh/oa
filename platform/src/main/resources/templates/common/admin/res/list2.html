@@ -5,13 +5,18 @@
         <el-form-item label="党组织机构">
             <el-select v-model="formSearchRes.orgId" style="width: 300px;" placeholder="请选择党组织机构" size="small">
                 <el-option label="全部" value="">全部</el-option>
-<!--                <el-option v-for="item in allCategoryTypes" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>-->
             </el-select>
         </el-form-item>
         <el-form-item label="年月">
-            <el-select v-model="formSearchRes.publishTime" style="width: 300px;" placeholder="请选择年月" size="small">
+            <el-select v-model="formSearchRes.yearMonth" style="width: 300px; font-size: 12px" placeholder="请选择年月" size="small">
                 <el-option label="全部" value="">全部</el-option>
-                <!--                <el-option v-for="item in allCategoryTypes" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>-->
+                <el-option v-for="item in yearMonths" :key="item.value" :label="item.text" :value="item.value"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="其他分类">
+            <el-select v-model="formSearchRes.assTypeId" style="width: 300px; font-size: 12px" placeholder="请选择分类" size="small">
+                <el-option label="全部" value="">全部</el-option>
+                <el-option v-for="item in resOtherTypes" :key="item.dictId" :label="item.dictName" :value="item.dictId"></el-option>
             </el-select>
         </el-form-item>
         <el-form-item label="模糊搜索">
@@ -85,6 +90,13 @@
                     </el-date-picker>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">发布日期</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <el-form-item label="其他分类" prop="assTypeId">
+                    <el-select v-model="formRes.assTypeId" style="width: 300px;" placeholder="请选择分类" size="small">
+                        <el-option v-for="item in resOtherTypes" :key="item.dictId" :label="item.dictName" :value="item.dictId"></el-option>
+                    </el-select>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">其他分类</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="资料名称" prop="resName">
                     <el-input v-model="formRes.resName" size="small" auto-complete="off" style="width: 472px;" maxlength="512" placeholder="资料名称"></el-input>

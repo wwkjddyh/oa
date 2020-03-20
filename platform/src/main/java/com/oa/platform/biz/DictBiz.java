@@ -4,11 +4,13 @@ import com.github.pagehelper.PageInfo;
 import com.oa.platform.common.Constants;
 import com.oa.platform.entity.Dict;
 import com.oa.platform.service.DictService;
+import com.oa.platform.util.DateUtil;
 import com.oa.platform.util.StringUtil;
 import com.oa.platform.util.ThreadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -173,6 +175,43 @@ public class DictBiz extends BaseBiz {
             ret = this.getPageInfo(pageInfo);
         }
         catch(Exception e) {
+            loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+            ret = this.getErrorVo();
+        }
+        return ret;
+    }
+
+    /**
+     * 根据字典类型查询
+     * @param dictType 字典类型(若为空，则查询所有)
+     * @return
+     */
+    public Map<String, Object> getByType(String dictType) {
+        dictType = StringUtil.trim(dictType);
+        try {
+            Dict dict = new Dict();
+            dict.setDictType(dictType);
+            dict.setRecordFlag(Constants.INT_NORMAL);
+            ret = this.getSuccessVo("", dictService.find(dict));
+        } catch (Exception e) {
+            loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+            ret = this.getErrorVo();
+        }
+        return ret;
+    }
+
+    /**
+     * 获取年月信息
+     * @return
+     */
+    public Map<String, Object> getYearMonths() {
+        try {
+            Date currDate = new Date();
+            Date minDate = DateUtil.addYear(currDate, -5);
+            Date maxDate = DateUtil.addYear(currDate, 2);
+            List<Map<String, String>> yearMonths = DateUtil.getMonthBetweens(minDate, maxDate);
+            ret = this.getSuccessVo("", yearMonths);
+        } catch (Exception e) {
             loggerError(ThreadUtil.getCurrentFullMethodName(), e);
             ret = this.getErrorVo();
         }

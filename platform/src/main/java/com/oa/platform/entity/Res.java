@@ -185,6 +185,11 @@ public class Res implements Serializable {
      */
     private String attaContent;
 
+    /**
+     * 年月(格式：2010-01, 查询用)
+     */
+    private String yearMonth;
+
     public String getRecordId() {
         return recordId;
     }
@@ -463,6 +468,14 @@ public class Res implements Serializable {
 
     public void setAttaContent(String attaContent) {
         this.attaContent = attaContent;
+    }
+
+    public String getYearMonth() {
+        return yearMonth;
+    }
+
+    public void setYearMonth(String yearMonth) {
+        this.yearMonth = yearMonth;
     }
 
     public Res() {

@@ -218,19 +218,12 @@
 			<version>${org.apache.tika.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.baidu</groupId>
+			<groupId>com.ueditor</groupId>
 			<artifactId>ueditor</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/libs/ueditor-0.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>com.baidu</groupId>-->
-<!--			<artifactId>ueditor</artifactId>-->
-<!--			<version>0.0.1-SNAPSHOT</version>-->
-<!--			<scope>system</scope>-->
-<!--			<systemPath>${project.basedir}/src/main/resources/lib/ueditor-0.0.1-SNAPSHOT.jar</systemPath>-->
-<!--		</dependency>-->
 
 		<!-- ueditor end -->
 	</dependencies>
