@@ -11,6 +11,44 @@
     <link rel="stylesheet" href="/css/element-ui/index.css" th:href="@{~/css/element-ui/index.css}"/>
     <link rel="stylesheet" href="/css/custom/sys-style.css" th:href="@{~/css/custom/sys-style.css}"/>
     <!--<link rel="stylesheet" href="https://unpkg.com/element-ui@2.4.11/lib/theme-chalk/index.css"/>-->
+    <style>
+        .el-dialog{
+            margin:0!important;
+            display:flex;
+            flex-direction:column;
+            max-height:calc(100% - 30px);
+            max-width:calc(100% - 30px);
+        }
+        .el-dialog__body{
+            transform: translate3d(0,0,0);
+            overflow:auto;
+        }
+        .el-dialog__header {
+            padding: 20px 20px 20px 20px!important;
+            border-bottom: 1px solid #f4f4f4;
+        }
+        .el-dialog__footer {
+            text-align: center!important;
+            padding: 12px 20px 12px 20px!important;
+            border-top: 1px solid #f4f4f4;
+        }
+        .el-dialog__headerbtn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 0;
+            background: 0 0;
+            border: none;
+            outline: 0;
+            cursor: pointer;
+            font-size: 24px!important;
+        }
+        .el-dialog__wrapper {
+            display:flex;
+            justify-content: center;
+            align-items:center;
+        }
+    </style>
 </head>
 <body>
 <div id="admin-main" v-cloak>

@@ -380,6 +380,7 @@ new Vue({
         formPartyDues: {},
         formRes: {},
         formResDl: {},
+        formModifyPwd: {},
         loading:{},
         nddyxxcjLoading:false,
         dwjbxxLoading: false,
@@ -997,6 +998,7 @@ new Vue({
                                     case 'formPartyDues': that.submitPartyDues(); break;
                                     case 'formRes': that.submitRes(); break;
                                     case 'formnddyxxcj': that.submitNddyxxcj();break;
+                                    case 'formModifyPwd': that.submitModifyPwd(); break;
                                     default: break;
                                 }
                                 //提交成功之后
@@ -1231,6 +1233,43 @@ new Vue({
                         }
                     }
                 }).catch(function(err){
+                console.warn(err);
+            });
+        },
+
+        /**
+         * 修改密码
+         */
+        submitModifyPwd() {
+            let that = this;
+            let params = new URLSearchParams();
+            params.append('userId', that.currentUser.userId || '');
+            params.append('password', that.formModifyPwd.password || '');
+            //params.append('oldPassword', that.formModifyPwd.oldPassword || '');
+            params.append('passwordOrgi', that.formModifyPwd.passwordOrgi || '');
+
+            axios.post("/api/user/modifyPwd", params)
+                .then(function(response){
+                    let responseCode = parseInt(response.data.code);
+                    if(responseCode === 200){
+                        that.dialogShow.modifyPwd = false;
+                        that.$message({
+                            message: '密码修改成功!',
+                            type: 'success'
+                        });
+                    }
+                    else if (responseCode === 411) {
+                        let _msg = response.data.msg;
+                        if (_msg === 'REQUEST_PARAM_ERROR') {
+                            //this.$message.error('请求参数异常');
+                            that.$message.error('请求参数异常');
+                        }
+                        else {
+                            that.$message.error( response.data.msg);
+                        }
+                    }
+                }).catch(function(err){
+                    that.$message.error( '密码修改失败');
                 console.warn(err);
             });
         },
@@ -4421,8 +4460,9 @@ new Vue({
             console.log('handleHeaderDropdown', command)
             command = command || '';
             if (command === 'modifyPwd') {
-                that.$message.error('功能创建中，请骚等!');
-                return false;
+                //that.$message.error('功能创建中，请骚等!');
+                // return false;
+                that.dialogShow.modifyPwd = !that.dialogShow.modifyPwd;
             }
             if(command === 'logout') {
                 document.getElementById('logoutForm').submit();
@@ -4495,6 +4535,7 @@ new Vue({
                 that.formPartyDues = config.formPartyDues;
                 that.formRes = config.formRes;
                 that.formResDl = config.formResDl;
+                that.formModifyPwd = config.formModifyPwd;
 
                 that.dialogShow = config.dialogShow;
                 that.rules = config.rules;

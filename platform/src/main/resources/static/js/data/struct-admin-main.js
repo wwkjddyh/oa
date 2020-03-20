@@ -248,6 +248,12 @@ const formStructConfig = {
         assTypeName: '',
     },
 
+    formModifyPwd: {
+        oldPassword: '',    //原始密码
+        password: '',       //当前密码
+        passwordOrgi: '',   //重复密码
+    },
+
     searchForm: {
         sysUser: {
             id: '',
@@ -488,6 +494,7 @@ const formStructConfig = {
         nddyxxcjdetail:false,
         nddyxxcjYear:false,
         resUpload: false,
+        modifyPwd: false,
     },
     rules: {
         name: [

@@ -394,4 +394,134 @@ public class UserBiz extends BaseBiz {
         }
         return ret;
     }
+
+    /**
+     * 修改密码
+     * @param userId 用户ID
+     * @param password 密码
+     * @param passwordOrgi 重复密码
+     * @return
+     */
+    public Map<String, Object> modifyPwd(String userId, String password, String passwordOrgi) {
+        userId = StringUtil.trim(userId);
+        password = StringUtil.trim(password);
+        passwordOrgi = StringUtil.trim(passwordOrgi);
+        try {
+            if ("".equals(userId)) {
+                ret = this.getParamErrorVo();
+            }
+            else {
+                User tUser = userService.getById(userId);
+                if (tUser == null) {
+                    ret = this.getParamErrorVo();
+                }
+                else {
+                    boolean isValidPwd = true;
+                    String msg = "";
+                    if ("".equals(password) || "".equals(passwordOrgi)) {
+                        msg = "'密码'、'重复密码'均不能为空或空格";
+                        isValidPwd = false;
+                    }
+                    else if (password.length() > 128 || password.length() < 6) {
+                        msg = "'密码'的长度在 6 到 128 个字符之间";
+                        isValidPwd = false;
+                    }
+                    else if (passwordOrgi.length() > 128 || passwordOrgi.length() < 6) {
+                        msg = "'重复密码'的长度在 6 到 128 个字符之间";
+                        isValidPwd = false;
+                    }
+                    else if (!password.equals(passwordOrgi)) {
+                        msg = "'密码'与'重复密码'不相同";
+                        isValidPwd = false;
+                    }
+
+                    if (isValidPwd) {
+                        User user = new User();
+                        user.setUserId(userId);
+                        user.setUserPwd(SecurityUtil.encodeBCryptPassword(password));
+                        user.setUserPwdOrigi(password);
+                        userService.update(user);
+                        ret = this.getSuccessVo("", "");
+                    }
+                    else {
+                        ret = StringUtil.getResultVo(StatusCode.REQUEST_PARAM_ERROR, msg, "");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            ret = this.getErrorVo();
+            e.printStackTrace();
+        }
+        return ret;
+    }
+
+    /**
+     * 修改密码
+     * @param userId 用户ID
+     * @param password 密码
+     * @param oldPassword 原始密码
+     * @param passwordOrgi 重复密码
+     * @return
+     */
+    public Map<String, Object> modifyPwd(String userId, String password, String oldPassword, String passwordOrgi) {
+        userId = StringUtil.trim(userId);
+        password = StringUtil.trim(password);
+        oldPassword = StringUtil.trim(oldPassword);
+        passwordOrgi = StringUtil.trim(passwordOrgi);
+        try {
+            if ("".equals(userId)) {
+                ret = this.getParamErrorVo();
+            }
+            else {
+                User tUser = userService.getById(userId);
+                if (tUser == null) {
+                    ret = this.getParamErrorVo();
+                }
+                else {
+                    boolean isValidPwd = true;
+                    String msg = "";
+                    if ("".equals(password) || "".equals(oldPassword) || "".equals(passwordOrgi)) {
+                        msg = "'密码'、'原始密码'、'重复密码'均不能为空或空格";
+                        isValidPwd = false;
+                    }
+                    else if (password.length() > 128 || password.length() < 6) {
+                        msg = "'密码'的长度在 6 到 128 个字符之间";
+                        isValidPwd = false;
+                    }
+                    else if (oldPassword.length() > 128 || oldPassword.length() < 6) {
+                        msg = "'原始密码'的长度在 6 到 128 个字符之间";
+                        isValidPwd = false;
+                    }
+                    else if (passwordOrgi.length() > 128 || passwordOrgi.length() < 6) {
+                        msg = "'重复密码'的长度在 6 到 128 个字符之间";
+                        isValidPwd = false;
+                    }
+                    else if (!password.equals(passwordOrgi)) {
+                        msg = "'密码'与'重复密码'不相同";
+                        isValidPwd = false;
+                    }
+                    else if (!oldPassword.equals(tUser.getUserPwdOrigi())) {
+                        msg = "'旧密码'与'原始密码'不相同";
+                        isValidPwd = false;
+                    }
+
+                    if (isValidPwd) {
+                        User user = new User();
+                        user.setUserId(userId);
+                        user.setUserPwd(SecurityUtil.encodeBCryptPassword(password));
+                        user.setUserPwdOrigi(password);
+                        userService.update(user);
+                        ret = this.getSuccessVo("", "");
+                    }
+                    else {
+                        ret = StringUtil.getResultVo(StatusCode.REQUEST_PARAM_ERROR, msg, "");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            ret = this.getErrorVo();
+            e.printStackTrace();
+        }
+        return ret;
+    }
 }

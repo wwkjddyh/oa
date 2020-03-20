@@ -450,4 +450,19 @@ public class UserApiController extends BaseController {
     public Map<String, Object> updateUserFlag(@RequestParam String userId,@RequestParam Integer flag) {
         return userBiz.updateUserRecordFlag(userId, flag);
     }
+
+    /**
+     * 修改密码
+     * @param userId 用户ID
+     * @param password 密码
+     * @param passwordOrgi 重复密码
+     * @return
+     */
+    @PostMapping("modifyPwd")
+    public Map<String, Object> modifyPwd(
+            @RequestParam String userId,
+            @RequestParam String password,
+            @RequestParam String passwordOrgi) {
+        return userBiz.modifyPwd(userId, password, passwordOrgi);
+    }
 }

@@ -15,7 +15,7 @@
             </el-dropdown-menu>
         </el-dropdown>-->
         <span style="float:right;font-size:14px;font-weight: 500;display: flex;">
-            <a style="cursor: pointer;margin-right: 10px;">{{currentUser.userNickname}}</a>
+            <a style="cursor: pointer;margin-right: 10px;" >{{currentUser.userNickname}}</a>
             <el-dropdown style="font-size: 15px;float:right; cursor: pointer;" size="mini" @command="handleHeaderDropdown">
                 <i class="el-icon-setting" style="font-size: 18px;color: white;"></i>
                 <el-dropdown-menu slot="dropdown">
@@ -27,5 +27,36 @@
                 <a onclick="document.getElementById('logoutForm').submit();"><img src="/images/exit-red.png" style="width: 25px;height: 25px;margin-bottom:-10px;margin-left:5px;cursor: pointer;"/></a>
             </form>
         </span>
+        <el-dialog size="small"
+                title="密码修改"
+                :visible.sync="dialogShow.modifyPwd"
+                width="350px" show-close="false" center="true">
+            <el-form ref="formModifyPwd" :rules="rules" :model="formModifyPwd" label-width="100px" size="small">
+                <input type="password" name="password" style="display:none;" autocomplete="off"/>
+                <input type="password" name="passwordOrgi" style="display:none;" autocomplete="off"/>
+                <input type="password" name="oldPassword" style="display:none;" autocomplete="off"/>
+                <!--
+                <el-form-item label="原始密码" prop="oldPassword">
+                    <el-input v-model="formModifyPwd.oldPassword" type="password" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="原始密码"></el-input>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">原始密码</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                -->
+                <el-form-item label="新密码" prop="password">
+                    <el-input v-model="formModifyPwd.password" type="password" size="small" auto-complete="new-password" style="width: 180px;" maxlength="512" placeholder="密码"></el-input>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">密码</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <el-form-item label="重复新密码" prop="passwordOrgi">
+                    <el-input v-model="formModifyPwd.passwordOrgi" type="password" size="small" auto-complete="new-password" style="width: 180px;" maxlength="512" placeholder="重复密码"></el-input>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">重复密码</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <el-form-item>
+                    <el-button @click="dialogShow.modifyPwd = false;" icon="el-icon-close" plain size="small">取消</el-button>
+                    <el-button @click="submitForm('formModifyPwd')" type="primary" plain size="small" icon="el-icon-check">保存</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
 </html>
