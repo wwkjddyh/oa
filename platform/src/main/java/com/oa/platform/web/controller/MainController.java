@@ -52,7 +52,7 @@ public class MainController {
 
 	@RequestMapping(value = {"/index", "/"}, method = {RequestMethod.POST, RequestMethod.GET})
 	public String index() {
-		return "index";
+		return "login";
 	}
 
 	@RequestMapping(value = "/user/index", method = {RequestMethod.POST, RequestMethod.GET})

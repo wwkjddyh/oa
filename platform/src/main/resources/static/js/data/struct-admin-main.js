@@ -521,9 +521,7 @@ const formStructConfig = {
             { required: true, message: '请填写内容', trigger: 'blur' },
             { min: 3, max: 2000, message: '长度在 3 到 2000 个字符之间', trigger: 'blur' }
         ],
-        orgCode: [
-        	{ required: true, message: '请填写党组织代码' , trigger: 'blur'}
-        ],
+       
         orgName: [
         	{ required: true, message: '请填写党组织名称' , trigger: 'blur'}
         ],
