@@ -248,4 +248,42 @@ public class ResBiz extends BaseBiz {
         return ret;
     }
 
+    /**
+     * 更新资源附件信息
+     * @param recordId 信息标识
+     * @param originalName 原始文件名
+     * @param currName 当前文件名
+     * @param accessUrl 访问路径
+     * @param resSize 资源大小
+     * @return
+     */
+    public Map<String, Object> uploadAttachmentInfo(String recordId, String originalName,
+                                                    String currName, String accessUrl, String resSize) {
+        recordId = StringUtil.trim(recordId);
+        originalName = StringUtil.trim(originalName);
+        currName = StringUtil.trim(currName);
+        accessUrl = StringUtil.trim(accessUrl);
+        resSize = StringUtil.trim(resSize, "0");
+        if ("".equals(recordId) || "".equals(originalName) || "".equals(currName) || "".equals(accessUrl)) {
+            ret = this.getParamErrorVo();
+        }
+        else {
+            try {
+                Res res = new Res();
+                res.setEditorId(this.getUserIdOfSecurity());
+                res.setModifyTime(DateUtil.currDateFormat(null));
+                res.setRecordId(recordId);
+                res.setOriginalName(originalName);
+                res.setCurrName(currName);
+                res.setAccessUrl(accessUrl);
+                res.setResSize(resSize);
+                resService.update(res);
+                ret = this.getSuccessVo("", "");
+            } catch (Exception e) {
+                loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+                ret = this.getErrorVo();
+            }
+        }
+        return ret;
+    }
 }

@@ -140,6 +140,7 @@ new Vue({
                 case 'nddfszqkgs':    // 年度党费收支情况公示
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '4bfeb907-05c0-48a5-9719-70d07eb640a2';
+                    that.formRes.typeName = '年度党费收支情况公示';
                     that.formSearchRes.typeId = '4bfeb907-05c0-48a5-9719-70d07eb640a2';
                     that.formSearchRes.assId = '';
                     that.formSearchRes.assTypeId = '';
@@ -154,6 +155,7 @@ new Vue({
                 case 'nddfszjcqk':    // 年度党费收支结存情况
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '0737d01e-b6f9-4567-8892-63fa9071903f';
+                    that.formRes.typeName = '年度党费收支结存情况';
                     that.formSearchRes.typeId = '0737d01e-b6f9-4567-8892-63fa9071903f';
                     that.formSearchRes.assId = '';
                     that.formSearchRes.assTypeId = '';
@@ -168,6 +170,7 @@ new Vue({
                 case 'ndhjgzjh':    // 年度换届工作计划
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '3d4565b4-041d-44e0-b411-b441865047c7';
+                    that.formRes.typeName = '年度换届工作计划';
                     that.formSearchRes.typeId = '3d4565b4-041d-44e0-b411-b441865047c7';
                     that.formSearchRes.assId = '';
                     that.formSearchRes.assTypeId = '';
@@ -182,6 +185,7 @@ new Vue({
                 case 'hjgztz':    // 换届工作台账
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '4a056958-6d34-4dbc-ac12-1385b0745023';
+                    that.formRes.typeName = '换届工作台账';
                     that.formSearchRes.typeId = '4a056958-6d34-4dbc-ac12-1385b0745023';
                     that.formSearchRes.assId = '';
                     that.formSearchRes.assTypeId = '';
@@ -196,6 +200,7 @@ new Vue({
                 case 'fzdy':    // 发展党员
                     that.formSearchRes.key = '';
                     that.formRes.typeId = 'ed535138-6ec2-468c-8083-d967a24c2f33';
+                    that.formRes.typeName = '发展党员';
                     that.formSearchRes.typeId = 'ed535138-6ec2-468c-8083-d967a24c2f33';
                     that.formSearchRes.assId = '';
                     that.formSearchRes.assTypeId = '';
@@ -1672,6 +1677,45 @@ new Vue({
                         that.pager.res.currentPage = 1;
                         that.loadResList('',1,that.pager.res.pageSize);
                     });
+                }).catch(function(err){
+                console.warn(err);
+            });
+        },
+
+        /**
+         * 更新资源附件信息
+         */
+        uploadResAttachmentInfo(entry) {
+            let that = this;
+            let params = new URLSearchParams();
+            params.append('recordId',entry.recordId || '');
+            params.append("originalName", entry.originalName || '');
+            params.append("currName", entry.currName || '')
+            params.append('accessUrl', entry.accessUrl || '');
+            params.append('resSize', entry.resSize || '0');
+            axios.post("/api/res/uploadAttachmentInfo", params)
+                .then(function(response){
+                    if(parseInt(response.data.code) === 200){
+                        that.dialogShow.resUpload = false;
+                        //that.loadResList('', 1, that.pager.res.pageSize);
+                        if (that.resArray) {
+                            for (let i = 0; i < that.resArray.length; i ++ ) {
+                                let __resEntry = that.resArray[i];
+                                if (__resEntry.recordId == entry.recordId) {
+                                    __resEntry.originalName = entry.originalName;
+                                    __resEntry.currName = entry.currName;
+                                    __resEntry.accessUrl = entry.accessUrl;
+                                    __resEntry.resSize = entry.resSize;
+                                }
+                            }
+                        }
+                        that.$message({
+                            message: '上传成功',
+                            type: 'success'
+                        });
+                    }else{
+                        this.$message.error("上传失败");
+                    }
                 }).catch(function(err){
                 console.warn(err);
             });
@@ -4043,10 +4087,49 @@ new Vue({
 
         },
 
-        handleUpload2() {
+        handleUpload2(entry) {
             let that = this;
             that.dialogShow.resUpload = !that.dialogShow.resUpload;
-            that.$refs.uploadRes2.clearFiles();
+            if (that.$refs.uploadRes2 && that.$refs.uploadRes2.uploadFiles && that.$refs.uploadRes2.uploadFiles != undefined) {
+                that.$refs.uploadRes2.uploadFiles = [];
+                that.$refs.uploadRes2.clearFiles();
+            }
+            console.log('(handleUpload2)entry', entry)
+            if (entry) {
+                that.formRes = {
+                    recordId: entry.recordId,
+                    resName: entry.resName,
+                    typeId: entry.typeId,
+                    assId: entry.assId,
+                    assTypeId: entry.assTypeId,
+                    originalName: entry.originalName,
+                    recordTime: entry.recordTime,
+                    recordFlag: entry.recordFlag,
+                    resSize: entry.resSize,
+                    announcerId: entry.announcerId,
+                    publishTime: entry.publishTime,
+                    resAuthor: entry.resAuthor,
+                    resSrc: entry.resSrc,
+                    resIntro: entry.resIntro,
+                    resDesc: entry.resDesc,
+                    resTags: entry.resTags,
+                    modifyTime: entry.modifyTime,
+                    editorId: entry.editorId,
+                    accessUrl: entry.accessUrl,
+                    auditorId: entry.auditorId,
+                    auditTime: entry.auditTime,
+                    auditStatus: entry.auditStatus,
+                    typeName: entry.typeName,
+                    assTitle: entry.assTitle,
+                    assTypeName: entry.assTypeName,
+                    announcerName: entry.announcerName,
+                    editorName: entry.editorName,
+                    auditorName: entry.auditorName,
+                    currName: entry.currName || '',
+                    orgId: entry.orgId || '',
+                    orgName: entry.orgName || '',
+                };
+            }
         },
 
         closeUpload2() {
@@ -4098,10 +4181,20 @@ new Vue({
                 that.formRes.currName = data.newFileName || '';
                 that.formRes.accessUrl = data.destName || '';
                 that.formRes.resSize = (data.size || 0) + '';
-                that.$notify.success({
-                    title: '成功',
-                    message: `文件上传成功`
-                });
+                // that.$notify.success({
+                //     title: '成功',
+                //     message: `文件上传成功`
+                // });
+
+                let entry = {
+                    recordId: that.formRes.recordId || '',
+                    originalName: data.fileName || '',
+                    currName: data.newFileName || '',
+                    accessUrl: data.destName || '',
+                    resSize: (data.size || 0) + '',
+                };
+
+                that.uploadResAttachmentInfo(entry);
             }
             else {
                 that.$notify.error({

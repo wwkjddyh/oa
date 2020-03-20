@@ -118,4 +118,23 @@ public class ResApiController extends BaseController {
             @RequestParam(defaultValue = PAGE_SIZE_STR, required = false) int pageSize) {
         return resBiz.searchDl(recordId, resId, userId, key, pageNum, pageSize);
     }
+
+    /**
+     * 更新资源附件信息
+     * @param recordId 信息标识
+     * @param originalName 原始文件名
+     * @param currName 当前文件名
+     * @param accessUrl 访问路径
+     * @param resSize 资源大小
+     * @return
+     */
+    @PostMapping("uploadAttachmentInfo")
+    public Map<String, Object> uploadAttachmentInfo(
+            @RequestParam String recordId,
+            @RequestParam String originalName,
+            @RequestParam String currName,
+            @RequestParam String accessUrl,
+            @RequestParam(defaultValue = "0", required = false) String resSize) {
+        return resBiz.uploadAttachmentInfo(recordId, originalName, currName, accessUrl, resSize);
+    }
 }
