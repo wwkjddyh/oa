@@ -381,6 +381,58 @@ new Vue({
         dyxxyear:{
         	year:''
         },
+        firstPage1:[
+        	{
+        		index:0,
+        		name:'通知公告',
+        		url:'announce',
+        		modelName:'通知公告'
+        	},
+        	{
+        		index:1,
+        		name:'邮箱',
+        		url:'mail',
+        		modelName:'邮箱'
+        	},
+        	{
+        		index:2,
+        		name:'视频会议',
+        		url:'faceMeet',
+        		modelName:'视频会议'
+        	},
+        	{
+        		index:3,
+        		name:'大数据',
+        		url:'bigData',
+        		modelName:'大数据'
+        	}
+        ],
+        firstPage2:[
+        	{
+        		index:0,
+        		name:'党组织管理',
+        		url:'dwjbxx',
+        		modelName:'党委基本信息'
+        	},
+        	{
+        		index:1,
+        		name:'党员管理',
+        		url:'nddyxxcj',
+        		modelName:'年度党员信息采集'
+        	},
+        	{
+        		index:2,
+        		name:'党费管理',
+        		url:'nddfszqkgs',
+        		modelName:'年度党费收支情况公示'
+        	},
+        	{
+        		index:3,
+        		name:'换届管理',
+        		url:'hjgztz',
+        		modelName:'换届工作台账'
+        	}
+        ],
         yearList:[],
         nddyxxcjYear:false,
         nddyxxSearchCondition:'',
@@ -3989,7 +4041,16 @@ new Vue({
             that.def_menu_id = moduleCode;
             that.$forceUpdate();
         },
-
+        goToMenu(item){
+        	let that = this;
+        	that.showContent  = item.url;
+        	that.def_menu_id = item.url;
+        	let model = {};
+        	model.moduleCode = item.url;
+        	model.moduleName = item.modelName;
+        	that.handleAddTab2(model);
+            that.$forceUpdate();
+        },
         /**
          * 上传移除操作
          * @param file 文件
