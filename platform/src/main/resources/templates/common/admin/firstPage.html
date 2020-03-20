@@ -3,21 +3,27 @@
       xmlns:th="http://www.w3.org/1999/xhtml">
 <div th:fragment="content">
 	<el-row>
-	  <el-col :span="4" v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 2 : 0">
-	    <el-card style="height: 180px; margin-top: 20px">
-	      <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-			   class="image" style="height: 120px">
-	      <div style="height: 40px; padding-top: 0px; text-align: center;">
-	        <span>首页</span>
-	      </div>
-	    </el-card>
-	  </el-col>
-		<el-col :span="4" v-for="(o, index) in 4" :key="o" :offset="index > 0 ? 2 : 0">
-			<el-card style="height: 180px; margin-top: 20px">
-				<img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-				 class="image" style="height: 120px">
-				<div style="height: 40px; padding-top: 0px; text-align: center;">
-					<span>首页</span>
+	  <el-col :span="4" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 2 : 0">
+			<el-card style="height: 180px; margin-top: 20px" >
+				<!-- <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+				 class="image" style="height: 120px"> -->
+				 <div align="center" style="cursor:pointer;" @click="goToMenu(item)">
+				 	<i class="el-icon-house" style="font-size: 100px" align="center" ></i>
+				 </div>
+				<div style="height: 40px; padding-top: 10px; text-align: center;">
+					<span>{{item.name}}</span>
+				</div>
+			</el-card>
+		</el-col>
+		<el-col :span="4" v-for="item in firstPage2" :key="item.url" :offset="item.index > 0 ? 2 : 0">
+			<el-card style="height: 180px; margin-top: 20px" >
+				<!-- <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+				 class="image" style="height: 120px"> -->
+				 <div align="center" style="cursor:pointer;" @click="goToMenu(item)">
+				 	<i class="el-icon-house" style="font-size: 100px" align="center" ></i>
+				 </div>
+				<div style="height: 40px; padding-top: 10px; text-align: center;">
+					<span>{{item.name}}</span>
 				</div>
 			</el-card>
 		</el-col>
