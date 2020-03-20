@@ -8,8 +8,8 @@
     <META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
     <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
     <META HTTP-EQUIV="Expires" CONTENT="0"/>
-    <link rel="stylesheet" href="/css/custom/sys-style.css" th:href="@{~/css/custom/sys-style.css}"/>
     <link rel="stylesheet" href="/css/element-ui/index.css" th:href="@{~/css/element-ui/index.css}"/>
+    <link rel="stylesheet" href="/css/custom/sys-style.css" th:href="@{~/css/custom/sys-style.css}"/>
     <!--<link rel="stylesheet" href="https://unpkg.com/element-ui@2.4.11/lib/theme-chalk/index.css"/>-->
 </head>
 <body>
@@ -18,7 +18,7 @@
         <div th:include="/common/admin/header :: header"></div>
     </el-header>
     <el-container style="height: 550px; border: 0;">
-        <el-aside style="width: auto;overflow-x: hidden ;background-color: rgb(238, 241, 246)">
+        <el-aside style="width: auto;overflow-x: hidden ;">
             <div th:replace="/common/admin/menu :: menu"></div>
         </el-aside>
 
@@ -31,7 +31,7 @@
                     <el-tabs v-model="editableTabsOptions.editableTabsValue" type="card"
                              @tab-remove="handleRemoveTab"
                              @tab-click="handleClickTab"
-                             style="font-size: 12px; font-weight: bolder;"
+                             style="font-size: 12px; font-weight: bolder;" size="mini"
                     >
                         <el-tab-pane
                                 v-for="(item, index) in editableTabsOptions.editableTabs"

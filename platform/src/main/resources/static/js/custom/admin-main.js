@@ -4282,6 +4282,24 @@ new Vue({
         },
 
         /**
+         * Header关闭下拉菜单
+         * @param command 命令
+         */
+        handleHeaderDropdown(command) {
+            let that = this;
+            console.log('handleHeaderDropdown', command)
+            command = command || '';
+            if (command === 'modifyPwd') {
+                that.$message.error('功能创建中，请骚等!');
+                return false;
+            }
+            if(command === 'logout') {
+                document.getElementById('logoutForm').submit();
+                return false;
+            }
+        },
+
+        /**
          * 下载资源
          * @param res
          */
