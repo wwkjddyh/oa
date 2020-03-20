@@ -2,27 +2,31 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
     <el-form ref="formSearchNews" :model="formSearchNews" label-width="85px" size="small">
-        <el-form-item label="党组织机构">
-            <el-select v-model="formSearchRes.orgId" style="width: 300px;" placeholder="请选择党组织机构" size="small">
-                <el-option label="全部" value="">全部</el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item label="年月">
-            <el-select v-model="formSearchRes.yearMonth" style="width: 300px; font-size: 12px" placeholder="请选择年月" size="small">
-                <el-option label="全部" value="">全部</el-option>
-                <el-option v-for="item in yearMonths" :key="item.value" :label="item.text" :value="item.value"></el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item label="其他分类">
-            <el-select v-model="formSearchRes.assTypeId" style="width: 300px; font-size: 12px" placeholder="请选择分类" size="small">
-                <el-option label="全部" value="">全部</el-option>
-                <el-option v-for="item in resOtherTypes" :key="item.dictId" :label="item.dictName" :value="item.dictId"></el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item label="模糊搜索">
-            <el-input v-model="formSearchRes.key" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
-            <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" style="float:right">检索</el-button>
-        </el-form-item>
+        <el-col :span="12">
+            <el-form-item label="党组织机构">
+                <el-select v-model="formSearchRes.orgId" style="width: 300px;" placeholder="请选择党组织机构" size="small">
+                    <el-option label="全部" value="">全部</el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="年月">
+                <el-select v-model="formSearchRes.yearMonth" style="width: 300px; font-size: 12px" placeholder="请选择年月" size="small">
+                    <el-option label="全部" value="">全部</el-option>
+                    <el-option v-for="item in yearMonths" :key="item.value" :label="item.text" :value="item.value"></el-option>
+                </el-select>
+            </el-form-item>
+        </el-col>
+        <el-col :span="12">
+            <el-form-item label="其他分类">
+                <el-select v-model="formSearchRes.assTypeId" style="width: 300px; font-size: 12px" placeholder="请选择分类" size="small">
+                    <el-option label="全部" value="">全部</el-option>
+                    <el-option v-for="item in resOtherTypes" :key="item.dictId" :label="item.dictName" :value="item.dictId"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="模糊搜索">
+                <el-input v-model="formSearchRes.key" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
+                <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" style="float:right">检索</el-button>
+            </el-form-item>
+        </el-col>
     </el-form>
     <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
     <el-button plain @click="searchForm('formSearchRes')" size="mini" icon="el-icon-refresh">刷新</el-button>
