@@ -1,9 +1,14 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
+    <!--
     <el-tabs v-model="activeTabName" type="card">
-        <el-tab-pane label="文章检索" name="first">
-            <!--
+        <el-tab-pane label="简报" name="first">
+
+        </el-tab-pane>
+    </el-tabs>
+    -->
+    <!--
             <el-form ref="formSearchArticle" :model="formSearchArticle" label-width="100px">
                 <el-form-item label="文章类型" prop="typeId">
                     <el-select v-model="formSearchArticle.categoryId" style="width: 300px;" placeholder="请选择类型">
@@ -24,143 +29,27 @@
             </el-form>
             <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
             -->
-            <el-button plain @click="edit('article', '', '', true)" size="mini" icon="el-icon-plus">新增</el-button>
-            <div style="margin-top: 20px">
-                <el-table size="small"
-                        :data="articles"
-                        border
-                        style="width: 100%">
-                    <el-table-column
-                            align="center"
-                            width="70"
-                            label="序号">
-                        <template slot-scope="scope">
-                            {{scope.$index+1}}
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="categoryName"
-                            label="类型"
-                            width="100">
-                    </el-table-column>
-                    <el-table-column
-                            prop="title"
-                            label="标题">
-                    </el-table-column>
-                    <el-table-column
-                            prop="tags"
-                            label="标签"
-                            width="100">
-                    </el-table-column>
-                    <el-table-column
-                            prop="creatorName"
-                            label="创建者"
-                            width="100">
-                    </el-table-column>
-                    <!--
-                    <el-table-column
-                            prop="source"
-                            label="来源">
-                    </el-table-column>
-                    <el-table-column
-                            prop="sourceSite"
-                            label="来源网址">
-                    </el-table-column>
-                    <el-table-column
-                            prop="commentsCount"
-                            label="评论数">
-                    </el-table-column>
-                    <el-table-column
-                            prop="viewCount"
-                            label="浏览数">
-                    </el-table-column>
-                    <el-table-column
-                            prop="likeCount"
-                            label="点赞数">
-                    </el-table-column>
-                    <el-table-column
-                            prop="stinkyEgg"
-                            label="臭鸡蛋数">
-                    </el-table-column>
-                    -->
-                    <el-table-column
-                            align="center"
-                            width="180"
-                            label="操作">
-                        <template slot-scope="scope">
-                            <div style="display: flex;width:100%">
-                                <el-button size="mini" @click="edit('article',scope.$index,scope.row,false)" icon="el-icon-edit">修改</el-button>
-                                <el-button size="mini" type="danger" @click="handleDel(scope.$index,'article')" icon="el-icon-delete">删除</el-button>
-                            </div>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div align="center" style="margin-top: 10px">
-                    <el-pagination size="small"
-                            @size-change="handleArticleSizeChange"
-                            @current-change="handleArticleCurrentChange"
-                            :current-page="pager.article.currentPage"
-                            :page-sizes="[10, 20, 30, 40]"
-                            :page-size="pager.article.pageSize"
-                            layout="total, sizes, prev, pager, next, jumper"
-                            :total="pager.article.totalCount">
-                    </el-pagination>
-                </div>
+    <el-button plain @click="edit('article', '', '', true)" size="mini" icon="el-icon-plus">新增</el-button>
+    <div style="margin-top: 20px">
+        <div v-for="item in articles" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
+            <div style="width: 70%; height: auto">
+                <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.title || ''}}</a>
             </div>
-            <el-dialog title="文章信息" :visible.sync="dialogShow.article" lock-scroll="true" width="800px">
-                <el-card shadow="never" style="width: 100%;" type="card">
-                    <el-form ref="formArticle" :rules="rules" :model="formArticle" label-width="100px" size="small">
-                        <el-form-item label="文章类型" prop="categoryId">
-                            <el-select v-model="formArticle.categoryId" style="width: 300px;" placeholder="请选择类型" size="small">
-                                <el-option label="热点资讯" value="hotNews"></el-option>
-                                <el-option label="法律法规" value="regulation"></el-option>
-                            </el-select>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">文章类型</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="文章标题" prop="title">
-                            <el-input v-model="formArticle.title" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="文章标题"></el-input>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">文章标题</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="文章简介" prop="intro">
-                            <el-input type="textarea" v-model="formArticle.intro" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" size="small"></el-input>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">文章简介</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="文章内容" prop="content">
-                            <el-input id="formArticleContent" type="textarea" v-model="formArticle.content" :autosize="{minRows: 20, maxRows: 20}" style="width:600px;" size="small"></el-input>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">文章内容</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="文章标签" prop="tags">
-                            <el-input v-model="formArticle.tags" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="标签以空格分隔"></el-input>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">标签</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="原始作者" prop="authorName">
-                            <el-input v-model="formArticle.authorName" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="作者"></el-input>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">作者</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="文章来源" prop="source">
-                            <el-input v-model="formArticle.source" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="来源"></el-input>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">来源(网站名称或媒体名称)</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item label="文章来源站点" prop="sourceSite">
-                            <el-input v-model="formArticle.sourceSite" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="来源"></el-input>
-                            <el-tooltip class="item" effect="dark" placement="top">
-                                <div slot="content">来源站点(网站网址或文章网址)</div><i class="el-icon-question"></i></el-tooltip>
-                        </el-form-item>
-                        <el-form-item>
-                            <el-button @click="resetForm('formArticle')" plain icon="el-icon-close" size="mini">取消</el-button>
-                            <el-button @click="submitForm('formArticle')" type="primary" plain icon="el-icon-check" size="mini">保存</el-button>
-                        </el-form-item>
-                    </el-form>
-                </el-card>
-            </el-dialog>
-        </el-tab-pane>
-    </el-tabs>
+            <div style="width: 30%; font-size: 13px; color: #8c939d;">
+                {{item.recordTime.substr(0, 10)}}
+            </div>
+        </div>
+        <div align="center" style="margin-top: 10px">
+            <el-pagination size="small"
+                           @size-change="handleArticleSizeChange"
+                           @current-change="handleArticleCurrentChange"
+                           :current-page="pager.article.currentPage"
+                           :page-sizes="[10, 20, 30, 40]"
+                           :page-size="pager.article.pageSize"
+                           layout="total, sizes, prev, pager, next, jumper"
+                           :total="pager.article.totalCount">
+            </el-pagination>
+        </div>
+    </div>
 </div>
 </html>
