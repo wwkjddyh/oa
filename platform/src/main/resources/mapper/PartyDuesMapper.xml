@@ -2,13 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.oa.platform.repository.PartyDuesRepository" >
 
-  <cache type="org.mybatis.caches.ehcache.EhcacheCache"
-         eviction="LRU"
-         flushInterval="3600000"
-         size="1024"
-         readOnly="true"
-         blocking="true"
-  />
+<!--  <cache type="org.mybatis.caches.ehcache.EhcacheCache"-->
+<!--         eviction="LRU"-->
+<!--         flushInterval="3600000"-->
+<!--         size="1024"-->
+<!--         readOnly="true"-->
+<!--         blocking="true"-->
+<!--  />-->
 
   <resultMap id="partyDues" type="com.oa.platform.entity.PartyDues">
     <result column="record_id" property="recordId" jdbcType="VARCHAR"/>

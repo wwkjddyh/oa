@@ -2,14 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.oa.platform.repository.RoleRepository" >
 
-  <cache type="org.mybatis.caches.ehcache.EhcacheCache"
-         eviction="LRU"
-         flushInterval="3600000"
-         size="1024"
-         readOnly="true"
-         blocking="true"
-  />
-
   <resultMap id="role" type="com.oa.platform.entity.Role">
     <result column="role_id" property="roleId" jdbcType="VARCHAR"/>
     <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
