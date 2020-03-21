@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.oa.platform.common.Constants;
 import com.oa.platform.entity.Article;
 import com.oa.platform.entity.BriefSendRecord;
+import com.oa.platform.entity.NewsSendRecord;
 import com.oa.platform.service.ArticleService;
 import com.oa.platform.util.DateUtil;
 import com.oa.platform.util.StringUtil;
@@ -259,6 +260,50 @@ public class ArticleBiz extends BaseBiz {
                 loggerError(ThreadUtil.getCurrentFullMethodName(), e);
                 ret = this.getErrorVo();
             }
+        }
+        return ret;
+    }
+
+    /**
+     * 检索简报发送信息
+     * @param id 唯一标识
+     * @param briefId 简报ID
+     * @param senderId 发送者ID
+     * @param receiverId 接收者ID
+     * @param status 状态
+     * @param recordFlag 信息标识
+     * @param sendTime 发送时间
+     * @param viewTime 浏览时间
+     * @param key 关键字
+     * @param pageNum 页码
+     * @param pageSize 每页记录数
+     * @return
+     */
+    public Map<String, Object> searchBriefSendRecord(String id, String briefId, String senderId, String receiverId,
+                                                     Integer status, Integer recordFlag, String sendTime,
+                                                     String viewTime, String key, int pageNum, int pageSize) {
+        id = StringUtil.trim(id);
+        BriefSendRecord record = new BriefSendRecord();
+        record.setRecordId(id);
+        if ("".equals(id)) {
+            record.setBriefId(StringUtil.trim(briefId));
+            record.setSenderId(StringUtil.trim(senderId));
+            record.setReceiverId(StringUtil.trim(receiverId));
+            if (status != null) {
+                record.setStatus(status);
+            }
+            if (recordFlag != null) {
+                record.setRecordFlag(recordFlag);
+            }
+            record.setSendTime(StringUtil.trim(sendTime));
+            record.setViewTime(StringUtil.trim(viewTime));
+            record.setKey(StringUtil.trim(key));
+            PageInfo<BriefSendRecord> pageInfo = articleService.searchBriefSendRecord(record, pageNum, pageSize);
+            ret = this.getPageInfo(pageInfo);
+        }
+        else {
+            List<BriefSendRecord> records = articleService.findBriefSendRecord(record);
+            ret = this.getSingleInfo(records);
         }
         return ret;
     }

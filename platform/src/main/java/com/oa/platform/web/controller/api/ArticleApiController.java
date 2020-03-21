@@ -1,6 +1,9 @@
 package com.oa.platform.web.controller.api;
 
 import com.oa.platform.biz.ArticleBiz;
+import com.oa.platform.common.Constants;
+import com.oa.platform.common.StatusCode;
+import com.oa.platform.util.StringUtil;
 import com.oa.platform.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -94,6 +97,70 @@ public class ArticleApiController extends BaseController {
     @GetMapping("getReceiverIdsByBriefId")
     public Map<String, Object> getReceiverIdsByBriefId(@RequestParam String briefId) {
         return articleBiz.getReceiverIdsByBriefId(briefId);
+    }
+
+    /**
+     * 检索简报发送信息
+     * @param id 唯一标识
+     * @param briefId 简报ID
+     * @param senderId 发送者ID
+     * @param receiverId 接收者ID
+     * @param status 状态
+     * @param recordFlag 信息标识
+     * @param sendTime 发送时间
+     * @param viewTime 浏览时间
+     * @param key 关键字
+     * @param pageNum 页码
+     * @param pageSize 每页记录数
+     * @return
+     */
+    @GetMapping("searchBriefSendRecord")
+    public Map<String, Object> searchBriefSendRecord(
+            @RequestParam(defaultValue = "", required = false) String id,
+            @RequestParam(defaultValue = "", required = false) String briefId,
+            @RequestParam(defaultValue = "", required = false) String senderId,
+            @RequestParam(defaultValue = "", required = false) String receiverId,
+            Integer status,
+            Integer recordFlag,
+            @RequestParam(defaultValue = "", required = false) String sendTime,
+            @RequestParam(defaultValue = "", required = false) String viewTime,
+            @RequestParam(defaultValue = "", required = false) String key,
+            @RequestParam(defaultValue = PAGE_NUM_STR, required = false) int pageNum,
+            @RequestParam(defaultValue = PAGE_SIZE_STR, required = false)  int pageSize) {
+        return articleBiz.searchBriefSendRecord(id, briefId, senderId, receiverId,
+                status, recordFlag, sendTime, viewTime, key, pageNum, pageSize);
+    }
+
+    /**
+     * 获得当前用户接收到的简报信息
+     * @param id 唯一标识
+     * @param briefId 简报ID
+     * @param senderId 发送者ID
+     * @param status 状态
+     * @param sendTime 发送时间
+     * @param viewTime 浏览时间
+     * @param key 关键字
+     * @param pageNum 页码
+     * @param pageSize 每页记录数
+     * @return
+     */
+    @GetMapping("getCurrUserReceiverBriefRecord")
+    public Map<String, Object> getCurrUserReceiverBriefRecord(
+            @RequestParam(defaultValue = "", required = false) String id,
+            @RequestParam(defaultValue = "", required = false) String briefId,
+            @RequestParam(defaultValue = "", required = false) String senderId,
+            Integer status,
+            @RequestParam(defaultValue = "", required = false) String sendTime,
+            @RequestParam(defaultValue = "", required = false) String viewTime,
+            @RequestParam(defaultValue = "", required = false) String key,
+            @RequestParam(defaultValue = PAGE_NUM_STR, required = false) int pageNum,
+            @RequestParam(defaultValue = PAGE_SIZE_STR, required = false)  int pageSize) {
+        String userId = this.getUserIdOfSecurity();
+        if ("".equals(userId)) {
+            return StringUtil.getResultVo(StatusCode.UNAUTHORIZED, "请登录", "");
+        }
+        return articleBiz.searchBriefSendRecord(id, briefId, senderId, userId,
+                status, Constants.INT_NORMAL, sendTime, viewTime, key, pageNum, pageSize);
     }
 
 }

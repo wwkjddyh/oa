@@ -31,15 +31,16 @@
             -->
     <el-button plain @click="edit('article', '', '', true)" size="mini" icon="el-icon-plus">新增</el-button>
     <div style="margin-top: 20px">
-        <div v-for="item in articles" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
+        <div v-for="item in currUserReceiverBriefRecords" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
             <div style="width: 70%; height: auto">
-                <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.title || ''}}</a>
+                <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" @click="handleNewsView(item.briefId)">{{item.briefTitle || ''}}</a>
             </div>
             <div style="width: 30%; font-size: 13px; color: #8c939d;">
-                {{item.recordTime.substr(0, 10)}}
+                {{item.sendTime.substr(0, 10)}}
             </div>
         </div>
         <div align="center" style="margin-top: 10px">
+            <!--
             <el-pagination size="small"
                            @size-change="handleArticleSizeChange"
                            @current-change="handleArticleCurrentChange"
@@ -48,6 +49,16 @@
                            :page-size="pager.article.pageSize"
                            layout="total, sizes, prev, pager, next, jumper"
                            :total="pager.article.totalCount">
+            </el-pagination>
+            -->
+            <el-pagination size="small"
+                           @size-change="handleCurrUserReceiverBriefRecordSizeChange"
+                           @current-change="handleCurrUserReceiverBriefRecordCurrentChange"
+                           :current-page="pager.briefSendRecord.currentPage"
+                           :page-sizes="[10, 20, 30, 40]"
+                           :page-size="pager.briefSendRecord.pageSize"
+                           layout="total, sizes, prev, pager, next, jumper"
+                           :total="pager.briefSendRecord.totalCount">
             </el-pagination>
         </div>
     </div>

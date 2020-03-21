@@ -62,12 +62,13 @@ new Vue({
                     that.loadNews('', 1, that.pager.news.pageSize);
                     break;
                 case 'articles':    // 简报列表
-                    that.getArticleCategories();
+                    //that.getArticleCategories();
                     that.formSearchArticle.sendType = '1';
                     that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
-                    that.loadArticles('',1, that.pager.article.pageSize);
+                    //that.loadArticles('',1, that.pager.article.pageSize);
                     that.currAction = 'append';
                     that.def_menu_id = 'articles';
+                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize);
                     break;
                 case 'formArticle': // 简报
                     that.getArticleCategories();
@@ -406,6 +407,7 @@ new Vue({
         formRes: {},
         formResDl: {},
         formModifyPwd: {},
+        formBriefSendRecord: {},
         loading:{},
         nddyxxcjLoading:false,
         dwjbxxLoading: false,
@@ -511,6 +513,7 @@ new Vue({
         formSearchPartyDues: {},
         formSearchRes: {},
         formSearchResDl: {},
+        formSearchBriefSendRecord: {},
         formdwjbxx:{},
         formLeader:{},
         formDept:{},
@@ -535,6 +538,7 @@ new Vue({
         ],
         articles: [],
         articleTypes: [],
+        currUserReceiverBriefRecords: [],
         
         ssdzzqk:[
         	{
@@ -863,6 +867,26 @@ new Vue({
                 totalCount: 1000,
             },
             article: {
+                //搜索条件
+                criteria: '',
+
+                //默认每页数据量
+                pageSize: 10,
+
+                //默认高亮行数据id
+                highlightId: -1,
+
+                //当前页码
+                currentPage: 1,
+
+                //查询的页码
+                start: 1,
+
+                //默认数据总数
+                totalCount: 1000,
+            },
+
+            briefSendRecord: {
                 //搜索条件
                 criteria: '',
 
@@ -1434,12 +1458,17 @@ new Vue({
                     let responseCode = parseInt(response.data.code);
                     if(responseCode === 200){
                         that.dialogShow.article = false;
-                        that.editableTabsOptions.editableTabsValue = 'articles';
-                        that.def_menu_id = 'articles';
-                        that.showContent = 'articles';
-                        that.$refs['menuRef'].activeIndex = 'articles';
+                        //
+                        // that.editableTabsOptions.editableTabsValue = 'articles';
+                        // that.def_menu_id = 'articles';
+                        // that.showContent = 'articles';
+                        // that.$refs['menuRef'].activeIndex = 'articles';
+                        /*
                         that.pager.article.currentPage = 1;
                         that.loadArticles('',1, that.pager.article.pageSize);
+                         */
+                        that.pager.briefSendRecord.currentPage = 1;
+                        that.loadCurrUserReceiverBriefRecord('', 1, that.pager.briefSendRecord.pageSize);
                         that.$forceUpdate();
                         that.$message({
                             message: articleType + operName + '成功!',
@@ -4078,6 +4107,42 @@ new Vue({
         },
 
         /**
+         * 加载当前用户接收到的简报信息
+         */
+        loadCurrUserReceiverBriefRecord(criteria, pageNum, pageSize) {
+            let that = this;
+            axios.get("/api/article/getCurrUserReceiverBriefRecord", {params:{
+                    key: criteria,
+                    pageNum: pageNum,
+                    pageSize: pageSize,
+                    briefId: that.formSearchBriefSendRecord.briefId,
+                    senderId: that.formSearchBriefSendRecord.senderId,
+                    sendTime: that.formSearchBriefSendRecord.sendTime,
+                    viewTime: that.formSearchBriefSendRecord.viewTime,
+                }})
+                .then(function(response){/*成功*/
+                    if(parseInt(response.status) == 200 ) {
+                        that.currUserReceiverBriefRecords = response.data.data.list;
+                        that.pager.briefSendRecord.totalCount = response.data.data.total;
+                    }
+                })
+                .catch(function(err){/*异常*/
+                    console.log(err);
+                });
+        },
+        //每页显示数据量变更
+        handleCurrUserReceiverBriefRecordSizeChange: function(val) {
+            this.pager.briefSendRecord.pageSize = val;
+            this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize);
+        },
+
+        //页码变更
+        handleCurrUserReceiverBriefRecordCurrentChange: function(val) {
+            this.pager.briefSendRecord.currentPage = val;
+            this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize);
+        },
+
+        /**
          * 加载(当前用户)党费缴纳信息
          */
         loadPartyDues(criteria, pageNum, pageSize) {
@@ -4651,6 +4716,7 @@ new Vue({
                 that.formRes = config.formRes;
                 that.formResDl = config.formResDl;
                 that.formModifyPwd = config.formModifyPwd;
+                that.formBriefSendRecord = config.formBriefSendRecord;
 
                 that.dialogShow = config.dialogShow;
                 that.rules = config.rules;
@@ -4668,6 +4734,7 @@ new Vue({
                 that.formSearchPartyDues = searchForm.partyDues;
                 that.formSearchRes = searchForm.res;
                 that.formSearchResDl = searchForm.resDl;
+                that.formSearchBriefSendRecord = searchForm.briefSendRecord;
 
             })
             .catch(function(err){/*异常*/

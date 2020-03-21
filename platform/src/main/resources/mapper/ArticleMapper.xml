@@ -369,7 +369,7 @@
         )
       </if>
       <if test="sendTime != null and sendTime != ''">
-        AND DATE_FORMAT(send_time,'%Y-%m-%d') = #{startTime}
+        AND DATE_FORMAT(send_time,'%Y-%m-%d') = #{sendTime}
       </if>
       <if test="viewTime != null and viewTime != ''">
         AND DATE_FORMAT(view_time,'%Y-%m-%d') = #{endTime}

@@ -1,5 +1,6 @@
 package com.oa.platform.service;
 
+import com.github.pagehelper.PageInfo;
 import com.oa.platform.entity.Article;
 import com.oa.platform.entity.BriefSendRecord;
 
@@ -61,4 +62,13 @@ public interface ArticleService extends BaseService<Article,String> {
      * @return
      */
     List<String> findReceiverIdByBriefId(String briefId);
+
+    /**
+     * 检索简报发送记录消息
+     * @param record 发送记录参数
+     * @param pageNum 当前页码
+     * @param pageSize 每页记录数
+     * @return
+     */
+    PageInfo<BriefSendRecord> searchBriefSendRecord(BriefSendRecord record, int pageNum, int pageSize);
 }

@@ -256,6 +256,18 @@ const formStructConfig = {
         passwordOrgi: '',   //重复密码
     },
 
+    formBriefSendRecord: {
+        recordId: '',
+        briefId: '',
+        senderId: '',
+        receiverId: '',
+        status: '0',
+        recordFlag: '1',
+        sendTime: '',
+        viewTime: '',
+        key: '',
+    },
+
     searchForm: {
         sysUser: {
             id: '',
@@ -466,6 +478,18 @@ const formStructConfig = {
             assTypeId: '',
             assTitle: '',
             assTypeName: '',
+            key: '',
+        },
+
+        briefSendRecord: {
+            recordId: '',
+            briefId: '',
+            senderId: '',
+            receiverId: '',
+            status: '0',
+            recordFlag: '1',
+            sendTime: '',
+            viewTime: '',
             key: '',
         },
     },

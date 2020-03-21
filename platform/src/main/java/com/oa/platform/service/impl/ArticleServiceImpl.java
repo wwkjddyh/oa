@@ -1,5 +1,7 @@
 package com.oa.platform.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.oa.platform.entity.Article;
 import com.oa.platform.entity.BriefSendRecord;
@@ -68,5 +70,12 @@ public class ArticleServiceImpl extends AbstractBaseService<Article,String> impl
             return Lists.newArrayList();
         }
         return articleRepository.findReceiverIdByBriefId(briefId);
+    }
+
+    @Override
+    public PageInfo<BriefSendRecord> searchBriefSendRecord(BriefSendRecord record, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<BriefSendRecord> records = articleRepository.findBriefSendRecord(record == null ? new BriefSendRecord() : record);
+        return new PageInfo<>(records);
     }
 }
