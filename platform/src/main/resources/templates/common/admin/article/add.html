@@ -3,7 +3,7 @@
     <div th:fragment="form">
         <el-tabs v-model="activeTabName" type="card">
             <el-tab-pane label="简报信息" name="first">
-                <el-form ref="formArticle" :rules="rules" :model="formArticle" label-width="65px" size="small">
+                <el-form ref="formArticle" :rules="rules" :model="formArticle" label-width="65px" size="small" validate-on-rule-change="false">
                     <!--
                     <el-form-item label="文章类型" prop="categoryId">
                         <el-select v-model="formArticle.categoryId" style="width: 300px;" placeholder="请选择类型" size="small">
@@ -69,11 +69,14 @@
                     </div>
                     -->
                     <el-form-item label="正文" prop="content">
+                        <el-input v-model="formArticle.content" type="hidden" style="display: none"></el-input>
                         <el-tooltip class="item" effect="dark" placement="top" style="margin-left: 658px">
                             <div slot="content">正文</div><i class="el-icon-question"></i></el-tooltip>
                     </el-form-item>
                     <div style="margin-bottom: 20px;margin-left: 65px;margin-top:-50px;"><script id="articleEditor" type="text/plain"></script></div>
 
+                    <el-input v-model="formArticle.sendType" type="hidden" style="display: none"></el-input>
+                    <el-input v-model="formArticle.categoryId" type="hidden" style="display: none"></el-input>
                     <el-form-item>
                         <el-button @click="resetForm('formArticle')" plain icon="el-icon-close" size="mini">重置</el-button>
                         <el-button @click="submitForm('formArticle')" type="primary" plain icon="el-icon-check" size="mini">保存</el-button>

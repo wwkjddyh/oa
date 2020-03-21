@@ -177,7 +177,9 @@ const formStructConfig = {
         commentsCount: 0,
         viewCount: 0,
         likeCount: 0,
-        stinkyEgg: 0
+        stinkyEgg: 0,
+        sendType: '',
+        receiverIds: [],
     },
 
     formPartyDues: {
@@ -392,7 +394,8 @@ const formStructConfig = {
             commentsCount: 0,
             viewCount: 0,
             likeCount: 0,
-            stinkyEgg: 0
+            stinkyEgg: 0,
+            sendType: '',
         },
         partyDues: {
             recordId: '',
@@ -610,6 +613,10 @@ const formStructConfig = {
         ],
         assTypeId: [
             { required: true, message: '请选择其他分类', trigger: 'blur' },
+        ],
+        articleContent: [
+            { required: true, message: '请填写正文', trigger: 'blur' },
+            { min: 3, message: '最少3个字符', trigger: 'blur' }
         ],
     },
     dateDickerOptions: {

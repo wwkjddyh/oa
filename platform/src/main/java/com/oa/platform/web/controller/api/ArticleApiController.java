@@ -31,6 +31,8 @@ public class ArticleApiController extends BaseController {
      * @param authorName (若文章为引用)作者姓名
      * @param sourceSite 来源站点
      * @param flag 信息标志
+     * @param sendType 发送类型（"1": 简报）
+     * @param receiverIds 简报接收者ID组
      * @return
      */
     @PostMapping("save")
@@ -44,8 +46,11 @@ public class ArticleApiController extends BaseController {
             @RequestParam(defaultValue = "", required = false) String source,
             @RequestParam(defaultValue = "", required = false) String authorName,
             @RequestParam(defaultValue = "", required = false) String sourceSite,
-            @RequestParam(defaultValue = "1", required = false) String flag) {
-        return articleBiz.saveArticle(recordId, categoryId, title, intro, content, tags,source, authorName, sourceSite, flag);
+            @RequestParam(defaultValue = "1", required = false) String flag,
+            @RequestParam(defaultValue = "", required = false) String sendType,
+            String[] receiverIds) {
+        return articleBiz.saveArticle(recordId, categoryId, title, intro, content, tags,source, authorName, sourceSite,
+                flag, sendType, receiverIds);
     }
 
     /**
@@ -79,6 +84,16 @@ public class ArticleApiController extends BaseController {
     @PostMapping("updateArticleFlagById")
     public Map<String,Object> updateArticleFlagById(@RequestParam String id, @RequestParam String flag) {
         return articleBiz.updateArticleFlagById(id, flag);
+    }
+
+    /**
+     * 根据简报ID查询接收者ID列表
+     * @param briefId 简报ID
+     * @return
+     */
+    @GetMapping("getReceiverIdsByBriefId")
+    public Map<String, Object> getReceiverIdsByBriefId(@RequestParam String briefId) {
+        return articleBiz.getReceiverIdsByBriefId(briefId);
     }
 
 }

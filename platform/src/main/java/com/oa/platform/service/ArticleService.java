@@ -1,6 +1,9 @@
 package com.oa.platform.service;
 
 import com.oa.platform.entity.Article;
+import com.oa.platform.entity.BriefSendRecord;
+
+import java.util.List;
 
 /**
  * 文章
@@ -8,4 +11,54 @@ import com.oa.platform.entity.Article;
  * @date 2020/03/16
  */
 public interface ArticleService extends BaseService<Article,String> {
+
+    /**
+     * 查询简报发送记录
+     * @param briefSendRecord 简报发送记录
+     * @return
+     */
+    List<BriefSendRecord> findBriefSendRecord(BriefSendRecord briefSendRecord);
+
+    /**
+     * 批量更新简报发送记录
+     * @param ids 记录ID列表
+     */
+    void batchUpdateBriefSendRecordFlagByIds(List<String> ids);
+
+    /**
+     * 批量删除简报发送记录
+     * @param ids 记录ID列表
+     */
+    void batchDeleteBriefSendRecordByIds(List<String> ids);
+
+    /**
+     * 删除简报发送记录
+     * @param briefSendRecord 简报发送记录信息
+     */
+    void deleteBriefSendRecord(BriefSendRecord briefSendRecord);
+
+    /**
+     * 更新简报发送记录
+     * @param briefSendRecord 简报发送记录信息
+     */
+    void updateBriefSendRecord(BriefSendRecord briefSendRecord);
+
+    /**
+     * 批量保存简报发送记录
+     * @param records 发送记录列表
+     */
+    void batchSaveBriefSendRecord(List<BriefSendRecord> records);
+
+    /**
+     * 保存简报发送记录
+     * @param briefSendRecord 发送记录
+     */
+    void saveBriefSendRecord(BriefSendRecord briefSendRecord);
+
+    /**
+     * 根据简报ID查询接收者ID列表
+     * @param briefId 简报ID
+     * @return
+     */
+    List<String> findReceiverIdByBriefId(String briefId);
 }

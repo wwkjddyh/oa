@@ -1,8 +1,10 @@
 package com.oa.platform.biz;
 
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.oa.platform.common.Constants;
 import com.oa.platform.entity.Article;
+import com.oa.platform.entity.BriefSendRecord;
 import com.oa.platform.service.ArticleService;
 import com.oa.platform.util.DateUtil;
 import com.oa.platform.util.StringUtil;
@@ -36,11 +38,13 @@ public class ArticleBiz extends BaseBiz {
      * @param authorName (若文章为引用)作者姓名
      * @param sourceSite 来源站点
      * @param flag 信息标志
+     * @param sendType 发送类型（默认："1"简报）
+     * @param receiverIds 简报接收者ID组
      * @return
      */
     public Map<String,Object> saveArticle(String recordId, String categoryId, String title, String intro,
                                           String content, String tags, String source, String authorName,
-                                          String sourceSite, String flag) {
+                                          String sourceSite, String flag, String sendType, String[] receiverIds) {
         recordId = StringUtil.trim(recordId);
         categoryId = StringUtil.trim(categoryId);
         title = StringUtil.trim(title);
@@ -56,6 +60,11 @@ public class ArticleBiz extends BaseBiz {
         }
         else {
            try {
+               /**
+                * 发送类型：
+                * 1: 简报
+                */
+               sendType = StringUtil.trim(sendType, "1");
                String userId = this.getUserIdOfSecurity();
                boolean isEdit = isEdit(recordId);
                Article validEntity = new Article();
@@ -75,7 +84,7 @@ public class ArticleBiz extends BaseBiz {
                    }
                }
                if(isRepeat) {
-                   ret = this.getParamRepeatErrorVo("标题");
+                   ret = this.getParamRepeatErrorVo("".equals(sendType) ? "主题" : "标题");
                }
                else {
                    Article article = new Article();
@@ -89,6 +98,35 @@ public class ArticleBiz extends BaseBiz {
                    article.setSourceSite(sourceSite);
                    article.setFlag(Integer.parseInt(flag));
                    String dateStr = DateUtil.currDateFormat(null);
+
+
+                   if ("1".equals(sendType)) {
+                       if (receiverIds != null) {
+                           int idsLen = receiverIds.length;
+                           if (idsLen > 0) {
+                               List<BriefSendRecord> records = Lists.newArrayList();
+                               for (int i = 0; i < idsLen; i ++ ) {
+                                   String receiverId = StringUtil.trim(receiverIds[i]);
+                                   if (!"".equals(receiverId)) {
+                                       BriefSendRecord record = new BriefSendRecord();
+                                       record.setRecordId(StringUtil.getRandomUUID());
+                                       record.setSenderId(userId);
+                                       record.setReceiverId(receiverId);
+                                       record.setSendTime(dateStr);
+                                       record.setSenderRemark("");
+                                       record.setReceiverRemark("");
+                                       record.setStatus(Constants.UN_VIEWED);
+                                       record.setRecordFlag(Constants.INT_NORMAL);
+                                       records.add(record);
+                                   }
+                               }
+                               if (!records.isEmpty()) {
+                                   articleService.batchSaveBriefSendRecord(records);
+                               }
+                           }
+                       }
+                   }
+
 
                    if(isEdit) {
                        article.setRecordId(recordId);
@@ -106,6 +144,7 @@ public class ArticleBiz extends BaseBiz {
                }
            }
            catch(Exception e) {
+               e.printStackTrace();
                loggerError(ThreadUtil.getCurrentFullMethodName(), e);
                ret = this.getErrorVo();
            }
@@ -180,6 +219,28 @@ public class ArticleBiz extends BaseBiz {
                 ret = this.getSuccessVo("","");
             }
             catch(Exception e) {
+                loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+                ret = this.getErrorVo();
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 根据简报ID查询接收者ID列表
+     * @param briefId 简报ID
+     * @return
+     */
+    public Map<String, Object> getReceiverIdsByBriefId(String briefId) {
+        briefId = StringUtil.trim(briefId);
+        if ("".equals(briefId)) {
+            ret = this.getParamErrorVo();
+        }
+        else {
+            try {
+                ret = this.getSuccessVo("", articleService.findReceiverIdByBriefId(briefId));
+            } catch (Exception e) {
+                e.printStackTrace();
                 loggerError(ThreadUtil.getCurrentFullMethodName(), e);
                 ret = this.getErrorVo();
             }

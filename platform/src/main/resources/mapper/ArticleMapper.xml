@@ -33,12 +33,53 @@
     <result column="stinky_egg" property="stinkyEgg" jdbcType="BIGINT"/>
   </resultMap>
 
+  <!-- 简报 -->
+  <resultMap id="briefSendRecord" type="com.oa.platform.entity.BriefSendRecord">
+    <result column="record_id" property="recordId" jdbcType="VARCHAR"/>
+    <result column="brief_id" property="briefId" jdbcType="VARCHAR"/>
+    <result column="sender_id" property="senderId" jdbcType="VARCHAR"/>
+    <result column="receiver_id" property="receiverId" jdbcType="VARCHAR"/>
+    <result column="send_time" property="sendTime" jdbcType="VARCHAR"/>
+    <result column="view_time" property="viewTime" jdbcType="VARCHAR"/>
+    <result column="status" property="status" jdbcType="INTEGER"/>
+    <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
+
+    <result column="brief_title" property="briefTitle" jdbcType="VARCHAR"/>
+    <result column="sender_name" property="senderName" jdbcType="VARCHAR"/>
+    <result column="receiver_name" property="receiverName" jdbcType="VARCHAR"/>
+    <result column="sender_remark" property="senderRemark" jdbcType="VARCHAR"/>
+    <result column="receiver_remark" property="receiverRemark" jdbcType="VARCHAR"/>
+  </resultMap>
+
   <!--插入信息-->
   <insert id="insert" parameterType="article">
     INSERT INTO t_article (record_id,category_id,`title`,`content`,`intro`,`tags`,
                           `source`,`author_name`,source_site,creator_id,updator_id,update_time,record_time,flag)
     VALUES (#{recordId},#{categoryId},#{title},#{content},#{intro},#{tags},#{source},#{authorName},#{sourceSite},
                           #{creatorId},#{updatorId},#{updateTime},NOW(),#{flag})
+  </insert>
+
+  <!--插入发送简报记录-->
+  <insert id="insertBriefSendRecord" parameterType="briefSendRecord">
+    INSERT INTO t_brief_send_record (
+        record_id, send_time, record_flag, brief_id, sender_id, receiver_id, `status`, sender_remark, receiver_remark
+    )
+    VALUES (
+        #{recordId}, NOW(), #{recordFlag}, #{briefId}, #{senderId}, #{receiverId}, #{status}, #{senderRemark}, #{receiverRemark}
+    )
+  </insert>
+
+  <!--批量插入发送简报记录-->
+  <insert id="batchInsertBriefSendRecord" parameterType="java.util.List">
+    INSERT INTO t_brief_send_record (
+        record_id, send_time, record_flag, brief_id, sender_id, receiver_id, `status`, sender_remark, receiver_remark
+    )
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.recordId}, NOW(),#{item.recordFlag}, #{item.briefId}, #{item.senderId}, #{item.receiverId}, #{item.status},
+       #{item.senderRemark}, #{item.receiverRemark}
+      )
+    </foreach>
   </insert>
 
   <!--更新类别信息-->
@@ -99,6 +140,25 @@
     </trim>
   </update>
 
+  <!--更新发送简报记录信息-->
+  <update id="updateBriefSendRecord" parameterType="briefSendRecord">
+    UPDATE t_brief_send_record
+    <trim prefix="SET" suffixOverrides="," suffix=" WHERE record_id = #{recordId}">
+      <if test="briefId != null and briefId != ''">
+        brief_id = #{briefId},
+      </if>
+      <if test="recordFlag != null">
+        record_flag = #{recordFlag},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="viewTime != null and viewTime != ''">
+        view_time = STR_TO_DATE(#{viewTime},'%Y-%m-%d %H:%i:%s'),
+      </if>
+    </trim>
+  </update>
+
   <delete id="delete" parameterType="article">
     DELETE FROM t_article
     <trim prefix="WHERE" prefixOverrides="AND | OR">
@@ -146,6 +206,44 @@
       </if>
     </trim>
   </delete>
+
+  <delete id="deleteBriefSendRecord" parameterType="briefSendRecord">
+    DELETE FROM t_brief_send_record
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="briefId != null and briefId != ''">
+        AND brief_id = #{briefId}
+      </if>
+      <if test="senderId != null and senderId != ''">
+        AND sender_id = #{senderId}
+      </if>
+      <if test="receiverId != null and receiverId != ''">
+        AND receiver_id = #{receiverId}
+      </if>
+      <if test="status != null">
+        AND status = #{status}
+      </if>
+      <if test="recordFlag != null">
+        AND record_flag = #{recordFlag}
+      </if>
+    </trim>
+  </delete>
+
+  <delete id="batchDeleteBriefSendRecordByIds" parameterType="java.util.List">
+    DELETE FROM t_brief_send_record WHERE record_id IN
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </delete>
+
+  <update id="batchUpdateBriefSendRecordFlagByIds" parameterType="java.util.List">
+    UPDATE t_brief_send_record SET record_flag = 0 WHERE record_id IN
+    <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
 
   <!--查询-->
   <select id="find" parameterType="article" resultMap="article">
@@ -228,5 +326,65 @@
         </foreach>
       </if>
     </trim>
+  </select>
+
+  <!--查询简报发送记录-->
+  <select id="findBriefSendRecord" parameterType="briefSendRecord" resultMap="briefSendRecord">
+    SELECT
+      t.record_id, DATE_FORMAT(t.send_time,'%Y-%m-%d %H:%i:%s') send_time, t.record_flag,
+      DATE_FORMAT(t.view_time,'%Y-%m-%d %H:%i:%s') view_time, t.brief_id, t.sender_id, t.receiver_id, t.`status`,
+      t.brief_title, t.sender_name, t.receiver_name, t.sender_remark, t.receiver_remark
+    FROM
+      (SELECT
+        t1.record_id, t1.send_time, t1.record_flag, t1.view_time, t1.brief_id, t1.sender_id, t1.receiver_id, t1.`status`,
+        t4.title brief_title, t2.user_name sender_name, t3.user_name receiver_name,
+        t1.sender_remark, t1.receiver_remark
+      FROM
+        (SELECT * FROM t_brief_send_record ORDER BY `status` ASC, send_time DESC) t1
+        LEFT JOIN t_article t4 ON t1.brief_id = t4.record_id
+        LEFT JOIN t_user t2 ON t1.sender_id = t2.user_id
+        LEFT JOIN t_user t3 ON t1.receiver_id = t3.user_id
+    ) t
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="briefId != null and briefId != ''">
+        AND brief_id = #{briefId}
+      </if>
+      <if test="senderId != null and senderId != ''">
+        AND sender_id = #{senderId}
+      </if>
+      <if test="receiverId != null and receiverId != ''">
+        AND receiver_id = #{receiverId}
+      </if>
+      <if test="status != null">
+        AND status = #{status}
+      </if>
+      <if test="recordFlag != null">
+        AND record_flag = #{recordFlag}
+      </if>
+      <if test="key != null and key != ''">
+        AND (UPPER(brief_title) LIKE CONCAT('%',UPPER(#{key}),'%')
+        )
+      </if>
+      <if test="sendTime != null and sendTime != ''">
+        AND DATE_FORMAT(send_time,'%Y-%m-%d') = #{startTime}
+      </if>
+      <if test="viewTime != null and viewTime != ''">
+        AND DATE_FORMAT(view_time,'%Y-%m-%d') = #{endTime}
+      </if>
+      <if test="senderRemark != null and senderRemark != ''">
+        AND sender_remark = #{senderRemark}
+      </if>
+      <if test="receiverRemark != null and receiverRemark != ''">
+        AND receiver_remark = #{receiverRemark}
+      </if>
+    </trim>
+  </select>
+
+  <!-- 根据简报ID查询接收者ID列表 -->
+  <select id="findReceiverIdByBriefId" parameterType="java.lang.String" resultType="java.lang.String">
+    SELECT receiver_id FROM t_brief_send_record WHERE record_flag = 1 and brief_id = #{briefId}
   </select>
 </mapper>
