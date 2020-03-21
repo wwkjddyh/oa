@@ -522,6 +522,7 @@ const formStructConfig = {
         nddyxxcjYear:false,
         resUpload: false,
         modifyPwd: false,
+        viewBrief: false,
     },
     rules: {
         name: [

@@ -638,6 +638,7 @@ new Vue({
         },   // 消息接收人(用于'选择接收人'dialog)
         newsReceiveUserIds: [],
         currNewsSendRecord: {},
+        currBrief: {},
         //uploadFileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
         uploadFileList: [],
         continent: '',
@@ -4068,6 +4069,31 @@ new Vue({
                         console.warn(err);
                     });
                 }
+            }
+
+        },
+
+        /**
+         * 查看简报
+         * @param recordId 当前记录唯一标识
+         */
+        handleBriefView: function(_recordId) {
+            let that = this;
+            _recordId = _recordId || '';
+            that.currBrief = {};
+            if ('' != _recordId) {
+                axios.get("/api/article/search", {params:{
+                        recordId: _recordId,
+                    }})
+                    .then(function(response){
+                        if(parseInt(response.data.code) === 200){
+                            //console.log('handleBriefView => response.data.data', response.data.data)
+                            that.currBrief = response.data.data;
+                            that.dialogShow.viewBrief = !that.dialogShow.viewBrief;
+                        }
+                    }).catch(function(err){
+                    console.warn(err);
+                });
             }
 
         },
