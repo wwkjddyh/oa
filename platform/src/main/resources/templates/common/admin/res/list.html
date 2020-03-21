@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
     <el-form ref="formSearchNews" :model="formSearchNews" label-width="70px" size="small">
-        <el-form-item label="模糊搜索" prop="title">
+        <el-form-item label="模糊搜索">
             <el-input v-model="formSearchRes.key" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
             <!--
             <el-tooltip class="item" effect="dark" placement="top">

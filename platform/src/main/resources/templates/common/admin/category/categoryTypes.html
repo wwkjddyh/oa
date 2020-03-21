@@ -9,7 +9,7 @@
     </el-tabs>
     -->
     <el-form ref="formSearchCategoryType" :model="formSearchCategoryType" label-width="58px" size="small">
-        <el-form-item label="关键字" prop="name">
+        <el-form-item label="关键字">
             <el-input v-model="formSearchCategoryType.name" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
             <el-button @click="searchForm('formSearchCategoryType')" type="primary" size="mini" plain icon="el-icon-search" style="float: right">检索</el-button>
         </el-form-item>

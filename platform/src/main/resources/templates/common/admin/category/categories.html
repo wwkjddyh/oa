@@ -9,7 +9,7 @@
     </el-tabs>
     -->
     <el-form ref="formSearchCategory" :model="formSearchCategory" label-width="50px" size="small">
-        <el-form-item label="类别" prop="typeId">
+        <el-form-item label="类别">
             <el-select v-model="formSearchCategory.typeId" style="width: 300px;" placeholder="请选择类型" size="small">
                 <el-option label="全部" value="">全部</el-option>
                 <el-option v-for="item in allCategoryTypes" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>
@@ -17,7 +17,7 @@
             <el-tooltip class="item" effect="dark" placement="top">
                 <div slot="content">分类类别</div><i class="el-icon-question"></i></el-tooltip>
         </el-form-item>
-        <el-form-item label="名称" prop="name">
+        <el-form-item label="名称">
             <el-input v-model="formSearchCategory.name" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
             <el-tooltip class="item" effect="dark" placement="top">
                 <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>

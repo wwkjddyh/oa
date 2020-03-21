@@ -8,40 +8,44 @@
     </el-tabs>
     -->
     <el-form ref="formSearchAuthModule" :model="formSearchAuthModule" label-width="70px" size="small">
-        <el-form-item label="父级模块" prop="parentId">
-            <el-select v-model="formSearchAuthModule.parentId" style="width: 300px;" size="small">
-                <el-option label="请选择" value=""></el-option>
-                <el-option v-for="item in allModules" :key="item.moduleId" :label="item.fullModuleName" :value="item.moduleId"></el-option>
-            </el-select>
-            <el-tooltip class="item" effect="dark" placement="top">
-                <div slot="content">父级模块</div><i class="el-icon-question"></i></el-tooltip>
-        </el-form-item>
-        <el-form-item label="模块名称" prop="name">
-            <el-input v-model="formSearchAuthModule.moduleName" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
-            <el-tooltip class="item" effect="dark" placement="top">
-                <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
-        </el-form-item>
-        <el-form-item label="是否菜单" prop="isMenu">
-            <el-select v-model="formSearchAuthModule.isMenu" style="width: 300px;" placeholder="请是否为菜单" size="small">
-                <el-option label="请选择" value=""></el-option>
-                <el-option label="是" value="1"></el-option>
-                <el-option label="否" value="0"></el-option>
-            </el-select>
-            <el-tooltip class="item" effect="dark" placement="top">
-                <div slot="content">是否菜单</div><i class="el-icon-question"></i></el-tooltip>
-        </el-form-item>
-        <!--<el-form-item label="模块类型" prop="isLeaf">-->
-        <!--<el-select v-model="formSearchAuthModule.isLeaf" style="width: 300px;" placeholder="请选择类型">-->
-        <!--<el-option label="请选择" value=""></el-option>-->
-        <!--<el-option label="叶子" value="1"></el-option>-->
-        <!--<el-option label="节点" value="0"></el-option>-->
-        <!--</el-select>-->
-        <!--<el-tooltip class="item" effect="dark" placement="top">-->
-        <!--<div slot="content">叶子：没有子节点;节点：还有子节点</div><i class="el-icon-question"></i></el-tooltip>-->
-        <!--</el-form-item>-->
-        <el-form-item>
-            <el-button @click="searchForm('formSearchAuthModule')" type="primary" plain size="mini" icon="el-icon-search">检索</el-button>
-        </el-form-item>
+        <el-col :span="12">
+            <el-form-item label="父级模块">
+                <el-select v-model="formSearchAuthModule.parentId" style="width: 300px;" size="small">
+                    <el-option label="请选择" value=""></el-option>
+                    <el-option v-for="item in allModules" :key="item.moduleId" :label="item.fullModuleName" :value="item.moduleId"></el-option>
+                </el-select>
+                <el-tooltip class="item" effect="dark" placement="top">
+                    <div slot="content">父级模块</div><i class="el-icon-question"></i></el-tooltip>
+            </el-form-item>
+            <el-form-item label="模块名称">
+                <el-input v-model="formSearchAuthModule.moduleName" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+                <el-tooltip class="item" effect="dark" placement="top">
+                    <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
+            </el-form-item>
+        </el-col>
+        <el-col :span="12">
+            <el-form-item label="是否菜单">
+                <el-select v-model="formSearchAuthModule.isMenu" style="width: 300px;" placeholder="请是否为菜单" size="small">
+                    <el-option label="请选择" value=""></el-option>
+                    <el-option label="是" value="1"></el-option>
+                    <el-option label="否" value="0"></el-option>
+                </el-select>
+                <el-tooltip class="item" effect="dark" placement="top">
+                    <div slot="content">是否菜单</div><i class="el-icon-question"></i></el-tooltip>
+            </el-form-item>
+            <!--<el-form-item label="模块类型" prop="isLeaf">-->
+            <!--<el-select v-model="formSearchAuthModule.isLeaf" style="width: 300px;" placeholder="请选择类型">-->
+            <!--<el-option label="请选择" value=""></el-option>-->
+            <!--<el-option label="叶子" value="1"></el-option>-->
+            <!--<el-option label="节点" value="0"></el-option>-->
+            <!--</el-select>-->
+            <!--<el-tooltip class="item" effect="dark" placement="top">-->
+            <!--<div slot="content">叶子：没有子节点;节点：还有子节点</div><i class="el-icon-question"></i></el-tooltip>-->
+            <!--</el-form-item>-->
+            <el-form-item>
+                <el-button @click="searchForm('formSearchAuthModule')" type="primary" plain size="mini" icon="el-icon-search">检索</el-button>
+            </el-form-item>
+        </el-col>
     </el-form>
     <!--
     <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>

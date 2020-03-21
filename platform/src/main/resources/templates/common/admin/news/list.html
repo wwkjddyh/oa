@@ -8,7 +8,7 @@
     </el-tabs>
     -->
     <el-form ref="formSearchNews" :model="formSearchNews" label-width="58px" size="small">
-        <el-form-item label="关键字" prop="title">
+        <el-form-item label="关键字">
             <el-input v-model="formSearchNews.title" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
             <el-button size="mini" @click="searchForm('formSearchNews')" type="primary" plain icon="el-icon-search" style="float: right">检索</el-button>
         </el-form-item>

@@ -4,7 +4,7 @@
     <el-tabs v-model="activeTabName" type="card">
         <el-tab-pane label="下载历史记录" name="first">
             <el-form ref="formSearchNews" :model="formSearchNews" label-width="100px">
-                <el-form-item label="资料模糊搜索" prop="title">
+                <el-form-item label="资料模糊搜索">
                     <el-input v-model="formSearchNews.title" size="medium" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">关键字</div><i class="el-icon-question"></i></el-tooltip>
