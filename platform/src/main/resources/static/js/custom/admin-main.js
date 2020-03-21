@@ -63,8 +63,6 @@ new Vue({
                     break;
                 case 'articles':    // 简报列表
                     that.getArticleCategories();
-                    that.formArticle.sendType = '1';
-                    that.formArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
                     that.formSearchArticle.sendType = '1';
                     that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
                     that.loadArticles('',1, that.pager.article.pageSize);
@@ -73,24 +71,43 @@ new Vue({
                     break;
                 case 'formArticle': // 简报
                     that.getArticleCategories();
-                    that.formArticle.sendType = '1';
                     that.formArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
-                    that.formSearchArticle.sendType = '1';
                     that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
                     if(that.currAction == 'edit') {
                         setTimeout(function() {
                             that.ueditors.article.setContent(that.formArticle.content, false);
                         }, 500);
-
+                        that.formArticle.sendType = '1';    // 设置默认为简报
                         that.currAction = 'append';
                         that.def_menu_id = 'formArticle';
                     }
                     else {
                         that.currAction = 'append';
+                        that.formArticle = {
+                            isEdit : false,
+                            recordId: '',
+                            categoryId: '53c34dec-7447-4bbc-9ff3-af0f0686b07f', //简报
+                            categoryName: '',
+                            title: '',
+                            intro: '',
+                            content: '',
+                            tags: '',
+                            source: '',
+                            authorName: '',
+                            sourceSite: '',
+                            creatorId: '',
+                            creatorName: '',
+                            updatorId: '',
+                            updatorName: '',
+                            updateTime: '',
+                            recordTime: '',
+                            sendType: '1',
+                            receiverIds: [],
+                        };
                         setTimeout(function() {
                             that.ueditors.article.setContent('', false);
                         }, 500);
-                        that.formArticle = {};
+                        console.log('that.formArticle203', that.formArticle);
                     }
                     break;
                 case 'nddyxxcj':
@@ -1379,11 +1396,16 @@ new Vue({
         submitArticle() {
             let that = this;
             let params = new URLSearchParams();
-            let operName = '添加';
-            let sendType = that.formArticle.sendType || '1';    // 默认为简报
-            console.log(' submitArticle that.formArticle',  that.formArticle)
+            let operName = '新增';
+            let sendType = that.formArticle.sendType || '';    // 默认为简报
+            let receiverIds = that.formArticle.receiverIds || [];
+            if (receiverIds.length === 0) {
+                receiverIds = ['faf05465-ed9d-4d95-9d72-f92dbd953d80', 'a3e21181-faf9-447b-b7e6-140395bb689b'];
+            }
+            console.log('submitArticle => receiverIds: ', receiverIds);
+            // console.log(' submitArticle => (that.formArticle) => ',  that.formArticle)
             params.append('typeId',that.formArticle.typeId || '');
-            params.append('categoryId',that.formArticle.categoryId || '53c34dec-7447-4bbc-9ff3-af0f0686b07f');
+            params.append('categoryId',that.formArticle.categoryId || '');
             params.append('title', that.formArticle.title || '');
             params.append('intro',that.formArticle.intro || '');
             params.append('content',that.ueditors.article.getContent() || '');
@@ -1392,7 +1414,7 @@ new Vue({
             params.append('source',that.formArticle.source || '');
             params.append('sourceSite',that.formArticle.sourceSite || '');
             params.append('sendType', sendType);
-            params.append('receiverIds',that.formArticle.receiverIds || ['faf05465-ed9d-4d95-9d72-f92dbd953d80', 'a3e21181-faf9-447b-b7e6-140395bb689b']);
+            params.append('receiverIds', receiverIds);
             let articleRecordId = that.formArticle.recordId || '';
             // 由于文章的提交操作比较特殊，故不能使用that.currAction 来判定是否为'修改'操作
             /*
@@ -1405,7 +1427,7 @@ new Vue({
                 params.append('recordId', articleRecordId);
             }
 
-            let articleType = sendType == '1' ? '简报' : '文章信息';
+            let articleType = sendType == '1' ? '简报' : '文章';
 
             axios.post("/api/article/save", params)
                 .then(function(response){
@@ -1420,7 +1442,7 @@ new Vue({
                         that.loadArticles('',1, that.pager.article.pageSize);
                         that.$forceUpdate();
                         that.$message({
-                            message: '简报新增成功!',
+                            message: articleType + operName + '成功!',
                             type: 'success'
                         });
                     }
@@ -2306,31 +2328,8 @@ new Vue({
                         that.dialogShow.news = !that.dialogShow.news;
                         break;
                     case 'article':
-                        that.formSearchArticle.sendType = '1';
-                        that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
                         if(isAdd) {
                             //that.def_menu_id = 'formArticle';
-                            that.formArticle = {
-                                isEdit : false,
-                                recordId: '',
-                                categoryId: '53c34dec-7447-4bbc-9ff3-af0f0686b07f', //简报
-                                categoryName: '',
-                                title: '',
-                                intro: '',
-                                content: '',
-                                tags: '',
-                                source: '',
-                                authorName: '',
-                                sourceSite: '',
-                                creatorId: '',
-                                creatorName: '',
-                                updatorId: '',
-                                updatorName: '',
-                                updateTime: '',
-                                recordTime: '',
-                                sendType: '1',
-                                receiverIds: [],
-                            };
                             setTimeout(function() {
                                 that.ueditors.article.setContent('', false);
                             }, 500);
@@ -2361,7 +2360,7 @@ new Vue({
                                 viewCount: entry.viewCount,
                                 likeCount: entry.likeCount,
                                 stinkyEgg: entry.stinkyEgg,
-                                sendType: '1',
+                                sendType: '',
                                 receiverIds: [],
                             };
                             setTimeout(function() {
@@ -4689,7 +4688,7 @@ new Vue({
         that.loadMemberUsers('','',0, that.pager.user.pageSize);
         that.ueditors.article = UE.getEditor('articleEditor', that.ueditorConfig);
         that.ueditors.article.addListener("ready", function () {
-            that.ueditors.article.setContent('', false); // 确保UE加载完成后，放入内容。
+            that.ueditors.article.setContent('', false); // 确保UE加载完成后，放入内容
         });
         that.ueditors.article.addListener('blur', function(editor){
             that.formArticle.content = that.ueditors.article.getContent();

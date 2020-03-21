@@ -99,43 +99,21 @@ public class ArticleBiz extends BaseBiz {
                    article.setFlag(Integer.parseInt(flag));
                    String dateStr = DateUtil.currDateFormat(null);
 
-
-                   if ("1".equals(sendType)) {
-                       if (receiverIds != null) {
-                           int idsLen = receiverIds.length;
-                           if (idsLen > 0) {
-                               List<BriefSendRecord> records = Lists.newArrayList();
-                               for (int i = 0; i < idsLen; i ++ ) {
-                                   String receiverId = StringUtil.trim(receiverIds[i]);
-                                   if (!"".equals(receiverId)) {
-                                       BriefSendRecord record = new BriefSendRecord();
-                                       record.setRecordId(StringUtil.getRandomUUID());
-                                       record.setSenderId(userId);
-                                       record.setReceiverId(receiverId);
-                                       record.setSendTime(dateStr);
-                                       record.setSenderRemark("");
-                                       record.setReceiverRemark("");
-                                       record.setStatus(Constants.UN_VIEWED);
-                                       record.setRecordFlag(Constants.INT_NORMAL);
-                                       records.add(record);
-                                   }
-                               }
-                               if (!records.isEmpty()) {
-                                   articleService.batchSaveBriefSendRecord(records);
-                               }
-                           }
-                       }
-                   }
-
-
                    if(isEdit) {
+                       if ("1".equals(sendType)) {
+                           sendBriefs(recordId, userId, receiverIds, dateStr);
+                       }
                        article.setRecordId(recordId);
                        article.setUpdatorId(userId);
                        article.setUpdateTime(dateStr);
                        articleService.update(article);
                    }
                    else {
-                       article.setRecordId(StringUtil.getRandomUUID());
+                       recordId = StringUtil.getRandomUUID();
+                       if ("1".equals(sendType)) {
+                           sendBriefs(recordId, userId, receiverIds, dateStr);
+                       }
+                       article.setRecordId(recordId);
                        article.setCreatorId(userId);
                        article.setRecordTime(dateStr);
                        articleService.save(article);
@@ -150,6 +128,43 @@ public class ArticleBiz extends BaseBiz {
            }
         }
         return ret;
+    }
+
+    /**
+     * 发送简报
+     * @param briefId 简报ID
+     * @param receiverIds 接收者ID组
+     * @param dateStr 时间
+     */
+    void sendBriefs(String briefId, String senderId, String[] receiverIds, String dateStr) {
+        briefId = StringUtil.trim(briefId);
+        senderId = StringUtil.trim(senderId);
+        if (!"".equals(briefId) && !"".equals(senderId) && receiverIds != null) {
+            int idsLen = receiverIds.length;
+            if (idsLen > 0) {
+                dateStr = StringUtil.trim(dateStr, DateUtil.currDateFormat(null));
+                List<BriefSendRecord> records = Lists.newArrayList();
+                for (int i = 0; i < idsLen; i ++ ) {
+                    String receiverId = StringUtil.trim(receiverIds[i]);
+                    if (!"".equals(receiverId)) {
+                        BriefSendRecord record = new BriefSendRecord();
+                        record.setRecordId(StringUtil.getRandomUUID());
+                        record.setBriefId(briefId);
+                        record.setSenderId(senderId);
+                        record.setReceiverId(receiverId);
+                        record.setSendTime(dateStr);
+                        record.setSenderRemark("");
+                        record.setReceiverRemark("");
+                        record.setStatus(Constants.UN_VIEWED);
+                        record.setRecordFlag(Constants.INT_NORMAL);
+                        records.add(record);
+                    }
+                }
+                if (!records.isEmpty()) {
+                    articleService.batchSaveBriefSendRecord(records);
+                }
+            }
+        }
     }
 
     /**
