@@ -147,7 +147,7 @@
                 <el-form-item label="关联路径" prop="moduleUrl">
                     <el-input v-model="formAuthModule.moduleUrl" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="路径"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">路径</div><i class="el-icon-question"></i></el-tooltip>
+                        <div slot="content">关联路径(如果有子菜单，则不能填写'关联路径')</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="模块类型" prop="isLeaf">
                     <el-select v-model="formAuthModule.isLeaf" style="width: 300px;" placeholder="请选择类型" size="small">

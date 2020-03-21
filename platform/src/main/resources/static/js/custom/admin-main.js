@@ -3056,32 +3056,57 @@ new Vue({
                         let __module = __modules[i];
                         let __moduleId = __module.moduleId;
                         if (__module.isMenu == 1) {
+                            let __moduleUrl = __module.moduleUrl || '';
                             if (__module.parentId == '' || __module.parentId == null) {
                                 let __subMenus = [];
-                                for (let j = 0; j < moduleLen; j++) {
-                                    let __module2 = __modules[j];
-                                    if (__module2.isMenu == 1 && __module2.parentId == __moduleId) {
-                                        __subMenus.push(__module2);
+                                if (__moduleUrl === '') { // 有子菜单
+                                    for (let j = 0; j < moduleLen; j++) {
+                                        let __module2 = __modules[j];
+                                        if (__module2.isMenu == 1 && __module2.parentId == __moduleId) {
+                                            __subMenus.push(__module2);
+                                        }
+                                    }
+                                    if (__subMenus.length > 0) {
+                                        that.userOwnedMenus.push({
+                                            moduleId: __moduleId,
+                                            parentId: __module.parentId,
+                                            moduleName: __module.moduleName,
+                                            moduleDesc: __module.moduleDesc,
+                                            moduleUrl: __module.moduleUrl,
+                                            isLeaf: __module.isLeaf,
+                                            fullModuleName: __module.fullModuleName,
+                                            moduleCode: __module.moduleCode,
+                                            order: __module.order,
+                                            moduleIcon: __module.moduleIcon,
+                                            moduleStyle: __module.moduleStyle,
+                                            isMenu: __module.isMenu,
+                                            subs: __subMenus,
+                                        });
                                     }
                                 }
-                                that.userOwnedMenus.push({
-                                    moduleId: __moduleId,
-                                    parentId: __module.parentId,
-                                    moduleName: __module.moduleName,
-                                    moduleDesc: __module.moduleDesc,
-                                    moduleUrl: __module.moduleUrl,
-                                    isLeaf: __module.isLeaf,
-                                    fullModuleName: __module.fullModuleName,
-                                    moduleCode: __module.moduleCode,
-                                    order: __module.order,
-                                    moduleIcon: __module.moduleIcon,
-                                    moduleStyle: __module.moduleStyle,
-                                    isMenu: __module.isMenu,
-                                    subs: __subMenus,
-                                });
+                                else {  // 没有子菜单
+                                    that.userOwnedMenus.push({
+                                        moduleId: __moduleId,
+                                        parentId: __module.parentId,
+                                        moduleName: __module.moduleName,
+                                        moduleDesc: __module.moduleDesc,
+                                        moduleUrl: __module.moduleUrl,
+                                        isLeaf: __module.isLeaf,
+                                        fullModuleName: __module.fullModuleName,
+                                        moduleCode: __module.moduleCode,
+                                        order: __module.order,
+                                        moduleIcon: __module.moduleIcon,
+                                        moduleStyle: __module.moduleStyle,
+                                        isMenu: __module.isMenu,
+                                        subs: __subMenus,
+                                    });
+                                }
+
+
                             }
                         }
                     }
+                    console.log('userOwnedMenus', that.userOwnedMenus);
 
                 })
                 .catch(function(err){/*异常*/
