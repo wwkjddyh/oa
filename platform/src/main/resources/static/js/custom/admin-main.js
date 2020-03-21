@@ -4056,9 +4056,6 @@ new Vue({
                     content: _record.newsContent || '',
                 };
                 that.dialogShow.viewNews = !that.dialogShow.viewNews;
-                if (_record.status == '0' || _record.status == 0) {
-                    console.log('_record.status 可能是字符串', parseInt(_record.status));
-                }
                 if (parseInt(_record.status) != 1) {
                     let params = new URLSearchParams();
                     params.append('recordId', _recordId);

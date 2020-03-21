@@ -62,9 +62,8 @@
             </el-pagination>
         </div>
     </div>
-    <el-dialog :visible.sync="dialogShow.viewBrief" lock-scroll="true" width="500" center="true">
-        <div style="width: 100%; text-align: center">
-            {{currBrief.content || ''}}
+    <el-dialog :title="(currBrief.title || '')" :visible.sync="dialogShow.viewBrief" lock-scroll="true" width="500" center="true">
+        <div style="width: 100%; text-align: center" v-html="(currBrief.content || '')">
         </div>
     </el-dialog>
 </div>
