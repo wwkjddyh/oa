@@ -48,6 +48,59 @@
             justify-content: center;
             align-items:center;
         }
+
+        .el-carousel__item h3 {
+            color: #475669;
+            font-size: 14px;
+            opacity: 0.75;
+            line-height: 200px;
+            margin: 0;
+        }
+
+        .el-carousel__item:nth-child(2n) {
+            background-color: #99a9bf;
+        }
+
+        .el-carousel__item:nth-child(2n+1) {
+            background-color: #d3dce6;
+        }
+
+        .scroll-box {
+            width: 100%;
+            margin: 0 auto;
+            border: 1px solid whitesmoke;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+        .animate {
+            padding-left: 20px;
+            line-height: 1px;
+            font-size: 12px;
+            color: #000;
+            display: inline-block;
+            white-space: nowrap;
+            animation: 10s wordsLoop linear infinite normal;
+        }
+        @keyframes wordsLoop {
+            0% {
+                transform: translateX(200px);
+                -webkit-transform: translateX(200px);
+            }
+            100% {
+                transform: translateX(-100%);
+                -webkit-transform: translateX(-100%);
+            }
+        }
+        @-webkit-keyframes wordsLoop {
+            0% {
+                transform: translateX(200px);
+                -webkit-transform: translateX(200px);
+            }
+            100% {
+                transform: translateX(-100%);
+                -webkit-transform: translateX(-100%);
+            }
+        }
     </style>
 </head>
 <body>
@@ -66,10 +119,23 @@
 <!--                    <div style="width: calc(100% - 45px);">-->
 <!--                        -->
 <!--                    </div>-->
+                    <div class="scroll-box">
+                        <p class="animate">
+                            本站管理员于今日下午三时将对本系统进行更新，届时将停止服务器运行，所带来不便，尽请谅解！
+                        </p>
+                    </div>
+                    <!--
+                    <el-carousel height="60px" direction="horizontal" :interval="3000" :autoplay="true"
+                                 loop="true" style="margin-bottom: 10px" arrow="hover">
+                        <el-carousel-item v-for="item in 5" :key="item" :label="item">
+                            <h3 class="medium"></h3>我的跑马灯{{item}}
+                        </el-carousel-item>
+                    </el-carousel>
+                    -->
                     <el-tabs v-model="editableTabsOptions.editableTabsValue" type="card"
                              @tab-remove="handleRemoveTab"
                              @tab-click="handleClickTab"
-                             style="font-size: 12px; font-weight: bolder;" size="mini"
+                             style="font-size: 12px; font-weight: bolder;margin-top: 10px" size="mini"
                     >
                         <el-tab-pane
                                 v-for="(item, index) in editableTabsOptions.editableTabs"
@@ -82,7 +148,7 @@
                         </el-tab-pane>
                     </el-tabs>
                 </div>
-                <el-dropdown style="font-size: 20px; cursor: pointer; position: absolute; z-index: 100;top: 100px;right: 10px"
+                <el-dropdown style="font-size: 20px; cursor: pointer; position: absolute; z-index: 100;top: 135px;right: 10px"
                              @command="handleTabsDropdown" size="mini">
                     <i class="el-icon-circle-close" style="font-size: 18px"></i>
                     <el-dropdown-menu slot="dropdown">
