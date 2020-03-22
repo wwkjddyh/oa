@@ -158,7 +158,10 @@
                             <div th:replace="/common/admin/res/list2 :: content"/>
                         </el-card>
 
-
+                        <!--大数据-->
+                        <el-card shadow="never" v-if="showContent == 'bigData'" key="fzdy">
+                            <div th:replace="/common/admin/bigData/index :: content"/>
+                        </el-card>
                     </div>
                 </keep-alive>
             </el-main>
