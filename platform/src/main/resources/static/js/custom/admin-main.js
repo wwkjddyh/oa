@@ -287,6 +287,7 @@ new Vue({
         cronTabActiveName: 'second',    /*cron表达式tabs设置*/
         showContent: 'firstPage',
         receiverUserName: '',
+        scrollBoxContent: '本站管理员于今日下午三时将对本系统进行更新，届时将停止服务器运行，所带来不便，尽请谅解！',
         currentChartId : CurrentChartId,
         charts: [
             {
