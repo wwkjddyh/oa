@@ -1,3 +1,4 @@
+const CurrentChartId = 'bigDataChartId';
 new Vue({
     el: '#admin-main',
     watch: {
@@ -24,13 +25,7 @@ new Vue({
                 formJobCompanyObj = document.getElementById('formJobCompany'),
                 statUserObj = document.getElementById('statUser');
 
-            if(val === 'statUser') {
-                that.createChart('statUser');
-                statUserObj.style.display = 'block';
-            }
-            else {
-                statUserObj.style.display = 'none';
-            }*/
+            */
 
             /*使用v-show方式*/
             switch (val) {
@@ -261,6 +256,16 @@ new Vue({
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
+                case 'bigData':     // 大数据
+                    console.log('that.chartsData', that.chartsData)
+                    let chartData = that.chartsData[0];
+                    console.log('that.currentChartId', that.currentChartId, chartData);
+                    that.currentChartId = chartData.id;
+                    console.log('that.currentChartId', that.currentChartId);
+                    that.initBarChart(that.currentChartId, chartData.type, chartData.title, chartData.subtitle, chartData.xAxis,
+                          chartData.yAxis, chartData.tooltip, {}, chartData.tooltip, chartData.credits, chartData.series);
+
+                    break;
             }
         },
         
@@ -282,9 +287,72 @@ new Vue({
         cronTabActiveName: 'second',    /*cron表达式tabs设置*/
         showContent: 'firstPage',
         receiverUserName: '',
-        chartIds: {
-            statUser: 'statUserChartId',
-        },
+        currentChartId : CurrentChartId,
+        charts: [
+            {
+                id: 'bigDataChartId',
+                chart: null
+            },
+        ],
+        chartsData: [{
+            id: 'bigDataChartId',
+            type: 'bar',
+            title: '分地区的世界历史人口',
+            subtitle: '来源: <a href="https://en.wikipedia.org/wiki/World_population">维基百科</a>',
+            xAxis: {
+                categories: ['非洲', '美洲', '亚洲', '欧洲', '大洋洲'],
+                title: {
+                    text: null
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: '人口 (百万)',
+                    align: 'high'
+                },
+                labels: {
+                    overflow: 'justify'
+                }
+            },
+            tooltip: {
+                valueSuffix: ' 百万'
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        enabled: true
+                    }
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'top',
+                x: -40,
+                y: 80,
+                floating: true,
+                borderWidth: 1,
+                backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                shadow: true
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                name: '1800年',
+                data: [107, 31, 635, 203, 2]
+            }, {
+                name: '1900年',
+                data: [133, 156, 947, 408, 6]
+            }, {
+                name: '2000年',
+                data: [814, 841, 3714, 727, 31]
+            }, {
+                name: '2016年',
+                data: [1216, 1001, 4436, 738, 40]
+            }],
+        }],
         ueditors: {
             article: null,
         },
@@ -723,27 +791,6 @@ new Vue({
             tabIndex: 2,
             activeName: 'first',
         },
-        chartsData: [
-            {
-                chartType: 'column',
-                title: '近4月用户数',
-                subtitle: '',
-                categories : ['一般用户', '一般会员', '猎头', '企业用户', 'VIP'],
-                series : [{
-                    name: '2018/05',
-                    data: [3000, 200, 10, 5, 20]
-                }, {
-                    name: '2018/06',
-                    data: [5000, 500, 50, 100, 50]
-                }, {
-                    name: '2018/07',
-                    data: [2000, 1000, 37, 7, 300]
-                }, {
-                    name: '2018/08',
-                    data: [1216, 1001, 32, 738, 400]
-                }],
-            },
-        ],
 
         isIndeterminate: {
             roleModule: true,
@@ -4896,7 +4943,125 @@ new Vue({
          */
         submitReceiverUserOfReceiverIds() {
             console.log('submitReceiverUserOfReceiverIds')
-        }
+        },
+
+        /**
+         * 构建柱状图图表
+         */
+        initBarChart(chartId, type, title, subtitle, xAxis, yAxis, tooltip, categories, legend, credits, series) {
+            let that = this;
+            let options = {
+                loading: {
+                    hideDuration: 1000,
+                    showDuration: 1000
+                },
+                chart: {
+                    type: type
+                },
+                title: {
+                    text: title
+                },
+                subtitle: {
+                    text: subtitle
+                },
+                xAxis: xAxis,
+                yAxis: yAxis,
+                tooltip: tooltip,
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                legend: legend,
+                credits: credits,
+                series: series,
+                exporting: {
+                    filename: '测试图表',
+
+                }
+            };
+            let tChart = Highcharts.chart(chartId, options);
+            let chartObj = that.charts.find(function(m){ return m.id == chartId});
+            if (chartObj) {
+                chartObj.chart = tChart;
+                return false;
+            }
+        },
+
+        /**
+         * 重绘
+         * @param chartId 图表ID
+         */
+        redrawBarChart(chartId) {
+            let that = this;
+            console.log('that.charts', that.charts);
+            let chartObj = that.charts.find(function(m){ return m.id == chartId});
+            if (chartObj) {
+                let tChart = chartObj.chart;
+                tChart.update({
+                    series: [{
+                        name: 'Year 1200',
+                        data: [127, 85, 605, 263, 4]
+                    }, {
+                        name: 'Year 1900',
+                        data: [133, 156, 947, 408, 6]
+                    }, {
+                        name: 'Year 2000',
+                        data: [814, 841, 3714, 727, 31]
+                    }, {
+                        name: 'Year 2016',
+                        data: [1218, 1001, 4439, 788, 45]
+                    }]
+                });
+                tChart.redraw();
+                tChart.reflow();
+                return false;
+            }
+        },
+
+        /**
+         * 打印
+         * @param chartId 图表ID
+         */
+        handlePrintChart(chartId) {
+            let that = this;
+            let chartObj = that.charts.find(function(m){ return m.id == chartId});
+            if (chartObj) {
+                chartObj.chart.print();
+                return false;
+            }
+        },
+
+        /**
+         * 下载
+         * @param chartId 图表ID
+         */
+        handleExportChartLocal(chartId) {
+            let that = this;
+            let chartObj = that.charts.find(function(m){ return m.id == chartId});
+            if (chartObj) {
+                chartObj.chart.exportChartLocal();
+                return false;
+            }
+        },
+
+        /**
+         * 导出
+         * @param chartId 图表ID
+         */
+        handleExportChart(chartId) {
+            let that = this;
+            let chartObj = that.charts.find(function(m){ return m.id == chartId});
+            if (chartObj) {
+                chartObj.chart.exportChart({
+                    type: 'application/pdf',
+                    filename: '测试文件'
+                });
+                return false;
+            }
+        },
 
     },
     props: {
@@ -4974,6 +5139,8 @@ new Vue({
         that.ueditors.article.addListener('blur', function(editor){
             that.formArticle.content = that.ueditors.article.getContent();
         });
+
+
     },
     destroyed: function() {
         this.ueditors.article.destroy();

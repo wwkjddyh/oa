@@ -1,6 +1,14 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
-    大数据展示
+    <div style="width: 100%;height: auto;">
+        <div id="bigDataChartId" style="min-width: 500px; max-width: 800px; height: 400px; margin: 0 auto"></div>
+        <div style="margin-top: 10px;display: none">
+            <el-button plain @click="redrawBarChart('chartId')" size="mini" icon="el-icon-refresh">刷新</el-button>
+            <el-button plain @click="handlePrintChart('chartId')" size="mini" icon="el-icon-printer">打印</el-button>
+            <el-button plain @click="handleExportChartLocal('chartId')" size="mini" icon="el-icon-download">下载</el-button>
+            <el-button plain @click="handleExportChart('chartId')" size="mini" icon="el-icon-share">导出</el-button>
+        </div>
+    </div>
 </div>
 </html>
