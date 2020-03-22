@@ -2,6 +2,7 @@ package com.oa.platform.biz;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.oa.platform.common.Constants;
 import com.oa.platform.common.StatusCode;
 import com.oa.platform.entity.Area;
@@ -521,6 +522,67 @@ public class UserBiz extends BaseBiz {
         } catch (Exception e) {
             ret = this.getErrorVo();
             e.printStackTrace();
+        }
+        return ret;
+    }
+
+    /**
+     * 获得所有系统用户
+     * @return
+     */
+    public Map<String, Object> getAllSysUsers() {
+        try {
+            User user = new User();
+            user.setUserType(User.TYPE_ADMIN);
+            user.setRecordFlag(Constants.INT_NORMAL);
+            List<User> users = userService.find(user);
+            users = users == null ? Lists.newArrayList() : users;
+            if (!users.isEmpty()) {
+                int len = users.size();
+                for (int i = 0; i < len; i ++) {
+                    User u = users.get(i);
+                    u.setUserPwd("");
+                    u.setUserPwdOrigi("");
+                }
+            }
+            ret = this.getSuccessVo("", users);
+        } catch (Exception e) {
+            e.printStackTrace();
+            loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+            ret = this.getErrorVo();
+        }
+        return ret;
+    }
+
+    /**
+     * 获得所有系统用户(Map结构)
+     * @return
+     */
+    public Map<String, Object> getAllSysUsersMap() {
+        try {
+            Map<String, Map<String, Object>> userMap = Maps.newHashMap();
+            User user = new User();
+            user.setUserType(User.TYPE_ADMIN);
+            user.setRecordFlag(Constants.INT_NORMAL);
+            List<User> users = userService.find(user);
+            users = users == null ? Lists.newArrayList() : users;
+            if (!users.isEmpty()) {
+                int len = users.size();
+                for (int i = 0; i < len; i ++) {
+                    User u = users.get(i);
+                    String userId = u.getUserId();
+                    Map<String, Object> entry = Maps.newHashMap();
+                    entry.put("userId", userId);
+                    entry.put("userName", u.getUserName());
+                    entry.put("userNickname", u.getUserNickname());
+                    userMap.put(userId, entry);
+                }
+            }
+            ret = this.getSuccessVo("", userMap);
+        } catch (Exception e) {
+            e.printStackTrace();
+            loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+            ret = this.getErrorVo();
         }
         return ret;
     }

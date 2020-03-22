@@ -118,7 +118,7 @@
             <el-form ref="formNews" :rules="rules" :model="formNews" label-width="100px" :validate-on-rule-change="false" size="small">
                 <el-form-item label="收件人" prop="receiverId" >
                     <div style="width: 600px;height: auto;float: left;display: flex;display: -webkit-flex; align-items:center;">
-                        <div style="border-radius: 4px;border-width: 1px;border-color: #E0E0E0;width:470px;height:200px;border-style: solid;">
+                        <div style="border-radius: 4px;border-width: 1px;border-color: #E0E0E0;width:470px;height:auto;min-height:34px;border-style: solid;">
                             <el-tag style="margin-left: 5px;"
                                     type="info"
                                     size="mini"
@@ -160,7 +160,7 @@
     <el-dialog title="选择接收人" :visible.sync="dialogShow.newsReceivers" lock-scroll="true" width="800">
         <el-card shadow="never" style="width: 100%;" type="card">
             <el-checkbox-group v-model="newsReceiveUserIds">
-                <el-checkbox v-for="(user, userId) in newsReceiveUsers" :label="userId" :key="userId">{{user.userNickname}}</el-checkbox>
+                <el-checkbox v-for="(user, userId) in allSysUsersMap" :label="userId" :key="userId">{{user.userNickname}}</el-checkbox>
             </el-checkbox-group>
             <div style="width: 100%; margin-top: 20px; display: flex;display: -webkit-flex;">
                 <el-button @click="newsReceiveUserIds = [];dialogShow.newsReceivers = false;" type="info" round size="small" icon="el-icon-close">取消</el-button>
@@ -168,7 +168,7 @@
             </div>
         </el-card>
     </el-dialog>
-    <el-dialog :title="currNewsSendRecord.title" :visible.sync="dialogShow.viewNews" lock-scroll="true" width="500" center="true">
+    <el-dialog :title="currNewsSendRecord.title" :visible.sync="dialogShow.viewNews" lock-scroll="true" center="true">
         <div style="width: 100%; text-align: center">
             {{currNewsSendRecord.content}}
         </div>

@@ -465,4 +465,22 @@ public class UserApiController extends BaseController {
             @RequestParam String passwordOrgi) {
         return userBiz.modifyPwd(userId, password, passwordOrgi);
     }
+
+    /**
+     * 获得所有系统用户
+     * @return
+     */
+    @GetMapping("allSysUsers")
+    public Map<String, Object> getAllSysUsers() {
+        return userBiz.getAllSysUsers();
+    }
+
+    /**
+     * 获得所有系统用户(Map结构)
+     * @return
+     */
+    @GetMapping("allSysUsersMap")
+    public Map<String, Object> getAllSysUsersMap() {
+        return userBiz.getAllSysUsersMap();
+    }
 }

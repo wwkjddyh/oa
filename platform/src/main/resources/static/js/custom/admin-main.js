@@ -691,6 +691,8 @@ new Vue({
                 }]
             }
         ],
+        allSysUsers: [],
+        allSysUsersMap: {},
         currBrief: {},
         //uploadFileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
         uploadFileList: [],
@@ -1339,6 +1341,8 @@ new Vue({
                     let responseCode = parseInt(response.data.code);
                     if(responseCode === 200){
                         if (isAdmin) {
+                            //that.getAllSysUsers();
+                            that.getAllSysUsersMap();
                             that.dialogShow.sysUser = false;
                             that.loadSysUsers('', 1, that.pager.sysUser.pageSize);
                         }
@@ -3096,6 +3100,41 @@ new Vue({
             }
         },
 
+        /**
+         * 获得所有系统用户信息
+         */
+        getAllSysUsers() {
+            let that = this;
+            that.allSysUsers = [];
+            axios.get("/api/user/allSysUsers")
+                .then(function(response){/!*成功*!/
+                    let data = response.data;
+                    if(parseInt(data.code) === 200) {
+                        that.allSysUsers = data.data;
+                    }
+                })
+                .catch(function(err){/!*异常*!/
+                    console.log(err);
+                });
+        },
+
+        /**
+         * 获得所有系统用户信息(Map结构)
+         */
+        getAllSysUsersMap() {
+            let that = this;
+            that.allSysUsersMap = [];
+            axios.get("/api/user/allSysUsersMap")
+                .then(function(response){/!*成功*!/
+                    let data = response.data;
+                    if(parseInt(data.code) === 200) {
+                        that.allSysUsersMap = data.data;
+                    }
+                })
+                .catch(function(err){/!*异常*!/
+                    console.log(err);
+                });
+        },
 
         /**
          * 加载所有角色信息
@@ -4031,9 +4070,10 @@ new Vue({
                 // 向表单中添加记录
                 for (let i = 0; i < _len; i ++) {
                     let _newsReceiveUserId = that.newsReceiveUserIds[i];
-                    if (that.newsReceiveUsers[_newsReceiveUserId]) {
+                    let _user = that.allSysUsersMap[_newsReceiveUserId];
+                    if (_user) {
                         that.formNews.receiveUserIds.push(_newsReceiveUserId);
-                        that.formNews.receiveUsers.push(that.newsReceiveUsers[_newsReceiveUserId]);
+                        that.formNews.receiveUsers.push(_user);
                     }
                 }
                 that.formNews.receiverId = that.formNews.receiveUserIds.length > 0 ? that.formNews.receiveUserIds.join(",") : '';
@@ -4865,6 +4905,8 @@ new Vue({
         let that = this;
         that.getYearMonths();
         that.getAllAuthRole();
+        //that.getAllSysUsers();
+        that.getAllSysUsersMap();
         that.loadMemberUsers('','',0, that.pager.user.pageSize);
         that.ueditors.article = UE.getEditor('articleEditor', that.ueditorConfig);
         that.ueditors.article.addListener("ready", function () {
