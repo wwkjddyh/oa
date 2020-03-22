@@ -180,6 +180,8 @@ const formStructConfig = {
         stinkyEgg: 0,
         sendType: '',
         receiverIds: [],
+        receiveUsers: [],
+        receiverIdArrStr: '',
     },
 
     formPartyDues: {
@@ -524,6 +526,7 @@ const formStructConfig = {
         modifyPwd: false,
         viewBrief: false,
         receiverIds: false,
+        briefReceivers: false,
     },
     rules: {
         name: [
@@ -643,6 +646,9 @@ const formStructConfig = {
         articleContent: [
             { required: true, message: '请填写正文', trigger: 'blur' },
             { min: 3, message: '最少3个字符', trigger: 'blur' }
+        ],
+        receiverIdArrStr: [
+            { required: true, message: '请选择接收人', trigger: 'blur' },
         ],
     },
     dateDickerOptions: {

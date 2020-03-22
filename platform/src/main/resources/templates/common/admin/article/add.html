@@ -13,21 +13,21 @@
                         <div slot="content">文章类型</div><i class="el-icon-question"></i></el-tooltip>
                     </el-form-item>
                     -->
-                    <el-form-item label="接收人" prop="receiverIds">
+                    <el-form-item label="接收人" prop="receiverIdArrStr">
                         <div style="width: 470px;height: auto;float: left;display: flex;display: -webkit-flex; align-items:center;">
-                            <div style="border-radius: 4px;border-width: 1px;border-color: #E0E0E0;width:100%;height:auto;border-style: solid;">
+                            <div style="border-radius: 4px;border-width: 1px;border-color: #E0E0E0;width:100%;min-height:34px;height:auto;border-style: solid;">
                                 <el-tag style="margin-left: 5px;"
                                         type="info"
                                         size="mini"
                                         :key="reUser.userId"
-                                        v-for="reUser in newsReceiveUsers"
+                                        v-for="reUser in formArticle.receiveUsers"
                                         closable
                                         :disable-transitions="false"
-                                        @close="handleNewsRemoveReceiver(reUser.userId);">
+                                        @close="handleBriefRemoveReceiver(reUser.userId);">
                                     {{reUser.userNickname}}
                                 </el-tag>
                             </div>
-                            <el-button @click="dialogShow.receiverIds = !dialogShow.receiverIds" style="margin-left: 5px" plain size="mini" icon="el-icon-s-operation">选择</el-button>
+                            <el-button @click="dialogShow.briefReceivers = !dialogShow.briefReceivers" style="margin-left: 5px" plain size="mini" icon="el-icon-s-operation">选择</el-button>
                             <el-tooltip class="item" effect="dark" placement="top">
                                 <div slot="content">接收人</div><i class="el-icon-question"></i></el-tooltip>
                         </div>
@@ -102,6 +102,17 @@
                 </el-form>
             </el-tab-pane>
         </el-tabs>
+        <el-dialog title="选择接收人" :visible.sync="dialogShow.briefReceivers" lock-scroll="true" width="800">
+            <el-card shadow="never" style="width: 100%;" type="card">
+                <el-checkbox-group v-model="briefReceiveUserIds">
+                    <el-checkbox v-for="(user, userId) in allSysUsersMap" :label="userId" :key="userId">{{user.userNickname}}</el-checkbox>
+                </el-checkbox-group>
+                <div style="width: 100%; margin-top: 20px; display: flex;display: -webkit-flex;">
+                    <el-button @click="briefReceiveUserIds = [];dialogShow.briefReceivers = false;" type="info" round size="small" icon="el-icon-close">取消</el-button>
+                    <el-button @click="handleBriefAddReceivers" type="primary" round size="small" icon="el-icon-check">确定</el-button>
+                </div>
+            </el-card>
+        </el-dialog>
         <el-dialog title="选择发送对象" :visible.sync="dialogShow.receiverIds" lock-scroll="true" width="500px" center="true">
             <el-input placeholder="输入关键字进行过滤" v-model="receiverUserName">
             </el-input>

@@ -112,6 +112,8 @@ new Vue({
                             recordTime: '',
                             sendType: '1',
                             receiverIds: [],
+                            receiveUsers: [],
+                            receiverIdArrStr: '',
                         };
                         setTimeout(function() {
                             that.ueditors.article.setContent('', false);
@@ -646,6 +648,7 @@ new Vue({
             },
         },   // 消息接收人(用于'选择接收人'dialog)
         newsReceiveUserIds: [],
+        briefReceiveUserIds: [],
         currNewsSendRecord: {},
         receiverUserData: [
             {
@@ -1078,6 +1081,8 @@ new Vue({
                     recordTime: '',
                     sendType: '1',
                     receiverIds: [],
+                    receiveUsers: [],
+                    receiverIdArrStr: '',
                 };
                 setTimeout(function() {
                     that.ueditors.article.setContent("", false);
@@ -1485,10 +1490,7 @@ new Vue({
             let operName = '新增';
             let sendType = that.formArticle.sendType || '';    // 默认为简报
             let receiverIds = that.formArticle.receiverIds || [];
-            if (receiverIds.length === 0) {
-                receiverIds = ['faf05465-ed9d-4d95-9d72-f92dbd953d80', 'a3e21181-faf9-447b-b7e6-140395bb689b'];
-            }
-            console.log('submitArticle => receiverIds: ', receiverIds);
+            console.log('(submitArticle)receiverIds', receiverIds);
             // console.log(' submitArticle => (that.formArticle) => ',  that.formArticle)
             params.append('typeId',that.formArticle.typeId || '');
             params.append('categoryId',that.formArticle.categoryId || '');
@@ -2453,6 +2455,8 @@ new Vue({
                                 stinkyEgg: entry.stinkyEgg,
                                 sendType: '',
                                 receiverIds: [],
+                                receiveUsers: [],
+                                receiverIdArrStr: '',
                             };
                             setTimeout(function() {
                                 that.ueditors.article.setContent(entry.content, false);
@@ -4193,6 +4197,61 @@ new Vue({
                 });
             }
 
+        },
+
+        /**
+         * (简报)新增接收人
+         */
+        handleBriefAddReceivers: function(e) {
+            let that = this;
+            that.formArticle.receiverIds = that.formArticle.receiverIds || [];
+            that.formArticle.receiveUsers = that.formArticle.receiveUsers || [];
+            //console.log('newsReceiveUserIds => ', that.newsReceiveUserIds);
+            let _len = that.briefReceiveUserIds.length;
+            if (_len > 0) {
+                // 向表单中添加记录
+                for (let i = 0; i < _len; i ++) {
+                    let _receiveUserId = that.briefReceiveUserIds[i];
+                    let _user = that.allSysUsersMap[_receiveUserId];
+                    if (_user) {
+                        that.formArticle.receiverIds.push(_receiveUserId);
+                        that.formArticle.receiveUsers.push(_user);
+                    }
+                }
+                that.formArticle.receiverIdArrStr = that.formArticle.receiverIds.join(",");
+                console.log('(handleBriefAddReceivers)that.formArticle.receiverIds', that.formArticle.receiverIds);
+                console.log('(handleBriefAddReceivers)that.formArticle.receiveUsers', that.formArticle.receiveUsers);
+                that.$forceUpdate();
+            }
+            that.dialogShow.briefReceivers = !that.dialogShow.briefReceivers;
+        },
+
+        /**
+         * (简报)移除接收人
+         * @param _reUserId 用户ID
+         */
+        handleBriefRemoveReceiver: function(_reUserId) {
+            _reUserId = _reUserId || '';
+            let that = this;
+            console.log('that.formArticle', that.formArticle);
+            if (_reUserId && _reUserId != '') {
+                let _len = that.formArticle.receiveUsers.length;
+                let _ids = [], _users = [];
+                if (_len > 0) {
+                    for (let i = 0; i < _len; i ++) {
+                        let __user = that.formArticle.receiveUsers[i];
+                        if (__user.userId != _reUserId) {
+                            _ids.push(__user.userId);
+                            _users.push(__user);
+                        }
+                    }
+                }
+                that.formArticle.receiveUsers = _users;
+                that.formArticle.receiverIds = _ids;
+                that.formArticle.receiverIdArrStr = _ids.join(",");
+                console.log('(handleBriefRemoveReceiver)that.formArticle.receiverIds', that.formArticle.receiverIds);
+                that.$forceUpdate();
+            }
         },
 
         /**
