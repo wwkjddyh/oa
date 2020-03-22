@@ -6,6 +6,14 @@ new Vue({
         // },
 
         /**
+         * 监控接收者名称变化
+         * @param val
+         */
+        receiverUserName(val) {
+            this.$refs.receiverTree.filter(val);
+        },
+
+        /**
          * 监控showContent变化
          * @param val
          * @param oldVal
@@ -271,6 +279,7 @@ new Vue({
         activeTabName: 'first',
         cronTabActiveName: 'second',    /*cron表达式tabs设置*/
         showContent: 'firstPage',
+        receiverUserName: '',
         chartIds: {
             statUser: 'statUserChartId',
         },
@@ -638,6 +647,50 @@ new Vue({
         },   // 消息接收人(用于'选择接收人'dialog)
         newsReceiveUserIds: [],
         currNewsSendRecord: {},
+        receiverUserData: [
+            {
+                id: 1,
+                label: '中共上海市委书记应勇',
+                title: '中共上海市委',
+                children: [{
+                    id: 4,
+                    label: '浦东新区区委书记',
+                    title: '新区区委书记',
+                    children: [{
+                        id: 9,
+                        label: '区委副书记',
+                        title: '副书记1'
+                    }, {
+                        id: 10,
+                        label: '金桥镇书记',
+                        title: '书记2',
+                        children: [{
+                            id: 29,
+                            label: 'XX村长',
+                            title: '李村长'
+                        }, {
+                            id: 30,
+                            label: 'XX村委书记',
+                            title: '村支书',
+
+                        }]
+                    }]
+                }]
+            }, {
+                id: 2,
+                label: '中共重庆市委书记陈敏尔',
+                title: '重庆市委书记',
+                children: [{
+                    id: 5,
+                    label: '唐良智',
+                    title: '市长'
+                }, {
+                    id: 6,
+                    label: '李明清',
+                    title: '副市长'
+                }]
+            }
+        ],
         currBrief: {},
         //uploadFileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
         uploadFileList: [],
@@ -967,6 +1020,10 @@ new Vue({
                 totalCount: 1000,
             },
         },
+        defaultProps: {
+            children: 'children',
+            label: 'label'
+        }
     },
     methods: {
         handleOpen(key, keyPath) {
@@ -4710,6 +4767,36 @@ new Vue({
                 }
                 window.open(_url);
             }
+        },
+
+        /**
+         * 过滤发送者信息
+         * @param value
+         * @param data
+         * @returns {boolean}
+         */
+        filterNodeOfReceiverIds(value, data) {
+            if (!value) return true;
+            return data.label.indexOf(value) !== -1 || data.title.indexOf(value) !== -1;
+        },
+        /**
+         * (选择接收者)选择节点事件
+         */
+        handleCheckChangeOfReceiverIds(data, checked, indeterminate) {
+            console.log('handleCheckChangeOfReceiverIds=>', data, checked, indeterminate);
+        },
+        /**
+         * (选择接收者)点击节点事件
+         */
+        handleNodeClickOfReceiverIds(data) {
+            console.log('handleNodeClickOfReceiverIds=>', data);
+        },
+
+        /**
+         * (选择接收者)提交发送着选择
+         */
+        submitReceiverUserOfReceiverIds() {
+            console.log('submitReceiverUserOfReceiverIds')
         }
 
     },

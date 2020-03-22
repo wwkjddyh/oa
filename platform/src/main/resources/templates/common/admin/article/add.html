@@ -3,7 +3,7 @@
     <div th:fragment="form">
         <el-tabs v-model="activeTabName" type="card">
             <el-tab-pane label="简报信息" name="first">
-                <el-form ref="formArticle" :rules="rules" :model="formArticle" label-width="65px" size="small" validate-on-rule-change="false">
+                <el-form ref="formArticle" :rules="rules" :model="formArticle" label-width="80px" size="small" validate-on-rule-change="false">
                     <!--
                     <el-form-item label="文章类型" prop="categoryId">
                         <el-select v-model="formArticle.categoryId" style="width: 300px;" placeholder="请选择类型" size="small">
@@ -13,7 +13,25 @@
                         <div slot="content">文章类型</div><i class="el-icon-question"></i></el-tooltip>
                     </el-form-item>
                     -->
-
+                    <el-form-item label="接收人" prop="receiverIds">
+                        <div style="width: 470px;height: auto;float: left;display: flex;display: -webkit-flex; align-items:center;">
+                            <div style="border-radius: 4px;border-width: 1px;border-color: #E0E0E0;width:100%;height:auto;border-style: solid;">
+                                <el-tag style="margin-left: 5px;"
+                                        type="info"
+                                        size="mini"
+                                        :key="reUser.userId"
+                                        v-for="reUser in newsReceiveUsers"
+                                        closable
+                                        :disable-transitions="false"
+                                        @close="handleNewsRemoveReceiver(reUser.userId);">
+                                    {{reUser.userNickname}}
+                                </el-tag>
+                            </div>
+                            <el-button @click="dialogShow.receiverIds = !dialogShow.receiverIds" style="margin-left: 5px" plain size="mini" icon="el-icon-s-operation">选择</el-button>
+                            <el-tooltip class="item" effect="dark" placement="top">
+                                <div slot="content">接收人</div><i class="el-icon-question"></i></el-tooltip>
+                        </div>
+                    </el-form-item>
                     <el-form-item label="主题" prop="title">
                         <el-input v-model="formArticle.title" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="主题"></el-input>
                         <el-tooltip class="item" effect="dark" placement="top">
@@ -73,7 +91,7 @@
                         <el-tooltip class="item" effect="dark" placement="top" style="margin-left: 658px">
                             <div slot="content">正文</div><i class="el-icon-question"></i></el-tooltip>
                     </el-form-item>
-                    <div style="margin-bottom: 20px;margin-left: 65px;margin-top:-50px;"><script id="articleEditor" type="text/plain"></script></div>
+                    <div style="margin-bottom: 20px;margin-left: 80px;margin-top:-50px;"><script id="articleEditor" type="text/plain"></script></div>
 
                     <el-input v-model="formArticle.sendType" type="hidden" style="display: none"></el-input>
                     <el-input v-model="formArticle.categoryId" type="hidden" style="display: none"></el-input>
@@ -84,5 +102,17 @@
                 </el-form>
             </el-tab-pane>
         </el-tabs>
+        <el-dialog title="选择发送对象" :visible.sync="dialogShow.receiverIds" lock-scroll="true" width="500px" center="true">
+            <el-input placeholder="输入关键字进行过滤" v-model="receiverUserName">
+            </el-input>
+            <el-tree class="filter-tree" node-key="id" :data="receiverUserData" :props="defaultProps" default-expand-all
+                     :filter-node-method="filterNodeOfReceiverIds" ref="receiverTree"
+                     show-checkbox @check-change="handleCheckChangeOfReceiverIds" @node-click="handleNodeClickOfReceiverIds">
+            </el-tree>
+            <div style="margin-top: 20px">
+                <el-button @click="dialogShow.receiverIds = !dialogShow.receiverIds;" plain size="mini" icon="el-icon-close">取消</el-button>
+                <el-button @click="submitReceiverUserOfReceiverIds" type="primary" plain size="mini" icon="el-icon-check">保存</el-button>
+            </div>
+        </el-dialog>
     </div>
 </html>

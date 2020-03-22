@@ -523,6 +523,7 @@ const formStructConfig = {
         resUpload: false,
         modifyPwd: false,
         viewBrief: false,
+        receiverIds: false,
     },
     rules: {
         name: [
