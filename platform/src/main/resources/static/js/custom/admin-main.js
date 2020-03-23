@@ -1148,6 +1148,30 @@ new Vue({
         submitForm(formName) {
             let that = this;
             console.log("submit-formName:",formName);
+            if (formName == 'formModifyPwd') {
+                let __password = that.formModifyPwd.password.replace(/(^\s*)|(\s*$)/g, "");
+                let __passwordOrgi = that.formModifyPwd.passwordOrgi.replace(/(^\s*)|(\s*$)/g, "");
+                if (__password == '') {
+                    that.$message.error('请填写\'密码\'');
+                    return false;
+                }
+                if (__password.length < 6 || __password.length > 128) {
+                    that.$message.error('\'密码\'长度长度在6~128之间');
+                    return false;
+                }
+                if (__passwordOrgi == '') {
+                    that.$message.error('请输入\'重复密码\'');
+                    return false;
+                }
+                if (__passwordOrgi.length < 6 || __passwordOrgi.length > 128) {
+                    that.$message.error('\'重复密码\'长度在6~128之间');
+                    return false;
+                }
+                if (__password != __passwordOrgi) {
+                    that.$message.error('两次输入密码不一致');
+                    return false;
+                }
+            }
             if (formName == 'formArticle') {
                 that.formArticle.content = that.ueditors.article.getContent();
                 console.log('that.formArticle.content', that.formArticle.content);
@@ -1164,7 +1188,7 @@ new Vue({
                     return false;
                 }
                 if (__title.length < 3 || __title.length > 2000) {
-                    that.$message.error('主题字符数在3~2000之间');
+                    that.$message.error('主题长度在3~2000之间');
                     return false;
                 }
                 if (__content == '') {
