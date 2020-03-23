@@ -491,18 +491,17 @@
             FROM t_module a WHERE a.record_flag = 1 and (a.parent_id is null or a.parent_id = '')
         UNION ALL
         SELECT k.module_id,CONCAT(c.module_name, '>', k.module_name) as module_name
-            FROM (SELECT * FROM t_module WHERE record_flag = 1
-                <if test="isMenu != null"> AND is_menu = #{isMenu} </if>
-                and module_id in
-                (SELECT DISTINCT module_id FROM t_role_module where role_id in
-                    (SELECT role_id FROM t_user_role WHERE user_id = #{userId})
-                )
-			) k INNER JOIN cte c ON c.module_id = k.parent_id
+            FROM t_module k INNER JOIN cte c ON c.module_id = k.parent_id
         )
         SELECT t10.*, c.module_name full_module_name
         FROM cte c, t_module t10
         WHERE c.module_id = t10.module_id
         ORDER BY t10.parent_id,t10.`order`,c.module_name ASC
-    ) t
+    ) t WHERE t.record_flag = 1 <if test="isMenu != null"> AND is_menu = #{isMenu} </if>
+        AND t.module_id IN  (SELECT DISTINCT module_id FROM t_role_module where role_id IN
+                    (SELECT role_id FROM t_user_role WHERE user_id = #{userId})
+                )
+
+
   </select>
 </mapper>
