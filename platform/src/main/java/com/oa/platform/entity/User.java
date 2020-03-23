@@ -134,7 +134,53 @@ public class User implements UserDetails, Serializable {
      */
     private String langCode;
 
-    /**
+    private String age;
+    private String partyAge;
+    private String gender;
+    private String education;
+    private String orgId;
+    
+    public String getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
+	}
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
+	}
+
+	public String getPartyAge() {
+		return partyAge;
+	}
+
+	public void setPartyAge(String partyAge) {
+		this.partyAge = partyAge;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public String getEducation() {
+		return education;
+	}
+
+	public void setEducation(String education) {
+		this.education = education;
+	}
+
+	/**
      * Id数组
      */
     private List<String> ids;

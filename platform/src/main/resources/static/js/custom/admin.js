@@ -42,6 +42,7 @@ new Vue({
                 axios.get("/api/verify/getCode")
                     .then(function(response) {
                         let data = response.data;
+                        
                         if(parseInt(data.code) === 200) {
                             if (data.data.code === _verifyCode.toUpperCase()) {
                                 document.getElementById("logonForm").submit()
@@ -104,3 +105,5 @@ function refreshVerifyCode(_targetId) {
         verifyImg.src = "/api/verify/code?&timestamp=" + new Date();
     }
 }
+
+

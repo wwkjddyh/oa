@@ -53,8 +53,15 @@ public class UserDtl implements Serializable {
     private String leader;
     //身份证号码
     private String idCard;
+    //是否为党员
+	private String party;
 	
-	
+	public String getParty() {
+		return party;
+	}
+	public void setParty(String party) {
+		this.party = party;
+	}
 	public String getLeader() {
 		return leader;
 	}

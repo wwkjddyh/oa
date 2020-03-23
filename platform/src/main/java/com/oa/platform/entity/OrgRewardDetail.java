@@ -16,12 +16,31 @@ public class OrgRewardDetail implements Serializable{
 	private String allowOrg;
 	//批准时间
 	private String allowTime;
-	
+	//批准组织级别
+	private String allowOrgLevel;
+	//奖惩说明
+	private String rewardDesc;
 	//创建人
 	private String createBy;
 	
 	//修改人
 	private String updateBy;
+
+	public String getAllowOrgLevel() {
+		return allowOrgLevel;
+	}
+
+	public void setAllowOrgLevel(String allowOrgLevel) {
+		this.allowOrgLevel = allowOrgLevel;
+	}
+
+	public String getRewardDesc() {
+		return rewardDesc;
+	}
+
+	public void setRewardDesc(String rewardDesc) {
+		this.rewardDesc = rewardDesc;
+	}
 
 	public String getStaticsId() {
 		return staticsId;

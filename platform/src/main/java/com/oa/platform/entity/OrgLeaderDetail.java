@@ -21,11 +21,27 @@ public class OrgLeaderDetail implements Serializable{
 	private String positon;
 	//批准任职时间
 	private String allowLeaderTime;
+	//职务级别
+	private String positionLevel;
+	//职务说明
+	private String positionDesc;
 	//创建人
 	private String createBy;
 	//修改人
 	private String updateBy;
 	
+	public String getPositionLevel() {
+		return positionLevel;
+	}
+	public void setPositionLevel(String positionLevel) {
+		this.positionLevel = positionLevel;
+	}
+	public String getPositionDesc() {
+		return positionDesc;
+	}
+	public void setPositionDesc(String positionDesc) {
+		this.positionDesc = positionDesc;
+	}
 	public String getCreateBy() {
 		return createBy;
 	}

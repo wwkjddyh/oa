@@ -3,63 +3,96 @@
       xmlns:th="http://www.w3.org/1999/xhtml">
 <div th:fragment="content">
 	<el-row>
-	  <el-col :span="4" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 2 : 0">
-			<el-card style="height: 180px; margin-top: 20px" >
-				<!-- <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-				 class="image" style="height: 120px"> -->
-				 <div align="center" style="cursor:pointer;" @click="goToMenu(item)">
-				 	<i class="el-icon-house" style="font-size: 100px" align="center" ></i>
-				 </div>
-				<div style="height: 40px; padding-top: 10px; text-align: center;">
-					<span>{{item.name}}</span>
-				</div>
-			</el-card>
+		<el-col :span="12" >
+			<el-row style="height:252px;">
+			<div>
+				<el-row><span style="font-size:18px;">快速入口</span></el-row>
+				<el-row>
+							<el-col :span="4" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 2 : 0">
+					<el-card style="height: 95px; margin-top: 15px" >
+						<!-- <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+						 class="image" style="height: 120px"> -->
+						 <div align="center" style="cursor:pointer;" @click="goToMenu(item)">
+						 	<i class="el-icon-house" style="font-size: 40px" align="center" ></i>
+						 </div>
+						<div style="height: 5px; padding-top: 5px; text-align: center;">
+							<span style="font-size:3px">{{item.name}}</span>
+						</div>
+					</el-card>
+				</el-col>
+				<el-col :span="4" v-for="item in firstPage2" :key="item.url" :offset="item.index > 0 ? 2 : 0">
+					<el-card style="height: 95px; margin-top: 5px" >
+						<!-- <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+						 class="image" style="height: 120px"> -->
+						 <div align="center" style="cursor:pointer;" @click="goToMenu(item)">
+						 	<i class="el-icon-house" style="font-size: 40px" align="center" ></i>
+						 </div>
+						<div style="height: 5px; padding-top: 5px; text-align: center;">
+							<span style="font-size:5px;">{{item.name}}</span>
+						</div>
+					</el-card>
+				</el-col>
+				</el-row>
+			</div>
+			</el-row>
+			<el-row style="height:252px;">
+				
+				<el-row><span style="font-size:18px;">资料下载</span></el-row>
+				<el-row>
+					<el-tabs type="border-card" style="margin-top:20px; width:91.5%;" @tab-click="firstPageDyzlxz()"  v-model="firstPageZlxz">
+					  <el-tab-pane label="党员管理" name="dygl">
+					  		<el-row  style="margin-top:10px;" v-for="item in resArray">
+								<el-col :span="11" >
+									<el-tag type="info" effect="dark" size="mini">{{item.recordTime}}</el-tag>
+									<el-badge  ><span @click="handleDownloadRes(item)" style="cursor:pointer;">{{item.resName}}</span></el-badge>
+								</el-col>
+							</el-row>
+							
+					  </el-tab-pane>
+					  <el-tab-pane label="党费管理" name="dfgl">
+					  		<el-row  style="margin-top:10px;" v-for="item in resArray">
+								<el-col :span="11" >
+									<el-tag type="info" effect="dark" size="mini">{{item.recordTime}}</el-tag>
+									<el-badge  ><span @click="handleDownloadRes(item)" style="cursor:pointer;">{{item.resName}}</span></el-badge>
+								</el-col>
+							</el-row>
+					  </el-tab-pane>
+					  <el-tab-pane label="换届管理" name="hjgl">
+					  		<el-row  style="margin-top:10px;" v-for="item in resArray">
+								<el-col :span="11" >
+									<el-tag type="info" effect="dark" size="mini">{{item.recordTime}}</el-tag>
+									<el-badge  ><span @click="handleDownloadRes(item)" style="cursor:pointer;">{{item.resName}}</span></el-badge>
+								</el-col>
+							</el-row>
+					  </el-tab-pane>
+					</el-tabs>
+				</el-row>
+				
+			</el-row>
 		</el-col>
-		<el-col :span="4" v-for="item in firstPage2" :key="item.url" :offset="item.index > 0 ? 2 : 0">
-			<el-card style="height: 180px; margin-top: 20px" >
-				<!-- <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-				 class="image" style="height: 120px"> -->
-				 <div align="center" style="cursor:pointer;" @click="goToMenu(item)">
-				 	<i class="el-icon-house" style="font-size: 100px" align="center" ></i>
-				 </div>
-				<div style="height: 40px; padding-top: 10px; text-align: center;">
-					<span>{{item.name}}</span>
-				</div>
-			</el-card>
+		<el-col :span="12" style="height:504px;">
+			<div>
+				<el-row ><div><span style="font-size:18px;">新闻简报</span></div></el-row>
+				<el-divider ></el-divider>
+				<el-row  style="margin-top:10px;" v-for="item in currUserReceiverBriefRecords">
+					<el-col :span="11" >
+						<el-tag type="info" effect="dark" size="mini">{{item.sendTime}}</el-tag>
+						<el-badge is-dot  ><span class="hover-blue" @click="handleBriefView(item.briefId)" style="cursor:pointer;">{{item.briefTitle}}</span></el-badge>
+					</el-col>
+				</el-row>
+				
+			</div>
 		</el-col>
 	</el-row>
+	<el-dialog :title="(currBrief.title || '')" :visible.sync="dialogShow.viewBrief" lock-scroll="true" width="500"
+               center="true" style="border-radius: 5px;">
+        <div style="width: 100%; text-align: center" v-html="(currBrief.content || '')">
+        </div>
+    </el-dialog>
 </div>
 <style>
-
-	.time {
-		font-size: 13px;
-		color: #999;
-	}
-
-	.bottom {
-		margin-top: 13px;
-		line-height: 12px;
-	}
-
-	.button {
-		padding: 0;
-		float: right;
-	}
-
-	.image {
-	/*	width: 100%;*/
-		height: 120px;
-	/*	display: block;*/
-	}
-
-	.clearfix:before,
-	.clearfix:after {
-		display: table;
-		content: "";
-	}
-
-	.clearfix:after {
-		clear: both
-	}
+.hover-blue{
+	hover{color:red;}
+}
 </style>
 </html>

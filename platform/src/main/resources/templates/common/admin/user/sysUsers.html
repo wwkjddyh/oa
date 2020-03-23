@@ -26,12 +26,40 @@
             </el-table-column>
             <el-table-column
                     prop="userName"
-                    label="名称"
+                    label="登录名"
+                    align="center"
                     width="200">
             </el-table-column>
             <el-table-column
                     prop="userNickname"
-                    label="昵称">
+                    align="center"
+                    label="姓名">
+            </el-table-column>
+            <el-table-column
+                    prop="gender"
+                    align="center"
+                    label="性别">
+                    <template v-slot="scope">
+						         {{ getGenderValue(scope.row.gender)}}
+						    </template>
+            </el-table-column>
+            <el-table-column
+                    prop="age"
+                    align="center"
+                    label="年龄">
+            </el-table-column>
+            <el-table-column
+                    prop="partyAge"
+                    align="center"
+                    label="党龄">
+            </el-table-column>
+            <el-table-column
+                    prop="education"
+                    align="center"
+                    label="学历">
+                    <template v-slot="scope">
+						         {{ getEducationValue(scope.row.education)}}
+						    </template>
             </el-table-column>
             <!--
             <el-table-column
@@ -72,16 +100,27 @@
                 <input type="password" name="password" style="display:none;" autocomplete="off"/>
                 <input type="password" name="passwordOrgi" style="display:none;" autocomplete="off"/>
                 <input type="password" name="oldPassword" style="display:none;" autocomplete="off"/>
-                <el-form-item label="名称" prop="name">
-                    <el-input v-model="formSysUser.name" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="名称"></el-input>
+                <el-form-item label="登录名" prop="name">
+                    <el-input v-model="formSysUser.name" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="登录名"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">名称</div><i class="el-icon-question"></i></el-tooltip>
+                        <div slot="content">登录名</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
-                <el-form-item label="昵称" prop="nickname">
-                    <el-input v-model="formSysUser.nickname" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="昵称"></el-input>
+                <el-form-item label="姓名" prop="nickname">
+                    <el-input v-model="formSysUser.nickname" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="姓名"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">昵称</div><i class="el-icon-question"></i></el-tooltip>
+                        <div slot="content">姓名</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
+                <el-form-item label="所在党组织" prop="orgId"  size="small" style="width: 100%;">
+                            <el-cascader
+								    v-model="formSysUser.orgId"
+								    :options="upperOrg"
+								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
+								    style="width: 300px;"
+								    size="medium"
+								    filterable
+								    clearable
+								    ></el-cascader>                           
+                        </el-form-item>
                 <el-form-item label="密码" prop="password" v-if="currAction !== 'edit'">
                     <el-input v-model="formSysUser.password" type="password" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="密码"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">

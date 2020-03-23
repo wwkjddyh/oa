@@ -217,6 +217,7 @@ public class OrgBiz extends BaseBiz {
 		}
 		userService.save(user);
 		//保存详情
+		userDtl.setParty("1");
 		userService.saveUserDtl(userDtl);
 		//保存用户部门关系
 		orgSerivce.saveOrgUser(userDtl.getUserId(),userDtl.getOrgId());

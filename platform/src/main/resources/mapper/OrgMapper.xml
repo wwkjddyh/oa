@@ -47,6 +47,8 @@
 		<result column="allow_leader_time" property="allowLeaderTime" jdbcType="VARCHAR"/>
 		<result column="create_by" property="createBy" jdbcType="VARCHAR"/>
 		<result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
+		<result column="level" property="positionLevel" jdbcType="VARCHAR"/>
+		<result column="positon_desc" property="positionDesc" jdbcType="VARCHAR"/>
 	</resultMap>
 	<resultMap  id="orgRewardDetailMap" type="com.oa.platform.entity.OrgRewardDetail">
 		<result column="id_" property="staticsId" jdbcType="VARCHAR"/>
@@ -56,6 +58,8 @@
 		<result column="allow_time" property="allowTime" jdbcType="VARCHAR"/>
 		<result column="create_by" property="createBy" jdbcType="VARCHAR"/>
 		<result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
+		<result column="allow_org_level" property="allowOrgLevel" jdbcType="VARCHAR"/>
+		<result column="reward_desc" property="rewardDesc" jdbcType="VARCHAR"/>
 	</resultMap>
 	<resultMap  id="orgDeptDetailMap" type="com.oa.platform.entity.OrgDeptDetail">
 		<result column="id_" property="staticsId" jdbcType="VARCHAR"/>
@@ -335,7 +339,7 @@
 			t_user usr
 		left join t_user_dtl usrdtl on usr.user_id = usrdtl.user_id and usr.record_flag='1'
 		left join t_org_user orguser on usr.user_id=orguser.user_id and orguser.status='1'
-		where usrdtl.is_leader='0'
+		where usrdtl.is_leader='0' and usrdtl.is_party='1'
 		<if test="userName != null and userName != ''">
 		and instr(usr.user_name,#{userName})>0
 		</if>
@@ -373,8 +377,8 @@
 			AND usr.record_flag = '1'
 			LEFT JOIN t_user_dtl userdtl ON orguser.user_id = userdtl.user_id 
 		WHERE
-			sorg.org_id = '43150795-5c6e-4caf-9952-658c6878c957' 
-			AND userdtl.is_leader = '1' UNION ALL
+			sorg.org_id = #{orgId} 
+			AND userdtl.is_leader = '1' and userdtl.is_party='1' UNION ALL
 		SELECT
 			org.org_id,
 			org.org_nm,
@@ -400,7 +404,7 @@
 			INNER JOIN org_cte sysorg ON org.org_id = sysorg.upper_org 
 			AND org.STATUS = '1' 
 		WHERE
-			userdtl.is_leader = '1' 
+			userdtl.is_leader = '1' and userdtl.is_party='1'
 			) SELECT
 			ote.* 
 		FROM
@@ -431,8 +435,8 @@
 			AND usr.record_flag = '1'
 			LEFT JOIN t_user_dtl userdtl ON orguser.user_id = userdtl.user_id 
 		WHERE
-			sorg.org_id = '43150795-5c6e-4caf-9952-658c6878c957' 
-			AND userdtl.is_leader = '1' UNION ALL
+			sorg.org_id = #{orgId} 
+			AND userdtl.is_leader = '1' and userdtl.is_party='1' UNION ALL
 		SELECT
 			org.org_id,
 			org.org_nm,
@@ -458,7 +462,7 @@
 			INNER JOIN org_cte sysorg ON sysorg.org_id = org.upper_org 
 			AND org.STATUS = '1' 
 		WHERE
-			userdtl.is_leader = '1' 
+			userdtl.is_leader = '1' and userdtl.is_party='1'
 			) SELECT
 			ote.* 
 		FROM
@@ -671,7 +675,9 @@
 			positon,
 			allow_leader_time,
 			create_by,
-			update_by
+			update_by,
+			level,
+			positon_desc
 		from 
 			t_org_leader_detail
 		where status='1' and org_id=#{orgId}
@@ -685,7 +691,9 @@
 			allow_leader_time,
 			status,
 			create_on,
-			create_by
+			create_by,
+			level,
+			positon_desc
 			)
 		values (
 			#{staticsId},
@@ -695,7 +703,9 @@
 			#{allowLeaderTime},
 			'1',
 			now(),
-			#{createBy}
+			#{createBy},
+			#{positionLevel},
+			#{positionDesc}
 		)
 	</insert>
 	<!-- 删除 -->
@@ -712,7 +722,9 @@
 			allow_org,
 			allow_time,
 			create_by,
-			update_by
+			update_by,
+			allow_org_level,
+			reward_desc
 		from 
 			t_org_reward_detail
 		where status='1' and org_id=#{orgId}
@@ -726,7 +738,9 @@
 			allow_time,
 			status,
 			create_on,
-			create_by
+			create_by,
+			allow_org_level,
+			reward_desc
 			)
 		values (
 			#{staticsId},
@@ -736,7 +750,9 @@
 			#{allowTime},
 			'1',
 			now(),
-			#{createBy}
+			#{createBy},
+			#{allowOrgLevel},
+			#{rewardDesc}
 		)
 	</insert>
 	<!-- 删除 -->

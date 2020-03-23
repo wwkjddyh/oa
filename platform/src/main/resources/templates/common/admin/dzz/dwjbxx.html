@@ -359,7 +359,7 @@
                     	<el-col :span="24">
 		                    <el-table :data="leaderList" border>
 							    <el-table-column property="userName" label="姓名" width="150" align="center" ></el-table-column>
-							    <el-table-column property="positon" label="职务名称" width="200" align="center" ></el-table-column>
+							    <el-table-column property="positonName" label="职务名称" width="200" align="center" ></el-table-column>
 							    <el-table-column property="allowLeaderTime" label="批准任职日期" align="center" >
 							   
 							    </el-table-column>
@@ -384,7 +384,7 @@
                     <el-row>
                     	<el-col :span="24">
 		                    <el-table :data="rewardList" border>
-							    <el-table-column property="rewardName" label="奖惩名称" width="150" align="center" ></el-table-column>
+							    <el-table-column property="reward" label="奖惩名称" width="150" align="center" ></el-table-column>
 							    <el-table-column property="allowOrg" label="批准组织" width="200" align="center" ></el-table-column>
 							    <el-table-column property="allowTime" label="批准时间" align="center" ></el-table-column>
 							    <el-table-column
@@ -439,14 +439,21 @@
 		      :visible.sync="dialogShow.leader"
 		      append-to-body>
 		      <el-card shadow="always" style="width: 100%;" type="card">
-	              <el-form ref="formLeader"   style="width: 100%;" label-position="top">
+	              <el-form ref="formLeader"  :rules="rules" :model="formLeader" style="width: 100%;" label-position="top">
 	              	<el-form-item label="姓名" prop="userName"  size="mini" style="width: 100%;">
                             <el-input v-model="formLeader.userName"  size="medium" 
                             	auto-complete="off"  maxlength="255" placeholder="姓名" ></el-input>                           
                     </el-form-item>
-                    <el-form-item label="职务名称" prop="positon"  size="mini" style="width: 100%;">
-                            <el-input v-model="formLeader.positon"  size="medium" 
-                            	auto-complete="off"  maxlength="255" placeholder="职务名称" ></el-input>                           
+                    <el-form-item label="职务" prop="positon"  size="mini" style="width: 100%;" label-position="top">
+                            <el-select v-model="formLeader.positon" placeholder="请选择" style="width: 100%;"
+								    	size="medium">
+								    <el-option
+								      v-for="item in positon"
+								      :key="item.dictId"
+								      :label="item.dictName"
+								      :value="item.dictId">
+								    </el-option>
+								  </el-select>                           
                     </el-form-item>
                     <el-form-item label="批准任职时间" prop="allowLeaderTime"  size="mini" style="width: 100%;">
                             <el-date-picker
@@ -459,11 +466,29 @@
 							      placeholder="选择日期" >
 							    </el-date-picker>                          
                     </el-form-item>
+                    <el-form-item label="职务级别" prop="positionLevel"  size="mini" style="width: 100%;">
+                            <el-select v-model="formLeader.positionLevel" placeholder="请选择" style="width: 100%;"
+								    	size="medium">
+								    <el-option
+								      v-for="item in positionLevel"
+								      :key="item.dictId"
+								      :label="item.dictName"
+								      :value="item.dictId">
+								    </el-option>
+								  </el-select>                           
+                    </el-form-item>
+                    
+                    
+                    <el-form-item label="职务说明" prop="positionDesc"  size="mini" style="width: 100%;">
+                            <el-input v-model="formLeader.positionDesc"  size="medium" type="textarea"
+  								:rows="4"
+                            	auto-complete="off"  maxlength="1024" placeholder="职务说明" ></el-input>                           
+                    </el-form-item>
 	              </el-form>
               </el-card>
               <span slot="footer" class="dialog-footer" align="center">
                  <div align="center">
-				    <el-button @click="formTaleConfirm('leader')" type="primary" plain align="center">确定</el-button>
+				    <el-button @click="formTaleConfirm('formLeader')" type="primary" plain align="center">确定</el-button>
                     <el-button @click="dialogShow.leader = false" type="cancel" plain align="center">取消</el-button>
 				 </div> 
 				 </span>
@@ -474,14 +499,33 @@
 		      :visible.sync="dialogShow.reward"
 		      append-to-body>
 		      <el-card shadow="always" style="width: 100%;" type="card">
-	              <el-form ref="formReward"   style="width: 100%;" label-position="top">
+	              <el-form ref="formReward" :rules="rules" :model="formReward"  style="width: 100%;" label-position="top">
 	              	<el-form-item label="奖惩名称" prop="rewardName"  size="mini" style="width: 100%;">
-                            <el-input v-model="formReward.rewardName"  size="medium" 
-                            	auto-complete="off"  maxlength="255" placeholder="姓名" ></el-input>                           
+                            
+								  <el-cascader
+								    v-model="formReward.rewardName"
+								    :options="rewardName"
+								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
+								    style="width: 100%;"
+								    size="medium"
+								    filterable
+								    clearable
+								    ></el-cascader>                          
                     </el-form-item>
-                    <el-form-item label="批准组织" prop="positon"  size="mini" style="width: 100%;">
+                    <el-form-item label="批准组织" prop="allowOrg"  size="mini" style="width: 100%;">
                             <el-input v-model="formReward.allowOrg"  size="medium" 
-                            	auto-complete="off"  maxlength="255" placeholder="职务名称" ></el-input>                           
+                            	auto-complete="off"  maxlength="255" placeholder="批准组织" ></el-input>                           
+                    </el-form-item>
+                    <el-form-item label="批准组织级别" prop="allowOrgLevel"  size="mini" style="width: 100%;">
+                            <el-select v-model="formReward.allowOrgLevel" placeholder="请选择" style="width: 100%;"
+								    	size="medium">
+								    <el-option
+								      v-for="item in allowOrgLevel"
+								      :key="item.dictId"
+								      :label="item.dictName"
+								      :value="item.dictId">
+								    </el-option>
+								  </el-select>                             
                     </el-form-item>
                     <el-form-item label="批准时间" prop="allowTime"  size="mini" style="width: 100%;">
                             <el-date-picker
@@ -494,11 +538,16 @@
 							      placeholder="选择日期" >
 							    </el-date-picker>                          
                     </el-form-item>
+                    <el-form-item label="奖惩说明" prop="rewardDesc"  size="mini" style="width: 100%;">
+                            <el-input v-model="formReward.rewardDesc"  size="medium" type="textarea"
+  								:rows="4"
+                            	auto-complete="off"  maxlength="1024" placeholder="奖惩说明" ></el-input>                           
+                    </el-form-item>
 	              </el-form>
               </el-card>
               <span slot="footer" class="dialog-footer" align="center">
                  <div align="center">
-				    <el-button @click="formTaleConfirm('reward')" type="primary" plain align="center">确定</el-button>
+				    <el-button @click="formTaleConfirm('formReward')" type="primary" plain align="center">确定</el-button>
                     <el-button @click="dialogShow.reward = false" type="cancel" plain align="center">取消</el-button>
 				 </div> 
 				 </span>
