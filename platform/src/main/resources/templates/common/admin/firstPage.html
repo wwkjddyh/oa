@@ -8,34 +8,22 @@
 			<div>
 				<el-row><span style="font-size:18px;">快速入口</span></el-row>
 				<el-row>
-							<el-col :span="4" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 2 : 0">
-					<el-card style="height: 95px; margin-top: 15px" >
-						<!-- <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-						 class="image" style="height: 120px"> -->
-						 <div align="center" style="cursor:pointer;" @click="goToMenu(item)">
-						 	<i class="el-icon-house" style="font-size: 40px" align="center" ></i>
-						 </div>
-						<div style="height: 5px; padding-top: 5px; text-align: center;">
-							<span style="font-size:3px">{{item.name}}</span>
+					<el-col :span="4" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 2 : 0" style="margin-top: 15px;">
+						<div style="cursor:pointer;height:100px;width:80px;flex-direction: column;display: -webkit-flex; align-items:center;justify-content:center;border-radius: 5px;border: 1px solid #ebeef5; " @click="goToMenu(item)">
+							<img :src="item.imgUrl" width="70px;" height="60px" />
+							<span style="margin-top: 5px">{{item.name}}</span>
 						</div>
-					</el-card>
-				</el-col>
-				<el-col :span="4" v-for="item in firstPage2" :key="item.url" :offset="item.index > 0 ? 2 : 0">
-					<el-card style="height: 95px; margin-top: 5px" >
-						<!-- <img src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
-						 class="image" style="height: 120px"> -->
-						 <div align="center" style="cursor:pointer;" @click="goToMenu(item)">
-						 	<i class="el-icon-house" style="font-size: 40px" align="center" ></i>
-						 </div>
-						<div style="height: 5px; padding-top: 5px; text-align: center;">
-							<span style="font-size:5px;">{{item.name}}</span>
+					</el-col>
+					<el-col :span="4" v-for="item in firstPage2" :key="item.url" :offset="item.index > 0 ? 2 : 0" style="margin-top: 20px;">
+						<div style="cursor:pointer;height:100px;width:80px;flex-direction: column;display: -webkit-flex; align-items:center;justify-content:center;border-radius: 5px;border: 1px solid #ebeef5; " @click="goToMenu(item)">
+							<img :src="item.imgUrl" width="70px;" height="60px" />
+							<span style="margin-top: 5px">{{item.name}}</span>
 						</div>
-					</el-card>
-				</el-col>
+					</el-col>
 				</el-row>
 			</div>
 			</el-row>
-			<el-row style="height:252px;">
+			<el-row style="height:252px;margin-top: 40px;">
 				
 				<el-row><span style="font-size:18px;">资料下载</span></el-row>
 				<el-row>
