@@ -39,6 +39,7 @@
 		<jsch.version>0.1.55</jsch.version>
 		<org.json.version>20190722</org.json.version>
 		<org.apache.tika.version>1.24</org.apache.tika.version>
+        <maven-war-plugin.version>3.2.3</maven-war-plugin.version>
 	</properties>
 
 	<dependencies>
@@ -298,7 +299,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<version>3.2.3</version>
+				<version>${maven-war-plugin.version}</version>
 				<configuration>
 					<warName>${project.build.finalName}</warName>
 					<webResources>
