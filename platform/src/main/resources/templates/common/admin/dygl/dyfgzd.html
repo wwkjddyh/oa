@@ -1,23 +1,15 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
       xmlns:th="http://www.w3.org/1999/xhtml">
+ 
 
 <div th:fragment="content" style="height: 100%">
 	
-	<div id="handout_wrap_inner"></div>
-	<el-button type="info" @click="handout_wrap_inner">相关法规制度</el-button>
-	<script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>  
-<script type="text/javascript" src="/js/jquery.media.js"></script> 
-<script type="text/javascript">  
-     function handout_wrap_inner(){
-    	$('#handout_wrap_inner').media({
-            width: '100%',
-            height: '800px',
-            autoplay: true,
-            src:'/images/dzzgl.pdf',
-                }); 
-     }
-</script>
+	
+	<iframe src="/images/dzzgl.pdf" width="100%" height="800px"></iframe>
+            
+	
+
 </div>
 
 </html>

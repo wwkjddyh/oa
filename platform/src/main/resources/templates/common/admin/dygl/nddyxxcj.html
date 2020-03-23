@@ -89,7 +89,7 @@
                 </el-table>
                 
             </div>
-            <el-dialog :visible.sync="dialogShow.nddyxxcj" foot-center lock-scroll="true" width="1000px" :title.sync="dwjbxxDialog.title">
+            <el-dialog :visible.sync="dialogShow.nddyxxcj" foot-center lock-scroll="true" width="1000px" title="党员信息">
             	 <el-card shadow="always" style="width: 100%;" type="card">
                     <el-form ref="formnddyxxcj"  :rules="rules" :model="formnddyxxcj" style="width: 100%;" label-position="top">
                     <el-divider content-position="left">党员信息</el-divider>
@@ -368,7 +368,7 @@
                     <el-button @click="dialogShow.nddyxxcjYear = false" type="cancel" plain align="center">取消</el-button>
 				</div> 
 			</el-dialog>
-            <el-dialog :visible.sync="dialogShow.nddyxxcjdetail" foot-center lock-scroll="true" width="1000px" :title.sync="dwjbxxDialog.title">
+            <el-dialog :visible.sync="dialogShow.nddyxxcjdetail" foot-center lock-scroll="true" width="1000px" title="个人信息详情">
             	 <el-card shadow="never" style="width: 100%;" type="card">
                     <el-table style="width: 100%" :data="nddyxxcjTableData" border="true" empty-text="" align="">
                     	<el-table-column
