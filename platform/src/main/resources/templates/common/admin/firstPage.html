@@ -41,29 +41,34 @@
 				<el-row>
 					<el-tabs type="border-card" style="margin-top:20px; width:91.5%;" @tab-click="firstPageDyzlxz()"  v-model="firstPageZlxz">
 					  <el-tab-pane label="党员管理" name="dygl">
-					  		<el-row  style="margin-top:10px;" v-for="item in resArray">
-								<el-col :span="11" >
-									<el-tag type="info" effect="dark" size="mini">{{item.recordTime}}</el-tag>
-									<el-badge  ><span @click="handleDownloadRes(item)" style="cursor:pointer;">{{item.resName}}</span></el-badge>
-								</el-col>
-							</el-row>
-							
+						  <div v-for="item in resArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
+							  <div style="width: 85px; font-size: 13px; color: #8c939d;">
+								  {{item.recordTime.substr(0, 10)}}
+							  </div>
+							  <div style="width: auto; height: auto">
+								  <a style="color: #409EFF; cursor: pointer;" @click="handleDownloadRes(item)">{{item.resName || ''}}</a>
+							  </div>
+						  </div>
 					  </el-tab-pane>
 					  <el-tab-pane label="党费管理" name="dfgl">
-					  		<el-row  style="margin-top:10px;" v-for="item in resArray">
-								<el-col :span="11" >
-									<el-tag type="info" effect="dark" size="mini">{{item.recordTime}}</el-tag>
-									<el-badge  ><span @click="handleDownloadRes(item)" style="cursor:pointer;">{{item.resName}}</span></el-badge>
-								</el-col>
-							</el-row>
+						  <div v-for="item in resArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
+							  <div style="width: 85px; font-size: 13px; color: #8c939d;">
+								  {{item.recordTime.substr(0, 10)}}
+							  </div>
+							  <div style="width: auto; height: auto">
+								  <a style="color: #409EFF; cursor: pointer;" @click="handleDownloadRes(item)">{{item.resName || ''}}</a>
+							  </div>
+						  </div>
 					  </el-tab-pane>
 					  <el-tab-pane label="换届管理" name="hjgl">
-					  		<el-row  style="margin-top:10px;" v-for="item in resArray">
-								<el-col :span="11" >
-									<el-tag type="info" effect="dark" size="mini">{{item.recordTime}}</el-tag>
-									<el-badge  ><span @click="handleDownloadRes(item)" style="cursor:pointer;">{{item.resName}}</span></el-badge>
-								</el-col>
-							</el-row>
+						  <div v-for="item in resArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
+							  <div style="width: 85px; font-size: 13px; color: #8c939d;">
+								  {{item.recordTime.substr(0, 10)}}
+							  </div>
+							  <div style="width: auto; height: auto">
+								  <a style="color: #409EFF; cursor: pointer;" @click="handleDownloadRes(item)">{{item.resName || ''}}</a>
+							  </div>
+						  </div>
 					  </el-tab-pane>
 					</el-tabs>
 				</el-row>
