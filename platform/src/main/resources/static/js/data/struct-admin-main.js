@@ -1,6 +1,21 @@
 /**
  * 管理系统平台
  */
+let validArticleContent = (rule,value,callback)=>{
+    if (!value || value == '') {
+        callback(new Error('请填写正文'));
+    }
+    else {
+        value = value.replace(/(^\s*)|(\s*$)/g, "");
+        if (value == '') {
+            callback(new Error('请填写正文'));
+        }
+        else if(value.length < 3) {
+            callback(new Error('正文不能少于三个字符'));
+        }
+        callback()
+    }
+};
 const formStructConfig = {
     formSysUser: {
         id: '',
@@ -555,7 +570,7 @@ const formStructConfig = {
         ],
         title: [
             { required: true, message: '请填写标题', trigger: 'blur' },
-            { min: 3, max: 512, message: '长度在 3 到 512 个字符之间', trigger: 'blur' }
+            { min: 3, max: 2000, message: '长度在 3 到 2000 个字符之间', trigger: 'blur' }
         ],
         content: [
             { required: true, message: '请填写内容', trigger: 'blur' },
@@ -645,7 +660,7 @@ const formStructConfig = {
         ],
         articleContent: [
             { required: true, message: '请填写正文', trigger: 'blur' },
-            { min: 3, message: '最少3个字符', trigger: 'blur' }
+            { min: 3, message: '正文至少3个字符', trigger: 'blur' }
         ],
         receiverIdArrStr: [
             { required: true, message: '请选择接收人', trigger: 'blur' },

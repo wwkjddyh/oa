@@ -113,6 +113,7 @@ new Vue({
                         setTimeout(function() {
                             that.ueditors.article.setContent('', false);
                         }, 500);
+                        that.briefReceiveUserIds = [];
                         console.log('that.formArticle203', that.formArticle);
                     }
                     break;
@@ -1076,7 +1077,8 @@ new Vue({
         defaultProps: {
             children: 'children',
             label: 'label'
-        }
+        },
+
     },
     methods: {
         handleOpen(key, keyPath) {
@@ -1150,6 +1152,29 @@ new Vue({
                 that.formArticle.content = that.ueditors.article.getContent();
                 console.log('that.formArticle.content', that.formArticle.content);
                 console.log('that.ueditors.article.getContent()', that.ueditors.article.getContent());
+                let __title = that.formArticle.title.replace(/(^\s*)|(\s*$)/g, "");
+                let __content = that.formArticle.content.replace(/(^\s*)|(\s*$)/g, "");
+                let __receiverIds = that.formArticle.receiverIds || [];
+                if (__receiverIds.length === 0) {
+                    that.$message.error('请选择接收人');
+                    return false;
+                }
+                if (__title == '') {
+                    that.$message.error('请填写主题');
+                    return false;
+                }
+                if (__title.length < 3 || __title.length > 2000) {
+                    that.$message.error('主题字符数在3~2000之间');
+                    return false;
+                }
+                if (__content == '') {
+                    that.$message.error('请填写正文');
+                    return false;
+                }
+                if(__content.length < 3) {
+                    that.$message.error('正文不能少于三个字符');
+                    return false;
+                }
             }
                		
             that.$confirm('是否确认提交？', '警告', {
@@ -1165,40 +1190,45 @@ new Vue({
                     }else{
                         that.$refs[formName].validate((valid) => {
                             console.log('valid', valid);
-                            if (valid) {
-                              // 表单验证通过之后的操作
-                                switch (formName) {
-                                    case 'formAuthRole' : that.sumbitAuthRole(); break;
-                                    case 'formArticle': that.submitArticle(); break;
-                                    case 'formAuthModule': that.submitAuthModule(); break;
-                                    case 'formUser': that.submitUser(false); break;
-                                    case 'formSysUser': that.submitUser(true); break;
-
-                                    case 'formCategoryType': that.submitCategoryType(); break;
-                                    case 'formCategory': that.submitCategory(); break;
-
-                                    case 'formLangConf': that.submitLangConf(); break;
-                                    case 'formdwjbxx':
-                                        that.submitDwjbxx();
-
-                                        break;
-                                    case 'formNews': that.submitNews(); break;
-                                    case 'formPartyDues': that.submitPartyDues(); break;
-                                    case 'formRes': that.submitRes(); break;
-                                    case 'formnddyxxcj': that.submitNddyxxcj();break;
-                                    case 'formModifyPwd': that.submitModifyPwd(); break;
-                                    default: break;
-                                }
-                                //提交成功之后
-                                if(formName != 'formdwjbxx'){
-                                    that.resetForm(formName);
-                                }
-                            } else {
-                                this.$message.error('提交失败,请按要求填写表单内容');
-                                return false;
+                            if (formName == 'formArticle') {    //文章特殊处理
+                                that.submitArticle();
+                                that.briefReceiveUserIds = [];
+                                that.resetForm(formName);
                             }
-                          });
+                            else {
+                                if (valid) {
+                                    // 表单验证通过之后的操作
+                                    switch (formName) {
+                                        case 'formAuthRole' : that.sumbitAuthRole(); break;
+                                        case 'formAuthModule': that.submitAuthModule(); break;
+                                        case 'formUser': that.submitUser(false); break;
+                                        case 'formSysUser': that.submitUser(true); break;
 
+                                        case 'formCategoryType': that.submitCategoryType(); break;
+                                        case 'formCategory': that.submitCategory(); break;
+
+                                        case 'formLangConf': that.submitLangConf(); break;
+                                        case 'formdwjbxx':
+                                            that.submitDwjbxx();
+
+                                            break;
+                                        case 'formNews': that.submitNews(); break;
+                                        case 'formPartyDues': that.submitPartyDues(); break;
+                                        case 'formRes': that.submitRes(); break;
+                                        case 'formnddyxxcj': that.submitNddyxxcj();break;
+                                        case 'formModifyPwd': that.submitModifyPwd(); break;
+                                        default: break;
+                                    }
+                                    //提交成功之后
+                                    if(formName != 'formdwjbxx'){
+                                        that.resetForm(formName);
+                                    }
+                                } else {
+                                    this.$message.error('提交失败,请按要求填写表单内容');
+                                    return false;
+                                }
+                            }
+                        });
                     }
                 }
             });
@@ -1579,6 +1609,7 @@ new Vue({
                         that.pager.article.currentPage = 1;
                         that.loadArticles('',1, that.pager.article.pageSize);
                          */
+                        that.briefReceiveUserIds = [];
                         that.pager.briefSendRecord.currentPage = 1;
                         that.loadCurrUserReceiverBriefRecord('', 1, that.pager.briefSendRecord.pageSize);
                         that.$forceUpdate();
