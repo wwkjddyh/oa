@@ -42,31 +42,32 @@
 					<el-tabs type="border-card" style="margin-top:20px; width:91.5%;" @tab-click="firstPageDyzlxz()"  v-model="firstPageZlxz">
 					  <el-tab-pane label="党员管理" name="dygl">
 						  <div v-for="item in resArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
-							  <div style="width: 85px; font-size: 13px; color: #8c939d;">
-								  {{item.recordTime.substr(0, 10)}}
-							  </div>
-							  <div style="width: auto; height: auto">
+							  <div style="width: calc(100% - 85px); height: auto">
 								  <a style="color: #409EFF; cursor: pointer;" @click="handleDownloadRes(item)">{{item.resName || ''}}</a>
 							  </div>
+							  <div style="width: 85px; font-size: 13px; color: #8c939d;">
+								  {{item.publishTime.substr(0, 10)}}
+							  </div>
+
 						  </div>
 					  </el-tab-pane>
 					  <el-tab-pane label="党费管理" name="dfgl">
 						  <div v-for="item in resArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
-							  <div style="width: 85px; font-size: 13px; color: #8c939d;">
-								  {{item.recordTime.substr(0, 10)}}
-							  </div>
-							  <div style="width: auto; height: auto">
+							  <div style="width: calc(100% - 85px); height: auto">
 								  <a style="color: #409EFF; cursor: pointer;" @click="handleDownloadRes(item)">{{item.resName || ''}}</a>
+							  </div>
+							  <div style="width: 85px; font-size: 13px; color: #8c939d;">
+								  {{item.publishTime.substr(0, 10)}}
 							  </div>
 						  </div>
 					  </el-tab-pane>
 					  <el-tab-pane label="换届管理" name="hjgl">
 						  <div v-for="item in resArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
-							  <div style="width: 85px; font-size: 13px; color: #8c939d;">
-								  {{item.recordTime.substr(0, 10)}}
-							  </div>
-							  <div style="width: auto; height: auto">
+							  <div style="width: calc(100% - 85px); height: auto">
 								  <a style="color: #409EFF; cursor: pointer;" @click="handleDownloadRes(item)">{{item.resName || ''}}</a>
+							  </div>
+							  <div style="width: 85px; font-size: 13px; color: #8c939d;">
+								  {{item.publishTime.substr(0, 10)}}
 							  </div>
 						  </div>
 					  </el-tab-pane>
@@ -79,11 +80,11 @@
 			<div>
 				<el-row ><div><span style="font-size:18px;">新闻简报</span></div></el-row>
 				<div v-for="item in currUserReceiverBriefRecords" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
+					<div style="width: calc(100% - 85px); height: auto">
+						<a style="color: #409EFF; cursor: pointer;" @click="handleBriefView(item.briefId)">{{item.briefTitle || ''}}</a>
+					</div>
 					<div style="width: 85px; font-size: 13px; color: #8c939d;">
 						{{item.sendTime.substr(0, 10)}}
-					</div>
-					<div style="width: auto; height: auto">
-						<a style="color: #409EFF; cursor: pointer;" @click="handleBriefView(item.briefId)">{{item.briefTitle || ''}}</a>
 					</div>
 				</div>
 			</div>
