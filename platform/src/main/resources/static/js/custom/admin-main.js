@@ -267,6 +267,8 @@ new Vue({
                           chartData.yAxis, chartData.tooltip, {}, chartData.tooltip, chartData.credits, chartData.series);
 
                     break;
+                case 'faceMeet':    // 视频会议
+                    break;
             }
         },
         

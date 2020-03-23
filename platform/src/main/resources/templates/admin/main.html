@@ -164,6 +164,11 @@
                         <el-card shadow="never" v-show="showContent == 'bigData'" key="fzdy">
                             <div th:replace="/common/admin/bigData/index :: content"/>
                         </el-card>
+
+                        <!--视频会议faceMeet-->
+                        <el-card shadow="never" v-show="showContent == 'faceMeet'" key="fzdy">
+                            <div th:replace="/common/admin/faceMeet/index :: content"/>
+                        </el-card>
                     </div>
                 </keep-alive>
             </el-main>
