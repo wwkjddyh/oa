@@ -47,6 +47,7 @@
     <result column="order" property="order" jdbcType="INTEGER"/>
     <result column="module_icon" property="moduleIcon" jdbcType="VARCHAR"/>
     <result column="module_style" property="moduleStyle" jdbcType="VARCHAR"/>
+    <result column="module_logo" property="moduleLogo" jdbcType="VARCHAR"/>
     <result column="is_menu" property="isMenu" jdbcType="INTEGER"/>
   </resultMap>
 
@@ -95,9 +96,9 @@
 
   <insert id="insertModule" parameterType="module">
     INSERT INTO t_module(module_id,parent_id,module_name,module_desc,module_url,is_leaf,record_time,record_flag,
-        module_code,`order`,module_icon,module_style,is_menu)
+        module_code,`order`,module_icon,module_style,is_menu,module_logo)
     VALUES(#{moduleId},#{parentId},#{moduleName},#{moduleDesc},#{moduleUrl},#{isLeaf},NOW(),#{recordFlag},
-        #{moduleCode},#{order},#{moduleIcon},#{moduleStyle},#{isMenu})
+        #{moduleCode},#{order},#{moduleIcon},#{moduleStyle},#{isMenu},#{moduleLogo})
   </insert>
 
   <update id="updateModuleFlagById" parameterType="java.util.Map">
@@ -107,7 +108,7 @@
   <select id="findModuleById" parameterType="java.lang.String" resultMap="module">
     SELECT module_id,parent_id,module_name,module_url,is_leaf,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
       DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag,module_code,
-      `order`,module_icon,module_style,is_menu
+      `order`,module_icon,module_style,is_menu,module_logo
     FROM t_module WHERE module_id = #{moduleId} AND record_flag = 1
   </select>
 
@@ -202,11 +203,14 @@
       <if test="recordFlag != null">
         record_flag = #{recordFlag},
       </if>
-      <if test="moduleIcon != null and moduleIcon != ''">
+      <if test="moduleIcon != null">
         module_icon = #{moduleIcon},
       </if>
-      <if test="moduleStyle != null and moduleStyle != ''">
+      <if test="moduleStyle != null">
         module_style = #{moduleStyle},
+      </if>
+      <if test="moduleLogo != null">
+        module_logo = #{moduleLogo},
       </if>
       <if test="isMenu != null">
         is_menu = #{isMenu},
@@ -402,7 +406,7 @@
     SELECT
       module_id,parent_id,module_name,module_desc,module_url,is_leaf,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
       DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag,full_module_name,module_code,
-      `order`, module_icon, module_style, is_menu
+      `order`, module_icon, module_style, is_menu, module_logo
       FROM (
         WITH RECURSIVE cte AS
         (
@@ -451,6 +455,9 @@
       <if test="isMenu != null">
         AND is_menu = #{isMenu}
       </if>
+      <if test="moduleLogo != null">
+        AND module_logo = #{moduleLogo}
+      </if>
       <if test="key != null and key != ''">
         AND (
         UPPER(t.`module_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
@@ -476,7 +483,7 @@
     SELECT
       module_id,parent_id,module_name,module_desc,module_url,is_leaf,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
       DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,update_user_id,record_flag,full_module_name,module_code,
-       `order`, module_icon, module_style, is_menu
+       `order`, module_icon, module_style, is_menu, module_logo
       FROM (
         WITH RECURSIVE cte AS
         (

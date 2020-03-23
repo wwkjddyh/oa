@@ -129,6 +129,7 @@ public class UserApiController extends BaseController {
      * @param recordFlag
      * @param moduleCode
      * @param order
+     * @param moduleLogo 模块Logo链接或名称
      * @return
      */
     @PostMapping("saveModule")
@@ -144,10 +145,11 @@ public class UserApiController extends BaseController {
             @RequestParam(defaultValue = "0",required = false) Integer order,
             @RequestParam(defaultValue = "",required = false) String moduleIcon,
             @RequestParam(defaultValue = "",required = false) String moduleStyle,
-            @RequestParam(defaultValue = "0",required = false) Integer isMenu) {
+            @RequestParam(defaultValue = "0",required = false) Integer isMenu,
+            @RequestParam(defaultValue = "", required = false) String moduleLogo) {
         return roleBiz.saveModule(moduleId, parentId, moduleName,
                 moduleDesc, moduleUrl, isLeaf, recordFlag, moduleCode, order,
-                moduleIcon, moduleStyle, isMenu);
+                moduleIcon, moduleStyle, isMenu, moduleLogo);
     }
 
     /**

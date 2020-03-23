@@ -163,7 +163,7 @@
                         <div slot="content">叶子：没有子节点;节点：还有子节点</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="模块描述" prop="moduleDesc">
-                    <el-input v-model="formAuthModule.moduleDesc" type="textarea" size="small" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="描述"></el-input>
+                    <el-input v-model="formAuthModule.moduleDesc" type="textarea" size="small" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:500px;" maxlength="512" placeholder="描述"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">模块描述</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
@@ -173,12 +173,17 @@
                         <div slot="content">模块排序(仅输入数字)</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="模块ICON" prop="moduleIcon">
-                    <el-input v-model="formAuthModule.moduleIcon" type="textarea" size="small" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="ICON"></el-input>
+                    <el-input v-model="formAuthModule.moduleIcon" type="textarea" size="small" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:300px;" maxlength="2000" placeholder="模块ICON名称"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">模块ICON</div><i class="el-icon-question"></i></el-tooltip>
+                        <div slot="content">模块ICON名称</div><i class="el-icon-question"></i></el-tooltip>
+                </el-form-item>
+                <el-form-item label="模块LOGO" prop="moduleLogo">
+                    <el-input v-model="formAuthModule.moduleLogo" type="textarea" size="small" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:300px;" maxlength="2000" placeholder="LOGO图片名称或链接地址"></el-input>
+                    <el-tooltip class="item" effect="dark" placement="top">
+                        <div slot="content">Logo图片(或icon图片)链接地址或名称</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="模块样式" prop="moduleStyle">
-                    <el-input v-model="formAuthModule.moduleStyle" type="textarea" size="small" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:600px;" maxlength="512" placeholder="样式"></el-input>
+                    <el-input v-model="formAuthModule.moduleStyle" type="textarea" size="small" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:300px;" maxlength="5000" placeholder="模块对应的(CSS)样式"></el-input>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">模块样式</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>

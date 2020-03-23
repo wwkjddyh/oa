@@ -108,23 +108,25 @@ public class RoleBiz extends BaseBiz {
 
     /**
      * 保存或修改模块信息
-     * @param moduleId
-     * @param parentId
-     * @param moduleName
-     * @param moduleDesc
-     * @param moduleUrl
-     * @param isLeaf
-     * @param recordFlag
-     * @param moduleCode
-     * @param order
-     * @param moduleIcon
-     * @param moduleStyle
-     * @param isMenu
+     * @param moduleId 模块唯一标识
+     * @param parentId 父级ID
+     * @param moduleName 模块名称
+     * @param moduleDesc 模块描述
+     * @param moduleUrl 模块链接
+     * @param isLeaf  是否未叶子
+     * @param recordFlag 信息标识
+     * @param moduleCode 模块代码
+     * @param order 排序代码(数字)
+     * @param moduleIcon 模块ICON名称
+     * @param moduleStyle 模块使用的样式
+     * @param isMenu 是否为菜单
+     * @param moduleLogo 模块Logo链接或名称
      * @return
      */
     public Map<String, Object> saveModule(String moduleId, String parentId, String moduleName, String moduleDesc,
                                           String moduleUrl, String isLeaf, String recordFlag, String moduleCode,
-                                          Integer order, String moduleIcon, String moduleStyle, Integer isMenu) {
+                                          Integer order, String moduleIcon, String moduleStyle, Integer isMenu,
+                                          String moduleLogo) {
         moduleName = StringUtil.trim(moduleName);
         if("".equals(moduleName)) {
             ret = this.getParamErrorVo();
@@ -162,6 +164,7 @@ public class RoleBiz extends BaseBiz {
                     module.setModuleUrl(StringUtil.trim(moduleUrl));
                     module.setIsLeaf(Integer.parseInt(StringUtil.trim(isLeaf, "1")));
                     module.setRecordFlag(Integer.parseInt(StringUtil.trim(recordFlag, Constants.INT_NORMAL + "")));
+                    module.setModuleLogo(StringUtil.trim(moduleLogo));
                     String dateTime = DateUtil.currDateFormat(null);
                     if(!isEdit) {
                         module.setModuleId(StringUtil.getRandomUUID());

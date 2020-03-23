@@ -1537,6 +1537,7 @@ new Vue({
             params.append('order', that.formAuthModule.order || 0);
             params.append('moduleIcon', that.formAuthModule.moduleIcon || '');
             params.append('moduleStyle', that.formAuthModule.moduleStyle || '');
+            params.append('moduleLogo', that.formAuthModule.moduleLogo || '');
             params.append('isMenu', that.formAuthModule.isMenu || 0);
             if(that.currAction === 'edit') {
                 operName = '修改';
@@ -2322,6 +2323,7 @@ new Vue({
                                 moduleIcon: entry.moduleIcon || '',
                                 moduleStyle: entry.moduleStyle || '',
                                 isMenu: entry.isMenu + '' || '0',
+                                moduleLogo: entry.moduleLogo || '',
 	                        };
 	                    }
 	                    that.dialogShow.authModule = !that.dialogShow.authModule;
@@ -3403,6 +3405,7 @@ new Vue({
                                             order: __module.order,
                                             moduleIcon: __module.moduleIcon,
                                             moduleStyle: __module.moduleStyle,
+                                            moduleLogo: __module.moduleLogo,
                                             isMenu: __module.isMenu,
                                             subs: __subMenus,
                                         });
@@ -3421,6 +3424,7 @@ new Vue({
                                         order: __module.order,
                                         moduleIcon: __module.moduleIcon,
                                         moduleStyle: __module.moduleStyle,
+                                        moduleLogo: __module.moduleLogo,
                                         isMenu: __module.isMenu,
                                         subs: __subMenus,
                                     });

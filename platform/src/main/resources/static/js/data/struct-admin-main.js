@@ -105,6 +105,7 @@ const formStructConfig = {
         moduleIcon: '',
         moduleStyle: '',
         isMenu: 0,
+        moduleLogo: '',
     },
     formAuthUserRoleModule: {
         userId: '',
@@ -338,6 +339,7 @@ const formStructConfig = {
             moduleIcon: '',
             moduleStyle: '',
             isMenu: null,
+            moduleLogo: '',
         },
         authUserRoleModule: {
             userId: '',

@@ -90,6 +90,11 @@ public class Module implements Serializable {
     private Integer isMenu;
 
     /**
+     * 模块Logo图片(或icon图片)链接地址或名称
+     */
+    private String moduleLogo;
+
+    /**
      * 搜索关键字
      */
     private String key;
@@ -230,13 +235,21 @@ public class Module implements Serializable {
         this.isMenu = isMenu;
     }
 
+    public String getModuleLogo() {
+        return moduleLogo;
+    }
+
+    public void setModuleLogo(String moduleLogo) {
+        this.moduleLogo = moduleLogo;
+    }
+
     public Module() {
     }
 
     public Module(String moduleId, String parentId, String moduleName, String moduleDesc, String moduleUrl,
                   Integer isLeaf, String recordTime, String updateTime, String updateUserId, Integer recordFlag,
                   String fullModuleName, String moduleCode, Integer order, String moduleIcon, String moduleStyle,
-                  Integer isMenu) {
+                  Integer isMenu, String moduleLogo) {
         this.moduleId = moduleId;
         this.parentId = parentId;
         this.moduleName = moduleName;
@@ -253,6 +266,7 @@ public class Module implements Serializable {
         this.moduleIcon = moduleIcon;
         this.moduleStyle = moduleStyle;
         this.isMenu = isMenu;
+        this.moduleLogo = moduleLogo;
     }
 
     @Override
@@ -274,7 +288,7 @@ public class Module implements Serializable {
                 ", moduleIcon='" + moduleIcon + '\'' +
                 ", moduleStyle='" + moduleStyle + '\'' +
                 ", isMenu='" + isMenu + '\'' +
-
+                ", moduleLogo='" + moduleLogo + '\'' +
                 '}';
     }
 }
