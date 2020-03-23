@@ -73,14 +73,14 @@
 		<el-col :span="12" style="height:504px;">
 			<div>
 				<el-row ><div><span style="font-size:18px;">新闻简报</span></div></el-row>
-				<el-divider ></el-divider>
-				<el-row  style="margin-top:10px;" v-for="item in currUserReceiverBriefRecords">
-					<el-col :span="11" >
-						<el-tag type="info" effect="dark" size="mini">{{item.sendTime}}</el-tag>
-						<el-badge is-dot  ><span class="hover-blue" @click="handleBriefView(item.briefId)" style="cursor:pointer;">{{item.briefTitle}}</span></el-badge>
-					</el-col>
-				</el-row>
-				
+				<div v-for="item in currUserReceiverBriefRecords" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
+					<div style="width: 85px; font-size: 13px; color: #8c939d;">
+						{{item.sendTime.substr(0, 10)}}
+					</div>
+					<div style="width: auto; height: auto">
+						<a style="color: #409EFF; cursor: pointer;" @click="handleBriefView(item.briefId)">{{item.briefTitle || ''}}</a>
+					</div>
+				</div>
 			</div>
 		</el-col>
 	</el-row>
