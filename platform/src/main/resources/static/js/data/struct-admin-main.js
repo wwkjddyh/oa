@@ -667,6 +667,21 @@ const formStructConfig = {
         receiverIdArrStr: [
             { required: true, message: '请选择接收人', trigger: 'blur' },
         ],
+        positon: [
+            { required: true, message: '请选择职务', trigger: 'blur' },
+        ],
+        allowLeaderTime: [
+            { required: true, message: '请选择批准日期', trigger: 'blur' },
+        ],
+        rewardName: [
+            { required: true, message: '请选择奖惩名称', trigger: 'blur' },
+        ],
+        allowOrg: [
+            { required: true, message: '请填写批准组织', trigger: 'blur' },
+        ],
+        allowOrgLevel: [
+            { required: true, message: '请填写批准组织级别', trigger: 'blur' },
+        ],
     },
     dateDickerOptions: {
 
