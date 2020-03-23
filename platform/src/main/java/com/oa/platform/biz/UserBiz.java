@@ -1,22 +1,27 @@
 package com.oa.platform.biz;
 
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.oa.platform.common.Constants;
 import com.oa.platform.common.StatusCode;
-import com.oa.platform.entity.Area;
 import com.oa.platform.entity.User;
 import com.oa.platform.entity.UserDtl;
 import com.oa.platform.service.LogService;
+import com.oa.platform.service.OrgService;
 import com.oa.platform.service.RoleService;
 import com.oa.platform.service.UserService;
-import com.oa.platform.util.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Map;
+import com.oa.platform.util.DateUtil;
+import com.oa.platform.util.SecurityUtil;
+import com.oa.platform.util.StringUtil;
+import com.oa.platform.util.ThreadUtil;
 
 /**
  * 用户信息业务逻辑处理
@@ -34,7 +39,8 @@ public class UserBiz extends BaseBiz {
 
     @Autowired
     LogService logService;
-
+    @Autowired
+	private OrgService orgSerivce;
     /**
      * 保存用户信息
      * @param userType
@@ -280,9 +286,10 @@ public class UserBiz extends BaseBiz {
      * @param passwordOrgi 再次密码(密码修改时校验)
      * @return
      */
+    @Transactional
     public Map<String, Object> saveUserBaseInfo(String userId, String userType, String userName, String userNickname,
                                                 String userPwd, String langConfId, Integer recordFlag,
-                                                String oldPassword, String passwordOrgi) {
+                                                String oldPassword, String passwordOrgi,String orgId) {
         userId = StringUtil.trim(userId);
         userName = StringUtil.trim(userName);
         userType = StringUtil.trim(userType, User.TYPE_PERSON + "");
@@ -310,6 +317,13 @@ public class UserBiz extends BaseBiz {
                         user.setUserId(StringUtil.getRandomUUID());
                         user.setRecordFlag(Constants.INT_NORMAL);
                         userService.save(user);
+                      //保存用户部门关系
+                        UserDtl dtl = new UserDtl();
+                        dtl.setUserId(user.getUserId());
+                        dtl.setLeader("0");
+                        dtl.setParty("0");
+                		orgSerivce.saveOrgUser(user.getUserId(),orgId);
+                		userService.saveUserDtl(dtl);
                         ret = this.getSuccessVo("", "");
                     }
                     else {
@@ -351,6 +365,11 @@ public class UserBiz extends BaseBiz {
                         if (isValidPwd) {
                             user.setRecordFlag(recordFlag == null ? Constants.INT_NORMAL : recordFlag);
                             user.setUserId(userId);
+                            if(orgId != null && !"".equals(orgId)) {
+	                            orgSerivce.updateOrgUser(orgId,userId);
+                            }else {
+                            	orgSerivce.delUserOrg(userId);
+                            }
                             userService.update(user);
                             ret = this.getSuccessVo("", "");
                         }
@@ -375,6 +394,7 @@ public class UserBiz extends BaseBiz {
      * @param recordFlag 状态(1,正常;0,删除;-1,冻结)
      * @return
      */
+    @Transactional
     public Map<String, Object> updateUserRecordFlag(String userId, Integer recordFlag) {
         userId = StringUtil.trim(userId);
         if ("".equals(userId) || recordFlag == null) {
@@ -387,6 +407,8 @@ public class UserBiz extends BaseBiz {
                 user.setRecordFlag(recordFlag);
                 user.setUpdateTime(DateUtil.currDateFormat(null));
                 userService.update(user);
+                orgSerivce.delOrgUserDtl(userId);
+                orgSerivce.delUserOrg(userId);
                 ret = this.getSuccessVo("", "");
             } catch (Exception e) {
                 ret = this.getErrorVo();

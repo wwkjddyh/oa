@@ -54,10 +54,13 @@ new Vue({
                     break;
                 case 'sysUsers':
                     that.getAllAuthRole();
+                    that.getNddyxxOptions();
+                    that.getUpperOrg();
                     that.loadSysUsers('',1, that.pager.sysUser.pageSize);
                     break;
                 case 'dwjbxx':
                 	that.getTreeDict();
+                	that.getRewardTreeDict();
                 	that.loadDwjbxx();
                 	break;
                 case 'announce':
@@ -268,6 +271,15 @@ new Vue({
 
                     break;
                 case 'faceMeet':    // 视频会议
+                    break;
+                case 'firstPage':
+                	that.firstPageDyzlxz();
+                	that.formSearchArticle.sendType = '1';
+                    that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                    //that.loadArticles('',1, that.pager.article.pageSize);
+                    that.currAction = 'append';
+                    that.def_menu_id = 'articles';
+                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, 15);
                     break;
             }
         },
@@ -502,24 +514,28 @@ new Vue({
         		index:0,
         		name:'通知公告',
         		url:'announce',
-        		modelName:'通知公告'
+        		modelName:'通知公告',
+        		imgUrl:'images/icon/shipinhuiyi.png'
         	},
         	{
         		index:1,
         		name:'邮箱',
         		url:'mail',
+        		imgUrl:'images/icon/shipinhuiyi.png',
         		modelName:'邮箱'
         	},
         	{
         		index:2,
         		name:'视频会议',
         		url:'faceMeet',
+        		imgUrl:'images/icon/shipinhuiyi.png',
         		modelName:'视频会议'
         	},
         	{
         		index:3,
         		name:'大数据',
         		url:'bigData',
+        		imgUrl:'images/icon/shipinhuiyi.png',
         		modelName:'大数据'
         	}
         ],
@@ -528,24 +544,28 @@ new Vue({
         		index:0,
         		name:'党组织管理',
         		url:'dwjbxx',
+        		imgUrl:'images/icon/shipinhuiyi.png',
         		modelName:'党委基本信息'
         	},
         	{
         		index:1,
         		name:'党员管理',
         		url:'nddyxxcj',
+        		imgUrl:'images/icon/shipinhuiyi.png',
         		modelName:'年度党员信息采集'
         	},
         	{
         		index:2,
         		name:'党费管理',
         		url:'nddfszqkgs',
+        		imgUrl:'images/icon/shipinhuiyi.png',
         		modelName:'年度党费收支情况公示'
         	},
         	{
         		index:3,
         		name:'换届管理',
         		url:'hjgztz',
+        		imgUrl:'images/icon/shipinhuiyi.png',
         		modelName:'换届工作台账'
         	}
         ],
@@ -615,10 +635,16 @@ new Vue({
         education:[],
         bachelor:[],
         nation:[],
+        positon:[],
+        rewardName:[],
+        orignRewardName:[],
+        allowOrgLevel:[],
+        positionLevel:[],
         authModules: [],
         deptOrgType:[],
         leaderList:[
         ],
+        firstPageZlxz:'dygl',
         articles: [],
         articleTypes: [],
         currUserReceiverBriefRecords: [],
@@ -1295,6 +1321,30 @@ new Vue({
         		return list[0].dictName;
         	}
         },
+        getPositionValue(positionId){
+        	let list = this.positon.filter(x=>x.dictId == positionId);
+        	if(list && list.length > 0){
+        		return list[0].dictName;
+        	}
+        },
+        getRewardNameValue(rewardId){
+        	let list = this.orignRewardName.filter(x=>x.nodeId == rewardId);
+        	if(list && list.length > 0){
+        		return list[0].nodeName;
+        	}
+        },
+        getAllowOrgLevelValue(allowOrgLevel){
+        	let list = this.allowOrgLevel.filter(x=>x.dictId == allowOrgLevel);
+        	if(list && list.length > 0){
+        		return list[0].dictName;
+        	}
+        },
+        getAllowOrgLevelValue(level){
+        	let list = this.allowOrgLevel.filter(x=>x.dictId == level);
+        	if(list && list.length > 0){
+        		return list[0].dictName;
+        	}
+        },
         searchForm(formName) {
             let that = this;
             switch (formName) {
@@ -1432,6 +1482,7 @@ new Vue({
                 params.append('oldPassword', that.formSysUser.oldPassword || '');
                 params.append('passwordOrgi', that.formSysUser.passwordOrgi || '');
                 params.append('langConfId', '');
+                params.append('orgId', that.formSysUser.orgId || '');
             }
             else {
                 userId = that.formUser.id || '';
@@ -2135,6 +2186,8 @@ new Vue({
         					rewardName: entry.rewardName,
         					allowOrg: entry.allowOrg,
         					allowTime: entry.allowTime,
+        					allowOrgLevel: entry.allowOrgLevel,
+        					rewardDesc: entry.rewardDesc,
         					index: scopeIndex
         			}
         			that.dialogShow.reward = !that.dialogShow.reward;
@@ -2145,6 +2198,8 @@ new Vue({
         					userName: entry.userName,
         					positon: entry.positon,
         					allowLeaderTime: entry.allowLeaderTime,
+        					positionLevel:entry.positionLevel,
+        					positionDesc:entry.positionDesc,
         					index: scopeIndex
         			}
         			that.dialogShow.leader = !that.dialogShow.leader;
@@ -2163,49 +2218,60 @@ new Vue({
         },
         formTaleConfirm(type){
         	let that = this;
+        	 that.$refs[type].validate((valid) => {
+                 console.log('valid', valid);
+                 if (valid) {
+                	 switch (type) {
+	             		case 'formLeader':
+	             			let rowValue = that.formLeader;
+	             			let scopeIndex = that.formLeader.index;
+	             			that.leaderList[scopeIndex] =rowValue;
+	             			that.formLeader.positonName =that.getPositionValue(that.formLeader.positon);
+	             			let tmpleaderList = that.leaderList;
+	             			that.leaderList = [];
+	             			for(let i = 0 ; i < tmpleaderList.length ; i++){
+	             				that.leaderList.push(tmpleaderList[i]);
+	             			}
+	             			
+	             			
+	             			that.dialogShow.leader =false;
+	             			break;
+	             		case 'formReward':
+	             			let rowValue1 = that.formReward;
+	             			let scopeIndex1 = that.formReward.index;
+	             			that.rewardList[scopeIndex1] =rowValue1;
+	             			let tmprewardList = that.rewardList;
+	             			that.formReward.reward = that.getRewardNameValue(that.formReward.rewardName)
+	             			that.rewardList = [];
+	             			for(let i = 0 ; i < tmprewardList.length ; i++){
+	             				that.rewardList.push(tmprewardList[i]);
+	             			}
+	             			
+	             			
+	             			that.dialogShow.reward =false;
+	             			break;
+	             		case 'dept':
+	             			let rowValue2 = that.formDept;
+	             			let scopeIndex2 = that.formDept.index;
+	             			that.deptInfoList[scopeIndex2] =rowValue2;
+	             			let tmpdeptInfoList = that.deptInfoList;
+	             			that.deptInfoList = [];
+	             			for(let i = 0 ; i < tmpdeptInfoList.length ; i++){
+	             				that.deptInfoList.push(tmpdeptInfoList[i]);
+	             			}
+	             			
+	             			
+	             			that.dialogShow.dept =false;
+	             			break;
+	             	}
+                     
+                 } else {
+                     this.$message.error('提交失败,请按要求填写表单内容');
+                     return false;
+                 }
+               });
+
         	
-        	switch (type) {
-        		case 'leader':
-        			console.log(that.formLeader);
-        			let rowValue = that.formLeader;
-        			let scopeIndex = that.formLeader.index;
-        			that.leaderList[scopeIndex] =rowValue;
-        			let tmpleaderList = that.leaderList;
-        			that.leaderList = [];
-        			for(let i = 0 ; i < tmpleaderList.length ; i++){
-        				that.leaderList.push(tmpleaderList[i]);
-        			}
-        			
-        			
-        			that.dialogShow.leader =false;
-        			break;
-        		case 'reward':
-        			let rowValue1 = that.formReward;
-        			let scopeIndex1 = that.formReward.index;
-        			that.rewardList[scopeIndex1] =rowValue1;
-        			let tmprewardList = that.rewardList;
-        			that.rewardList = [];
-        			for(let i = 0 ; i < tmprewardList.length ; i++){
-        				that.rewardList.push(tmprewardList[i]);
-        			}
-        			
-        			
-        			that.dialogShow.reward =false;
-        			break;
-        		case 'dept':
-        			let rowValue2 = that.formDept;
-        			let scopeIndex2 = that.formDept.index;
-        			that.deptInfoList[scopeIndex2] =rowValue2;
-        			let tmpdeptInfoList = that.deptInfoList;
-        			that.deptInfoList = [];
-        			for(let i = 0 ; i < tmpdeptInfoList.length ; i++){
-        				that.deptInfoList.push(tmpdeptInfoList[i]);
-        			}
-        			
-        			
-        			that.dialogShow.dept =false;
-        			break;
-        	}
         },
         viewDetail(scopeIndex, scopeRow){
         	let that = this;
@@ -2299,6 +2365,7 @@ new Vue({
                                 recordFlag: entry.recordFlag,
                                 userSex: entry.userSex,
                                 userSexName: entry.userSexName,
+                                orgId:entry.orgId
 	                        };
 	                    }
 	                    that.dialogShow.sysUser = !that.dialogShow.sysUser;
@@ -2659,6 +2726,52 @@ new Vue({
 
 	                default: break;
 	            }
+        	}
+        },
+        firstPageDyzlxz(){       	
+        	let that = this;
+        	if(that.firstPageZlxz == 'dygl'){
+	        	that.formSearchRes.key = '';
+	            that.formRes.typeId = '1e9941a0-2a6f-4c2f-b74c-970d0351469f';
+	            that.formSearchRes.typeId = '1e9941a0-2a6f-4c2f-b74c-970d0351469f';
+	            that.formSearchRes.assId = '';
+	            that.formSearchRes.assTypeId = '';
+	            that.formSearchRes.announcerId = '';
+	            that.formSearchRes.currTypeName = '党员管理资料下载';
+	            that.uploadData = {
+	                name: '',
+	                type: 'res-dygl',
+	                parse: '1',
+	            };
+	            that.loadResList('', 1, 5);
+        	}else if(that.firstPageZlxz == 'dfgl'){
+        		that.formSearchRes.key = '';
+                that.formRes.typeId = '01ef5219-464e-44a3-890a-557e3bbabd4e';
+                that.formSearchRes.typeId = '01ef5219-464e-44a3-890a-557e3bbabd4e';
+                that.formSearchRes.assId = '';
+                that.formSearchRes.assTypeId = '';
+                that.formSearchRes.announcerId = '';
+                that.formSearchRes.currTypeName = '党费管理资料下载';
+                that.uploadData = {
+                    name: '',
+                    type: 'res-dfgl',
+                    parse: '1',
+                };
+                that.loadResList('', 1, 5);
+        	}else if(that.firstPageZlxz == 'hjgl'){
+        		that.formSearchRes.key = '';
+                that.formRes.typeId = '3dea99ab-ec00-4633-b24c-7c44a5ce57b8';
+                that.formSearchRes.typeId = '3dea99ab-ec00-4633-b24c-7c44a5ce57b8';
+                that.formSearchRes.assId = '';
+                that.formSearchRes.assTypeId = '';
+                that.formSearchRes.announcerId = '';
+                that.formSearchRes.currTypeName = '换届管理资料下载';
+                that.uploadData = {
+                    name: '',
+                    type: 'res-hjgl',
+                    parse: '1',
+                };
+                that.loadResList('', 1, 5);
         	}
         },
         handleRemove(file, fileList) {
@@ -3912,7 +4025,22 @@ new Vue({
         		}
         	});
         },
-        
+        getRewardTreeDict(){
+        	let that = this;
+        	axios.get("/api/treeDict/getTreeDictByType",{params:{
+        		treeType:'3'
+            }}).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			for(let i =0 ; i <response.data.result.length;i++){
+        				response.data.result[i].value=response.data.result[i].nodeId;
+        				response.data.result[i].label=response.data.result[i].nodeName;
+        			}
+        			that.orignRewardName = response.data.result;
+        			let parentArr = response.data.result.filter(l => l.upperNode === null);
+        			that.rewardName = that.getTreeDictData(response.data.result, parentArr);
+        		}
+        	});
+        },
         getOptionDict(){
         	let that = this;
         	axios.get("/api/dict/search",{params:{
@@ -3941,6 +4069,28 @@ new Vue({
             }}).then(function(response){
         		if(parseInt(response.status) == 200 ){
         			that.elctType = response.data.data.list;
+        		}
+        	});
+        	axios.get("/api/dict/search",{params:{
+        		dictType:'positionType'
+            }}).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			that.positon = response.data.data.list;
+        		}
+        	});
+        	axios.get("/api/dict/search",{params:{
+        		dictType:'positionLevel'
+            }}).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			that.positionLevel = response.data.data.list;
+        		}
+        	});
+        	
+        	axios.get("/api/dict/search",{params:{
+        		dictType:'allowOrgLevel'
+            }}).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			that.allowOrgLevel = response.data.data.list;
         		}
         	});
         },
@@ -5183,6 +5333,13 @@ new Vue({
     created: function () {
         //this.loadArticleTypes();
         this.getCurrentUserInfo();
+        this.firstPageDyzlxz();
+        this.formSearchArticle.sendType = '1';
+        this.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
+        //that.loadArticles('',1, that.pager.article.pageSize);
+        this.currAction = 'append';
+        this.def_menu_id = 'articles';
+        this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 15);
     },
     beforeMount: function() {
         // this.getCurrentUserInfo();
