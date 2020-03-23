@@ -80,8 +80,6 @@
             -->
             <div v-for="item in newsArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
                 <div style="width: 70%; height: auto" v-if="formSearchNews.isViewed == ''">
-                    <label v-if="item.status && item.status == 1" style="color: #82848a">[已读]</label>
-                    <label v-if="!item.status || item.status == 0">[未读]</label>
                     <!--
                     <el-popover
                             placement="top-start"
@@ -91,10 +89,12 @@
                         <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" slot="reference" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
                     </el-popover>
                     -->
-                    <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
+                    <a style="color: #409EFF; cursor: pointer;margin-right: 20px" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
+                    <label v-if="item.status && item.status == 1" style="color: #82848a">[已读]</label>
+                    <label v-if="!item.status || item.status == 0">[未读]</label>
                 </div>
                 <div style="width: 70%; height: auto" v-if="formSearchNews.isViewed != ''">
-                    <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
+                    <a style="color: #409EFF; cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
                 </div>
                 <div style="width: 30%; font-size: 13px; color: #8c939d;">
                     {{item.sendTime}}
@@ -168,7 +168,7 @@
             </div>
         </el-card>
     </el-dialog>
-    <el-dialog :title="currNewsSendRecord.title" :visible.sync="dialogShow.viewNews" lock-scroll="true" center="true">
+    <el-dialog :title="currNewsSendRecord.title" :visible.sync="dialogShow.viewNews" lock-scroll="true" center="true" width="30%">
         <div style="width: 100%; text-align: center">
             {{currNewsSendRecord.content}}
         </div>
