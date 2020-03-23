@@ -322,6 +322,7 @@
         AND DATE_FORMAT(publish_time, '%Y-%m') = #{yearMonth}
       </if>
     </trim>
+    ORDER BY t.publish_time DESC, t.record_time DESC
   </select>
 
   <select id="findResDl" parameterType="resDl" resultMap="resDl">
@@ -370,5 +371,6 @@
         )
       </if>
     </trim>
+    ORDER BY t.dl_time DESC
   </select>
 </mapper>

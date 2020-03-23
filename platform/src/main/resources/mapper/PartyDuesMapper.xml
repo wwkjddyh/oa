@@ -169,5 +169,6 @@
         )
       </if>
     </trim>
+    ORDER BY t.record_time DESC
   </select>
 </mapper>
