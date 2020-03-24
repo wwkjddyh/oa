@@ -90,8 +90,8 @@
                     </el-popover>
                     -->
                     <a style="color: #409EFF; cursor: pointer;margin-right: 20px" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
-                    <label v-if="item.status && item.status == 1" style="color: #82848a">[已读]</label>
-                    <label v-if="!item.status || item.status == 0">[未读]</label>
+                    <label v-if="item.status && item.status == 1" style="color: #82848a">(已读)</label>
+                    <label v-if="!item.status || item.status == 0">(未读)</label>
                 </div>
                 <div style="width: 70%; height: auto" v-if="formSearchNews.isViewed != ''">
                     <a style="color: #409EFF; cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
