@@ -125,6 +125,11 @@ public class Article implements Serializable {
      */
     private List<String> creatorIds;
 
+    /**
+     * 简报发送者ID
+     */
+    private String senderId;
+
     public String getKey() {
         return key;
     }
@@ -307,6 +312,14 @@ public class Article implements Serializable {
 
     public void setCreatorIds(List<String> creatorIds) {
         this.creatorIds = creatorIds;
+    }
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
     }
 
     public Article() {

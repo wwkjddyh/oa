@@ -157,7 +157,7 @@
         </el-card>
     </el-dialog>
 
-    <el-dialog title="选择接收人" :visible.sync="dialogShow.newsReceivers" lock-scroll="true" width="800" @close="newsReceiveUserIds=[];formNews.receiveUsers=[];formNews.receiveUserIds=[];">
+    <el-dialog title="选择接收人" :visible.sync="dialogShow.newsReceivers" lock-scroll="true" width="800">
         <el-card shadow="never" style="width: 100%;" type="card">
             <el-checkbox-group v-model="newsReceiveUserIds">
                 <el-checkbox v-for="(user, userId) in allSysUsersMap" :label="userId" :key="userId">{{user.userNickname}}</el-checkbox>

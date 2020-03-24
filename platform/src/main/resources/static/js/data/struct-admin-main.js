@@ -198,6 +198,7 @@ const formStructConfig = {
         receiverIds: [],
         receiveUsers: [],
         receiverIdArrStr: '',
+        isBrief: true,
     },
 
     formPartyDues: {
@@ -427,6 +428,8 @@ const formStructConfig = {
             likeCount: 0,
             stinkyEgg: 0,
             sendType: '',
+            isBrief: true,
+            key: '',
         },
         partyDues: {
             recordId: '',

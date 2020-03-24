@@ -1,0 +1,89 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="content">
+    <!--
+    <el-tabs v-model="activeTabName" type="card">
+        <el-tab-pane label="简报" name="first">
+
+        </el-tab-pane>
+    </el-tabs>
+    -->
+    <!--
+
+            <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
+            -->
+    <el-form ref="formSearchArticle" :model="formSearchArticle" label-width="58px" size="small">
+        <!--
+        <el-form-item label="文章类型" prop="typeId">
+            <el-select v-model="formSearchArticle.categoryId" style="width: 300px;" placeholder="请选择类型">
+                <el-option label="全部" value="">全部</el-option>
+                <el-option v-for="item in articleCategories" :key="item.recordId" :label="item.name" :value="item.recordId"></el-option>
+            </el-select>
+            <el-tooltip class="item" effect="dark" placement="top">
+                <div slot="content">文章类型</div><i class="el-icon-question"></i></el-tooltip>
+        </el-form-item>
+        -->
+        <el-form-item label="关键字">
+            <el-input v-model="formSearchArticle.key" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
+            <el-button @click="searchForm('formSearchArticle')" type="primary" plain icon="el-icon-search" style="float: right" size="mini">检索</el-button>
+        </el-form-item>
+    </el-form>
+    <!--
+    <el-button plain @click="edit('article', '', '', true)" size="mini" icon="el-icon-plus">新增</el-button>
+    -->
+    <div style="margin-top: 20px">
+        <el-table size="small"
+                  :data="articles"
+                  border
+                  style="width: 100%">
+            <el-table-column
+                    align="center"
+                    width="70"
+                    label="序号">
+                <template slot-scope="scope">
+                    {{scope.$index+1}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="title"
+                    label="标题">
+            </el-table-column>
+            <el-table-column
+                    prop="recordTime"
+                    label="时间"
+                    width="100">
+                <template slot-scope="scope">
+                    {{scope.row.recordTime.substr(0, 10)}}
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="creatorName"
+                    label="创建者"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    align="center"
+                    width="180"
+                    label="操作">
+                <template slot-scope="scope">
+                    <div style="display: flex;width:100%">
+                        <el-button size="mini" @click="edit('article',scope.$index,scope.row,false)" icon="el-icon-edit">修改</el-button>
+                        <el-button size="mini" type="danger" @click="handleDel(scope.$index,'article')" icon="el-icon-delete">删除</el-button>
+                    </div>
+                </template>
+            </el-table-column>
+        </el-table>
+        <div align="center" style="margin-top: 10px">
+            <el-pagination size="small"
+                           @size-change="handleArticleSizeChange"
+                           @current-change="handleArticleCurrentChange"
+                           :current-page="pager.article.currentPage"
+                           :page-sizes="[10, 20, 30, 40]"
+                           :page-size="pager.article.pageSize"
+                           layout="total, sizes, prev, pager, next, jumper"
+                           :total="pager.article.totalCount">
+            </el-pagination>
+        </div>
+    </div>
+</div>
+</html>

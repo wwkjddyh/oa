@@ -169,6 +169,11 @@
                         <el-card shadow="never" v-show="showContent == 'faceMeet'" key="fzdy">
                             <div th:replace="/common/admin/faceMeet/index :: content"/>
                         </el-card>
+
+                        <!--文章管理-->
+                        <el-card shadow="never" v-if="showContent == 'articleManagement'" key="articleManagement">
+                            <div th:replace="/common/admin/article/articleManagement :: content"/>
+                        </el-card>
                     </div>
                 </keep-alive>
             </el-main>

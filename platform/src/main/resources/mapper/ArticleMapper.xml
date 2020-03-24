@@ -275,12 +275,6 @@
       <if test="key != null and key != ''">
         AND (UPPER(`title`) LIKE CONCAT('%',UPPER(#{key}),'%')
               OR UPPER(`content`) LIKE CONCAT('%',UPPER(#{key}),'%')
-              OR UPPER(`intro`) LIKE CONCAT('%',UPPER(#{key}),'%')
-              OR UPPER(`tags`) LIKE CONCAT('%',UPPER(#{key}),'%')
-              OR UPPER(`source`) LIKE CONCAT('%',UPPER(#{key}),'%')
-              OR UPPER(`source_site`) LIKE CONCAT('%',UPPER(#{key}),'%')
-              OR UPPER(`author_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
-              OR UPPER(`category_name`) LIKE CONCAT('%',UPPER(#{key}),'%')
             )
       </if>
       <if test="title != null and title != ''">
@@ -324,6 +318,11 @@
         <foreach collection="creatorIds" index="index" item="itemId" open="(" separator="," close=")">
           #{itemId}
         </foreach>
+      </if>
+      <if test="senderId != null and senderId != ''">
+        AND record_id IN (
+            SELECT DISTINCT brief_id FROM t_brief_send_record where sender_id = #{senderId}
+        )
       </if>
     </trim>
     ORDER BY T.record_time DESC

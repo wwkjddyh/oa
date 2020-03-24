@@ -70,6 +70,8 @@ new Vue({
                     break;
                 case 'articles':    // 简报列表
                     //that.getArticleCategories();
+                    that.currentArticleFormTitle = '简报';
+                    that.formSearchArticle.isBrief = true;
                     that.formSearchArticle.sendType = '1';
                     that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
                     //that.loadArticles('',1, that.pager.article.pageSize);
@@ -77,7 +79,17 @@ new Vue({
                     that.def_menu_id = 'articles';
                     that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize);
                     break;
-                case 'formArticle': // 简报
+                case 'articleManagement':   // 文章管理
+                    that.getArticleCategories();
+                    that.currentArticleFormTitle = '文章';
+                    that.formSearchArticle.isBrief = false;
+                    that.formSearchArticle.sendType = '1';
+                    that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                    that.loadArticles('',1, that.pager.article.pageSize);
+                    that.currAction = 'append';
+                    that.def_menu_id = 'articleManagement';
+                    break;
+                case 'formArticle': // 简报或文章
                     that.getArticleCategories();
                     that.formArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
                     that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
@@ -87,7 +99,7 @@ new Vue({
                         }, 500);
                         that.formArticle.sendType = '1';    // 设置默认为简报
                         that.currAction = 'append';
-                        that.def_menu_id = 'formArticle';
+                        //that.def_menu_id = 'formArticle';
                     }
                     else {
                         that.currAction = 'append';
@@ -305,6 +317,7 @@ new Vue({
         showContent: 'firstPage',
         receiverUserName: '',
         scrollBoxContent: '',
+        currentArticleFormTitle: '文章',
         currentChartId : CurrentChartId,
         charts: [
             {
@@ -1208,14 +1221,17 @@ new Vue({
             }
             if (formName == 'formArticle') {
                 that.formArticle.content = that.ueditors.article.getContent();
+                console.log('that.currentArticleFormTitle', that.currentArticleFormTitle);
                 console.log('that.formArticle.content', that.formArticle.content);
                 console.log('that.ueditors.article.getContent()', that.ueditors.article.getContent());
                 let __title = that.formArticle.title.replace(/(^\s*)|(\s*$)/g, "");
                 let __content = that.formArticle.content.replace(/(^\s*)|(\s*$)/g, "");
                 let __receiverIds = that.formArticle.receiverIds || [];
-                if (__receiverIds.length === 0) {
-                    that.$message.error('请选择接收人');
-                    return false;
+                if (that.currentArticleFormTitle === '简报') {
+                    if (__receiverIds.length === 0) {
+                        that.$message.error('请选择接收人');
+                        return false;
+                    }
                 }
                 if (__title == '') {
                     that.$message.error('请填写主题');
@@ -1389,7 +1405,7 @@ new Vue({
                     that.loadNews(that.formSearchNews.title, 1, that.pager.news.pageSize);
                     break;
                 case 'formSearchArticle':
-                    that.loadArticles(that.formSearchArticle.title, 1, that.pager.article.pageSize);
+                    that.loadArticles(that.formSearchArticle.key, 1, that.pager.article.pageSize);
                     break;
                 case 'formSearchPartyDues':
                     that.loadPartyDues(that.formSearchPartyDues.key, 1, that.pager.partyDues.pageSize);
@@ -1669,8 +1685,11 @@ new Vue({
             params.append('authorName',that.formArticle.authorName || '');
             params.append('source',that.formArticle.source || '');
             params.append('sourceSite',that.formArticle.sourceSite || '');
-            params.append('sendType', sendType);
-            params.append('receiverIds', receiverIds);
+            if (that.currentArticleFormTitle === '简报') {
+                params.append('sendType', sendType);
+                params.append('receiverIds', receiverIds);
+
+            }
             let articleRecordId = that.formArticle.recordId || '';
             // 由于文章的提交操作比较特殊，故不能使用that.currAction 来判定是否为'修改'操作
             /*
@@ -1690,23 +1709,34 @@ new Vue({
                     let responseCode = parseInt(response.data.code);
                     if(responseCode === 200){
                         that.dialogShow.article = false;
-
-                        that.editableTabsOptions.editableTabsValue = 'articles';
-                        that.def_menu_id = 'articles';
-                        that.showContent = 'articles';
-                        that.$refs['menuRef'].activeIndex = 'articles';
-                        /*
-                        that.pager.article.currentPage = 1;
-                        that.loadArticles('',1, that.pager.article.pageSize);
-                         */
-                        that.briefReceiveUserIds = [];
-                        that.pager.briefSendRecord.currentPage = 1;
-                        that.loadCurrUserReceiverBriefRecord('', 1, that.pager.briefSendRecord.pageSize);
-                        that.$forceUpdate();
-                        that.$message({
-                            message: articleType + operName + '成功!',
-                            type: 'success'
-                        });
+                        if (that.currentArticleFormTitle === '简报') {
+                            that.editableTabsOptions.editableTabsValue = 'articles';
+                            that.def_menu_id = 'articles';
+                            that.showContent = 'articles';
+                            that.$refs['menuRef'].activeIndex = 'articles';
+                            that.briefReceiveUserIds = [];
+                            that.pager.briefSendRecord.currentPage = 1;
+                            that.loadCurrUserReceiverBriefRecord('', 1, that.pager.briefSendRecord.pageSize);
+                            that.$forceUpdate();
+                            that.$message({
+                                message: articleType + operName + '成功!',
+                                type: 'success'
+                            });
+                        }
+                        else {
+                            that.editableTabsOptions.editableTabsValue = 'articleManagement';
+                            that.def_menu_id = 'articleManagement';
+                            that.showContent = 'articleManagement';
+                            that.$refs['menuRef'].activeIndex = 'articleManagement';
+                            that.briefReceiveUserIds = [];
+                            that.pager.article.currentPage = 1;
+                            that.loadArticles('',1, that.pager.article.pageSize);
+                            that.$forceUpdate();
+                            that.$message({
+                                message: articleType + operName + '成功!',
+                                type: 'success'
+                            });
+                        }
                     }
                     else if (responseCode === 555) {
                         that.$message.error('主题重复');
@@ -2607,6 +2637,7 @@ new Vue({
                         else {
                             //that.def_menu_id = 'formArticle';
                             entry = that.articles[scopeIndex];
+                            console.log('article.edit=>content', entry.content);
                             that.formArticle = {
                                 isEdit: true,
                                 recordId: entry.recordId,
@@ -3087,7 +3118,7 @@ new Vue({
                                         if(parseInt(response.data.code) === 200){
                                             that.articles.splice(idx,1);
                                             that.pager.article.currentPage = 1;
-                                            that.loadArticles('', 1, that.pager.article.pageSize);
+                                            that.loadArticles(that.formSearchArticle.key, 1, that.pager.article.pageSize);
                                             that.$message({
                                                 message: '文章信息删除成功!',
                                                 type: 'success'
@@ -4599,6 +4630,7 @@ new Vue({
                     pageSize: pageSize,
                     categoryId: that.formSearchArticle.categoryId,
                     sendType: that.formSearchArticle.sendType,
+                    creatorId: that.currentUser.userId,
                 }})
                 .then(function(response){/*成功*/
                     if(parseInt(response.status) == 200 ) {
