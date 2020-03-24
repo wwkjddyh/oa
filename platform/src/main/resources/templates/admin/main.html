@@ -16,11 +16,11 @@
 </head>
 <body>
 <div id="admin-main" v-cloak>
-    <el-header style=" text-align: left;font-size: 12px;">
+    <el-header class="main-el-header">
         <div th:include="/common/admin/header :: header"></div>
     </el-header>
-    <el-container style="height: calc(100vh - 58px); border: 0;">
-        <el-aside style="width: auto;overflow-x: hidden ;background-color: #545c64">
+    <el-container class="main-el-container">
+        <el-aside style="width: auto;overflow-x: hidden ;">
             <div th:replace="/common/admin/menu :: menu"></div>
         </el-aside>
 

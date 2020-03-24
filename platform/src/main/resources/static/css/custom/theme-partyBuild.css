@@ -38,6 +38,29 @@
     color: #303133;
 }
 
+/**
+ 头部
+ */
+
+.main-el-header {
+    height: 60px;
+    text-align: left;
+    font-size: 12px;
+    background: linear-gradient(to right, #AE0000, #ff7575);
+}
+
+/**
+ 容器
+ */
+.main-el-container {
+    height: calc(100vh - 58px);
+    border: 0;
+}
+.main-el-container_el-aside {
+    width: auto;
+    overflow-x: hidden ;
+}
+
 /*首页*/
 .firstPage {
 
