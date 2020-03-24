@@ -171,5 +171,9 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 		orgRepository.updateOrgUser(orgId,userId);
 		
 	}
+	@Override
+	public List<Organization> getUserUpperOrgList(String orgId) {
+		return orgRepository.getUserUpperOrgList(orgId);
+	}
 
 }

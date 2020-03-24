@@ -173,6 +173,35 @@
 		from t_sys_org
 		where status='1' and is_dept='0'
 	</select>
+	<select id="getUserUpperOrgList" resultMap="orgMap">
+		WITH recursive org_cte AS (
+			SELECT
+				sorg.org_id,
+				sorg.org_nm,
+				sorg.upper_org 
+			FROM
+				t_sys_org sorg 
+			WHERE
+				sorg.org_id = #{orgId} 
+				AND sorg.STATUS = '1' UNION ALL
+			SELECT
+				org.org_id,
+				org.org_nm,
+				org.upper_org 
+			FROM
+				t_sys_org org
+				INNER JOIN org_cte sysorg ON org.upper_org = sysorg.org_id 
+				AND org.STATUS = '1' 
+			) SELECT
+			ote.org_id,
+			ote.org_nm,
+		CASE
+			WHEN ote.org_id = #{orgId} THEN
+			NULL ELSE upper_org 
+			END upper_org 
+		FROM
+		org_cte ote
+	</select>
 	<select id="getOrgDetailById" resultMap="orgMap">
 		select 
 			org.org_id,

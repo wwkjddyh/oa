@@ -270,6 +270,19 @@ public class OrgBiz extends BaseBiz {
 		//删除党员与组织关系
 		orgSerivce.delUserOrg(userId);
 	}
+	/**
+	 * 根据用户获取用户所在组织及下级组织
+	 * @param userId
+	 * @return
+	 */
+	public List<Organization> getUserUpperOrgList(String userId) {
+		List<Organization> orgIdByuserId = orgSerivce.getOrgIdByuserId(userId);
+		if(orgIdByuserId == null || orgIdByuserId.size() == 0) {
+			return new ArrayList<Organization>();
+		}
+		List<Organization> result = orgSerivce.getUserUpperOrgList(orgIdByuserId.get(0).getOrgId());
+		return result;
+	}
 	
 	
 }

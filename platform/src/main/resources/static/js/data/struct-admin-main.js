@@ -682,6 +682,9 @@ const formStructConfig = {
         allowOrgLevel: [
             { required: true, message: '请填写批准组织级别', trigger: 'blur' },
         ],
+        orgId: [
+            { required: true, message: '请选择所在党组织', trigger: 'blur' },
+        ],
     },
     dateDickerOptions: {
 

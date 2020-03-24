@@ -64,6 +64,16 @@ public class OrgApiController extends BaseController{
 		return getSuccessResultVo(result);
 	}
 	/**
+	 * 根据用户获取用户所在组织及下级组织
+	 * @return
+	 */
+	@GetMapping("getUserUpperOrgList")
+	public ResultVo getUserUpperOrgList() {
+		User user = getUserOfSecurity();
+		List<Organization> result = orgBiz.getUserUpperOrgList(user.getUserId());
+		return getSuccessResultVo(result);
+	}
+	/**
 	 * 获取组织详情
 	 * @param orgId
 	 * @return

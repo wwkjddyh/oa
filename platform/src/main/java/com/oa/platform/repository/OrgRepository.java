@@ -88,4 +88,6 @@ public interface OrgRepository extends BaseRepository<Organization, String> {
 	void downOrgUserById(@Param("orgId") String orgId);
 
 	void updateOrgUser(@Param("orgId") String orgId,@Param("userId")String userId);
+
+	List<Organization> getUserUpperOrgList(@Param("orgId") String orgId);
 }

@@ -61,6 +61,7 @@ new Vue({
                 case 'dwjbxx':
                 	that.getTreeDict();
                 	that.getRewardTreeDict();
+                	that.getOptionDict();
                 	that.loadDwjbxx();
                 	break;
                 case 'announce':
@@ -122,7 +123,8 @@ new Vue({
                     break;
                 case 'nddyxxcj':
                 	that.setDyxxYear();
-                	that.getUpperOrg();
+                	//that.getUpperOrg();
+                	that.getUserUpperOrgList();
                 	that.getNddyxxOptions();
                 	that.loadNddyxxcj();
                 	break;
@@ -726,6 +728,7 @@ new Vue({
         newsArray: [],
         partyDuesArray: [],
         resArray: [],
+        userUpperOrg:[],
         resDlArray: [],
         orignUpperOrg:[],
         newsReceiveUsers: {
@@ -1289,6 +1292,12 @@ new Vue({
             
             //勿删，特意写下此句
             console.log('submitForm-formName,',formName,new Date().getTime());
+        },
+        getOrgTypeValue(orgType1){
+        	let list = this.orgType.filter(x=>x.dictId == orgType1);
+        	if(list && list.length > 0){
+        		return list[0].dictName;
+        	}
         },
         getGenderValue(genderId){
         	let list = this.gender.filter(x=>x.value == genderId);
@@ -1903,16 +1912,13 @@ new Vue({
         	params.append('leaderDetails',JSON.stringify(that.leaderList));
         	params.append('rewardDetails',JSON.stringify(that.rewardList));
         	params.append('deptDetails',JSON.stringify(that.deptInfoList));
-//        	params.append('leaderDetails',that.leaderList);
-//        	params.append('rewardDetails',that.rewardList);
-//        	params.append('deptDetails',that.deptInfoList);
         	axios.post("/api/org/orgOpreate",params)
         		.then(function(response){
         			if(parseInt(response.data.code) === 200){
         				that.loading.flag = false;
         				that.dialogShow.dwjbxx =false;
             			that.formdwjbxx={};
-            			that.getUpperOrg();
+            			//that.getUpperOrg();
             			that.loadDwjbxx();
                         that.$message({
                             message: '操作成功',
@@ -2316,7 +2322,7 @@ new Vue({
         		that.leaderList = [];
         		that.rewardList = [];
         		that.deptInfoList = [];
-        		that.getOptionDict();
+        		
         		that.dialogShow.dwjbxx = !that.dialogShow.dwjbxx;
         	}else{
 	            let that = this, entry = null, parents = [];
@@ -2496,7 +2502,7 @@ new Vue({
                     	break;
 	                case 'dwjbxx':
 	                	//党委基本信息新增修改
-	                	that.getOptionDict();
+	                	
 	                	if(isAdd){
 	                		that.formdwjbxx={};
 	                		that.dwjbxxDialog={
@@ -3982,7 +3988,20 @@ new Vue({
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.upperOrg = that.getTreeData(response.data.result, parentArr);
         			that.orignUpperOrg = response.data.result;
-        			console.log(that.upperOrg);
+        		}
+        	});
+        },
+        getUserUpperOrgList(){
+        	let that = this;
+        	let treeTable =[];
+        	axios.get("/api/org/getUserUpperOrgList",null).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			for(let i =0 ; i <response.data.result.length;i++){
+        				response.data.result[i].value=response.data.result[i].orgId;
+        				response.data.result[i].label=response.data.result[i].orgName;
+        			}
+        			let parentArr = response.data.result.filter(l => l.upperOrg === null);
+        			that.userUpperOrg = that.getTreeData(response.data.result, parentArr);
         		}
         	});
         },

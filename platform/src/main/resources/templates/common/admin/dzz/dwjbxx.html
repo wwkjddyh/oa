@@ -26,6 +26,9 @@
                             label="党组织类型"
                             align="center"
                             width="200">
+                            <template v-slot="scope">
+						         {{ getOrgTypeValue(scope.row.orgType)}}
+						    </template>
                     </el-table-column>
                     <el-table-column
                             prop="foundTime"
@@ -359,7 +362,11 @@
                     	<el-col :span="24">
 		                    <el-table :data="leaderList" border>
 							    <el-table-column property="userName" label="姓名" width="150" align="center" ></el-table-column>
-							    <el-table-column property="positonName" label="职务名称" width="200" align="center" ></el-table-column>
+							    <el-table-column property="positonName" label="职务名称" width="200" align="center" >
+							    	<template v-slot="scope">
+								         {{ getPositionValue(scope.row.positon)}}
+								    </template>
+							    </el-table-column>
 							    <el-table-column property="allowLeaderTime" label="批准任职日期" align="center" >
 							   
 							    </el-table-column>
@@ -384,7 +391,11 @@
                     <el-row>
                     	<el-col :span="24">
 		                    <el-table :data="rewardList" border>
-							    <el-table-column property="reward" label="奖惩名称" width="150" align="center" ></el-table-column>
+							    <el-table-column property="reward" label="奖惩名称" width="150" align="center" >
+							    	<template v-slot="scope">
+								         {{ getRewardNameValue(scope.row.rewardName)}}
+								    </template>
+							    </el-table-column>
 							    <el-table-column property="allowOrg" label="批准组织" width="200" align="center" ></el-table-column>
 							    <el-table-column property="allowTime" label="批准时间" align="center" ></el-table-column>
 							    <el-table-column
@@ -561,11 +572,11 @@
 	              <el-form ref="formDept"   style="width: 100%;" label-position="top">
 	              	<el-form-item label="单位名称" prop="deptName"  size="mini" style="width: 100%;">
                             <el-input v-model="formDept.deptName"  size="medium" 
-                            	auto-complete="off"  maxlength="255" placeholder="姓名" ></el-input>                           
+                            	auto-complete="off"  maxlength="255" placeholder="单位名称" ></el-input>                           
                     </el-form-item>
                     <el-form-item label="单位性质类别" prop="deptNatureType"  size="mini" style="width: 100%;">
                             <el-input v-model="formDept.deptNatureType"  size="medium" 
-                            	auto-complete="off"  maxlength="255" placeholder="职务名称" ></el-input>                           
+                            	auto-complete="off"  maxlength="255" placeholder="单位性质类别" ></el-input>                           
                     </el-form-item>
                     <el-form-item label="单位(机构)类型" prop="deptType"  size="mini" style="width: 100%;">                          
 							    <el-cascader
