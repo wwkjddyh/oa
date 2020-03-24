@@ -276,13 +276,23 @@ new Vue({
                     break;
                 case 'bigData':     // 大数据
                     console.log('that.chartsData', that.chartsData)
-                    let chartData = that.chartsData[0];
-                    console.log('that.currentChartId', that.currentChartId, chartData);
-                    that.currentChartId = chartData.id;
-                    console.log('that.currentChartId', that.currentChartId);
-                    that.initBarChart(that.currentChartId, chartData.type, chartData.title, chartData.subtitle, chartData.xAxis,
-                          chartData.yAxis, chartData.tooltip, {}, chartData.tooltip, chartData.credits, chartData.series);
-
+                    if (that.chartsData) {
+                        for (let i = 0; i < that.chartsData.length; i ++) {
+                            let _chartData = that.chartsData[i];
+                            let _chartId = _chartData.id;
+                            console.log('that.currentChartId', that.currentChartId, _chartData);
+                            that.currentChartId = _chartId;
+                            console.log('that.currentChartId', that.currentChartId);
+                            if (i == 0) {
+                                that.initPieChart(_chartId, _chartData.type, _chartData.title, _chartData.subtitle, _chartData.xAxis,
+                                    _chartData.yAxis, _chartData.tooltip, {}, _chartData.tooltip, _chartData.credits, _chartData.series);
+                            }
+                            else {
+                                that.initBarChart(_chartId, _chartData.type, _chartData.title, _chartData.subtitle, _chartData.xAxis,
+                                    _chartData.yAxis, _chartData.tooltip, {}, _chartData.tooltip, _chartData.credits, _chartData.series);
+                            }
+                        }
+                    }
                     break;
                 case 'faceMeet':    // 视频会议
                     break;
@@ -324,66 +334,264 @@ new Vue({
                 id: 'bigDataChartId',
                 chart: null
             },
+            {
+                id: 'bigDataChartId2',
+                chart: null
+            },
+            {
+                id: 'bigDataChartId3',
+                chart: null
+            },
+            {
+                id: 'bigDataChartId4',
+                chart: null
+            },
         ],
-        chartsData: [{
-            id: 'bigDataChartId',
-            type: 'bar',
-            title: '分地区的世界历史人口',
-            subtitle: '来源: <a href="https://en.wikipedia.org/wiki/World_population">维基百科</a>',
-            xAxis: {
-                categories: ['非洲', '美洲', '亚洲', '欧洲', '大洋洲'],
-                title: {
-                    text: null
-                }
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: '人口 (百万)',
-                    align: 'high'
+        chartsData: [
+            {
+                id: 'bigDataChartId',
+                type: 'pie',
+                title: '2018年一月浏览器市场份额',
+                subtitle: '来源: <a href="https://en.wikipedia.org/wiki/World_population">维基百科</a>',
+                xAxis: {},
+                yAxis: {},
+                tooltip: {
+                    valueSuffix: ' 百万'
                 },
-                labels: {
-                    overflow: 'justify'
-                }
-            },
-            tooltip: {
-                valueSuffix: ' 百万'
-            },
-            plotOptions: {
-                bar: {
-                    dataLabels: {
-                        enabled: true
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        }
                     }
-                }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -40,
+                    y: 80,
+                    floating: true,
+                    borderWidth: 1,
+                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                    shadow: true
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    name: 'Brands',
+                    colorByPoint: true,
+                    data: [{
+                        name: 'Chrome',
+                        y: 61.41,
+                        sliced: true,
+                        selected: true
+                    }, {
+                        name: 'Internet Explorer',
+                        y: 11.84
+                    }, {
+                        name: 'Firefox',
+                        y: 10.85
+                    }, {
+                        name: 'Edge',
+                        y: 4.67
+                    }, {
+                        name: 'Safari',
+                        y: 4.18
+                    }, {
+                        name: 'Sogou Explorer',
+                        y: 1.64
+                    }, {
+                        name: 'Opera',
+                        y: 1.6
+                    }, {
+                        name: 'QQ',
+                        y: 1.2
+                    }, {
+                        name: 'Other',
+                        y: 2.61
+                    }]
+                }],
             },
-            legend: {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'top',
-                x: -40,
-                y: 80,
-                floating: true,
-                borderWidth: 1,
-                backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
-                shadow: true
+            {
+                id: 'bigDataChartId2',
+                type: 'bar',
+                title: '分地区的世界历史人口',
+                subtitle: '来源: <a href="https://en.wikipedia.org/wiki/World_population">维基百科</a>',
+                xAxis: {
+                    categories: ['非洲', '美洲', '亚洲', '欧洲', '大洋洲'],
+                    title: {
+                        text: null
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '人口 (百万)',
+                        align: 'high'
+                    },
+                    labels: {
+                        overflow: 'justify'
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' 百万'
+                },
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -40,
+                    y: 80,
+                    floating: true,
+                    borderWidth: 1,
+                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                    shadow: true
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    name: '1800年',
+                    data: [107, 31, 635, 203, 2]
+                }, {
+                    name: '1900年',
+                    data: [133, 156, 947, 408, 6]
+                }, {
+                    name: '2000年',
+                    data: [814, 841, 3714, 727, 31]
+                }, {
+                    name: '2016年',
+                    data: [1216, 1001, 4436, 738, 40]
+                }],
             },
-            credits: {
-                enabled: false
+            {
+                id: 'bigDataChartId3',
+                type: 'bar',
+                title: '分地区的世界历史人口',
+                subtitle: '来源: <a href="https://en.wikipedia.org/wiki/World_population">维基百科</a>',
+                xAxis: {
+                    categories: ['非洲', '美洲', '亚洲', '欧洲', '大洋洲'],
+                    title: {
+                        text: null
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '人口 (百万)',
+                        align: 'high'
+                    },
+                    labels: {
+                        overflow: 'justify'
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' 百万'
+                },
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -40,
+                    y: 80,
+                    floating: true,
+                    borderWidth: 1,
+                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                    shadow: true
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    name: '1800年',
+                    data: [107, 31, 635, 203, 2]
+                }, {
+                    name: '1900年',
+                    data: [133, 156, 947, 408, 6]
+                }, {
+                    name: '2000年',
+                    data: [814, 841, 3714, 727, 31]
+                }, {
+                    name: '2016年',
+                    data: [1216, 1001, 4436, 738, 40]
+                }],
             },
-            series: [{
-                name: '1800年',
-                data: [107, 31, 635, 203, 2]
-            }, {
-                name: '1900年',
-                data: [133, 156, 947, 408, 6]
-            }, {
-                name: '2000年',
-                data: [814, 841, 3714, 727, 31]
-            }, {
-                name: '2016年',
-                data: [1216, 1001, 4436, 738, 40]
-            }],
-        }],
+            {
+                id: 'bigDataChartId4',
+                type: 'bar',
+                title: '分地区的世界历史人口',
+                subtitle: '来源: <a href="https://en.wikipedia.org/wiki/World_population">维基百科</a>',
+                xAxis: {
+                    categories: ['非洲', '美洲', '亚洲', '欧洲', '大洋洲'],
+                    title: {
+                        text: null
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '人口 (百万)',
+                        align: 'high'
+                    },
+                    labels: {
+                        overflow: 'justify'
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' 百万'
+                },
+                plotOptions: {
+                    bar: {
+                        dataLabels: {
+                            enabled: true
+                        }
+                    }
+                },
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'top',
+                    x: -40,
+                    y: 80,
+                    floating: true,
+                    borderWidth: 1,
+                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                    shadow: true
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    name: '1800年',
+                    data: [107, 31, 635, 203, 2]
+                }, {
+                    name: '1900年',
+                    data: [133, 156, 947, 408, 6]
+                }, {
+                    name: '2000年',
+                    data: [814, 841, 3714, 727, 31]
+                }, {
+                    name: '2016年',
+                    data: [1216, 1001, 4436, 738, 40]
+                }],
+            }
+        ],
         ueditors: {
             article: null,
         },
@@ -5284,6 +5492,50 @@ new Vue({
          */
         submitReceiverUserOfReceiverIds() {
             console.log('submitReceiverUserOfReceiverIds')
+        },
+
+        /**
+         * 构建饼图
+         */
+        initPieChart(chartId, type, title, subtitle, xAxis, yAxis, tooltip, categories, legend, credits, series) {
+            let that = this;
+            let options = {
+                chart: {
+                    plotBackgroundColor: null,
+                    plotBorderWidth: null,
+                    plotShadow: false,
+                    type: type
+                },
+                title: {
+                    text: title
+                },
+                tooltip: {
+                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                },
+                credits: credits,
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                        }
+                    }
+                },
+                series: series
+            };
+            let tChart = Highcharts.chart(chartId, options);
+            let chartObj = that.charts.find(function(m){ return m.id == chartId});
+            if (chartObj) {
+                chartObj.chart = tChart;
+                return false;
+            }
         },
 
         /**
