@@ -24,16 +24,6 @@
 			</div>
 			</el-row>
 			<el-row style="height:252px;margin-top: 40px;">
-				<el-row ><div><span style="font-size:18px;color: #ccaf71">新闻简报</span></div></el-row>
-				<div v-for="item in currUserReceiverBriefRecords" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
-					<div style="width: calc(100% - 95px); height: auto">
-						<a style="color: #242424; cursor: pointer;" @click="handleBriefView(item.briefId)">{{item.briefTitle || ''}}</a>
-					</div>
-					<div style="width: 95px; font-size: 13px; color: #8c939d;">
-						{{item.sendTime.substr(0, 10)}}
-					</div>
-				</div>
-				<!--
 				<el-row><span style="font-size:18px;color:#ccaf71">资料下载</span></el-row>
 				<el-row>
 					<el-tabs type="border-card" style="margin-top:20px; width:91.5%;" @tab-click="firstPageDyzlxz()"  v-model="firstPageZlxz">
@@ -70,8 +60,6 @@
 					  </el-tab-pane>
 					</el-tabs>
 				</el-row>
-
-				-->
 			</el-row>
 		</el-col>
 		<el-col :span="12" style="height:auto;">
@@ -79,9 +67,9 @@
 				<el-row ><div><span style="font-size:18px;color: #ccaf71">新闻简报</span></div></el-row>
 				<div v-for="item in currUserReceiverBriefRecords" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
 					<div style="width: calc(100% - 85px); height: auto">
-						<a style="color: #ccaf71; cursor: pointer;" @click="handleBriefView(item.briefId)">{{item.briefTitle || ''}}</a>
+						<a style="color: #303133; cursor: pointer;" @click="handleBriefView(item.briefId)">{{item.briefTitle || ''}}</a>
 					</div>
-					<div style="width: 85px; font-size: 13px; color: #ccaf71;">
+					<div style="width: 85px; font-size: 13px; color: #303133;">
 						{{item.sendTime.substr(0, 10)}}
 					</div>
 				</div>
