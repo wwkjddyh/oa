@@ -304,7 +304,7 @@ new Vue({
         cronTabActiveName: 'second',    /*cron表达式tabs设置*/
         showContent: 'firstPage',
         receiverUserName: '',
-        scrollBoxContent: '本站管理员于今日下午三时将对本系统进行更新，届时将停止服务器运行，所带来不便，尽请谅解！',
+        scrollBoxContent: '',
         currentChartId : CurrentChartId,
         charts: [
             {
@@ -835,11 +835,13 @@ new Vue({
             roleModule: false,
             userRole: false,
             sysUserRole: false,
+            article: false,
         },
         checkBoxOptions: {
             roleModule: [],
             userRole: [],
             sysUserRole: [],
+            article: [],
         },
         /**
          * 复选中关联id
@@ -1688,11 +1690,11 @@ new Vue({
                     let responseCode = parseInt(response.data.code);
                     if(responseCode === 200){
                         that.dialogShow.article = false;
-                        //
-                        // that.editableTabsOptions.editableTabsValue = 'articles';
-                        // that.def_menu_id = 'articles';
-                        // that.showContent = 'articles';
-                        // that.$refs['menuRef'].activeIndex = 'articles';
+
+                        that.editableTabsOptions.editableTabsValue = 'articles';
+                        that.def_menu_id = 'articles';
+                        that.showContent = 'articles';
+                        that.$refs['menuRef'].activeIndex = 'articles';
                         /*
                         that.pager.article.currentPage = 1;
                         that.loadArticles('',1, that.pager.article.pageSize);
@@ -1996,14 +1998,7 @@ new Vue({
                 return;
             }
             else {
-                for (let i = 0; i < _len; i ++) {
-                    if (that.formNews.receiverId == '') {
-                        that.formNews.receiverId = that.formNews.receiveUsers[i].userId;
-                    }
-                    else {
-                        that.formNews.receiverId += ',' +  that.formNews.receiveUsers[i].userId;
-                    }
-                }
+                that.formNews.receiverId = that.formNews.receiveUserIds.join(",");
             }
             console.log('submitNews', that.formNews);
             let params = new URLSearchParams();
@@ -3491,6 +3486,56 @@ new Vue({
         	}
         	
         },
+
+        /**
+         * 获得(当前)用户获得最新的消息通告
+         */
+        getCurrUserReceivedNewestNews() {
+            let that = this;
+            that.scrollBoxContent = '';
+            axios.get("/api/news/getCurrUserReceivedNewestNews")
+                .then(function(response){/*成功*/
+                    let data = response.data;
+                    if(parseInt(data.code) === 200) {
+                        that.scrollBoxContent = data.data.content || '';
+                    }
+                })
+                .catch(function(err){/*异常*/
+                    console.log(err);
+                });
+            var timer = setInterval(function () {
+                that.scrollBoxContent = '';
+                axios.get("/api/news/getCurrUserReceivedNewestNews")
+                    .then(function(response){/*成功*/
+                        let data = response.data;
+                        if(parseInt(data.code) === 200) {
+                            that.scrollBoxContent = data.data.content || '';
+                        }
+                    })
+                    .catch(function(err){/*异常*/
+                        console.log(err);
+                    });
+
+
+                // if(num == 10){
+                //     clearInterval(timer);
+                // }
+
+            },300000);
+
+            // that.scrollBoxContent = '';
+            // axios.get("/api/news/getCurrUserReceivedNewestNews")
+            //     .then(function(response){/*成功*/
+            //         let data = response.data;
+            //         if(parseInt(data.code) === 200) {
+            //             that.scrollBoxContent = data.data.content || '';
+            //         }
+            //     })
+            //     .catch(function(err){/*异常*/
+            //         console.log(err);
+            //     });
+        },
+
         /**
          * 获得当前用户信息
          */
@@ -5305,6 +5350,34 @@ new Vue({
             }
         },
 
+        /**
+         * 简报接收人全选
+         * @param val
+         */
+        handleArticleReceiversCheckAllChange(val) {
+            let that = this,checkIds = [];
+
+            for (let key in that.allSysUsersMap) {
+                //let entry = taht.allSysUsersMap[key];
+                checkIds.push(key);
+            }
+            console.log('handleArticleReceiversCheckAllChange', that.checkBoxOptions.article, that.allSysUsersMap, val, checkIds);
+            that.briefReceiveUserIds = val ? checkIds : [];
+            that.isIndeterminate.article = false;
+            console.log('handleArticleReceiversCheckAllChange(briefReceiveUserIds)', that.briefReceiveUserIds)
+        },
+
+        /**
+         * 简报选项选择
+         * @param value
+         */
+        handleArticleReceiversCheckedChange(value) {
+            let that = this;
+            let checkedCount = value.length;
+            that.checkBoxAll.article = (checkedCount === that.allSysUsersMap.length);
+            that.isIndeterminate.article = checkedCount > 0 && checkedCount < that.allSysUsersMap.length;
+            console.log('handleArticleReceiversCheckedChange(briefReceiveUserIds)', that.briefReceiveUserIds)
+        },
     },
     props: {
 
@@ -5380,6 +5453,7 @@ new Vue({
         that.getAllAuthRole();
         //that.getAllSysUsers();
         that.getAllSysUsersMap();
+        that.getCurrUserReceivedNewestNews();
         that.loadMemberUsers('','',0, that.pager.user.pageSize);
         that.ueditors.article = UE.getEditor('articleEditor', that.ueditorConfig);
         that.ueditors.article.addListener("ready", function () {
