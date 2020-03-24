@@ -471,8 +471,8 @@
 	    DATE_FORMAT(end_time,'%Y-%m-%d %H:%i:%s') end_time, receiver_type,
 	    receiver_id, record_user_id,
 	    DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time, update_user_id
-	FROM t_news where record_id = (
-	    SELECT news_id FROM t_news_send_record WHERE receiver_id = #{userId} ORDER BY send_time DESC, `status` ASC LIMIT 1
-	)
+	FROM t_news t1,
+	( SELECT news_id FROM t_news_send_record WHERE record_flag = 1 AND receiver_id = #{userId} ORDER BY send_time DESC, `status` ASC LIMIT 8
+	) t2 WHERE t1.record_id = t2.news_id
   </select>
 </mapper>

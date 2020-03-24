@@ -69,11 +69,7 @@ public class NewsServiceImpl extends AbstractBaseService<News, String> implement
     }
 
     @Override
-    public News getUserReceivedNewestNews(String userId) {
-        List<News> newsList = newsRepository.getUserReceivedNewestNews(userId);
-        if (newsList != null && !newsList.isEmpty()) {
-            return newsList.get(0);
-        }
-        return null;
+    public List<News> getUserReceivedNewestNews(String userId) {
+        return newsRepository.getUserReceivedNewestNews(userId);
     }
 }

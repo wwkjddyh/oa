@@ -3528,7 +3528,18 @@ new Vue({
                 .then(function(response){/*成功*/
                     let data = response.data;
                     if(parseInt(data.code) === 200) {
-                        that.scrollBoxContent = data.data.content || '';
+                        let _newsArr = data.data || [];
+                        let _content = '';
+                        for (let i = 0; i < _newsArr.length; i ++) {
+                            let _news = _newsArr[i];
+                            if (_content == '') {
+                                _content = _news.content;
+                            }
+                            else {
+                                _content += '&nbsp;' + _news.content;
+                            }
+                        }
+                        that.scrollBoxContent = _content;
                     }
                 })
                 .catch(function(err){/*异常*/
@@ -3540,7 +3551,18 @@ new Vue({
                     .then(function(response){/*成功*/
                         let data = response.data;
                         if(parseInt(data.code) === 200) {
-                            that.scrollBoxContent = data.data.content || '';
+                            let _newsArr = data.data || [];
+                            let _content = '';
+                            for (let i = 0; i < _newsArr.length; i ++) {
+                                let _news = _newsArr[i];
+                                if (_content == '') {
+                                    _content = _news.content;
+                                }
+                                else {
+                                    _content += '      ' + _news.content;
+                                }
+                            }
+                            that.scrollBoxContent = _content;
                         }
                     })
                     .catch(function(err){/*异常*/

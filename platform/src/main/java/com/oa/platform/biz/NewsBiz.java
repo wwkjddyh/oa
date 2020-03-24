@@ -314,8 +314,8 @@ public class NewsBiz extends BaseBiz {
      */
     public Map<String, Object> getCurrUserReceivedNewestNews() {
         try {
-            News news = newsService.getUserReceivedNewestNews(this.getUserIdOfSecurity());
-            ret = this.getSuccessVo("", news);
+            List<News> newsList = newsService.getUserReceivedNewestNews(this.getUserIdOfSecurity());
+            ret = this.getSuccessVo("", newsList);
         } catch (Exception e) {
             e.printStackTrace();
             loggerError(ThreadUtil.getCurrentFullMethodName(), e);

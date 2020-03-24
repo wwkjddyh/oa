@@ -70,5 +70,5 @@ public interface NewsService extends BaseService<News, String> {
      * @param userId 用户ID
      * @return
      */
-    News getUserReceivedNewestNews(String userId);
+    List<News> getUserReceivedNewestNews(String userId);
 }
