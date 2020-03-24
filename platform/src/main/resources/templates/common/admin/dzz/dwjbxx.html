@@ -4,7 +4,7 @@
 <div th:fragment="content">
     <el-tabs v-model="activeTabName" type="card">
         <el-tab-pane label="党委基本信息" name="first">
-            <el-button plain @click="edit('dwjbxx','','',true)" type="primary" size="mini"><i class="el-icon-plus"></i>新增</el-button>
+            <el-button plain @click="edit('dwjbxx','','',true)" type="primary" size="mini" v-if="isSuperAdmin"><i class="el-icon-plus"></i>新增</el-button>
             <!-- <el-button plain type="danger" size="mini"><i class="el-icon-close" size=""></i>删除</el-button> -->
             <el-button plain size="mini"  @click="searchForm('searchDwjbxx')" ><i class="el-icon-refresh"></i>刷新</el-button>
             <div style="margin-top: 20px">

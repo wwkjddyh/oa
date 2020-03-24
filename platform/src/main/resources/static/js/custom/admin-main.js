@@ -649,6 +649,7 @@ new Vue({
         firstPageZlxz:'dygl',
         articles: [],
         articleTypes: [],
+        isSuperAdmin: false,
         currUserReceiverBriefRecords: [],
         
         ssdzzqk:[
@@ -3479,7 +3480,17 @@ new Vue({
                     console.log(err);
                 });
         },
-
+        setDwjbxxAuth(){
+        	let that = this;
+        	let roles = that.currentUser.authorities;
+        	for (let i = 0; i < roles.length; i ++) {
+        		if(roles[i].roleId == '2d3b447b-a82f-4295-9fe0-4f64f500b48b'){
+        			that.isSuperAdmin = true;
+        			break;
+        		}
+        	}
+        	
+        },
         /**
          * 获得当前用户信息
          */
@@ -3492,8 +3503,8 @@ new Vue({
             axios.get("/api/auth/getCurrentUser")
                 .then(function(response){/*成功*/
                     let data = response.data;
-                    console.log('getCurrentUserInfo=>', data)
                     that.currentUser = data.data;
+                    that.setDwjbxxAuth();
                     let __modules = data.data['modules'] || [];
                     that.userOwnedModules = __modules;
                     let moduleLen = __modules.length;
@@ -5377,7 +5388,7 @@ new Vue({
         that.ueditors.article.addListener('blur', function(editor){
             that.formArticle.content = that.ueditors.article.getContent();
         });
-
+        
 
     },
     destroyed: function() {
