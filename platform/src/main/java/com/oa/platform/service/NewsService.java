@@ -64,4 +64,11 @@ public interface NewsService extends BaseService<News, String> {
      * @param ids 记录ID组
      */
     void batchUpdateNewsSendRecordFlagByIds(List<String> ids);
+
+    /**
+     * 获得用户最新的消息
+     * @param userId 用户ID
+     * @return
+     */
+    News getUserReceivedNewestNews(String userId);
 }

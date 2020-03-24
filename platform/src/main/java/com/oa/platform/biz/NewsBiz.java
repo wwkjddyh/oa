@@ -307,4 +307,20 @@ public class NewsBiz extends BaseBiz {
         }
         return ret;
     }
+
+    /**
+     * 获得(当前)用户获得最新的消息通告
+     * @return
+     */
+    public Map<String, Object> getCurrUserReceivedNewestNews() {
+        try {
+            News news = newsService.getUserReceivedNewestNews(this.getUserIdOfSecurity());
+            ret = this.getSuccessVo("", news);
+        } catch (Exception e) {
+            e.printStackTrace();
+            loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+            ret = this.getErrorVo();
+        }
+        return ret;
+    }
 }

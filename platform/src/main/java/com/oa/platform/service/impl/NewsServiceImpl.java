@@ -67,4 +67,13 @@ public class NewsServiceImpl extends AbstractBaseService<News, String> implement
     public void batchUpdateNewsSendRecordFlagByIds(List<String> ids) {
         newsRepository.batchUpdateNewsSendRecordFlagByIds(ids);
     }
+
+    @Override
+    public News getUserReceivedNewestNews(String userId) {
+        List<News> newsList = newsRepository.getUserReceivedNewestNews(userId);
+        if (newsList != null && !newsList.isEmpty()) {
+            return newsList.get(0);
+        }
+        return null;
+    }
 }

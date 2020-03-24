@@ -154,4 +154,13 @@ public class NewsApiController extends BaseController {
     public Map<String, Object> viewNews(@RequestParam String recordId) {
         return newsBiz.viewNews(recordId);
     }
+
+    /**
+     * 获得(当前)用户获得最新的消息通告
+     * @return
+     */
+    @GetMapping("getCurrUserReceivedNewestNews")
+    public Map<String, Object> getCurrUserReceivedNewestNews() {
+        return newsBiz.getCurrUserReceivedNewestNews();
+    }
 }

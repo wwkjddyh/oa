@@ -56,4 +56,11 @@ public interface NewsRepository extends BaseRepository<News, String> {
      * @param ids 记录ID组
      */
     void batchUpdateNewsSendRecordFlagByIds(List<String> ids);
+
+    /**
+     * 获得用户最新的消息
+     * @param userId 用户ID
+     * @return
+     */
+    List<News> getUserReceivedNewestNews(String userId);
 }
