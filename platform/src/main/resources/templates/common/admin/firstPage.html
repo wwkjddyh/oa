@@ -4,56 +4,56 @@
 <div th:fragment="content">
 	<el-row>
 		<el-col :span="12" >
-			<el-row style="height:252px;">
+			<el-row class="firstPage-quickEntry">
 			<div>
-				<el-row><span style="font-size:18px;color:#ccaf71">快速入口</span></el-row>
+				<el-row><span class="firstPage-quickEntry_title">快速入口</span></el-row>
 				<el-row>
-					<el-col :span="4" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 2 : 0" style="margin-top: 15px;">
-						<div style="cursor:pointer;height:100px;width:80px;flex-direction: column;display: -webkit-flex; align-items:center;justify-content:center;" @click="goToMenu(item)">
-							<img :src="item.imgUrl" width="60px;" height="60px" />
-							<span style="margin-top: 5px">{{item.name}}</span>
+					<el-col :span="4" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 2 : 0" class="firstPage-quickEntry_row">
+						<div class="firstPage-quickEntry-item" @click="goToMenu(item)">
+							<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
+							<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
 						</div>
 					</el-col>
-					<el-col :span="4" v-for="item in firstPage2" :key="item.url" :offset="item.index > 0 ? 2 : 0" style="margin-top: 20px;">
-						<div style="cursor:pointer;height:100px;width:80px;flex-direction: column;display: -webkit-flex; align-items:center;justify-content:center;" @click="goToMenu(item)">
-							<img :src="item.imgUrl" width="60px;" height="60px" />
-							<span style="margin-top: 5px">{{item.name}}</span>
+					<el-col :span="4" v-for="item in firstPage2" :key="item.url" :offset="item.index > 0 ? 2 : 0" class="firstPage-quickEntry_row2">
+						<div class="firstPage-quickEntry-item" @click="goToMenu(item)">
+							<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
+							<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
 						</div>
 					</el-col>
 				</el-row>
 			</div>
 			</el-row>
-			<el-row style="height:252px;margin-top: 40px;">
-				<el-row><span style="font-size:18px;color:#ccaf71">资料下载</span></el-row>
+			<el-row class="firstPage-resDownload">
+				<el-row><span class="firstPage-resDownload_title">资料下载</span></el-row>
 				<el-row>
-					<el-tabs type="border-card" style="margin-top:20px; width:91.5%;" @tab-click="firstPageDyzlxz()"  v-model="firstPageZlxz">
-					  <el-tab-pane label="党员管理" name="dygl" style="color: #ccaf71">
-						  <div v-for="item in resArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
-							  <div style="width: calc(100% - 85px); height: auto">
-								  <a style="color: #242424; cursor: pointer;" @click="handleDownloadRes(item)">{{item.resName || ''}}</a>
+					<el-tabs type="border-card" class="firstPage-resDownload-tabs" @tab-click="firstPageDyzlxz()"  v-model="firstPageZlxz">
+					  <el-tab-pane label="党员管理" name="dygl" class="khaki-color">
+						  <div v-for="item in resArray" class="firstPage-resDownload-tab">
+							  <div class="firstPage-resDownload-tab_name">
+								  <a class="firstPage-resDownload-tab_name-a" @click="handleDownloadRes(item)">{{item.resName || ''}}</a>
 							  </div>
-							  <div style="width: 85px; font-size: 13px; color: #8c939d;">
+							  <div class="firstPage-resDownload-tab_time">
 								  {{item.publishTime.substr(0, 10)}}
 							  </div>
 
 						  </div>
 					  </el-tab-pane>
-					  <el-tab-pane label="党费管理" name="dfgl" style="color: #ccaf71">
-						  <div v-for="item in resArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
-							  <div style="width: calc(100% - 85px); height: auto">
-								  <a style="color: #242424; cursor: pointer;" @click="handleDownloadRes(item)">{{item.resName || ''}}</a>
+					  <el-tab-pane label="党费管理" name="dfgl" class="khaki-color">
+						  <div v-for="item in resArray" class="firstPage-resDownload-tab">
+							  <div class="firstPage-resDownload-tab_name">
+								  <a class="firstPage-resDownload-tab_name-a" @click="handleDownloadRes(item)">{{item.resName || ''}}</a>
 							  </div>
-							  <div style="width: 85px; font-size: 13px; color: #8c939d;">
+							  <div class="firstPage-resDownload-tab_time">
 								  {{item.publishTime.substr(0, 10)}}
 							  </div>
 						  </div>
 					  </el-tab-pane>
-					  <el-tab-pane label="换届管理" name="hjgl" style="color: #ccaf71">
-						  <div v-for="item in resArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
-							  <div style="width: calc(100% - 85px); height: auto">
-								  <a style="color: #242424; cursor: pointer;" @click="handleDownloadRes(item)">{{item.resName || ''}}</a>
+					  <el-tab-pane label="换届管理" name="hjgl" class="khaki-color">
+						  <div v-for="item in resArray" class="firstPage-resDownload-tab">
+							  <div class="firstPage-resDownload-tab_name">
+								  <a class="firstPage-resDownload-tab_name-a" @click="handleDownloadRes(item)">{{item.resName || ''}}</a>
 							  </div>
-							  <div style="width: 85px; font-size: 13px; color: #8c939d;">
+							  <div class="firstPage-resDownload-tab_time">
 								  {{item.publishTime.substr(0, 10)}}
 							  </div>
 						  </div>
@@ -62,14 +62,14 @@
 				</el-row>
 			</el-row>
 		</el-col>
-		<el-col :span="12" style="height:auto;">
+		<el-col :span="12" class="firstPage-briefs">
 			<div>
-				<el-row ><div><span style="font-size:18px;color: #ccaf71">新闻简报</span></div></el-row>
-				<div v-for="item in currUserReceiverBriefRecords" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
-					<div style="width: calc(100% - 85px); height: auto">
-						<a style="color: #303133; cursor: pointer;" @click="handleBriefView(item.briefId)">{{item.briefTitle || ''}}</a>
+				<el-row ><div><span class="firstPage-briefs-items_title">新闻简报</span></div></el-row>
+				<div v-for="item in currUserReceiverBriefRecords" class="firstPage-briefs-item">
+					<div class="firstPage-briefs-item_title">
+						<a class="firstPage-briefs_item_title-a" @click="handleBriefView(item.briefId)">{{item.briefTitle || ''}}</a>
 					</div>
-					<div style="width: 85px; font-size: 13px; color: #303133;">
+					<div class="firstPage-briefs-item_time">
 						{{item.sendTime.substr(0, 10)}}
 					</div>
 				</div>
@@ -77,14 +77,9 @@
 		</el-col>
 	</el-row>
 	<el-dialog :title="(currBrief.title || '')" :visible.sync="dialogShow.viewBrief" lock-scroll="true" width="500"
-               center="true" style="border-radius: 5px;">
-        <div style="width: 100%; text-align: center" v-html="(currBrief.content || '')">
+               center="true" class="firstPage-briefs-brief_dialog">
+        <div class="firstPage-briefs-brief_dialog-content" v-html="(currBrief.content || '')">
         </div>
     </el-dialog>
 </div>
-<style>
-.hover-blue{
-	hover{color:red;}
-}
-</style>
 </html>
