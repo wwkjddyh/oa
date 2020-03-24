@@ -103,7 +103,7 @@
                 </el-form>
             </el-tab-pane>
         </el-tabs>
-        <el-dialog title="选择接收人" :visible.sync="dialogShow.briefReceivers" lock-scroll="true" width="800">
+        <el-dialog title="选择接收人" :visible.sync="dialogShow.briefReceivers" lock-scroll="true" width="800" @close="briefReceiveUserIds=[];formArticle.receiverIds=[];formArticle.receiveUsers=[];">
             <el-card shadow="never" style="width: 100%;" type="card">
                 <el-checkbox size="small" :indeterminate="isIndeterminate.article" v-model="checkBoxAll.article" @change="handleArticleReceiversCheckAllChange">全选</el-checkbox>
                 <el-checkbox-group v-model="briefReceiveUserIds" @change="handleArticleReceiversCheckedChange">
@@ -123,7 +123,7 @@
                      show-checkbox @check-change="handleCheckChangeOfReceiverIds" @node-click="handleNodeClickOfReceiverIds">
             </el-tree>
             <div style="margin-top: 20px">
-                <el-button @click="dialogShow.receiverIds = !dialogShow.receiverIds;" plain size="mini" icon="el-icon-close">取消</el-button>
+                <el-button @click="dialogShow.receiverIds = !dialogShow.receiverIds;briefReceiveUserIds=[];formArticle.receiverIds=[];formArticle.receiveUsers=[];" plain size="mini" icon="el-icon-close">取消</el-button>
                 <el-button @click="submitReceiverUserOfReceiverIds" type="primary" plain size="mini" icon="el-icon-check">保存</el-button>
             </div>
         </el-dialog>

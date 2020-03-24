@@ -157,13 +157,13 @@
         </el-card>
     </el-dialog>
 
-    <el-dialog title="选择接收人" :visible.sync="dialogShow.newsReceivers" lock-scroll="true" width="800">
+    <el-dialog title="选择接收人" :visible.sync="dialogShow.newsReceivers" lock-scroll="true" width="800" @close="newsReceiveUserIds=[];formNews.receiveUsers=[];formNews.receiveUserIds=[];">
         <el-card shadow="never" style="width: 100%;" type="card">
             <el-checkbox-group v-model="newsReceiveUserIds">
                 <el-checkbox v-for="(user, userId) in allSysUsersMap" :label="userId" :key="userId">{{user.userNickname}}</el-checkbox>
             </el-checkbox-group>
             <div style="width: 100%; margin-top: 20px; display: flex;display: -webkit-flex;">
-                <el-button @click="newsReceiveUserIds = [];dialogShow.newsReceivers = false;" type="info" round size="small" icon="el-icon-close">取消</el-button>
+                <el-button @click="newsReceiveUserIds = [];formNews.receiveUsers=[];formNews.receiveUserIds=[];dialogShow.newsReceivers = false;" type="info" round size="small" icon="el-icon-close">取消</el-button>
                 <el-button @click="handleNewsAddReceivers" type="primary" round size="small" icon="el-icon-check">确定</el-button>
             </div>
         </el-card>
