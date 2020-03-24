@@ -163,4 +163,14 @@ public class ArticleApiController extends BaseController {
                 status, Constants.INT_NORMAL, sendTime, viewTime, key, pageNum, pageSize);
     }
 
+
+    /**
+     * 根据ID获得文档信息
+     * @param id 文档唯一标识
+     * @return
+     */
+    @GetMapping("get")
+    public Map<String, Object> getArticleById(@RequestParam String id) {
+        return articleBiz.getArticleById(id);
+    }
 }

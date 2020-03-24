@@ -307,4 +307,35 @@ public class ArticleBiz extends BaseBiz {
         }
         return ret;
     }
+
+
+    /**
+     * 根据ID获得文档信息
+     * @param recordId 文档唯一标识
+     * @return
+     */
+    public Map<String, Object> getArticleById(String recordId) {
+        recordId = StringUtil.trim(recordId);
+        if ("".equals(recordId)) {
+            ret = this.getParamErrorVo();
+        }
+        else {
+            try {
+                Article article = new Article();
+                article.setRecordId(recordId);
+                List<Article> articles = articleService.find(article);
+                if (articles != null || !articles.isEmpty()) {
+                    ret = this.getSuccessVo("", articles.get(0));
+                }
+                else {
+                    ret = this.getParamErrorVo();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+                ret = this.getErrorVo();
+            }
+        }
+        return ret;
+    }
 }
