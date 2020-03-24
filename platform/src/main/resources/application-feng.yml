@@ -1,0 +1,82 @@
+server:
+  port: 8080
+  tomcat:
+    uri-encoding: UTF-8
+    max-http-post-size: 20MB
+    max-swallow-size: 2MB
+    max-threads: 1000
+  servlet:
+    session:
+      timeout: 300m
+      cookie:
+        max-age: 18000
+        http-only: false
+        path: /
+      tracking-modes: cookie
+
+spring:
+  banner:
+    charset: UTF-8
+  resources:
+    static-locations: file:/data/platform/uploads/,classpath:/static/
+  application:
+    name: oa-platform
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    cache: false
+    servlet:
+      content-type: text/html
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 1000MB
+  mail:
+    host: smtp.qq.com
+    username: 445121408
+    default-encoding: utf-8
+    password: XXXXXX
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  datasource:
+    name: platform_source
+    type: com.zaxxer.hikari.HikariDataSource
+    #    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:mysql://localhost:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    username: oaplat
+    password: oaplat
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 60
+      auto-commit: true
+      idle-timeout: 60000
+      pool-name: PlatformHikariCP
+      max-lifetime: 60000
+      connection-timeout: 60000
+      connection-test-query: SELECT 1
+      validation-timeout: 3000
+      login-timeout: 5
+      read-only: false
+  cache:
+    cache-names: userCache
+    jcache:
+      config: classpath:ehcache.xml
+  output:
+    ansi:
+      enabled: always # 彩色日志设置
+
+upload:
+  save-dir: /data/platform/uploads/
+
+platform:
+
+
+
