@@ -3536,7 +3536,7 @@ new Vue({
                                 _content = _news.content;
                             }
                             else {
-                                _content += '&nbsp;' + _news.content;
+                                _content += '      ' + _news.content;
                             }
                         }
                         that.scrollBoxContent = _content;
