@@ -136,7 +136,11 @@ new Vue({
                 case 'nddyxxcj':
                 	that.setDyxxYear();
                 	//that.getUpperOrg();
-                	that.getUserUpperOrgList();
+                	if(that.isSuperAdmin){
+                		that.getAdminUpperOrg();
+                	}else{
+                		that.getUserUpperOrgList();
+                	}
                 	that.getNddyxxOptions();
                 	that.loadNddyxxcj();
                 	break;
@@ -729,6 +733,7 @@ new Vue({
         loading:{},
         nddyxxcjLoading:false,
         dwjbxxLoading: false,
+        currentUserOrgId:'',
         dyxxyear:{
         	year:''
         },
@@ -1502,7 +1507,7 @@ new Vue({
                                         default: break;
                                     }
                                     //提交成功之后
-                                    if(formName != 'formdwjbxx'){
+                                    if(formName != 'formdwjbxx' && formName != 'formnddyxxcj'){
                                         that.resetForm(formName);
                                     }
                                 } else {
@@ -2283,7 +2288,19 @@ new Vue({
                 console.warn(err);
             });
         },
-
+        getOrgIdByUserId(){
+        	let that = this;
+        	axios.get("/api/org/getOrgIdByUserId")
+            .then(function(response){/*成功*/
+                let data = response.data;
+                if(parseInt(response.data.code) == 200 ){
+                    that.currentUserOrgId = response.data.result;
+                }
+            })
+            .catch(function(err){/*异常*/
+                console.log(err);
+            });
+        },
         /**
          * 党费缴纳提交
          */
@@ -4139,7 +4156,14 @@ new Vue({
                 }})
                 .then(function(response){/*成功*/
                     if(parseInt(response.status) == 200 ) {
-                        that.sysUsers = response.data.data.list;
+                    	let result = response.data.data.list;
+                    	for(let i = 0; i < result.length;i++){
+                    		if(result[i].orgId != null && result[i].orgId != ""){
+                    			result[i].orgId = result[i].orgId.split(',');
+                    			
+                    		}
+                    	}
+                        that.sysUsers = result;
                         that.pager.sysUser.totalCount = response.data.data.total;
                     }
                 })
@@ -4246,7 +4270,9 @@ new Vue({
         	let that = this;
         	let treeTable =[];
         	that.dwjbxxLoading = true;
-        	axios.get("/api/org/getOrgList",null).then(function(response){
+        	axios.get("/api/org/getOrgList",{params:{
+        		isSuperAdmin:that.isSuperAdmin
+            }}).then(function(response){
         		if(parseInt(response.data.code) == 200 ){
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.dwjbxxTreeLevel.level = 0;
@@ -4273,7 +4299,8 @@ new Vue({
         	}
         	axios.get("/api/org/getOrgUserList",{params:{
                 userName: searchName,
-                year: that.dyxxyear.year
+                year: that.dyxxyear.year,
+                isSuperAdmin:that.isSuperAdmin
             }}).then(function(response){
         		if(parseInt(response.data.code) == 200 ){
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
@@ -4304,6 +4331,21 @@ new Vue({
         			}
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.upperOrg = that.getTreeData(response.data.result, parentArr);
+        			that.orignUpperOrg = response.data.result;
+        		}
+        	});
+        },
+        getAdminUpperOrg(){
+        	let that = this;
+        	let treeTable =[];
+        	axios.get("/api/org/getUpperOrgList",null).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			for(let i =0 ; i <response.data.result.length;i++){
+        				response.data.result[i].value=response.data.result[i].orgId;
+        				response.data.result[i].label=response.data.result[i].orgName;
+        			}
+        			let parentArr = response.data.result.filter(l => l.upperOrg === null);
+        			that.userUpperOrg = that.getTreeData(response.data.result, parentArr);
         			that.orignUpperOrg = response.data.result;
         		}
         	});
@@ -4454,19 +4496,29 @@ new Vue({
           getNddyxxTreeData(list, dataArr,that){
         	  
         	  dataArr.map((pNode, i) => {
-              	if(pNode.userId == that.currentUser.userId){
+        		 if(that.isSuperAdmin){
+        			 pNode.isOperate = 1 ;
+        		 }else if(that.currentUserOrgId.indexOf(pNode.actOrg) >= 0){
+        			 pNode.isOperate = 1 ;
+        		 }
+              	/*if(pNode.userId == that.currentUser.userId){
               		pNode.isOperate = 1 ;
-              	}
+              	}*/
                 let childObj = []
                 list.map((cNode, j) => {
                   if (pNode.orgId === cNode.upperOrg) {
-    
+
                   	if(pNode.isOperate == 1){
                   		cNode.isOperate = 1;
                   	}
-                  	if(cNode.userId == that.currentUser.userId){
-                  		cNode.isOperate = 1;
+                  	if(that.isSuperAdmin){
+                  		cNode.isOperate = 1 ;
+                  	}else if(that.currentUserOrgId.indexOf(cNode.actOrg) >= 0){
+                  		cNode.isOperate = 1 ;
                   	}
+                  	/*if(cNode.userId == that.currentUser.userId){
+                  		cNode.isOperate = 1;
+                  	}*/
                     childObj.push(cNode)
                   }
                 })
@@ -4479,6 +4531,26 @@ new Vue({
                 }
               })
               return dataArr
+          },
+          resetPwd(row){
+          	let that = this;
+          	axios.get("/api/user/resetPwd",{params:{
+                  userId:row.userId
+              }})
+              .then(function(response){/*成功*/
+              	if(parseInt(response.data.code) === 200){
+      				
+                      that.$message({
+                          message: '重置成功',
+                          type: 'success'
+                      });
+                  }else {
+                  	that.$message.error("重置失败");
+                  }
+              })
+              .catch(function(err){/*异常*/
+              	that.$message.error("重置失败");
+              });
           },
         /**
          * 处理没有children结构的数据
@@ -5747,8 +5819,9 @@ new Vue({
         this.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
         //that.loadArticles('',1, that.pager.article.pageSize);
         this.currAction = 'append';
-        this.def_menu_id = 'articles';
+        //this.def_menu_id = 'articles';
         this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 15);
+        this.getOrgIdByUserId();
     },
     beforeMount: function() {
         // this.getCurrentUserInfo();
