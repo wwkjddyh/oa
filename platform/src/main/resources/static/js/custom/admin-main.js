@@ -3846,7 +3846,26 @@ new Vue({
             //         console.log(err);
             //     });
         },
-
+        getMenuData(list, dataArr) {
+        	//TODO
+            dataArr.map((pNode, i) => {
+              let childObj = []
+              list.map((cNode, j) => {
+                if (pNode.moduleId === cNode.parentId) {
+                      childObj.push(cNode)
+                }
+              })
+              pNode.subs = childObj
+              if(pNode.subs.length ==0){
+            	  pNode.subs = null;
+              }
+              if (childObj.length > 0) {
+                this.getMenuData(list, childObj)
+              }
+            })
+            return dataArr
+          },
+          
         /**
          * 获得当前用户信息
          */
@@ -3862,64 +3881,66 @@ new Vue({
                     that.currentUser = data.data;
                     that.setDwjbxxAuth();
                     let __modules = data.data['modules'] || [];
+                    let parentArr = __modules.filter(l => (l.parentId === null || l.parentId === ''));
+                    that.userOwnedMenus = that.getMenuData(__modules,parentArr);
                     that.userOwnedModules = __modules;
-                    let moduleLen = __modules.length;
-                    for (let i = 0; i < moduleLen; i ++) {
-                        let __module = __modules[i];
-                        let __moduleId = __module.moduleId;
-                        if (__module.isMenu == 1) {
-                            let __moduleUrl = __module.moduleUrl || '';
-                            if (__module.parentId == '' || __module.parentId == null) {
-                                let __subMenus = [];
-                                if (__moduleUrl === '') { // 有子菜单
-                                    for (let j = 0; j < moduleLen; j++) {
-                                        let __module2 = __modules[j];
-                                        if (__module2.isMenu == 1 && __module2.parentId == __moduleId) {
-                                            __subMenus.push(__module2);
-                                        }
-                                    }
-                                    if (__subMenus.length > 0) {
-                                        that.userOwnedMenus.push({
-                                            moduleId: __moduleId,
-                                            parentId: __module.parentId,
-                                            moduleName: __module.moduleName,
-                                            moduleDesc: __module.moduleDesc,
-                                            moduleUrl: __module.moduleUrl,
-                                            isLeaf: __module.isLeaf,
-                                            fullModuleName: __module.fullModuleName,
-                                            moduleCode: __module.moduleCode,
-                                            order: __module.order,
-                                            moduleIcon: __module.moduleIcon,
-                                            moduleStyle: __module.moduleStyle,
-                                            moduleLogo: __module.moduleLogo,
-                                            isMenu: __module.isMenu,
-                                            subs: __subMenus,
-                                        });
-                                    }
-                                }
-                                else {  // 没有子菜单
-                                    that.userOwnedMenus.push({
-                                        moduleId: __moduleId,
-                                        parentId: __module.parentId,
-                                        moduleName: __module.moduleName,
-                                        moduleDesc: __module.moduleDesc,
-                                        moduleUrl: __module.moduleUrl,
-                                        isLeaf: __module.isLeaf,
-                                        fullModuleName: __module.fullModuleName,
-                                        moduleCode: __module.moduleCode,
-                                        order: __module.order,
-                                        moduleIcon: __module.moduleIcon,
-                                        moduleStyle: __module.moduleStyle,
-                                        moduleLogo: __module.moduleLogo,
-                                        isMenu: __module.isMenu,
-                                        subs: __subMenus,
-                                    });
-                                }
-
-
-                            }
-                        }
-                    }
+//                    let moduleLen = __modules.length;
+//                    for (let i = 0; i < moduleLen; i ++) {
+//                        let __module = __modules[i];
+//                        let __moduleId = __module.moduleId;
+//                        if (__module.isMenu == 1) {
+//                            let __moduleUrl = __module.moduleUrl || '';
+//                            if (__module.parentId == '' || __module.parentId == null) {
+//                                let __subMenus = [];
+//                                if (__moduleUrl === '') { // 有子菜单
+//                                    for (let j = 0; j < moduleLen; j++) {
+//                                        let __module2 = __modules[j];
+//                                        if (__module2.isMenu == 1 && __module2.parentId == __moduleId) {
+//                                            __subMenus.push(__module2);
+//                                        }
+//                                    }
+//                                    if (__subMenus.length > 0) {
+//                                        that.userOwnedMenus.push({
+//                                            moduleId: __moduleId,
+//                                            parentId: __module.parentId,
+//                                            moduleName: __module.moduleName,
+//                                            moduleDesc: __module.moduleDesc,
+//                                            moduleUrl: __module.moduleUrl,
+//                                            isLeaf: __module.isLeaf,
+//                                            fullModuleName: __module.fullModuleName,
+//                                            moduleCode: __module.moduleCode,
+//                                            order: __module.order,
+//                                            moduleIcon: __module.moduleIcon,
+//                                            moduleStyle: __module.moduleStyle,
+//                                            moduleLogo: __module.moduleLogo,
+//                                            isMenu: __module.isMenu,
+//                                            subs: __subMenus,
+//                                        });
+//                                    }
+//                                }
+//                                else {  // 没有子菜单
+//                                    that.userOwnedMenus.push({
+//                                        moduleId: __moduleId,
+//                                        parentId: __module.parentId,
+//                                        moduleName: __module.moduleName,
+//                                        moduleDesc: __module.moduleDesc,
+//                                        moduleUrl: __module.moduleUrl,
+//                                        isLeaf: __module.isLeaf,
+//                                        fullModuleName: __module.fullModuleName,
+//                                        moduleCode: __module.moduleCode,
+//                                        order: __module.order,
+//                                        moduleIcon: __module.moduleIcon,
+//                                        moduleStyle: __module.moduleStyle,
+//                                        moduleLogo: __module.moduleLogo,
+//                                        isMenu: __module.isMenu,
+//                                        subs: __subMenus,
+//                                    });
+//                                }
+//
+//
+//                            }
+//                        }
+//                    }
                     console.log('userOwnedMenus', that.userOwnedMenus);
 
                 })

@@ -12,119 +12,36 @@
              text-color="#f78989"
              active-text-color="rgb(222, 39, 14)"
              style="font-size: 13px; font-weight: bolder;">
-        <el-menu-item :index="__menu.moduleCode" v-for="__menu in userOwnedMenus" :key="__menu.moduleId" v-if="__menu.subs.length == 0"
+        <el-menu-item :index="__menu.moduleCode" v-for="__menu in userOwnedMenus" :key="__menu.moduleId" v-if="__menu.subs == null"
                       style="font-size: 13px; font-weight: bolder;">
             <i :class="__menu.moduleIcon" style="color: #f78989"></i>
             <span slot="title" style="font-size: 13px; font-weight: bolder;">{{__menu.moduleName}}</span>
         </el-menu-item>
-        <el-submenu :index="__menu.moduleCode" v-for="__menu in userOwnedMenus" :key="__menu.moduleId" v-if="__menu.subs.length > 0"
+        <el-submenu :index="__menu.moduleCode" v-for="__menu in userOwnedMenus" :key="__menu.moduleId" v-if="__menu.subs != null"
                     style="font-size: 13px; font-weight: bolder;">
             <template slot="title">
                 <i :class="__menu.moduleIcon" style="color: #f78989"></i>
                 <span slot="title" style="font-size: 13px; font-weight: bolder;">{{__menu.moduleName}}</span>
             </template>
-            <el-menu-item v-for="__subMenu in __menu.subs" :index="__subMenu.moduleCode" :key="__subMenu.moduleId"
-                          style="font-size: 12px; font-weight: bolder;">{{__subMenu.moduleName}}</el-menu-item>
-        </el-submenu>
-        <!--
-        <div v-for="__menu in userOwnedMenus">
-            <el-menu-item :index="__menu.moduleCode" v-if="__menu.subs.length == 0">
-                <i v-bind:class="__menu.moduleIcon"></i>
-                <span slot="title">{{__menu.moduleName}}</span>
-            </el-menu-item>
-            <el-submenu :index="__menu.moduleCode" v-if="__menu.subs.length > 0">
-                <template slot="title">
-                    <i v-bind:class="__menu.moduleIcon"></i>
-                    <span slot="title">{{__menu.moduleName}}</span>
-                </template>
-                <el-menu-item v-for="__subMenu in __menu.subs" :index="__subMenu.moduleCode">{{__subMenu.moduleName}}</el-menu-item>
-            </el-submenu>
-        </div>
-        -->
-        <!--
-        <el-menu-item index="firstPage" >
-        		<i class="el-icon-arrow-up"></i>
-                <span slot="title">首页</span>
-        </el-menu-item>
-        <el-menu-item index="announce" >
-        		<i class="el-icon-news"></i>
-                <span slot="title">通知通告</span>
-        </el-menu-item>
-        <el-menu-item index="mail" >
-        		<i class="el-icon-message"></i>
-                <span slot="title">邮箱</span>
-        </el-menu-item>
-        <el-menu-item index="faceMeet" >
-        		<i class="el-icon-mobile-phone
-"></i>
-                <span slot="title">视频会议</span>
-        </el-menu-item>
-        <el-menu-item index="bigData" >
-        		<i class="el-icon-view
-"></i>
-                <span slot="title">大数据</span>
-        </el-menu-item>
-        <el-submenu index="dzz">
-            <template slot="title">
-                <i class="el-icon-document"></i>
-                <span slot="title">党组织</span>
-            </template>
-            <el-menu-item index="dzzfgzd">相关法规制度</el-menu-item>
-            <el-menu-item index="dwjbxx">党委基本信息</el-menu-item>
-            <el-menu-item index="ssdzzqk">所属党组织情况</el-menu-item>
-        </el-submenu>
-        <el-submenu index="dygl">
-            <template slot="title">
-                <i class="el-icon-document"></i>
-                <span slot="title">党员管理</span>
-            </template>
-            <el-menu-item index="dyfgzd">相关法规制度</el-menu-item>
-            <el-menu-item index="nddyxxcj">年度党员信息采集</el-menu-item>
-            <el-menu-item index="fzdy">发展党员</el-menu-item>
-            <el-menu-item index="zlxz">资料下载</el-menu-item>
-        </el-submenu>
-        <el-submenu index="dfgl">
-            <template slot="title">
-                <i class="el-icon-document"></i>
-                <span slot="title">党费管理</span>
-            </template>
-            <el-menu-item index="dffgzd">相关法规制度</el-menu-item>
-            <el-menu-item index="nddfszqkgs">年度党费收支情况公示</el-menu-item>
-            <el-menu-item index="nddfszjcqk">年度党费收支结存情况</el-menu-item>
-            <el-menu-item index="ndsjdfqk">年度上缴党费情况</el-menu-item>
-            <el-menu-item index="zlxz">资料下载</el-menu-item>
-        </el-submenu>
-        <el-submenu index="hjgl">
-            <template slot="title">
-                <i class="el-icon-document"></i>
-                <span slot="title">换届管理</span>
-            </template>
-            <el-menu-item index="hjfgzd">相关法规制度</el-menu-item>
-            <el-menu-item index="ndhjgzjh">年度换届工作计划</el-menu-item>
-            <el-menu-item index="hjgztz">换届工作台账</el-menu-item>
-            <el-menu-item index="zlxz">资料下载</el-menu-item>
-        </el-submenu>
-        <el-submenu index="user">
-            <template slot="title">
-                <i class="el-icon-s-custom
-"></i>
-                <span slot="title">用户管理</span>
-            </template>
-            <el-menu-item index="modules">权限管理</el-menu-item>
-            <el-menu-item index="roles">角色管理</el-menu-item>
-            <el-menu-item index="sysUsers">系统用户</el-menu-item>
-            <el-menu-item index="memberUsers">会员/用户</el-menu-item>
+            <el-menu-item v-for="__subMenu in __menu.subs" :index="__subMenu.moduleCode" :key="__subMenu.moduleId" v-if="__subMenu.subs == null"
+                          style="font-size: 12px; font-weight: bolder;">
+                          <i :class="__subMenu.moduleIcon" style="color: rgb(136, 120, 86)"></i>
+                          <span slot="title" style="font-size: 13px; font-weight: bolder;">{{__subMenu.moduleName}}</span></el-menu-item>
+             <el-submenu :index="__subMenu.moduleCode" v-for="__subMenu in __menu.subs" :key="__subMenu.moduleId" v-if="__subMenu.subs != null"
+                    style="font-size: 13px; font-weight: bolder;">
+                    <template slot="title">
+                    <i :class="__subMenu.moduleIcon" style="color: rgb(136, 120, 86)"></i>
+                	<span slot="title" style="font-size: 13px; font-weight: bolder;">{{__subMenu.moduleName}}</span>
+                   	</template>
+                   <el-menu-item v-for="__subMenu3 in __subMenu.subs" :index="__subMenu3.moduleCode" :key="__subMenu3.moduleId" 
+                    >
+                    <template slot="title">
+                    <i :class="__subMenu3.moduleIcon" style="color: rgb(136, 120, 86)"></i>
+                    <span slot="title" style="font-size: 13px; font-weight: bolder;">{{__subMenu3.moduleName}}</span></el-menu-item>
+             		</template>
+             </el-submenu>             
         </el-submenu>
         
-        <el-submenu index="category">
-            <template slot="title">
-                <i class="el-icon-menu"></i>
-                <span slot="title">分类信息</span>
-            </template>
-            <el-menu-item index="categories">分类管理</el-menu-item>
-            <el-menu-item index="categoryTypes">分类类别管理</el-menu-item>
-        </el-submenu>
-        -->
         
     </el-menu>
 </div>
