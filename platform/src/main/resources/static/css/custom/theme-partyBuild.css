@@ -74,6 +74,25 @@
 .el-radio-button__orig-radio{opacity:0;outline:0;position:absolute;z-index:-1}
 .el-radio-button__orig-radio:checked+.el-radio-button__inner{color:#FFF;background-color:#ccaf71;border-color:#ccaf71;-webkit-box-shadow:-1px 0 0 0 #ccaf71;box-shadow:-1px 0 0 0 #ccaf71}
 
+.el-menu-item {
+    background-color: #f5dab1 !important;
+}
+
+.el-menu-item:hover{
+    outline: 0 !important;
+    color: rgb(222, 39, 14) !important;
+}
+.el-menu-item.is-active {
+    color: #fff3f3 !important;
+    background: rgb(222, 39, 14) !important;
+}
+
+.el-submenu__title:focus, .el-submenu__title:hover{
+    outline: 0 !important;
+    color: #ccaf71 !important;
+    background: none !important;
+}
+
 /*首页*/
 .firstPage {
 
@@ -173,6 +192,10 @@
 /* 首页-简报 */
 .firstPage-briefs {
     height:auto;
+}
+
+.firstPage-briefs-items_row {
+    margin-top: 20px;
 }
 
 .firstPage-briefs-items_title {

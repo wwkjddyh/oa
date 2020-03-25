@@ -886,6 +886,7 @@ new Vue({
         articleTypes: [],
         isSuperAdmin: false,
         currUserReceiverBriefRecords: [],
+        currUserReceiverNewsRecords: [],
         
         ssdzzqk:[
         	{
@@ -3784,6 +3785,7 @@ new Vue({
                     let data = response.data;
                     if(parseInt(data.code) === 200) {
                         let _newsArr = data.data || [];
+                        that.currUserReceiverNewsRecords = _newsArr;
                         let _content = '';
                         for (let i = 0; i < _newsArr.length; i ++) {
                             let _news = _newsArr[i];
@@ -3807,6 +3809,7 @@ new Vue({
                         let data = response.data;
                         if(parseInt(data.code) === 200) {
                             let _newsArr = data.data || [];
+                            that.currUserReceiverNewsRecords = _newsArr;
                             let _content = '';
                             for (let i = 0; i < _newsArr.length; i ++) {
                                 let _news = _newsArr[i];
