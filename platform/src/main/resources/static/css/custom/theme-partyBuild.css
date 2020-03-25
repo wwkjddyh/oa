@@ -87,7 +87,8 @@
 
 .firstPage-quickEntry_title {
     font-size:18px;
-    color:#ccaf71;
+    color: #ff7575;
+    font-weight: bold;
 }
 
 .firstPage-quickEntry_row {
@@ -125,7 +126,8 @@
 
 .firstPage-resDownload_title {
     font-size:18px;
-    color:#ccaf71;
+    font-weight: bold;
+    color: #ff7575;
 }
 
 .firstPage-resDownload-tabs {
@@ -175,7 +177,8 @@
 
 .firstPage-briefs-items_title {
     font-size: 18px;
-    color: #ccaf71;
+    font-weight: bold;
+    color: #ff7575;
 }
 .firstPage-briefs-item {
     margin-top: 10px;
