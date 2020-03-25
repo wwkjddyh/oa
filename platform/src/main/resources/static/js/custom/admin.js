@@ -3,6 +3,7 @@ new Vue({
     data: {
         formLogon: {},
         rules: {},
+        fullscreenLoading:false
     },
     methods: {
         resetForm() {
@@ -45,6 +46,7 @@ new Vue({
                         
                         if(parseInt(data.code) === 200) {
                             if (data.data.code === _verifyCode.toUpperCase()) {
+                            	that.fullscreenLoading = true;
                                 document.getElementById("logonForm").submit()
                             }
                             else {

@@ -3114,7 +3114,7 @@ new Vue({
                                 let orgId = row.orgId;
                                 let params = new URLSearchParams();
                                 params.append("orgId",orgId);
-                                that.fullscreenLoading = true;
+                                that.dwjbxxLoading = true;
                                 axios.post("/api/org/delOrg",params)
                                     .then(function(response){
                                         if(parseInt(response.data.code) === 200){
@@ -3126,9 +3126,9 @@ new Vue({
                                         }else{
                                         	that.$message.error("删除失败");
                                         }
-                                        that.fullscreenLoading = false;
+                                        that.dwjbxxLoading = false;
                                     }).catch(function(err){
-                            			that.fullscreenLoading = false;
+                            			that.dwjbxxLoading = false;
                             			that.$message.error("出现异常，请联系管理员");
                                     });
                                 break;
@@ -3136,7 +3136,7 @@ new Vue({
                             	let userId = row.userId;
                             	let params2 = new URLSearchParams();
                             	params2.append("userId",userId);
-                            	that.fullscreenLoading = true;
+                            	that.nddyxxcjLoading = true;
                             	
                                 axios.post("/api/org/delOrgUser",params2)
                                     .then(function(response){
@@ -3152,9 +3152,9 @@ new Vue({
                                         else{
                                         	that.$message.error("删除失败");
                                         }
-                                        that.fullscreenLoading = false;
+                                        that.nddyxxcjLoading = false;
                                     }).catch(function(err){
-                                    	that.fullscreenLoading = false;
+                                    	that.nddyxxcjLoading = false;
                                     	that.$message.error("出现异常，请联系管理员");
                                 });
                                 break;

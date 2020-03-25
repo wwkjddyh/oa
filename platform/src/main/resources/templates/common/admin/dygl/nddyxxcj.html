@@ -81,15 +81,15 @@
                             <div style="display: flex;width:100%" align="right">
                             	<el-button size="mini"  v-if="scope.row.isOperate == 1" @click="viewDetail(scope.$index,scope.row)">查看</el-button>
                                 <el-button size="mini" v-if="scope.row.isOperate == 1" @click="edit('nddyxxcj',scope.$index,scope.row,false)" >修改</el-button>
-                                <el-button size="mini" v-if="scope.row.isOperate == 1" type="danger" @click="dwjbxxDel(scope.row,'nddyxxcj')" v-loading.fullscreen.lock="fullscreenLoading">删除</el-button>
+                                <el-button size="mini" v-if="scope.row.isOperate == 1" type="danger" @click="dwjbxxDel(scope.row,'nddyxxcj')" >删除</el-button>
                             </div>
                         </template>
                     </el-table-column>
                 </el-table>
                 
             </div>
-            <el-dialog :visible.sync="dialogShow.nddyxxcj" foot-center lock-scroll="true" width="1000px" title="党员信息">
-            	 <el-card shadow="always" style="width: 100%;" type="card">
+            <el-dialog :visible.sync="dialogShow.nddyxxcj" foot-center lock-scroll="true" width="1000px" title="党员信息"  v-loading ="fullscreenLoading">
+            	 <el-card shadow="always" style="width: 100%;" type="card" >
                     <el-form ref="formnddyxxcj"  :rules="rules" :model="formnddyxxcj" style="width: 100%;" label-position="top">
                     <el-divider content-position="left">党员信息</el-divider>
                     
@@ -342,7 +342,7 @@
                  </el-card>
                  <span slot="footer" class="dialog-footer" align="center">
                  <div align="center">
-				    <el-button @click="submitForm('formnddyxxcj')"  type="primary" plain align="center" v-loading.fullscreen="fullscreenLoading">确定</el-button>
+				    <el-button @click="submitForm('formnddyxxcj')"  type="primary" plain align="center" >确定</el-button>
                     <el-button @click="dialogShow.nddyxxcj = false" type="cancel" plain align="center">取消</el-button>
 				 </div> 
 				 </span>

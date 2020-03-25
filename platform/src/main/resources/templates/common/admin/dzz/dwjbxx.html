@@ -57,14 +57,14 @@
                             <div style="display: flex;width:100%" align="right">
                             	<el-button size="mini" v-if="scope.row.level < 2" @click="edit('dwjbxx',scope.$index,scope.row,null)" >添加下级组织</el-button>
                                 <el-button size="mini" @click="edit('dwjbxx',scope.$index,scope.row,false)" >修改</el-button>
-                                <el-button size="mini" type="danger" @click="dwjbxxDel(scope.row,'dwjbxx')" v-loading.fullscreen.lock="fullscreenLoading">删除</el-button>
+                                <el-button size="mini" type="danger" @click="dwjbxxDel(scope.row,'dwjbxx')" >删除</el-button>
                             </div>
                         </template>
                     </el-table-column>
                 </el-table>
                 
             </div>
-            <el-dialog :visible.sync="dialogShow.dwjbxx" foot-center lock-scroll="true" width="1000px" :title.sync="dwjbxxDialog.title">
+            <el-dialog :visible.sync="dialogShow.dwjbxx" foot-center lock-scroll="true" width="1000px" :title.sync="dwjbxxDialog.title" v-loading ="fullscreenLoading">
             	 <el-card shadow="always" style="width: 100%;" type="card">
                     <el-form ref="formdwjbxx"  :rules="rules" :model="formdwjbxx" style="width: 100%;" label-position="top">
                     <el-divider content-position="left">基本信息</el-divider>
@@ -439,7 +439,7 @@
                  
                  <span slot="footer" class="dialog-footer" align="center">
                  <div align="center">
-				    <el-button @click="submitForm('formdwjbxx')"  type="primary" plain align="center" v-loading.fullscreen.lock="fullscreenLoading">确定</el-button>
+				    <el-button @click="submitForm('formdwjbxx')"  type="primary" plain align="center" >确定</el-button>
                     <el-button @click="dialogShow.dwjbxx = false" type="cancel" plain align="center">取消</el-button>
 				 </div> 
 				 </span>
