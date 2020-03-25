@@ -26,11 +26,13 @@
 
         <el-container>
             <el-main stype="width: 100%;">
+                <!--
                 <div class="scroll-box">
                     <p class="animate">
                         {{scrollBoxContent}}
                     </p>
                 </div>
+                -->
                 <div style="width: 100%;display: flex;display: -webkit-flex; align-items:center;">
                     <!--
                     <el-carousel height="60px" direction="horizontal" :interval="3000" :autoplay="true"
@@ -44,7 +46,7 @@
                         <el-tabs v-model="editableTabsOptions.editableTabsValue" type="card"
                                  @tab-remove="handleRemoveTab"
                                  @tab-click="handleClickTab"
-                                 style="font-size: 12px; font-weight: bolder;margin-top: 10px" size="mini"
+                                 style="font-size: 12px; font-weight: bolder;" size="mini"
                         >
                             <el-tab-pane
                                     v-for="(item, index) in editableTabsOptions.editableTabs"
@@ -57,8 +59,8 @@
                             </el-tab-pane>
                         </el-tabs>
                     </div>
-                    <div style="width: 15px;border-bottom: 1px solid #ebeef5;margin-bottom: -3px !important;">
-                        <el-dropdown style="font-size: 20px; cursor: pointer; "
+                    <div style="width: 15px;border-bottom: 1px solid #ebeef5;">
+                        <el-dropdown style="cursor: pointer;"
                                      @command="handleTabsDropdown" size="mini">
                             <i class="el-icon-circle-close" style="font-size: 18px"></i>
                             <el-dropdown-menu slot="dropdown">
