@@ -37,9 +37,9 @@ public class OrgApiController extends BaseController{
 	 * @return
 	 */
 	@GetMapping("getOrgList")
-	public ResultVo getOrgList() {
+	public ResultVo getOrgList(boolean isSuperAdmin) {
 		User user = getUserOfSecurity();
-		List<Organization> result = orgBiz.getOrgList(user.getUserId());
+		List<Organization> result = orgBiz.getOrgList(user.getUserId(),isSuperAdmin);
 		return getSuccessResultVo(result);
 	}
 	/**
@@ -49,9 +49,10 @@ public class OrgApiController extends BaseController{
 	@GetMapping("getOrgUserList")
 	public ResultVo getOrgUserList(
 			@RequestParam(defaultValue = "",required = false) String year,
-			@RequestParam(defaultValue = "",required = false) String userName) {
+			@RequestParam(defaultValue = "",required = false) String userName,
+			boolean isSuperAdmin) {
 		User user = getUserOfSecurity();
-		List<OrgUser> result = orgBiz.getOrgUserList(user.getUserId(),userName,year);
+		List<OrgUser> result = orgBiz.getOrgUserList(user.getUserId(),userName,year,isSuperAdmin);
 		return getSuccessResultVo(result);
 	}
 	/**
@@ -205,5 +206,15 @@ public class OrgApiController extends BaseController{
 	public ResultVo getOrgUserDetailByUserId(String userId) {
 		UserDtl userDtl = orgBiz.getOrgUserDetailByUserId(userId);
 		return getSuccessResultVo(userDtl);
+	}
+	/**
+	 * 获取当前用户所在组织id
+	 * @return
+	 */
+	@GetMapping("getOrgIdByUserId")
+	public ResultVo getOrgIdByUserId() {
+		User user = getUserOfSecurity();
+		String orgId = orgBiz.getOrgIdByUserId(user.getUserId());
+		return getSuccessResultVo(orgId);
 	}
 }

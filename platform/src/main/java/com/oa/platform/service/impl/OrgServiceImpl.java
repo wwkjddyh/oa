@@ -47,8 +47,8 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 	 * 获取组织列表
 	 */
 	@Override
-	public List<Organization> getOrgList(String orgId) {
-		return orgRepository.getOrgList(orgId);
+	public List<Organization> getOrgList(String orgId,boolean isSuperAdmin) {
+		return orgRepository.getOrgList(orgId,isSuperAdmin);
 	}
 	@Override
 	public List<Organization> getOrgIdByuserId(String userId) {
@@ -132,8 +132,8 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 		
 	}
 	@Override
-	public List<OrgUser> getOrgUserList(String orgId,String userName) {
-		return orgRepository.getOrgUserList(orgId,userName);
+	public List<OrgUser> getOrgUserList(String orgId,String userName,boolean isSuperAdmin) {
+		return orgRepository.getOrgUserList(orgId,userName,isSuperAdmin);
 	}
 	@Override
 	public List<OrgUser> getOrgUserListByOrgIds(List<String> orgIds,String userName,String year) {
@@ -174,6 +174,15 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 	@Override
 	public List<Organization> getUserUpperOrgList(String orgId) {
 		return orgRepository.getUserUpperOrgList(orgId);
+	}
+	@Override
+	public List<String> getOrgIdByUserId(String userId) {
+		
+		return orgRepository.getOrgIdByUserId(userId);
+	}
+	@Override
+	public List<String> getLeaderByOrgId(String orgId) {
+		return orgRepository.getLeaderByOrgId(orgId);
 	}
 
 }

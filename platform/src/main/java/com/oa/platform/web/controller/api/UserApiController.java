@@ -4,6 +4,7 @@ import com.oa.platform.biz.LogBiz;
 import com.oa.platform.biz.RoleBiz;
 import com.oa.platform.biz.UserBiz;
 import com.oa.platform.common.Constants;
+import com.oa.platform.common.ResultVo;
 import com.oa.platform.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -485,5 +486,10 @@ public class UserApiController extends BaseController {
     @GetMapping("allSysUsersMap")
     public Map<String, Object> getAllSysUsersMap() {
         return userBiz.getAllSysUsersMap();
+    }
+    @GetMapping("resetPwd")
+    public ResultVo resetPwd(String userId) {
+    	userBiz.resetPwd(userId);
+    	return getSuccessResultVo(null);
     }
 }

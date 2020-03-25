@@ -182,7 +182,7 @@
 			FROM
 				t_sys_org sorg 
 			WHERE
-				sorg.org_id = #{orgId} 
+				instr(#{orgId},sorg.org_id)>0
 				AND sorg.STATUS = '1' UNION ALL
 			SELECT
 				org.org_id,
@@ -196,11 +196,14 @@
 			ote.org_id,
 			ote.org_nm,
 		CASE
-			WHEN ote.org_id = #{orgId} THEN
+			WHEN instr(#{orgId},ote.org_id)>0 THEN
 			NULL ELSE upper_org 
 			END upper_org 
 		FROM
 		org_cte ote
+	</select>
+	<select id="getOrgIdByUserId" resultType="java.lang.String">
+		select org_id from t_org_user where user_id=#{userId} and status='1'
 	</select>
 	<select id="getOrgDetailById" resultMap="orgMap">
 		select 
@@ -256,8 +259,11 @@
 					t_sys_org sorg
 					LEFT JOIN ( SELECT GROUP_CONCAT( user_name ) leader, org_id FROM t_org_leader_detail WHERE STATUS = '1' GROUP BY org_id ) orgleader ON sorg.org_id = orgleader.org_id 
 				WHERE
-					sorg.org_id = #{orgId} 
-					AND sorg.STATUS = '1' UNION ALL
+					sorg.STATUS = '1'
+					<if test="isSuperAdmin != true">
+						and instr(#{orgId},sorg.org_id)>0
+					</if>
+					 UNION ALL
 				SELECT
 					org.org_id,
 					org.org_nm,
@@ -274,22 +280,10 @@
 					INNER JOIN org_cte sysorg ON org.org_id = sysorg.upper_org 
 					AND org.STATUS = '1' 
 					) SELECT
-					ote.* 
+					distinct ote.* 
 				FROM
 					org_cte ote
-					LEFT JOIN (
-				SELECT
-					urole.user_id,
-					osuser.org_id 
-				FROM
-					t_user_role urole
-					LEFT JOIN t_org_user osuser ON urole.user_id = osuser.user_id 
-				WHERE
-					urole.role_id = 'f99e26b6-8f95-4049-b719-36609fe76fea1' 
-					AND osuser.STATUS = '1' 
-					AND urole.STATUS = '1' 
-					) ouser ON ote.org_id = ouser.org_id
-					LEFT JOIN t_user tuser ON ouser.user_id = tuser.user_id 
+					
 					) UNION
 					(
 					WITH recursive org_cte AS (
@@ -307,8 +301,11 @@
 					t_sys_org sorg
 					LEFT JOIN ( SELECT GROUP_CONCAT( user_name ) leader, org_id FROM t_org_leader_detail WHERE STATUS = '1' GROUP BY org_id ) orgleader ON sorg.org_id = orgleader.org_id 
 				WHERE
-					sorg.org_id = #{orgId} 
-					AND sorg.STATUS = '1' UNION ALL
+					sorg.STATUS = '1'
+					<if test="isSuperAdmin !=true">
+						and instr(#{orgId},sorg.org_id)>0
+					</if>
+					UNION ALL
 				SELECT
 					org.org_id,
 					org.org_nm,
@@ -325,22 +322,10 @@
 					INNER JOIN org_cte sysorg ON sysorg.org_id = org.upper_org 
 					AND org.STATUS = '1' 
 					) SELECT
-					ote.* 
+					distinct ote.* 
 				FROM
 					org_cte ote
-					LEFT JOIN (
-				SELECT
-					urole.user_id,
-					osuser.org_id 
-				FROM
-					t_user_role urole
-					LEFT JOIN t_org_user osuser ON urole.user_id = osuser.user_id 
-				WHERE
-					urole.role_id = 'f99e26b6-8f95-4049-b719-36609fe76fea1' 
-					AND osuser.STATUS = '1' 
-					AND urole.STATUS = '1' 
-					) ouser ON ote.org_id = ouser.org_id
-					LEFT JOIN t_user tuser ON ouser.user_id = tuser.user_id 
+					 
 					)
 	</select>
 	<select id="getOrgIdByuserId" resultMap="orgMap">
@@ -350,6 +335,10 @@
 			t_org_user 
 		WHERE
 			user_id = #{userId} and status='1'
+	</select>
+	<select id="getLeaderByOrgId" resultType="java.lang.String">
+		select dtl.user_id from t_user_dtl dtl left join t_org_user orguser on dtl.user_id=orguser.user_id where orguser.org_id=#{orgId} and dtl.is_party='1'
+			and dtl.is_leader='1' and orguser.status='1'
 	</select>
 	<select id="getOrgUserListByOrgIds" parameterType="java.util.List" resultMap="orgUserMap">
 		select
@@ -375,10 +364,7 @@
 		<if test="year != null and year != ''">
 		and left(usrdtl.join_party_time,4) = #{year}
 		</if>
-		and orguser.org_id in
-		<foreach collection="list" index="index" item="item" open="(" separator="," close=")">
-          #{item}
-        </foreach>
+		
 	</select>
 	<select id="getOrgUserList" resultMap="orgUserMap">
 		
@@ -406,8 +392,11 @@
 			AND usr.record_flag = '1'
 			LEFT JOIN t_user_dtl userdtl ON orguser.user_id = userdtl.user_id 
 		WHERE
-			sorg.org_id = #{orgId} 
-			AND userdtl.is_leader = '1' and userdtl.is_party='1' UNION ALL
+			userdtl.is_leader = '1'
+			<if test="isSuperAdmin !=true">
+				and instr(#{orgId},sorg.org_id)>0
+			</if>
+		    and userdtl.is_party='1' UNION ALL
 		SELECT
 			org.org_id,
 			org.org_nm,
@@ -435,7 +424,7 @@
 		WHERE
 			userdtl.is_leader = '1' and userdtl.is_party='1'
 			) SELECT
-			ote.* 
+			distinct ote.* 
 		FROM
 			org_cte ote 
 			) UNION
@@ -464,8 +453,11 @@
 			AND usr.record_flag = '1'
 			LEFT JOIN t_user_dtl userdtl ON orguser.user_id = userdtl.user_id 
 		WHERE
-			sorg.org_id = #{orgId} 
-			AND userdtl.is_leader = '1' and userdtl.is_party='1' UNION ALL
+			userdtl.is_leader = '1'
+			<if test="isSuperAdmin !=true">
+				and instr(#{orgId},sorg.org_id)>0
+			</if>
+			and userdtl.is_party='1' UNION ALL
 		SELECT
 			org.org_id,
 			org.org_nm,
@@ -493,7 +485,7 @@
 		WHERE
 			userdtl.is_leader = '1' and userdtl.is_party='1'
 			) SELECT
-			ote.* 
+			distinct ote.* 
 		FROM
 			org_cte ote 
 			) 
@@ -838,8 +830,11 @@
 		delete from t_user_dtl where user_id=#{userId}
 	</delete>
 	<update id="delUserOrg">
-		update t_org_user set status='0' where user_id=#{userId} and status='0'
+		update t_org_user set status='0' where user_id=#{userId} and status='1'
 	</update>
+	<!-- <delete id="delUserOrg">
+		delete from 
+	</delete> -->
 	<update id="downOrgUserById">
 		UPDATE t_user_dtl dtl
 			LEFT JOIN t_org_user orguser ON dtl.user_id = orguser.user_id 

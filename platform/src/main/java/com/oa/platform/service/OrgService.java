@@ -29,7 +29,7 @@ public interface OrgService extends BaseService<Organization, String> {
 	 * @param orgId
 	 * @return
 	 */
-	List<Organization> getOrgList(String orgId);
+	List<Organization> getOrgList(String orgId,boolean isSuperAdmin);
 	/**
 	 * 根据用户id获取组织信息
 	 * @param userId
@@ -74,7 +74,7 @@ public interface OrgService extends BaseService<Organization, String> {
 	void saveOrgDeptDetail(OrgDeptDetail orgDeptDetail);
 	void delOrgDeptById(String orgId);
 	
-	List<OrgUser> getOrgUserList(String orgId,String userName);
+	List<OrgUser> getOrgUserList(String orgId,String userName,boolean isSuperAdmin);
 	List<OrgUser> getOrgUserListByOrgIds(List<String> orgIds,String userName,String year);
 	UserDtl getOrgUserDetailByUserId(String userId);
 	void saveOrgUser(String userId, String org_id);
@@ -84,4 +84,6 @@ public interface OrgService extends BaseService<Organization, String> {
 	void downOrgUserById(String orgId);
 	void updateOrgUser(String orgId,String userId);
 	List<Organization> getUserUpperOrgList(String orgId);
+	List<String> getOrgIdByUserId(String userId);
+	List<String> getLeaderByOrgId(String orgId);
 }

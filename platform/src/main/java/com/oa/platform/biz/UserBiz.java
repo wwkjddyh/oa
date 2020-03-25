@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +42,9 @@ public class UserBiz extends BaseBiz {
     LogService logService;
     @Autowired
 	private OrgService orgSerivce;
+    
+    @Value("${userDefaultPwd}")
+	private String userDefaultPwd;
     /**
      * 保存用户信息
      * @param userType
@@ -308,12 +312,11 @@ public class UserBiz extends BaseBiz {
                     User user = new User();
                     user.setUserName(userName);
                     user.setUserNickname(StringUtil.trim(userNickname));
-                    user.setUserPwd(SecurityUtil.encodeBCryptPassword(userPwd));
-                    user.setUserPwdOrigi(userPwd);
                     user.setLangConfId(langConfId);
                     user.setUserType(Integer.parseInt(userType));
                     if ("".equals(userId)) {
-                        user.setUserPwd(StringUtil.trim(userPwd, "123456"));
+                        user.setUserPwd(userDefaultPwd);
+                        user.setUserPwdOrigi("123456");
                         user.setUserId(StringUtil.getRandomUUID());
                         user.setRecordFlag(Constants.INT_NORMAL);
                         userService.save(user);
@@ -327,56 +330,17 @@ public class UserBiz extends BaseBiz {
                         ret = this.getSuccessVo("", "");
                     }
                     else {
-                        oldPassword = StringUtil.trim(oldPassword);
-                        passwordOrgi = StringUtil.trim(passwordOrgi);
-                        User tUser = userService.getById(userId);
-                        boolean isValidPwd = true;
-                        String msg = "";
-                        if ("".equals(userPwd) && "".equals(oldPassword) && "".equals(passwordOrgi)) {
-                            isValidPwd = true;
+                      
+                        user.setRecordFlag(recordFlag == null ? Constants.INT_NORMAL : recordFlag);
+                        user.setUserId(userId);
+                        if(orgId != null && !"".equals(orgId)) {
+                            orgSerivce.updateOrgUser(orgId,userId);
+                        }else {
+                        	orgSerivce.delUserOrg(userId);
                         }
-                        else {
-                            if ("".equals(userPwd) || "".equals(oldPassword) || "".equals(passwordOrgi)) {
-                                msg = "'密码'、'原始密码'、'重复密码'均不能为空或空格";
-                                isValidPwd = false;
-                            }
-                            else if (userPwd.length() > 128 || userPwd.length() < 6) {
-                                msg = "'密码'的长度在 6 到 128 个字符之间";
-                                isValidPwd = false;
-                            }
-                            else if (oldPassword.length() > 128 || oldPassword.length() < 6) {
-                                msg = "'原始密码'的长度在 6 到 128 个字符之间";
-                                isValidPwd = false;
-                            }
-                            else if (passwordOrgi.length() > 128 || passwordOrgi.length() < 6) {
-                                msg = "'重复密码'的长度在 6 到 128 个字符之间";
-                                isValidPwd = false;
-                            }
-                            else if (!userPwd.equals(passwordOrgi)) {
-                                msg = "'密码'与'重复密码'不相同";
-                                isValidPwd = false;
-                            }
-                            else if (!oldPassword.equals(tUser.getUserPwdOrigi())) {
-                                msg = "'旧密码'与'原始密码'不相同";
-                                isValidPwd = false;
-                            }
-                        }
-
-                        if (isValidPwd) {
-                            user.setRecordFlag(recordFlag == null ? Constants.INT_NORMAL : recordFlag);
-                            user.setUserId(userId);
-                            if(orgId != null && !"".equals(orgId)) {
-	                            orgSerivce.updateOrgUser(orgId,userId);
-                            }else {
-                            	orgSerivce.delUserOrg(userId);
-                            }
-                            userService.update(user);
-                            ret = this.getSuccessVo("", "");
-                        }
-                        else {
-                            ret = StringUtil.getResultVo(StatusCode.REQUEST_PARAM_ERROR, msg, "");
-                        }
-
+                        userService.update(user);
+                        ret = this.getSuccessVo("", "");
+                       
                     }
 
                 }
@@ -608,4 +572,13 @@ public class UserBiz extends BaseBiz {
         }
         return ret;
     }
+    /**
+     * 密码重置
+     * @param userId
+     */
+	public void resetPwd(String userId) {
+		if(userId!= null && !"".equals(userId)) {
+			userService.resetPwd(userId,userDefaultPwd);
+		}
+	}
 }

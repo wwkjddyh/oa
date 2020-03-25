@@ -28,14 +28,14 @@
                     prop="userName"
                     label="登录名"
                     align="center"
-                    width="200">
+                    >
             </el-table-column>
             <el-table-column
                     prop="userNickname"
                     align="center"
                     label="姓名">
             </el-table-column>
-            <el-table-column
+            <!-- <el-table-column
                     prop="gender"
                     align="center"
                     label="性别">
@@ -60,7 +60,7 @@
                     <template v-slot="scope">
 						         {{ getEducationValue(scope.row.education)}}
 						    </template>
-            </el-table-column>
+            </el-table-column> -->
             <!--
             <el-table-column
                     prop="roleName"
@@ -70,12 +70,13 @@
             -->
             <el-table-column
                     align="center"
-                    width="284"
+                   
                     label="操作">
                 <template slot-scope="scope">
                     <div style="display: flex;width:100%">
                         <el-button size="mini" @click="handleSetUserRole(scope.row,true)" icon="el-icon-setting">角色设置</el-button>
                         <el-button size="mini" @click="edit('sysUser',scope.$index,scope.row,false)" icon="el-icon-edit">修改</el-button>
+                        <el-button size="mini" @click="resetPwd(scope.row)" icon="el-icon-refresh-left" type="warning">重置密码</el-button>
                         <el-button v-if="scope.row.userName !== 'admin'" size="mini" type="danger" @click="handleDel(scope.$index,'sysUser')" icon="el-icon-delete">删除</el-button>
                     </div>
                 </template>
@@ -110,43 +111,18 @@
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">姓名</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
-                <el-form-item label="所在党组织" prop="orgId"  size="small" style="width: 100%;">
+                <el-form-item label="党组织" prop="orgId"  size="small" style="width: 100%;">
                             <el-cascader
 								    v-model="formSysUser.orgId"
 								    :options="upperOrg"
-								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
+								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true,multiple: true}"
 								    style="width: 300px;"
 								    size="medium"
 								    filterable
+								    collapse-tags
 								    clearable
 								    ></el-cascader>                           
                         </el-form-item>
-                <el-form-item label="密码" prop="password" v-if="currAction !== 'edit'">
-                    <el-input v-model="formSysUser.password" type="password" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="密码"></el-input>
-                    <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">密码</div><i class="el-icon-question"></i></el-tooltip>
-                </el-form-item>
-                <el-form-item label="重复密码" prop="passwordOrgi" v-if="currAction !== 'edit'">
-                    <el-input v-model="formSysUser.passwordOrgi" type="password" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="重复密码"></el-input>
-                    <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">重复密码</div><i class="el-icon-question"></i></el-tooltip>
-                </el-form-item>
-
-                <el-form-item label="原始密码" v-if="currAction === 'edit'">
-                    <el-input v-model="formSysUser.oldPassword" type="password" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="原始密码"></el-input>
-                    <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">原始密码</div><i class="el-icon-question"></i></el-tooltip>
-                </el-form-item>
-                <el-form-item label="密码" v-if="currAction === 'edit'">
-                    <el-input v-model="formSysUser.password" type="password" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="密码"></el-input>
-                    <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">密码</div><i class="el-icon-question"></i></el-tooltip>
-                </el-form-item>
-                <el-form-item label="重复密码" v-if="currAction === 'edit'">
-                    <el-input v-model="formSysUser.passwordOrgi" type="password" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="重复密码"></el-input>
-                    <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">重复密码</div><i class="el-icon-question"></i></el-tooltip>
-                </el-form-item>
                 <el-form-item>
                     <el-button @click="dialogShow.sysUser = false;resetForm('formSysUser')" icon="el-icon-close" plain size="small">取消</el-button>
                     <el-button @click="submitForm('formSysUser')" type="primary" plain size="small" icon="el-icon-check">保存</el-button>

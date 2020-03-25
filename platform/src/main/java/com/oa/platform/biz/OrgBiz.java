@@ -41,16 +41,21 @@ public class OrgBiz extends BaseBiz {
 	 * @param userId
 	 * @return
 	 */
-	public List<Organization> getOrgList(String userId) {
-		String orgId = null;
-		//根据用户id获取所在组织主键
-		List<Organization> orgInfo = orgSerivce.getOrgIdByuserId(userId);
-		if(orgInfo == null || orgInfo.size() == 0) {
-			//用户无组织，无查询结果
-			return new ArrayList<Organization>();
+	public List<Organization> getOrgList(String userId,boolean isSuperAdmin) {
+		if(isSuperAdmin) {
+			List<Organization> result = orgSerivce.getOrgList("admin",isSuperAdmin);
+			return result;
+		}else {
+			String orgId = null;
+			//根据用户id获取所在组织主键
+			List<Organization> orgInfo = orgSerivce.getOrgIdByuserId(userId);
+			if(orgInfo == null || orgInfo.size() == 0) {
+				//用户无组织，无查询结果
+				return new ArrayList<Organization>();
+			}
+			List<Organization> result = orgSerivce.getOrgList(orgInfo.get(0).getOrgId(),isSuperAdmin);
+			return result;
 		}
-		List<Organization> result = orgSerivce.getOrgList(orgInfo.get(0).getOrgId());
-		return result;
 	}
 	/**
 	 * 党组织新增
@@ -174,15 +179,22 @@ public class OrgBiz extends BaseBiz {
 	 * @param userId
 	 * @return
 	 */
-	public List<OrgUser> getOrgUserList(String userId,String userName,String year) {
+	public List<OrgUser> getOrgUserList(String userId,String userName,String year,boolean isSuperAdmin) {
 		String orgId = null;
-		//根据用户id获取所在组织主键
-		List<Organization> orgInfo = orgSerivce.getOrgIdByuserId(userId);
-		if(orgInfo == null || orgInfo.size() == 0) {
-			//用户无组织，无查询结果
-			return new ArrayList<OrgUser>();
+		List<OrgUser> result = null;
+		
+		if(!isSuperAdmin) {
+			//根据用户id获取所在组织主键
+			List<Organization> orgInfo = orgSerivce.getOrgIdByuserId(userId);
+			if(orgInfo == null || orgInfo.size() == 0) {
+				//用户无组织，无查询结果
+				return new ArrayList<OrgUser>();
+			}
+			result = orgSerivce.getOrgUserList(orgInfo.get(0).getOrgId(),userName,isSuperAdmin);
+		}else {
+			result = orgSerivce.getOrgUserList("admin",userName,isSuperAdmin);
 		}
-		List<OrgUser> result = orgSerivce.getOrgUserList(orgInfo.get(0).getOrgId(),userName);
+		
 		if(result == null || result.size() == 0) {
 			return new ArrayList<OrgUser>();
 		}
@@ -211,6 +223,10 @@ public class OrgBiz extends BaseBiz {
 		user.setUserPwdOrigi("123456");
 		user.setRecordFlag(1);
 		user.setUserType(3);
+		List<String> leaders = orgSerivce.getLeaderByOrgId(userDtl.getOrgId());
+		if(leaders == null || leaders.size() == 0) {
+			userDtl.setLeader("1");
+		}
 		if("1".equals(userDtl.getLeader())) {
 			//将原来的部门负责人换下
 			orgSerivce.downOrgUserById(userDtl.getOrgId());
@@ -238,6 +254,9 @@ public class OrgBiz extends BaseBiz {
 				if(!userDtl.getOrgId().equals(orgIdByuserId.get(0).getOrgId())) {
 					//已修改组织，先返回，不做编辑
 					return getErroResultVo(2000, "该党员为组织部门负责人,更换组织部门时请先更换部门负责人", null);
+				}
+				if("1".equals(findDetailByUserId.getLeader()) && !"1".equals(userDtl.getLeader())) {
+					return getErroResultVo(2000, "该党员为组织部门负责人,请先认定其他党员为负责人", null);
 				}
 			}
 		}
@@ -282,6 +301,14 @@ public class OrgBiz extends BaseBiz {
 		}
 		List<Organization> result = orgSerivce.getUserUpperOrgList(orgIdByuserId.get(0).getOrgId());
 		return result;
+	}
+	public String getOrgIdByUserId(String userId) {
+		List<String> result = orgSerivce.getOrgIdByUserId(userId);
+		if(result == null || result.size()==0) {
+			return null;
+		}else {
+			return result.get(0);
+		}
 	}
 	
 	

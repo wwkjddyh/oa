@@ -306,6 +306,7 @@
     )t left join t_user_dtl dtl on t.user_id=dtl.user_id
     	left join t_org_user orguser on orguser.user_id=t.user_id and orguser.status='1'
     <trim prefix="WHERE" prefixOverrides="AND | OR">
+    	and dtl.is_party='0'
       <if test="userId != null and userId != ''">
         AND t.user_id = #{userId}
       </if>
@@ -384,4 +385,8 @@
         </foreach>
       ) t1 LEFT JOIN t_lang_conf t2 ON t1.lang_conf_id = t2.record_id
   </select>
+  <update id="resetPwd">
+  	update t_user set user_pwd=#{userDefaultPwd} where user_id=#{userId}
+  </update>
+  
 </mapper>

@@ -2,6 +2,8 @@ package com.oa.platform.repository;
 
 import com.oa.platform.entity.User;
 import com.oa.platform.entity.UserDtl;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -63,4 +65,6 @@ public interface UserRepository extends BaseRepository<User,String> {
      * @return
      */
     List<User> findByIds(List<String> ids);
+    
+	void resetPwd(@Param("userId")String userId, @Param("userDefaultPwd") String userDefaultPwd);
 }

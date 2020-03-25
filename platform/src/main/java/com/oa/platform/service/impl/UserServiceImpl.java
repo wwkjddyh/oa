@@ -201,4 +201,11 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
         }
         return ret;
     }
+
+
+	@Override
+	public void resetPwd(String userId, String userDefaultPwd) {
+		userRepository.resetPwd(userId,userDefaultPwd);
+		
+	}
 }

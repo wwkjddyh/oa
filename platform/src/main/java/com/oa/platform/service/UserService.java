@@ -100,4 +100,6 @@ public interface UserService extends BaseService<User,String>, UserDetailsServic
      * @return
      */
     Map<String, String> findUserNamesByIds(List<String> ids);
+
+	void resetPwd(String userId, String userDefaultPwd);
 }

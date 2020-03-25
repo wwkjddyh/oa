@@ -22,7 +22,7 @@ public interface OrgRepository extends BaseRepository<Organization, String> {
 
 	void orgAddDetail(Organization organization);
 	
-	List<Organization> getOrgList(@Param("orgId") String org_id);
+	List<Organization> getOrgList(@Param("orgId") String org_id,@Param("isSuperAdmin") boolean isSuperAdmin);
 
 	List<Organization> getOrgIdByuserId(@Param("userId") String userId);
 	/**
@@ -73,7 +73,7 @@ public interface OrgRepository extends BaseRepository<Organization, String> {
 	void saveOrgDeptDetail(OrgDeptDetail orgDeptDetail);
 	void delOrgDeptById(@Param("orgId") String orgId);
 
-	List<OrgUser> getOrgUserList(@Param("orgId") String orgId,@Param("userName") String userName);
+	List<OrgUser> getOrgUserList(@Param("orgId") String orgId,@Param("userName") String userName,@Param("isSuperAdmin") boolean isSuperAdmin);
 	List<OrgUser> getOrgUserListByOrgIds(@Param("list")List<String> orgIds
 			,@Param("userName") String userName, @Param("year")String year);
 
@@ -90,4 +90,8 @@ public interface OrgRepository extends BaseRepository<Organization, String> {
 	void updateOrgUser(@Param("orgId") String orgId,@Param("userId")String userId);
 
 	List<Organization> getUserUpperOrgList(@Param("orgId") String orgId);
+
+	List<String> getOrgIdByUserId(@Param("userId") String userId);
+
+	List<String> getLeaderByOrgId(@Param("orgId") String orgId);
 }
