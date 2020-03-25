@@ -232,6 +232,27 @@
     text-align: center;
 }
 
+.menu-collapse-div {
+    position: absolute;
+    top: 50%;
+    left: 193px;
+    z-index:100;
+}
+
+.menu-collapse-div2 {
+    position: absolute;
+    top: 50%;
+    left: 65px;
+    z-index:100;
+}
+
+.menu-collapse-icon-inner {
+    cursor: pointer;
+    font-size:30px;
+    color: #c32c28;
+}
+
+
 
 
 

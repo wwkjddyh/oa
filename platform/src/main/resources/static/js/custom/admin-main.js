@@ -326,6 +326,8 @@ new Vue({
         def_menu_id: 'firstPage',
         currAction: 'append',
         isCollapse: false,
+        menuCollapseDivClass: 'menu-collapse-div',
+        menuCollapseIcon: 'el-icon-caret-left',
         activeTabName: 'first',
         cronTabActiveName: 'second',    /*cron表达式tabs设置*/
         showContent: 'firstPage',
@@ -5809,6 +5811,27 @@ new Vue({
             that.checkBoxAll.article = (checkedCount === that.allSysUsersMap.length);
             that.isIndeterminate.article = checkedCount > 0 && checkedCount < that.allSysUsersMap.length;
             console.log('handleArticleReceiversCheckedChange(briefReceiveUserIds)', that.briefReceiveUserIds)
+        },
+
+        /**
+         * 菜单折叠处理
+         */
+        handleMenuCollapse(e) {
+            let that = this;
+            console.log('that.isCollapse', that.isCollapse);
+            if (that.isCollapse) {
+                that.isCollapse = !that.isCollapse;
+                that.menuCollapseDivClass = 'menu-collapse-div';
+                that.menuCollapseIcon = 'el-icon-caret-left';
+                console.log('that.menuCollapseDivClass', that.menuCollapseDivClass, that.menuCollapseIcon);
+            }
+            else {
+                that.isCollapse = !that.isCollapse;
+                that.menuCollapseDivClass = 'menu-collapse-div2';
+                that.menuCollapseIcon = 'el-icon-caret-right';
+                console.log('that.menuCollapseDivClass', that.menuCollapseDivClass, that.menuCollapseIcon);
+            }
+            that.$forceUpdate();
         },
     },
     props: {

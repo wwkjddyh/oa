@@ -1,6 +1,9 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <div th:fragment="menu">
+    <div v-bind:class="menuCollapseDivClass">
+        <i v-bind:class="menuCollapseIcon" class="menu-collapse-icon-inner" @click="handleMenuCollapse"></i>
+    </div>
     <!-- # el-menu 中，default-active不能和:default-openeds；否则，default-active不起作用-->
     <el-menu ref="menuRef" :default-active="def_menu_id"
              class="el-menu-vertical-demo"
