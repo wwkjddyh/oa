@@ -326,6 +326,7 @@ new Vue({
         def_menu_id: 'firstPage',
         currAction: 'append',
         isCollapse: false,
+        headerTitle: '智慧党建',
         menuCollapseDivClass: 'menu-collapse-div',
         menuCollapseIcon: 'el-icon-caret-left',
         activeTabName: 'first',
