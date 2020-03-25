@@ -368,7 +368,7 @@
                     <el-button @click="dialogShow.nddyxxcjYear = false" type="cancel" plain align="center">取消</el-button>
 				</div> 
 			</el-dialog>
-            <el-dialog :visible.sync="dialogShow.nddyxxcjdetail" foot-center lock-scroll="true" width="1000px" title="个人信息详情">
+            <el-dialog :visible.sync="dialogShow.nddyxxcjdetail" foot-center lock-scroll="true" width="1000px" title="个人信息详情" center>
             	 <el-card shadow="never" style="width: 100%;" type="card">
                     <el-table style="width: 100%" :data="nddyxxcjTableData" border="true" empty-text="" align="">
                     	<el-table-column
@@ -509,12 +509,17 @@
 				    	 </el-table-column>
 			    	</el-table-column>
                     	<el-table-column width="199" :render-header="renderHeader">
+                    		
                     	</el-table-column>
-                    	
+                    		
                     	<template slot="empty">
 					      <el-button plain  type="primary" @click="dialogShow.nddyxxcjdetail = false" size="mini"><i class="el-icon-close"></i>关闭</el-button>
 					    </template>
                     </el-table>
+                    <div id="admin" style="width:185px;height:250px; position:absolute;right:45px;
+						top:45px;" >
+						<img  :src="formPartInfo.imageUrl" style="height:100%;width:100%">
+						</div>
                  </el-card>
              </el-dialog>
         </el-tab-pane>

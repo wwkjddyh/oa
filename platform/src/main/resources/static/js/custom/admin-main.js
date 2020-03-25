@@ -734,6 +734,14 @@ new Vue({
         nddyxxcjLoading:false,
         dwjbxxLoading: false,
         currentUserOrgId:'',
+        partyImg:{
+        	width:'190px',
+        	height:'250px',
+        	position:'absolute',
+        	background:'url(images/login.jpg)',
+        	right:'4.5%',
+        	top:'8%'
+        },
         dyxxyear:{
         	year:''
         },
