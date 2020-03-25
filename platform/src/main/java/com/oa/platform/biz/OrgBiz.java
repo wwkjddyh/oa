@@ -280,14 +280,19 @@ public class OrgBiz extends BaseBiz {
 	 * @param userId
 	 */
 	@Transactional
-	public void delOrgUser(String userId) {
-		
+	public ResultVo delOrgUser(String userId) {
+		//查询用户信息
+		UserDtl findDetailByUserId = userService.findDetailByUserId(userId);
+		if(findDetailByUserId != null && "1".equals(findDetailByUserId.getLeader())) {
+			return getErroResultVo(2000, "该党员为组织部门负责人,删除前请先更换部门负责人", null);
+		}
 		//删除党员用户
 		orgSerivce.delUser(userId);
 		//删除党员用户详情
 		orgSerivce.delOrgUserDtl(userId);
 		//删除党员与组织关系
 		orgSerivce.delUserOrg(userId);
+		return getSuccessResultVo(null);
 	}
 	/**
 	 * 根据用户获取用户所在组织及下级组织

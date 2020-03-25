@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 <div th:fragment="content">
     <el-tabs v-model="activeTabName" type="card">
-        <el-tab-pane label="党委基本信息" name="first">
             <el-button plain @click="edit('dwjbxx','','',true)" type="primary" size="mini" v-if="isSuperAdmin"><i class="el-icon-plus"></i>新增</el-button>
             <!-- <el-button plain type="danger" size="mini"><i class="el-icon-close" size=""></i>删除</el-button> -->
             <el-button plain size="mini"  @click="searchForm('searchDwjbxx')" ><i class="el-icon-refresh"></i>刷新</el-button>
@@ -58,7 +57,7 @@
                             <div style="display: flex;width:100%" align="right">
                             	<el-button size="mini" v-if="scope.row.level < 2" @click="edit('dwjbxx',scope.$index,scope.row,null)" >添加下级组织</el-button>
                                 <el-button size="mini" @click="edit('dwjbxx',scope.$index,scope.row,false)" >修改</el-button>
-                                <el-button size="mini" type="danger" @click="dwjbxxDel(scope.row,'dwjbxx')" >删除</el-button>
+                                <el-button size="mini" type="danger" @click="dwjbxxDel(scope.row,'dwjbxx')" v-loading.fullscreen.lock="fullscreenLoading">删除</el-button>
                             </div>
                         </template>
                     </el-table-column>
@@ -440,7 +439,7 @@
                  
                  <span slot="footer" class="dialog-footer" align="center">
                  <div align="center">
-				    <el-button @click="submitForm('formdwjbxx')"  type="primary" plain align="center" >确定</el-button>
+				    <el-button @click="submitForm('formdwjbxx')"  type="primary" plain align="center" v-loading.fullscreen.lock="fullscreenLoading">确定</el-button>
                     <el-button @click="dialogShow.dwjbxx = false" type="cancel" plain align="center">取消</el-button>
 				 </div> 
 				 </span>
@@ -599,7 +598,6 @@
 				 </span>
 		    </el-dialog>
             </el-dialog>
-        </el-tab-pane>
     </el-tabs>
 </div>
 <style>

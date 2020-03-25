@@ -733,6 +733,7 @@ new Vue({
         loading:{},
         nddyxxcjLoading:false,
         dwjbxxLoading: false,
+        fullscreenLoading:false,
         currentUserOrgId:'',
         partyImg:{
         	width:'190px',
@@ -2010,6 +2011,7 @@ new Vue({
         submitNddyxxcj(){
         	let that = this;
         	let params = new URLSearchParams();
+        	
         	if(that.formnddyxxcj.userId != null){
             	params.append('userId',that.formnddyxxcj.userId);
         	}
@@ -2065,9 +2067,9 @@ new Vue({
         	if(that.formnddyxxcj.idCard != null){
             	params.append('idCard',that.formnddyxxcj.idCard);
         	}
+        	that.fullscreenLoading = true;
         	axios.post("/api/org/orgUserOpreate",params)
     		.then(function(response){
-    			console.log(response)
     			if(parseInt(response.data.code) === 200){
     				that.dialogShow.nddyxxcj =false;
         			that.loadNddyxxcj();
@@ -2079,10 +2081,13 @@ new Vue({
                 	that.$message.error(response.data.msg);
                 }
     			else{
-                	that.$message.error("提交失败,请联系管理员");
+                	that.$message.error("提交失败");
                 }
-    			
-    		})
+    			that.fullscreenLoading = false;
+    		}).catch(function(err){
+    			that.fullscreenLoading = false;
+    			that.$message.error("提交失败,请联系管理员");
+            });
         },
         /**
          * 党委信息提交
@@ -2166,10 +2171,10 @@ new Vue({
         	params.append('leaderDetails',JSON.stringify(that.leaderList));
         	params.append('rewardDetails',JSON.stringify(that.rewardList));
         	params.append('deptDetails',JSON.stringify(that.deptInfoList));
+        	that.fullscreenLoading = true;
         	axios.post("/api/org/orgOpreate",params)
         		.then(function(response){
         			if(parseInt(response.data.code) === 200){
-        				that.loading.flag = false;
         				that.dialogShow.dwjbxx =false;
             			that.formdwjbxx={};
             			//that.getUpperOrg();
@@ -2182,8 +2187,11 @@ new Vue({
                     	that.loading.flag = false;
                     	this.$message.error("提交失败");
                     }
-        			
-        		})
+        			that.fullscreenLoading = false;
+        		}).catch(function(err){
+        			that.fullscreenLoading = false;
+        			that.$message.error("提交失败,请联系管理员");
+                });
         },
         /**
          * 分类信息提交
@@ -3105,6 +3113,7 @@ new Vue({
                                 let orgId = row.orgId;
                                 let params = new URLSearchParams();
                                 params.append("orgId",orgId);
+                                that.fullscreenLoading = true;
                                 axios.post("/api/org/delOrg",params)
                                     .then(function(response){
                                         if(parseInt(response.data.code) === 200){
@@ -3113,15 +3122,21 @@ new Vue({
                                                 message: '删除成功',
                                                 type: 'success'
                                             });
+                                        }else{
+                                        	that.$message.error("删除失败");
                                         }
+                                        that.fullscreenLoading = false;
                                     }).catch(function(err){
-                                    console.warn(err);
-                                });
+                            			that.fullscreenLoading = false;
+                            			that.$message.error("出现异常，请联系管理员");
+                                    });
                                 break;
                             case 'nddyxxcj':
                             	let userId = row.userId;
                             	let params2 = new URLSearchParams();
                             	params2.append("userId",userId);
+                            	that.fullscreenLoading = true;
+                            	
                                 axios.post("/api/org/delOrgUser",params2)
                                     .then(function(response){
                                         if(parseInt(response.data.code) === 200){
@@ -3130,9 +3145,16 @@ new Vue({
                                                 message: '删除成功',
                                                 type: 'success'
                                             });
+                                        }else if(parseInt(response.data.code) === 2000){
+                                        	that.$message.error(response.data.msg);
                                         }
+                                        else{
+                                        	that.$message.error("删除失败");
+                                        }
+                                        that.fullscreenLoading = false;
                                     }).catch(function(err){
-                                    	that.$message.error('删除失败');
+                                    	that.fullscreenLoading = false;
+                                    	that.$message.error("出现异常，请联系管理员");
                                 });
                                 break;
                             

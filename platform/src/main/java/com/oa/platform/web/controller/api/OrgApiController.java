@@ -154,8 +154,8 @@ public class OrgApiController extends BaseController{
 	 */
 	@PostMapping("delOrgUser")
 	public ResultVo delOrgUser(String userId) {
-		orgBiz.delOrgUser(userId);
-		return getSuccessResultVo(null);
+		
+		return orgBiz.delOrgUser(userId);
 	}
 	/**
 	 * 获取所属党组织情况信息
