@@ -545,6 +545,7 @@ const formStructConfig = {
         resUpload: false,
         modifyPwd: false,
         viewBrief: false,
+        viewNotice: false,
         receiverIds: false,
         briefReceivers: false,
     },

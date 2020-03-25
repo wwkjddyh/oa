@@ -1038,6 +1038,7 @@ new Vue({
         allSysUsers: [],
         allSysUsersMap: {},
         currBrief: {},
+        currNotice: {},
         //uploadFileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
         uploadFileList: [],
         continent: '',
@@ -3786,6 +3787,7 @@ new Vue({
             axios.get("/api/news/getCurrUserReceivedNewestNews")
                 .then(function(response){/*成功*/
                     let data = response.data;
+                    console.log('getCurrUserReceivedNewestNews.data ', data)
                     if(parseInt(data.code) === 200) {
                         let _newsArr = data.data || [];
                         that.currUserReceiverNewsRecords = _newsArr;
@@ -3810,6 +3812,7 @@ new Vue({
                 axios.get("/api/news/getCurrUserReceivedNewestNews")
                     .then(function(response){/*成功*/
                         let data = response.data;
+                        console.log('getCurrUserReceivedNewestNews.data ', data)
                         if(parseInt(data.code) === 200) {
                             let _newsArr = data.data || [];
                             that.currUserReceiverNewsRecords = _newsArr;
@@ -4922,6 +4925,28 @@ new Vue({
             }
 
         },
+
+        /**
+         * 查看首页消息
+         * @param recordId 当前记录唯一标识
+         */
+        handleNoticeView: function(_recordId) {
+            let that = this;
+            _recordId = _recordId || '';
+            that.currNotice = {};
+            if ('' != _recordId && that.currUserReceiverNewsRecords) {
+                for (let i = 0; i < that.currUserReceiverNewsRecords.length; i ++) {
+                    let __notice = that.currUserReceiverNewsRecords[i];
+                    if ((__notice.recordId || '') === _recordId) {
+                        that.currNotice = __notice;
+                        that.dialogShow.viewNotice = !that.dialogShow.viewNotice;
+                        break;
+                    }
+                }
+            }
+
+        },
+
 
         /**
          * (简报)新增接收人
