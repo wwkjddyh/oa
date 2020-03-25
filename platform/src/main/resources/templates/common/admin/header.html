@@ -1,7 +1,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
     <div th:fragment="header">
-        <span style="font-size:20px;margin-right:20px;font-weight: bold;">系统管理平台</span>
+        <span style="font-size:20px;margin-left:200px;font-weight: bold;color: #07141e;">系统管理平台</span>
         <!--
         <el-radio-group v-model="isCollapse" style="margin-right: 60%;" size="mini">
             <el-radio-button :label="false"><i class="el-icon-s-unfold"></i></el-radio-button>
@@ -17,9 +17,9 @@
             </el-dropdown-menu>
         </el-dropdown>-->
         <span style="float:right;font-size:14px;font-weight: 500;display: flex;">
-            <a style="cursor: pointer;margin-right: 10px;" >{{currentUser.userNickname}}</a>
+            <a style="cursor: pointer;margin-right: 10px;color: #ff7575;" >{{currentUser.userNickname}}</a>
             <el-dropdown style="font-size: 15px;float:right; cursor: pointer;" size="mini" @command="handleHeaderDropdown">
-                <i class="el-icon-setting" style="font-size: 18px;color: white;"></i>
+                <i class="el-icon-setting" style="font-size: 18px;color: #ff7575;"></i>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item command="modifyPwd" style="font-size: 10px;cursor: pointer;" icon="el-icon-edit">修改密码</el-dropdown-item>
                     <el-dropdown-item command="logout" style="font-size: 10px;cursor: pointer;" icon="el-icon-switch-button">退出</el-dropdown-item>
