@@ -33,9 +33,9 @@
     <div style="margin-top: 20px">
         <div v-for="item in currUserReceiverBriefRecords" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
             <div style="width: 70%; height: auto">
-                <a style="color: #409EFF; cursor: pointer;" @click="handleBriefView(item.briefId)">·{{item.briefTitle || ''}}</a>
+                <a style="color: #303133; cursor: pointer;" @click="handleBriefView(item.briefId)">·{{item.briefTitle || ''}}</a>
             </div>
-            <div style="width: 30%; font-size: 13px; color: #8c939d;">
+            <div style="width: 30%; font-size: 13px; color: #303133;">
                 {{item.sendTime.substr(0, 10)}}
             </div>
         </div>
