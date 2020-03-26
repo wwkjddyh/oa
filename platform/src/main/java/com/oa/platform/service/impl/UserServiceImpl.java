@@ -6,9 +6,11 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.oa.platform.common.Constants;
 import com.oa.platform.entity.Module;
+import com.oa.platform.entity.Organization;
 import com.oa.platform.entity.Role;
 import com.oa.platform.entity.User;
 import com.oa.platform.entity.UserDtl;
+import com.oa.platform.repository.OrgRepository;
 import com.oa.platform.repository.RoleRepository;
 import com.oa.platform.repository.UserRepository;
 import com.oa.platform.service.UserService;
@@ -37,7 +39,8 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
 
     @Autowired
     private UserRepository userRepository;//这里会报错，但是并不会影响
-
+    @Autowired
+	private OrgRepository orgRepository;
     @Autowired
     private RoleRepository roleRepository;
 
@@ -64,7 +67,11 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
         PageHelper.startPage(pageNum, pageSize);
         return new PageInfo(userRepository.selectUsers());
     }
-
+    @Override
+	public PageInfo<User> searchUsersByOrgIds(User user, int pageNum, int pageSize, boolean isSuperAdmin, List<String> orgIds) {
+    	PageHelper.startPage(pageNum, pageSize);
+		return new PageInfo(userRepository.searchUsersByOrgIds(user,isSuperAdmin,orgIds));
+	}
     @Override
     public UserDtl findDetailByUserId(String userId) {
         return userRepository.findDetailByUserId(userId);
@@ -208,4 +215,47 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
 		userRepository.resetPwd(userId,userDefaultPwd);
 		
 	}
+
+
+	@Override
+	public List<String> getUsersByCurrentUser(String userId) {
+		User user = new User();
+        user.setUserType(User.TYPE_ADMIN);
+        user.setRecordFlag(Constants.INT_NORMAL);
+        List<String> orgIds = new ArrayList<String>();
+        
+        List<Organization> orgIdByuserId = orgRepository.getOrgIdByuserId(userId);
+		if(orgIdByuserId == null || orgIdByuserId.size() == 0) {
+			return null;
+		}
+		List<Organization> result = orgRepository.getUserUpperOrgList(orgIdByuserId.get(0).getOrgId());
+		for (Organization organization : result) {
+			orgIds.add(organization.getOrgId());
+		}
+        
+        List<User> searchUsersByOrgIds = userRepository.searchUsersByOrgIds(user,false,orgIds);
+        List<String> userIds = new ArrayList<String>();
+        for (User user2 : searchUsersByOrgIds) {
+        	userIds.add(user2.getUserId());
+		}
+		return userIds;
+	}
+
+
+	@Override
+	public List<String> getOrgIdsByCurrentUser(String userId) {
+		List<String> orgIds = new ArrayList<String>();
+		List<Organization> orgIdByuserId = orgRepository.getOrgIdByuserId(userId);
+		if(orgIdByuserId == null || orgIdByuserId.size() == 0) {
+			return new ArrayList<String>();
+		}
+		List<Organization> result = orgRepository.getUserUpperOrgList(orgIdByuserId.get(0).getOrgId());
+		for (Organization organization : result) {
+			orgIds.add(organization.getOrgId());
+		}
+		return orgIds;
+	}
+
+
+	
 }

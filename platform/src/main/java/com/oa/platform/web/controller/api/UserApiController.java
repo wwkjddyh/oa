@@ -5,6 +5,7 @@ import com.oa.platform.biz.RoleBiz;
 import com.oa.platform.biz.UserBiz;
 import com.oa.platform.common.Constants;
 import com.oa.platform.common.ResultVo;
+import com.oa.platform.entity.User;
 import com.oa.platform.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -94,10 +95,12 @@ public class UserApiController extends BaseController {
                                      @RequestParam(defaultValue = "",required = false) String recordTime,
                                      @RequestParam(defaultValue = "",required = false) String updateTime,
                                      @RequestParam(defaultValue = "",required = false) String key,
+                                     boolean isSuperAdmin,
                                      @RequestParam(defaultValue = PAGE_NUM_STR,required = false) int pageNum,
                                      @RequestParam(defaultValue = PAGE_SIZE_STR,required = false) int pageSize) {
+    	User user = getUserOfSecurity();
         return userBiz.search(userId,userType,userName,userNickname,
-                recordFlag,lastLoginTime,recordTime,updateTime, key, pageNum,pageSize);
+                recordFlag,lastLoginTime,recordTime,updateTime, key, pageNum,pageSize,isSuperAdmin,user.getUserId());
     }
 
     /**
@@ -484,8 +487,9 @@ public class UserApiController extends BaseController {
      * @return
      */
     @GetMapping("allSysUsersMap")
-    public Map<String, Object> getAllSysUsersMap() {
-        return userBiz.getAllSysUsersMap();
+    public Map<String, Object> getAllSysUsersMap(boolean isSuperAdmin) {
+    	User user = getUserOfSecurity();
+        return userBiz.getAllSysUsersMap(user.getUserId(),isSuperAdmin);
     }
     @GetMapping("resetPwd")
     public ResultVo resetPwd(String userId) {

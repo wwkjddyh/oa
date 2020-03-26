@@ -104,7 +104,7 @@ public class User implements UserDetails, Serializable {
      */
     private String isAdmin = "1";
 
-    /**
+	/**
      * 第三方(用户类型)，为空表示虫控系统注册用户；其他值表示第三方类型
      */
     private String thirdPartyType = "";

@@ -55,7 +55,11 @@ new Vue({
                 case 'sysUsers':
                     that.getAllAuthRole();
                     that.getNddyxxOptions();
-                    that.getUpperOrg();
+                    if(that.isSuperAdmin){
+                		that.getAdminUpperOrg();
+                	}else{
+                		that.getUserUpperOrgList();
+                	}
                     that.loadSysUsers('',1, that.pager.sysUser.pageSize);
                     break;
                 case 'dwjbxx':
@@ -737,6 +741,7 @@ new Vue({
         nddyxxcjLoading:false,
         dwjbxxLoading: false,
         fullscreenLoading:false,
+        sysUserLoading:false,
         currentUserOrgId:'',
         partyImg:{
         	width:'190px',
@@ -2725,7 +2730,8 @@ new Vue({
                     	if(isAdd){
                     		that.formnddyxxcj={
                     				leader:'0'
-                    		};  
+                    		};
+                    		that.imageInfo =[];
                     	}else{
                     		
                         	let url = "/api/user/getDtl/" +scopeRow.userId;
@@ -4208,11 +4214,13 @@ new Vue({
          */
         loadSysUsers(criteria, pageNum, pageSize) {
             let that = this;
+            that.sysUserLoading = true;
             axios.get("/api/user/search",{params:{
                     key: criteria,
                     pageNum: pageNum,
                     pageSize:pageSize,
-                    userType: 1
+                    userType: 1,
+                    isSuperAdmin: that.isSuperAdmin
                 }})
                 .then(function(response){/*成功*/
                     if(parseInt(response.status) == 200 ) {
@@ -4226,9 +4234,10 @@ new Vue({
                         that.sysUsers = result;
                         that.pager.sysUser.totalCount = response.data.data.total;
                     }
+                    that.sysUserLoading = false;
                 })
                 .catch(function(err){/*异常*/
-                    console.log(err);
+                	that.sysUserLoading = false;
                 });
         },
         //每页显示数据量变更

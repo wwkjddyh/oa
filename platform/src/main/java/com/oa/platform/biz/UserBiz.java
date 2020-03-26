@@ -1,5 +1,6 @@
 package com.oa.platform.biz;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,10 +10,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.oa.platform.common.Constants;
 import com.oa.platform.common.StatusCode;
+import com.oa.platform.entity.Organization;
 import com.oa.platform.entity.User;
 import com.oa.platform.entity.UserDtl;
 import com.oa.platform.service.LogService;
@@ -215,7 +218,7 @@ public class UserBiz extends BaseBiz {
      */
     public Map<String,Object> search(String userId, Integer userType, String userName,
                                      String userNickname,Integer recordFlag, String lastLoginTime,
-                                     String recordTime, String updateTime, String key, int pageNum,int pageSize) {
+                                     String recordTime, String updateTime, String key, int pageNum,int pageSize,boolean isSuperAdmin,String currentUserId) {
         User user = new User();
         user.setUserId(StringUtil.trim(userId));
         user.setUserType(userType);
@@ -240,7 +243,19 @@ public class UserBiz extends BaseBiz {
             isAdmin = "1";
         }
         user.setIsAdmin(isAdmin);
-        return getPageInfo(userService.search(user,getPageNum(pageNum),getPageSize(pageSize)));
+        List<String> orgIds = new ArrayList<String>();
+        if(!isSuperAdmin) {
+	        List<Organization> orgIdByuserId = orgSerivce.getOrgIdByuserId(currentUserId);
+			if(orgIdByuserId == null || orgIdByuserId.size() == 0) {
+				return null;
+			}
+			List<Organization> result = orgSerivce.getUserUpperOrgList(orgIdByuserId.get(0).getOrgId());
+			for (Organization organization : result) {
+				orgIds.add(organization.getOrgId());
+			}
+        }
+
+        return getPageInfo(userService.searchUsersByOrgIds(user,getPageNum(pageNum),getPageSize(pageSize),isSuperAdmin,orgIds));
     }
 
     /**
@@ -544,13 +559,25 @@ public class UserBiz extends BaseBiz {
      * 获得所有系统用户(Map结构)
      * @return
      */
-    public Map<String, Object> getAllSysUsersMap() {
+    public Map<String, Object> getAllSysUsersMap(String currentUserId,boolean isSuperAdmin) {
         try {
             Map<String, Map<String, Object>> userMap = Maps.newHashMap();
             User user = new User();
             user.setUserType(User.TYPE_ADMIN);
             user.setRecordFlag(Constants.INT_NORMAL);
-            List<User> users = userService.find(user);
+            List<String> orgIds = new ArrayList<String>();
+            if(!isSuperAdmin) {
+    	        List<Organization> orgIdByuserId = orgSerivce.getOrgIdByuserId(currentUserId);
+    			if(orgIdByuserId == null || orgIdByuserId.size() == 0) {
+    				return null;
+    			}
+    			List<Organization> result = orgSerivce.getUserUpperOrgList(orgIdByuserId.get(0).getOrgId());
+    			for (Organization organization : result) {
+    				orgIds.add(organization.getOrgId());
+    			}
+            }
+            PageInfo<User> searchUsersByOrgIds = userService.searchUsersByOrgIds(user,0,99999,isSuperAdmin,orgIds);
+            List<User> users = searchUsersByOrgIds.getList();
             users = users == null ? Lists.newArrayList() : users;
             if (!users.isEmpty()) {
                 int len = users.size();

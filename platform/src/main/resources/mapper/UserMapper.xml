@@ -285,9 +285,96 @@
       
     </trim>
   </update>
-
   <!--查询用户信息(分页)-->
-  <select id="find" parameterType="user" resultMap="user">
+  <select id="searchUsersByOrgIds"  resultMap="user">
+    SELECT t.user_id, t.user_type, t.user_name, t.user_pwd, t.user_nickname, t.record_flag,
+        DATE_FORMAT(t.last_login_time,'%Y-%m-%d %H:%i:%s') last_login_time,
+        DATE_FORMAT(t.record_time,'%Y-%m-%d %H:%i:%s') record_time,
+        DATE_FORMAT(t.update_time,'%Y-%m-%d %H:%i:%s') update_time,
+        t.lang_conf_id, t.third_party_type,t.third_party_id,t.user_sex,
+        t.lang_name, t.lang_code,dtl.gender,
+        TIMESTAMPDIFF(YEAR,dtl.birth_time,DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%S')) age,
+        TIMESTAMPDIFF(YEAR,dtl.join_party_time,DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%S')) party_age,
+        dtl.education,orguser.org_id
+    FROM (
+      SELECT t1.user_id, t1.user_type, t1.user_name, t1.user_pwd, t1.user_nickname, t1.record_flag,
+        t1.last_login_time,t1.record_time,t1.update_time,
+        t1.lang_conf_id, t1.third_party_type,t1.third_party_id,t1.user_sex,
+        t2.`name` lang_name, t2.`code` lang_code
+      FROM t_user t1 LEFT JOIN t_lang_conf t2 ON t1.lang_conf_id = t2.record_id
+    )t left join t_user_dtl dtl on t.user_id=dtl.user_id
+    	left join t_org_user orguser on orguser.user_id=t.user_id and orguser.status='1'
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+    	and dtl.is_party='0'
+    	<if test="isSuperAdmin != true">
+    		and
+    		<foreach collection="orgIds" index="index" item="itemId" open="(" separator="or" close=")">
+		      instr(orguser.org_id,#{itemId})>0
+		    </foreach>
+    	</if>
+      <if test="user.userId != null and user.userId != ''">
+        AND t.user_id = #{user.userId}
+      </if>
+      <choose>
+        <when test="user.isAdmin == '1'">
+          AND t.user_type = 1
+        </when>
+        <otherwise>
+          <choose>
+            <when test="user.userType != null">
+              AND t.user_type = #{user.userType}
+            </when>
+            <otherwise>
+              AND t.user_type != 1
+            </otherwise>
+          </choose>
+        </otherwise>
+      </choose>
+      <if test="user.key != null and user.key != ''">
+        AND (UPPER(t.user_name) LIKE CONCAT('%',UPPER(#{user.key}),'%') OR UPPER(t.user_nickname) LIKE CONCAT('%',UPPER(#{user.key}),'%'))
+      </if>
+      <if test="user.userPwd != null and user.userPwd != ''">
+        AND t.user_pwd = #{user.userPwd}
+      </if>
+      <if test="user.userName != null and user.userName != ''">
+        AND t.user_name = #{user.userName}
+      </if>
+      <if test="user.userNickname != null and user.userNickname != ''">
+        AND t.user_nickname = #{user.userNickname}
+      </if>
+      <if test="user.recordTime != null and user.recordTime != ''">
+        AND DATE_FORMAT(t.record_time,'%Y-%m-%d') = #{user.recordTime}
+      </if>
+      <if test="user.lastLoginTime != null and user.lastLoginTime != ''">
+        AND DATE_FORMAT(t.last_login_time,'%Y-%m-%d') = #{user.lastLoginTime}
+      </if>
+      <if test="user.updateTime != null and user.updateTime != ''">
+        AND DATE_FORMAT(t.update_time,'%Y-%m-%d') = #{user.updateTime}
+      </if>
+      <if test="user.recordFlag != null">
+        AND t.record_flag = #{user.recordFlag}
+      </if>
+      <if test="user.langConfId != null">
+        AND t.lang_conf_id = #{user.langConfId}
+      </if>
+      <if test="user.thirdPartyType != null and user.thirdPartyType != ''">
+        AND t.third_party_type = #{user.thirdPartyType}
+      </if>
+      <if test="user.thirdPartyId != null and user.thirdPartyId != ''">
+        AND t.third_party_id = #{user.thirdPartyId}
+      </if>
+      <if test="user.userSex != null and user.userSex != ''">
+        AND t.user_sex = #{user.userSex}
+      </if>
+      <if test="user.ids != null and user.ids.size() > 0">
+        AND t.user_id IN
+        <foreach collection="user.ids" index="index" item="itemId" open="(" separator="," close=")">
+          #{itemId}
+        </foreach>
+      </if>
+    </trim>
+  </select>
+	<select id="find" parameterType="user" resultMap="user">
     SELECT t.user_id, t.user_type, t.user_name, t.user_pwd, t.user_nickname, t.record_flag,
         DATE_FORMAT(t.last_login_time,'%Y-%m-%d %H:%i:%s') last_login_time,
         DATE_FORMAT(t.record_time,'%Y-%m-%d %H:%i:%s') record_time,
@@ -369,7 +456,6 @@
       </if>
     </trim>
   </select>
-
   <!-- 根据ID列表查询用户基本信息 -->
   <select id="findByIds" parameterType="java.util.List" resultMap="user">
     SELECT t1.user_id, t1.user_type, t1.user_name, t1.user_nickname, t1.record_flag,

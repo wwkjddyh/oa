@@ -102,4 +102,18 @@ public interface UserService extends BaseService<User,String>, UserDetailsServic
     Map<String, String> findUserNamesByIds(List<String> ids);
 
 	void resetPwd(String userId, String userDefaultPwd);
+
+	PageInfo<User> searchUsersByOrgIds(User user, int pageNum, int pageSize, boolean isSuperAdmin, List<String> orgIds);
+	/**
+	 * 根据当前用户获取可见用户集合
+	 * @param userId
+	 * @return
+	 */
+	List<String> getUsersByCurrentUser(String userId);
+	/**
+	 * 根据当前用户获取用户可见组织
+	 * @param userId
+	 * @return
+	 */
+	List<String> getOrgIdsByCurrentUser(String userId);
 }

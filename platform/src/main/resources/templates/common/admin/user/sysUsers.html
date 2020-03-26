@@ -1,20 +1,19 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
-    <el-form ref="formSearchSysUser" :model="formSearchSysUser" label-width="58px" size="small">
-        <el-form-item label="关键字">
-            <el-input v-model="formSearchSysUser.key" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
-            <el-button @click="searchForm('formSearchSysUser')" type="primary" plain style="float: right" size="mini" icon="el-icon-search">检索</el-button>
-        </el-form-item>
-    </el-form>
+        	<el-input placeholder="关键字"  class="input-with-select" size="mini" style="width: 30%" v-model="formSearchSysUser.key">
+					    <el-button slot="append" icon="el-icon-search" @click="searchForm('formSearchSysUser')"></el-button>
+					 </el-input>
+        	<el-button plain @click="edit('sysUser','','',true)" size="mini" icon="el-icon-plus" style="float: right">新增</el-button>
     <!--
     <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
     -->
-    <el-button plain @click="edit('sysUser','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
+    
     <div style="margin-top: 20px">
         <el-table size="small"
                 :data="sysUsers"
                 border
+                v-loading="sysUserLoading"
                 style="width: 100%">
             <el-table-column
                     align="center"
@@ -94,7 +93,7 @@
             </el-pagination>
         </div>
     </div>
-    <el-dialog title="系统用户" :visible.sync="dialogShow.sysUser" lock-scroll="true" width="800px">
+    <el-dialog title="系统用户" :visible.sync="dialogShow.sysUser" lock-scroll="true" >
         <el-card shadow="never" style="width: 100%;" type="card">
             <el-form ref="formSysUser" :rules="rules" :model="formSysUser" label-width="100px" size="small">
                 <input type="hidden" name="name" style="display:none;" autocomplete="off"/>
@@ -103,18 +102,16 @@
                 <input type="password" name="oldPassword" style="display:none;" autocomplete="off"/>
                 <el-form-item label="登录名" prop="name">
                     <el-input v-model="formSysUser.name" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="登录名"></el-input>
-                    <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">登录名</div><i class="el-icon-question"></i></el-tooltip>
+                    
                 </el-form-item>
                 <el-form-item label="姓名" prop="nickname">
                     <el-input v-model="formSysUser.nickname" size="small" auto-complete="new-password" style="width: 300px;" maxlength="512" placeholder="姓名"></el-input>
-                    <el-tooltip class="item" effect="dark" placement="top">
-                        <div slot="content">姓名</div><i class="el-icon-question"></i></el-tooltip>
+                    
                 </el-form-item>
                 <el-form-item label="党组织" prop="orgId"  size="small" style="width: 100%;">
                             <el-cascader
 								    v-model="formSysUser.orgId"
-								    :options="upperOrg"
+								    :options="userUpperOrg"
 								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true,multiple: true}"
 								    style="width: 300px;"
 								    size="medium"
