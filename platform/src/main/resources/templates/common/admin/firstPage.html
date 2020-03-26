@@ -67,10 +67,10 @@
 				<el-row ><div><span class="firstPage-briefs-items_title">消息通知</span></div></el-row>
 				<div v-for="item in currUserReceiverNewsRecords" class="firstPage-briefs-item">
 					<div class="firstPage-briefs-item_title">
-						<a class="firstPage-briefs_item_title-a" @click="handleNoticeView(item.recordId)">{{item.title || ''}}</a>
+						<a class="firstPage-briefs_item_title-a" @click="handleNoticeView(item.recordId)">{{item.newsTitle || ''}}</a>
 					</div>
 					<div class="firstPage-briefs-item_time">
-						{{item.recordTime ? item.recordTime.substr(0, 10) : '--'}}
+						{{item.sendTime ? item.sendTime.substr(0, 10) : '--'}}
 					</div>
 				</div>
 			</el-row>
@@ -92,9 +92,9 @@
         <div class="firstPage-briefs-brief_dialog-content" v-html="(currBrief.content || '')">
         </div>
     </el-dialog>
-	<el-dialog :title="(currNotice.title || '')" :visible.sync="dialogShow.viewNotice" lock-scroll="true" width="30%"
+	<el-dialog :title="(currNotice.newsTitle || '')" :visible.sync="dialogShow.viewNotice" lock-scroll="true" width="30%"
 			   center="true" class="firstPage-briefs-brief_dialog">
-		<div class="firstPage-briefs-brief_dialog-content" v-html="(currNotice.content || '')">
+		<div class="firstPage-briefs-brief_dialog-content" v-html="(currNotice.newsContent || '')">
 		</div>
 	</el-dialog>
 </div>

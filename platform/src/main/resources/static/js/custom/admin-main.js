@@ -3776,12 +3776,15 @@ new Vue({
         getCurrUserReceivedNewestNews() {
             let that = this;
             that.scrollBoxContent = '';
-            axios.get("/api/news/getCurrUserReceivedNewestNews")
+            axios.get("/api/news/getCurrUserNews", {params:{
+                    pageNum: 1,
+                    pageSize: 10
+                }})
                 .then(function(response){/*成功*/
                     let data = response.data;
-                    console.log('getCurrUserReceivedNewestNews.data ', data)
+                    //console.log('getCurrUserReceivedNewestNews.data ', data.data.list)
                     if(parseInt(data.code) === 200) {
-                        let _newsArr = data.data || [];
+                        let _newsArr = data.data.list || [];
                         that.currUserReceiverNewsRecords = _newsArr;
                         let _content = '';
                         for (let i = 0; i < _newsArr.length; i ++) {
@@ -3801,12 +3804,15 @@ new Vue({
                 });
             var timer = setInterval(function () {
                 that.scrollBoxContent = '';
-                axios.get("/api/news/getCurrUserReceivedNewestNews")
+                axios.get("/api/news/getCurrUserNews", {params:{
+                        pageNum: 1,
+                        pageSize: 10
+                    }})
                     .then(function(response){/*成功*/
                         let data = response.data;
-                        console.log('getCurrUserReceivedNewestNews.data ', data)
+                        //console.log('getCurrUserReceivedNewestNews.data ', data.data.list)
                         if(parseInt(data.code) === 200) {
-                            let _newsArr = data.data || [];
+                            let _newsArr = data.data.list || [];
                             that.currUserReceiverNewsRecords = _newsArr;
                             let _content = '';
                             for (let i = 0; i < _newsArr.length; i ++) {
@@ -4175,8 +4181,8 @@ new Vue({
                 }})
                 .then(function(response){/!*成功*!/
                     if(parseInt(response.status) == 200 ) {
-                        that.memberUsers = response.data.data.list;
-                        that.pager.user.totalCount = response.data.data.total;
+                        that.memberUsers = response.data.data.list ? response.data.data.list : []
+                        that.pager.user.totalCount = response.data.data.total || 0;
                     }
                 })
                 .catch(function(err){/!*异常*!/
@@ -4950,6 +4956,17 @@ new Vue({
                     if ((__notice.recordId || '') === _recordId) {
                         that.currNotice = __notice;
                         that.dialogShow.viewNotice = !that.dialogShow.viewNotice;
+                        let params = new URLSearchParams();
+                        params.append('recordId', _recordId);
+                        axios.post("/api/news/viewNews", params)
+                            .then(function(response){
+                                if(parseInt(response.data.code) === 200){
+                                    //that.searchForm('formSearchNews');
+                                    console.log('查看成功。。。', _recordId);
+                                }
+                            }).catch(function(err){
+                            console.warn(err);
+                        });
                         break;
                     }
                 }
@@ -6033,7 +6050,7 @@ new Vue({
         //that.getAllSysUsers();
         that.getAllSysUsersMap();
         that.getCurrUserReceivedNewestNews();
-        that.loadMemberUsers('','',0, that.pager.user.pageSize);
+        //that.loadMemberUsers('','',0, that.pager.user.pageSize);
         that.ueditors.article = UE.getEditor('articleEditor', that.ueditorConfig);
         that.ueditors.article.addListener("ready", function () {
             that.ueditors.article.setContent('', false); // 确保UE加载完成后，放入内容
