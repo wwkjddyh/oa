@@ -4472,6 +4472,21 @@ new Vue({
         		}
         	});
         },
+        getAreaTreeDict(){
+        	let that = this;
+        	axios.get("/api/treeDict/getTreeDictByType",{params:{
+        		treeType:'4'
+            }}).then(function(response){
+        		if(parseInt(response.status) == 200 ){
+        			for(let i =0 ; i <response.data.result.length;i++){
+        				response.data.result[i].value=response.data.result[i].nodeId;
+        				response.data.result[i].label=response.data.result[i].nodeName;
+        			}
+        			let parentArr = response.data.result.filter(l => l.upperNode === null);
+        			that.belongArea = that.getTreeDictData(response.data.result, parentArr);
+        		}
+        	});
+        },
         getRewardTreeDict(){
         	let that = this;
         	axios.get("/api/treeDict/getTreeDictByType",{params:{
@@ -5934,6 +5949,7 @@ new Vue({
         //this.def_menu_id = 'articles';
         this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 10);
         this.getOrgIdByUserId();
+        this.getAreaTreeDict();
     },
     beforeMount: function() {
         // this.getCurrentUserInfo();
