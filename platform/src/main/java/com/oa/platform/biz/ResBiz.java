@@ -6,6 +6,7 @@ import com.oa.platform.common.Constants;
 import com.oa.platform.entity.Res;
 import com.oa.platform.entity.ResDl;
 import com.oa.platform.service.ResService;
+import com.oa.platform.service.UserService;
 import com.oa.platform.util.DateUtil;
 import com.oa.platform.util.StringUtil;
 import com.oa.platform.util.ThreadUtil;
@@ -25,6 +26,9 @@ public class ResBiz extends BaseBiz {
 
     @Autowired
     private ResService resService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 保存或更新资源
@@ -199,7 +203,12 @@ public class ResBiz extends BaseBiz {
             }
             else {
                 //res.setAnnouncerId(StringUtil.trim(announcerId));
-                List<String> announcerIds = Lists.newArrayList(this.getUserIdOfSecurity());
+//                List<String> announcerIds = Lists.newArrayList(this.getUserIdOfSecurity());
+                String currUserId = this.getUserIdOfSecurity();
+                List<String> announcerIds = userService.getUsersByCurrentUser(currUserId);
+                if (announcerIds == null || announcerIds.isEmpty()) {
+                    announcerIds = Lists.newArrayList(currUserId);
+                }
                 res.setAnnouncerIds(announcerIds);
             }
             PageInfo<Res> pageInfo = resService.search(res, pageNum, pageSize);
