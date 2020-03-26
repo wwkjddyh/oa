@@ -328,7 +328,7 @@ new Vue({
         isCollapse: false,
         headerTitle: '智慧党建',
         menuCollapseDivClass: 'menu-collapse-div',
-        menuCollapseIcon: 'el-icon-caret-left',
+        menuCollapseIcon: 'el-icon-s-fold',
         activeTabName: 'first',
         cronTabActiveName: 'second',    /*cron表达式tabs设置*/
         showContent: 'firstPage',
@@ -5848,13 +5848,13 @@ new Vue({
             if (that.isCollapse) {
                 that.isCollapse = !that.isCollapse;
                 that.menuCollapseDivClass = 'menu-collapse-div';
-                that.menuCollapseIcon = 'el-icon-caret-left';
+                that.menuCollapseIcon = 'el-icon-s-fold';
                 console.log('that.menuCollapseDivClass', that.menuCollapseDivClass, that.menuCollapseIcon);
             }
             else {
                 that.isCollapse = !that.isCollapse;
                 that.menuCollapseDivClass = 'menu-collapse-div2';
-                that.menuCollapseIcon = 'el-icon-caret-right';
+                that.menuCollapseIcon = 'el-icon-s-unfold';
                 console.log('that.menuCollapseDivClass', that.menuCollapseDivClass, that.menuCollapseIcon);
             }
             that.$forceUpdate();

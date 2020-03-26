@@ -239,15 +239,15 @@
 
 .menu-collapse-div {
     position: absolute;
-    top: 50%;
-    left: 182px;
+    bottom: 20px;
+    left: 180px;
     z-index: 100;
 }
 
 .menu-collapse-div2 {
     position: absolute;
-    top: 50%;
-    left: 59px;
+    bottom: 20px;
+    left: 49px;
     z-index: 100;
 }
 
