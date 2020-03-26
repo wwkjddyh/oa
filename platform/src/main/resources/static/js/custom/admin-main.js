@@ -5844,18 +5844,18 @@ new Vue({
          */
         handleMenuCollapse(e) {
             let that = this;
-            console.log('that.isCollapse', that.isCollapse);
+            //console.log('that.isCollapse', that.isCollapse);
             if (that.isCollapse) {
                 that.isCollapse = !that.isCollapse;
-                that.menuCollapseDivClass = 'menu-collapse-div';
                 that.menuCollapseIcon = 'el-icon-s-fold';
-                console.log('that.menuCollapseDivClass', that.menuCollapseDivClass, that.menuCollapseIcon);
+                that.menuCollapseDivClass = 'menu-collapse-div';
+                //console.log('that.menuCollapseDivClass', that.menuCollapseDivClass, that.menuCollapseIcon);
             }
             else {
                 that.isCollapse = !that.isCollapse;
-                that.menuCollapseDivClass = 'menu-collapse-div2';
                 that.menuCollapseIcon = 'el-icon-s-unfold';
-                console.log('that.menuCollapseDivClass', that.menuCollapseDivClass, that.menuCollapseIcon);
+                that.menuCollapseDivClass = 'menu-collapse-div2';
+                //console.log('that.menuCollapseDivClass', that.menuCollapseDivClass, that.menuCollapseIcon);
             }
             that.$forceUpdate();
         },

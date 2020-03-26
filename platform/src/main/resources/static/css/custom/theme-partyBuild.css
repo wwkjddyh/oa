@@ -249,12 +249,24 @@
     bottom: 20px;
     left: 49px;
     z-index: 100;
+    animation: my-collapse-css 300ms;
+    /*animation-delay: 200ms;*/
+    /*-webkit-animation-delay: 200ms;*/
+    /*transition-delay: 300ms;*/
+    /*-webkit-transition-delay: 300ms;*/
+    /*-o-transition-delay: 300ms;*/
+    /*-moz-transition-delay: 300ms;*/
+}
+
+@keyframes my-collapse-css{
+    from {left: 180px}
+    to {left: 49px}
 }
 
 .menu-collapse-icon-inner {
-    cursor: pointer;
-    font-size: 30px;
-    color: #c32c28;
+cursor: pointer;
+font-size: 30px;
+color: #c32c28;
 }
 
 
