@@ -46,8 +46,8 @@
     height: 60px;
     text-align: left;
     font-size: 12px;
-    background-color: #ccaf71;
-    background: linear-gradient(to right, #AE0000, #ff7575);
+    /*background-color: #ccaf71;*/
+    /*background: linear-gradient(to right, #AE0000, #ff7575);*/
     background: url(/images/header.jpg);
     background-size: 100% 100%;text-align: center
 }
