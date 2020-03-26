@@ -295,6 +295,9 @@ new Vue({
                                 that.initPieChart(_chartId, _chartData.type, _chartData.title, _chartData.subtitle, _chartData.xAxis,
                                     _chartData.yAxis, _chartData.tooltip, {}, _chartData.tooltip, _chartData.credits, _chartData.series);
                             }
+                            if (i == 1) {
+                                that.initCloumnChart(_chartId, {}, {});
+                            }
                             else {
                                 that.initBarChart(_chartId, _chartData.type, _chartData.title, _chartData.subtitle, _chartData.xAxis,
                                     _chartData.yAxis, _chartData.tooltip, {}, _chartData.tooltip, _chartData.credits, _chartData.series);
@@ -340,6 +343,10 @@ new Vue({
         scrollBoxContent: '',
         currentArticleFormTitle: '文章',
         currentChartId : CurrentChartId,
+        partyMemberStat: {
+            '男': 50,
+            '女': 30,
+        },
         charts: [
             {
                 id: 'bigDataChartId',
@@ -362,12 +369,12 @@ new Vue({
             {
                 id: 'bigDataChartId',
                 type: 'pie',
-                title: '2018年一月浏览器市场份额',
-                subtitle: '来源: <a href="https://en.wikipedia.org/wiki/World_population">维基百科</a>',
+                title: '党员性别统计',
+                subtitle: 'XXXX党组织',
                 xAxis: {},
                 yAxis: {},
                 tooltip: {
-                    valueSuffix: ' 百万'
+                    valueSuffix: '%'
                 },
                 plotOptions: {
                     bar: {
@@ -384,62 +391,39 @@ new Vue({
                     y: 80,
                     floating: true,
                     borderWidth: 1,
-                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#ccaf71',
                     shadow: true
                 },
                 credits: {
                     enabled: false
                 },
                 series: [{
-                    name: 'Brands',
+                    name: '占比',
                     colorByPoint: true,
                     data: [{
-                        name: 'Chrome',
+                        name: '男',
                         y: 61.41,
-                        sliced: true,
-                        selected: true
+                        total: 30
                     }, {
-                        name: 'Internet Explorer',
-                        y: 11.84
-                    }, {
-                        name: 'Firefox',
-                        y: 10.85
-                    }, {
-                        name: 'Edge',
-                        y: 4.67
-                    }, {
-                        name: 'Safari',
-                        y: 4.18
-                    }, {
-                        name: 'Sogou Explorer',
-                        y: 1.64
-                    }, {
-                        name: 'Opera',
-                        y: 1.6
-                    }, {
-                        name: 'QQ',
-                        y: 1.2
-                    }, {
-                        name: 'Other',
-                        y: 2.61
+                        name: '女',
+                        y: 38.59,
+                        total: 12
                     }]
                 }],
             },
             {
                 id: 'bigDataChartId2',
-                type: 'bar',
-                title: '分地区的世界历史人口',
-                subtitle: '来源: <a href="https://en.wikipedia.org/wiki/World_population">维基百科</a>',
+                type: 'column',
+                title: '年龄图',
+                subtitle: 'XXX党组织',
                 xAxis: {
-                    categories: ['非洲', '美洲', '亚洲', '欧洲', '大洋洲'],
-                    title: {
-                        text: null
-                    }
+                    categories: ['20-30', '30-40', '40-50', '50-60', '60以上'],
+                    crosshair: true
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: '人口 (百万)',
+                        text: '共计 (个)人',
                         align: 'high'
                     },
                     labels: {
@@ -447,41 +431,43 @@ new Vue({
                     }
                 },
                 tooltip: {
-                    valueSuffix: ' 百万'
+                    valueSuffix: ' 个'
                 },
                 plotOptions: {
-                    bar: {
-                        dataLabels: {
-                            enabled: true
-                        }
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
                     }
                 },
                 legend: {
-                    layout: 'vertical',
+                    layout: 'horizontal',
                     align: 'right',
                     verticalAlign: 'top',
                     x: -40,
                     y: 80,
                     floating: true,
                     borderWidth: 1,
-                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#ccaf71',
                     shadow: true
                 },
                 credits: {
                     enabled: false
                 },
                 series: [{
-                    name: '1800年',
-                    data: [107, 31, 635, 203, 2]
+                    name: '20-30',
+                    data: [107]
                 }, {
-                    name: '1900年',
-                    data: [133, 156, 947, 408, 6]
+                    name: '30-40',
+                    data: [133]
                 }, {
-                    name: '2000年',
-                    data: [814, 841, 3714, 727, 31]
+                    name: '40-50',
+                    data: [814]
                 }, {
-                    name: '2016年',
-                    data: [1216, 1001, 4436, 738, 40]
+                    name: '50-60',
+                    data: [1216]
+                }, {
+                    name: '60以上',
+                    data: [1216]
                 }],
             },
             {
@@ -582,7 +568,7 @@ new Vue({
                     y: 80,
                     floating: true,
                     borderWidth: 1,
-                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#ccaf71',
                     shadow: true
                 },
                 credits: {
@@ -5682,15 +5668,14 @@ new Vue({
                     plotBackgroundColor: null,
                     plotBorderWidth: null,
                     plotShadow: false,
-                    type: type
+                    type: 'pie'
                 },
                 title: {
-                    text: title
+                    text: 'Browser market shares in January, 2018'
                 },
                 tooltip: {
                     pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
                 },
-                credits: credits,
                 accessibility: {
                     point: {
                         valueSuffix: '%'
@@ -5706,8 +5691,35 @@ new Vue({
                         }
                     }
                 },
-                series: series
+                series: [{
+                    name: '占比',
+                    colorByPoint: true,
+                    data: [{
+                        name: '男',
+                        y: 61.41,
+                        sliced: true,
+                        selected: true
+                    }, {
+                        name: '女',
+                        y: 11.84
+                    }]
+                }]
             };
+            // Highcharts.setOptions({
+            //     colors: Highcharts.map(Highcharts.getOptions().colors, function(color) {
+            //         return {
+            //             radialGradient: {
+            //                 cx: 0.5,
+            //                 cy: 0.3,
+            //                 r: 0.7
+            //             },
+            //             stops: [
+            //                 [0, color],
+            //                 [1, Highcharts.color(color).brighten(-0.3).get('rgb')] // darken
+            //             ]
+            //         };
+            //     })
+            // });
             let tChart = Highcharts.chart(chartId, options);
             let chartObj = that.charts.find(function(m){ return m.id == chartId});
             if (chartObj) {
@@ -5717,7 +5729,67 @@ new Vue({
         },
 
         /**
-         * 构建柱状图图表
+         * 构建柱状图
+         */
+        initCloumnChart(chartId, categories, series) {
+            let that = this;
+            let options = {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: '年龄图'
+                },
+                subtitle: {
+                    text: 'XXX党委'
+                },
+                colors: ['#C79D6D', '#B5927B', '#CE9B84', '#B7A58C', '#C7A58C'],
+                xAxis: {
+                    categories: ['20-30', '30-40', '40-50', '50-60', '60以上'],
+                    crosshair: true
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: '人数'
+                    }
+                },
+                tooltip: {
+                    valueSuffix: ' 人'
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                credits: {
+                    enabled: false
+                },
+                series: [{
+                    name: '共',
+                    colorByPoint: true,
+                    data: [
+                        ['20-30', 10],
+                        ['30-40', 20],
+                        ['40-50', 50],
+                        ['50-60', 55],
+                        ['60以上', 20]
+                    ],
+                    showInLegend: false
+                }]
+            };
+            //Highcharts.chart(chartId, options);
+            let tChart = Highcharts.chart(chartId, options);
+            let chartObj = that.charts.find(function(m){ return m.id == chartId});
+            if (chartObj) {
+                chartObj.chart = tChart;
+                return false;
+            }
+        },
+
+        /**
+         * 构建横向状图图表
          */
         initBarChart(chartId, type, title, subtitle, xAxis, yAxis, tooltip, categories, legend, credits, series) {
             let that = this;
