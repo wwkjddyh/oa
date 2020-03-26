@@ -8,6 +8,11 @@
     <META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
     <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
     <META HTTP-EQUIV="Expires" CONTENT="0"/>
+    <script>
+        /*头部背景图片预加载*/
+        let headerBgImg = new Image();
+        headerBgImg.src = "/images/header.jpg";
+    </script>
     <link rel="stylesheet" href="/css/element-ui/index.css" th:href="@{~/css/element-ui/index.css}"/>
     <link rel="stylesheet" href="/css/custom/sys-style.css" th:href="@{~/css/custom/sys-style.css}"/>
     <link rel="stylesheet" href="/css/custom/theme-partyBuild.css" th:href="@{~/css/custom/theme-partyBuild.css}"/>
