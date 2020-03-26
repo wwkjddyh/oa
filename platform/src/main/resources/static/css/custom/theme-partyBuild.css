@@ -106,7 +106,7 @@
 .el-button.is-plain:focus,.el-button.is-plain:hover{background:#FFF;border-color:#ccaf71;color:#ccaf71}
 .el-button.is-active,.el-button.is-plain:active{color:#ccaf71;border-color:#ccaf71}
 .el-button.is-plain:active{background:#FFF;outline:0}
-.el-button.is-disabled,.el-button.is-disabled:focus,.el-button.is-disabled:hover{color:#C0C4CC;cursor:not-allowed;background-image:none;background-color:#FFF;border-color:#EBEEF5}
+.el-button.is-disabled,.el-button.is-disabled:focus,.el-button.is-disabled:hover{color:#ccaf71;cursor:not-allowed;background-image:none;background-color:#FFF;border-color:#EBEEF5}
 .el-button.is-disabled.el-button--text{background-color:transparent}
 .el-button.is-disabled.is-plain,.el-button.is-disabled.is-plain:focus,.el-button.is-disabled.is-plain:hover{background-color:#FFF;border-color:#EBEEF5;color:#C0C4CC}
 .el-button.is-loading{position:relative;pointer-events:none}
