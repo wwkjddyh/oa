@@ -48,6 +48,8 @@
     font-size: 12px;
     background-color: #ccaf71;
     background: linear-gradient(to right, #AE0000, #ff7575);
+    background: url(/images/header.jpg);
+    background-size: 100% 100%;text-align: center
 }
 
 /**
@@ -56,10 +58,6 @@
 .main-el-container {
     height: calc(100vh - 58px);
     border: 0;
-}
-.main-el-container_el-aside {
-    width: auto;
-    overflow-x: hidden ;
 }
 
 .el-tabs__item .el-icon-close:before{-webkit-transform:scale(.9);transform:scale(.9);display:inline-block}
