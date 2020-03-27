@@ -168,6 +168,12 @@
             OR UPPER(user_org_name) LIKE CONCAT('%',UPPER(#{key}),'%')
         )
       </if>
+      <if test="userIds != null and userIds.size() > 0">
+        AND user_id IN
+        <foreach collection="userIds" index="index" item="itemId" open="(" separator="," close=")">
+          #{itemId}
+        </foreach>
+      </if>
     </trim>
     ORDER BY t.record_time DESC
   </select>

@@ -1,9 +1,11 @@
 package com.oa.platform.biz;
 
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 import com.oa.platform.common.Constants;
 import com.oa.platform.entity.PartyDues;
 import com.oa.platform.service.PartyDuesService;
+import com.oa.platform.service.UserService;
 import com.oa.platform.util.DateUtil;
 import com.oa.platform.util.StringUtil;
 import com.oa.platform.util.ThreadUtil;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +27,9 @@ public class PartyDuesBiz extends BaseBiz {
 
     @Autowired
     private PartyDuesService partyDuesService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 是否重复
@@ -184,7 +190,21 @@ public class PartyDuesBiz extends BaseBiz {
         ret = null;
         try {
             PartyDues dues = new PartyDues();
-            dues.setUserId(userId);
+//            dues.setUserId(userId);
+            userId = StringUtil.trim(userId);
+            List<String> userIds = new ArrayList<>(0);
+            if (!"".equals(userId)) {
+                userIds = userService.getUsersByCurrentUser(userId);
+                if (userIds == null || userIds.isEmpty()) {
+                    userIds = Lists.newArrayList(userId);
+                }
+                else {
+                    if (!userIds.contains(userId)) {
+                        userIds.add(userId);
+                    }
+                }
+            }
+            dues.setUserIds(userIds);
             dues.setKey(StringUtil.trim(key));
             dues.setRecordFlag(Constants.INT_NORMAL);
             PageInfo<PartyDues> pageInfo = partyDuesService.search(dues, pageNum, pageSize);

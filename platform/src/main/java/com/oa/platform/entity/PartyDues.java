@@ -2,6 +2,7 @@ package com.oa.platform.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 党费(缴纳)信息
@@ -89,6 +90,11 @@ public class PartyDues implements Serializable {
      * 更新者姓名
      */
     private String updatorName;
+
+    /**
+     * 用户ID列表(查询用)
+     */
+    private List<String> userIds;
 
     public String getRecordId() {
         return recordId;
@@ -216,6 +222,14 @@ public class PartyDues implements Serializable {
 
     public void setPayPeriod(String payPeriod) {
         this.payPeriod = payPeriod;
+    }
+
+    public List<String> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<String> userIds) {
+        this.userIds = userIds;
     }
 
     public PartyDues() {
