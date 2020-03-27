@@ -292,16 +292,20 @@ new Vue({
                             that.currentChartId = _chartId;
                             console.log('that.currentChartId', that.currentChartId);
                             if (i == 0) {
-                                that.initPieChart(_chartId, _chartData.type, _chartData.title, _chartData.subtitle, _chartData.xAxis,
-                                    _chartData.yAxis, _chartData.tooltip, {}, _chartData.tooltip, _chartData.credits, _chartData.series);
-                            }
-                            if (i == 1) {
-                                that.initCloumnChart(_chartId, {}, {});
+                                // that.initPieChart(_chartId, _chartData.type, _chartData.title, _chartData.subtitle, _chartData.xAxis,
+                                //     _chartData.yAxis, _chartData.tooltip, {}, _chartData.tooltip, _chartData.credits, _chartData.series);
+                                that.initEChartsPieChart(_chartId);
                             }
                             else {
-                                that.initBarChart(_chartId, _chartData.type, _chartData.title, _chartData.subtitle, _chartData.xAxis,
-                                    _chartData.yAxis, _chartData.tooltip, {}, _chartData.tooltip, _chartData.credits, _chartData.series);
+                                that.initEChartsCloumnChart(_chartId);
                             }
+                            // if (i == 1) {
+                            //     that.initCloumnChart(_chartId, {}, {});
+                            // }
+                            // else {
+                            //     that.initBarChart(_chartId, _chartData.type, _chartData.title, _chartData.subtitle, _chartData.xAxis,
+                            //         _chartData.yAxis, _chartData.tooltip, {}, _chartData.tooltip, _chartData.credits, _chartData.series);
+                            // }
                         }
                     }
                     break;
@@ -5676,74 +5680,214 @@ new Vue({
         },
 
         /**
-         * 构建饼图
+         * 基于ECharts的图表
+         * @param chartId 图表显示位置的id
          */
-        initPieChart(chartId, type, title, subtitle, xAxis, yAxis, tooltip, categories, legend, credits, series) {
+        initEChartsPieChart(chartId) {
+            console.log('initEChartsPieChart', chartId);
             let that = this;
-            let options = {
-                chart: {
-                    plotBackgroundColor: null,
-                    plotBorderWidth: null,
-                    plotShadow: false,
-                    type: 'pie'
+            let option = {
+                animation: 'auto',
+                animationDuration: () => 0,
+                title : {
+                    text: '性别',
+                    subtext: 'XX党支部',
+                    x:'center'
                 },
-                title: {
-                    text: 'Browser market shares in January, 2018'
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c}人 (占比{d}%)"
                 },
-                tooltip: {
-                    pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ['直接访问','邮件营销']
                 },
-                accessibility: {
-                    point: {
-                        valueSuffix: '%'
-                    }
-                },
-                plotOptions: {
-                    pie: {
-                        allowPointSelect: true,
-                        cursor: 'pointer',
-                        dataLabels: {
-                            enabled: true,
-                            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                series : [
+                    {
+                        name: '汇总',
+                        type: 'pie',
+                        radius : '55%',
+                        center: ['50%', '60%'],
+                        data:[
+                            {value:30, name:'男'},
+                            {value:25, name:'女'}
+                        ],
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
                         }
                     }
-                },
-                series: [{
-                    name: '占比',
-                    colorByPoint: true,
-                    data: [{
-                        name: '男',
-                        y: 61.41,
-                        sliced: true,
-                        selected: true
-                    }, {
-                        name: '女',
-                        y: 11.84
-                    }]
-                }]
+                ]
             };
-            // Highcharts.setOptions({
-            //     colors: Highcharts.map(Highcharts.getOptions().colors, function(color) {
-            //         return {
-            //             radialGradient: {
-            //                 cx: 0.5,
-            //                 cy: 0.3,
-            //                 r: 0.7
-            //             },
-            //             stops: [
-            //                 [0, color],
-            //                 [1, Highcharts.color(color).brighten(-0.3).get('rgb')] // darken
-            //             ]
-            //         };
-            //     })
-            // });
-            let tChart = Highcharts.chart(chartId, options);
-            let chartObj = that.charts.find(function(m){ return m.id == chartId});
-            if (chartObj) {
-                chartObj.chart = tChart;
-                return false;
+            try {
+                let _charObj = document.getElementById(chartId);
+                console.log('_charObj', _charObj);
+                let myChart = echarts.init(_charObj);
+                myChart.setOption(option);
+                console.log('饼图初始化完成....');
+            } catch (e) {
+                console.error(e)
             }
         },
+
+        initEChartsCloumnChart(chartId) {
+            let posList = [
+                'left', 'right', 'top', 'bottom',
+                'inside',
+                'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+                'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+            ];
+            let app = {};
+            app.configParameters = {
+                rotate: {
+                    min: -90,
+                    max: 90
+                },
+                align: {
+                    options: {
+                        left: 'left',
+                        center: 'center',
+                        right: 'right'
+                    }
+                },
+                verticalAlign: {
+                    options: {
+                        top: 'top',
+                        middle: 'middle',
+                        bottom: 'bottom'
+                    }
+                },
+                position: {
+                    options: echarts.util.reduce(posList, function (map, pos) {
+                        map[pos] = pos;
+                        return map;
+                    }, {})
+                },
+                distance: {
+                    min: 0,
+                    max: 100
+                }
+            };
+
+            app.config = {
+                rotate: 90,
+                align: 'left',
+                verticalAlign: 'middle',
+                position: 'insideBottom',
+                distance: 15,
+                onChange: function () {
+                    let labelOption = {
+                        normal: {
+                            rotate: app.config.rotate,
+                            align: app.config.align,
+                            verticalAlign: app.config.verticalAlign,
+                            position: app.config.position,
+                            distance: app.config.distance
+                        }
+                    };
+                    myChart.setOption({
+                        series: [{
+                            label: labelOption
+                        }, {
+                            label: labelOption
+                        }, {
+                            label: labelOption
+                        }, {
+                            label: labelOption
+                        }]
+                    });
+                }
+            };
+
+
+            let labelOption = {
+                show: true,
+                position: app.config.position,
+                distance: app.config.distance,
+                align: app.config.align,
+                verticalAlign: app.config.verticalAlign,
+                rotate: app.config.rotate,
+                formatter: '{c}  {name|{a}}',
+                fontSize: 16,
+                rich: {
+                    name: {
+                        textBorderColor: '#fff'
+                    }
+                }
+            };
+
+            let barOption3 = {
+                color: ['#003366', '#006699', '#4cabce', '#e5323e'],
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    data: ['Forest', 'Steppe', 'Desert', 'Wetland']
+                },
+                toolbox: {
+                    show: true,
+                    orient: 'vertical',
+                    left: 'right',
+                    top: 'center',
+                    feature: {
+                        mark: {show: true},
+                        dataView: {show: true, readOnly: false},
+                        magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        axisTick: {show: false},
+                        data: ['2012', '2013', '2014', '2015', '2016']
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        name: 'Forest',
+                        type: 'bar',
+                        barGap: 0,
+                        label: labelOption,
+                        data: [320, 332, 301, 334, 390]
+                    },
+                    {
+                        name: 'Steppe',
+                        type: 'bar',
+                        label: labelOption,
+                        data: [220, 182, 191, 234, 290]
+                    },
+                    {
+                        name: 'Desert',
+                        type: 'bar',
+                        label: labelOption,
+                        data: [150, 232, 201, 154, 190]
+                    },
+                    {
+                        name: 'Wetland',
+                        type: 'bar',
+                        label: labelOption,
+                        data: [98, 77, 101, 99, 40]
+                    }
+                ]
+            };
+            let myChart3 = echarts.init(document.getElementById(chartId));
+            myChart3.setOption(barOption3);
+        },
+
 
         /**
          * 构建柱状图
@@ -6058,7 +6202,7 @@ new Vue({
         that.ueditors.article.addListener('blur', function(editor){
             that.formArticle.content = that.ueditors.article.getContent();
         });
-        
+        //that.initEChartsPieChart('');
 
     },
     destroyed: function() {

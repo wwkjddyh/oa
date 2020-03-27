@@ -3,18 +3,18 @@
 <div th:fragment="content">
     <div style="width: 100%;height: auto;">
         <div style="display: flex;">
-            <div id="bigDataChartId" style="width: 50%; height: auto;padding: 10px;"></div>
+            <div id="bigDataChartId" style="width: 500px; height: 400px;padding: 10px;"></div>
             <div style="margin-top: 10px;display: none">
                 <el-button plain @click="redrawBarChart('chartId')" size="mini" icon="el-icon-refresh">刷新</el-button>
                 <el-button plain @click="handlePrintChart('chartId')" size="mini" icon="el-icon-printer">打印</el-button>
                 <el-button plain @click="handleExportChartLocal('chartId')" size="mini" icon="el-icon-download">下载</el-button>
                 <el-button plain @click="handleExportChart('chartId')" size="mini" icon="el-icon-share">导出</el-button>
             </div>
-            <div id="bigDataChartId2" style="width: 50%; height: auto;padding: 10px;"></div>
+            <div id="bigDataChartId2" style="width: 500px; height: 400px;padding: 10px;"></div>
         </div>
         <div style="display: flex;">
-            <div id="bigDataChartId3" style="width: 50%; height: auto;padding: 10px;"></div>
-            <div id="bigDataChartId4" style="width: 50%; height: auto;padding: 10px;"></div>
+            <div id="bigDataChartId3" style="width: 500px; height: 400px;padding: 10px;"></div>
+            <div id="bigDataChartId4" style="width: 500px; height: 400px;padding: 10px;"></div>
         </div>
     </div>
 </div>
