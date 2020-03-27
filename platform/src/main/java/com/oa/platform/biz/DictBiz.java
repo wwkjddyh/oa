@@ -10,6 +10,7 @@ import com.oa.platform.util.ThreadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -210,6 +211,7 @@ public class DictBiz extends BaseBiz {
             Date minDate = DateUtil.addYear(currDate, -5);
             Date maxDate = DateUtil.addYear(currDate, 2);
             List<Map<String, String>> yearMonths = DateUtil.getMonthBetweens(minDate, maxDate);
+            Collections.reverse(yearMonths);
             ret = this.getSuccessVo("", yearMonths);
         } catch (Exception e) {
             loggerError(ThreadUtil.getCurrentFullMethodName(), e);
