@@ -209,6 +209,11 @@ public class ResBiz extends BaseBiz {
                 if (announcerIds == null || announcerIds.isEmpty()) {
                     announcerIds = Lists.newArrayList(currUserId);
                 }
+                else {
+                    if (!announcerIds.contains(currUserId)) {
+                        announcerIds.add(currUserId);
+                    }
+                }
                 res.setAnnouncerIds(announcerIds);
             }
             PageInfo<Res> pageInfo = resService.search(res, pageNum, pageSize);
