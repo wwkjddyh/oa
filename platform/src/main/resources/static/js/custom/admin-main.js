@@ -288,7 +288,152 @@ new Vue({
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
                 case 'bigData':     // 大数据
-                    console.log('that.chartsData', that.chartsData)
+                    //that.getCurrUserEchartsData();
+                    let sexChart = {
+                        id: 'bigDataChartId',
+                        title: '',
+                        subtitle: '',
+                        legendData: [],
+                        seriesData: [],
+                    };
+                    if (that.currUserEchartsData['sex']) {
+                        let _tChartData = that.currUserEchartsData['sex'];
+                        console.log('_tChartData', _tChartData);
+                        sexChart.title = _tChartData.title || '';
+                        let _subtitle = '';
+                        let _tSubTitleArr = _tChartData.legend || [];
+                        if (_tSubTitleArr.length > 0) {
+                            _subtitle = _tSubTitleArr[0];
+                        }
+                        sexChart.subtitle = _subtitle;
+                        let _legendArr = _tChartData.axis || [];
+                        sexChart.legendData = _legendArr;
+                        let _seriesData = [];
+                        if (_tChartData.data) {
+                            let _seriesArr = _tChartData.data || [];
+                            if (_seriesArr.length > 0) {
+                                let _sData = _seriesArr[0].data || {};
+                                _seriesData = [
+                                    {value: parseInt(_sData[0]), name: _legendArr[0]},
+                                    {value: parseInt(_sData[1]), name: _legendArr[1]}
+                                ];
+                            }
+                        }
+                        sexChart.seriesData = _seriesData;
+                    }
+                    let ageChart = {
+                        id: 'bigDataChartId2',
+                        title: '',
+                        subtitle: '',
+                        legendData: [],
+                        xAxisData: [],
+                        seriesData: [],
+                    };
+                    if (that.currUserEchartsData['age']) {
+                        let _tChartData = that.currUserEchartsData['age'];
+                        ageChart.title = _tChartData.title || '';
+                        let _subtitle = '';
+                        let _tSubTitleArr = _tChartData.legend || [];
+                        if (_tSubTitleArr.length > 0) {
+                            _subtitle = _tSubTitleArr[0];
+                        }
+                        ageChart.subtitle = _subtitle;
+                        ageChart.xAxisData = _tChartData.axis || [];
+
+                        let _seriesData = [];
+                        let _sDataArr = _tChartData.data || [];
+                        if (_sDataArr.length > 0) {
+                            for (let i = 0; i < _sDataArr.length; i ++) {
+                                let _sData = _sDataArr[i];
+                                _seriesData.push(_sData['data']);
+                            }
+                        }
+                        ageChart.seriesData = _seriesData.length > 0 ? _seriesData[0] : [];
+                    }
+
+                    let partyAgeChart = {
+                        id: 'bigDataChartId3',
+                        title: '',
+                        subtitle: '',
+                        legendData: [],
+                        xAxisData: [],
+                        seriesData: []
+                    };
+                    if (that.currUserEchartsData['partyAge']) {
+                        let _tChartData = that.currUserEchartsData['partyAge'];
+                        partyAgeChart.title = _tChartData.title || '';
+                        let _subtitle = '';
+                        let _tSubTitleArr = _tChartData.legend || [];
+                        if (_tSubTitleArr.length > 0) {
+                            _subtitle = _tSubTitleArr[0];
+                        }
+                        partyAgeChart.subtitle = _subtitle;
+                        partyAgeChart.xAxisData = _tChartData.axis || [];
+
+                        let _seriesData = [];
+                        let _sDataArr = _tChartData.data || [];
+                        if (_sDataArr.length > 0) {
+                            for (let i = 0; i < _sDataArr.length; i ++) {
+                                let _sData = _sDataArr[i];
+                                _seriesData.push(_sData['data']);
+                            }
+                        }
+                        partyAgeChart.seriesData = _seriesData.length > 0 ? _seriesData[0] : [];
+                    }
+
+                    let educationChart = {
+                        id: 'bigDataChartId4',
+                        title: '',
+                        subtitle: '',
+                        legendData: [],
+                        xAxisData: [],
+                        seriesData: [],
+                    };
+
+                    if (that.currUserEchartsData['education']) {
+                        let _tChartData = that.currUserEchartsData['education'];
+                        educationChart.title = _tChartData.title || '';
+                        let _subtitle = '';
+                        let _tSubTitleArr = _tChartData.legend || [];
+                        if (_tSubTitleArr.length > 0) {
+                            _subtitle = _tSubTitleArr[0];
+                        }
+                        educationChart.subtitle = _subtitle;
+                        educationChart.xAxisData = _tChartData.axis || [];
+
+                        let _seriesData = [];
+                        let _sDataArr = _tChartData.data || [];
+                        if (_sDataArr.length > 0) {
+                            for (let i = 0; i < _sDataArr.length; i ++) {
+                                let _sData = _sDataArr[i];
+                                _seriesData.push(_sData['data']);
+                            }
+                        }
+                        educationChart.seriesData = _seriesData.length > 0 ? _seriesData[0] : [];
+                    }
+
+                    console.log('that.chartsData', sexChart, ageChart, partyAgeChart, educationChart)
+                    that.initEChartsPieChart(sexChart.id, sexChart.title,
+                        sexChart.subtitle, sexChart.legendData, sexChart.seriesData);
+                    // that.initEChartsCloumnChart(ageChart.id, ageChart.title, ageChart.subtitle,
+                    //     ageChart.legendData, ageChart.xAxisData, ageChart.seriesData);
+                    // that.initEChartsCloumnChart(partyAgeChart.id, partyAgeChart.title, partyAgeChart.subtitle,
+                    //     partyAgeChart.legendData, partyAgeChart.xAxisData, partyAgeChart.seriesData);
+                    // that.initEChartsCloumnChart(educationChart.id, educationChart.title, educationChart.subtitle,
+                    //     educationChart.legendData, educationChart.xAxisData, educationChart.seriesData);
+
+                    that.initEChartsCloumnChart2(ageChart.id, ageChart.title, ageChart.subtitle,
+                        ageChart.legendData, ageChart.xAxisData, ageChart.seriesData);
+                    that.initEChartsCloumnChart2(partyAgeChart.id, partyAgeChart.title, partyAgeChart.subtitle,
+                        partyAgeChart.legendData, partyAgeChart.xAxisData, partyAgeChart.seriesData);
+                    that.initEChartsCloumnChart2(educationChart.id, educationChart.title, educationChart.subtitle,
+                        educationChart.legendData, educationChart.xAxisData, educationChart.seriesData);
+                    that.initEChartsCloumnChart3('bigDataChartId5', '', '',
+                        [], [], []);
+                    that.initEChartsCloumnChart2('bigDataChartId5', educationChart.title, educationChart.subtitle,
+                        educationChart.legendData, educationChart.xAxisData, educationChart.seriesData);
+
+                    /*
                     if (that.chartsData) {
                         for (let i = 0; i < that.chartsData.length; i ++) {
                             let _chartData = that.chartsData[i];
@@ -303,6 +448,8 @@ new Vue({
                             }
                         }
                     }
+
+                     */
                     break;
                 case 'faceMeet':    // 视频会议
                     break;
@@ -5752,6 +5899,103 @@ new Vue({
         },
 
         /**
+         * 构建柱状图
+         * @param chartId 图表ID
+         * @param title 标题
+         * @param subtext 子标题
+         * @param legendData legend数据
+         * @param xAxisData 横坐标数据
+         * @param seriesData series数据
+         */
+        initEChartsCloumnChart2(chartId, title, subtext, legendData, xAxisData, seriesData) {
+            let options = {
+                title : {
+                    text: title || '',
+                    subtext: subtext || '',
+                    x:'center'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    y: 'bottom',
+                },
+                toolbox: {
+                    show: true,
+                    orient: 'vertical',
+                    left: 'right',
+                    top: 'center',
+                    feature: {
+                        mark: {show: true},
+                        /*dataView: {show: true, readOnly: false},*/
+                        magicType: {show: true, type: ['line', 'bar', 'tiled']},
+                        restore: {show: true},
+                        /*saveAsImage: {show: true}*/
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: xAxisData
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: seriesData,
+                    type: 'bar'
+                }]
+            };
+            let myChart = echarts.init(document.getElementById(chartId));
+            myChart.setOption(options);
+            let that = this;
+            let chartObj = that.charts.find(function(m){ return m.id == chartId});
+            if (chartObj) {
+                chartObj.chart = myChart;
+                return false;
+            }
+        },
+
+        /**
+         * 构建柱状图
+         * @param chartId 图表ID
+         * @param title 标题
+         * @param subtext 子标题
+         * @param legendData legend数据
+         * @param xAxisData 横坐标数据
+         * @param seriesData series数据
+         */
+        initEChartsCloumnChart3(chartId, title, subtext, legendData, xAxisData, seriesData) {
+            let options = {
+                xAxis: {
+                    type: 'category',
+                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [{
+                    data: [120, 200, 150, 80, 70, 110, 130],
+                    type: 'bar',
+                    showBackground: true,
+                    backgroundStyle: {
+                        color: 'rgba(220, 220, 220, 0.8)'
+                    }
+                }]
+            };
+            let myChart = echarts.init(document.getElementById(chartId));
+            myChart.setOption(options);
+            let that = this;
+            let chartObj = that.charts.find(function(m){ return m.id == chartId});
+            if (chartObj) {
+                chartObj.chart = myChart;
+                return false;
+            }
+        },
+
+        /**
          * 简报接收人全选
          * @param val
          */
@@ -5812,7 +6056,7 @@ new Vue({
                     let data = response.data;
                     //console.log('getCurrUserReceivedNewestNews.data ', data.data.list)
                     if(parseInt(data.code) === 200) {
-                        that.currUserEchartsData = data.data.result || {};
+                        that.currUserEchartsData = data.result || {};
                         console.log('that.currUserEchartsData', that.currUserEchartsData);
                     }
                 })
