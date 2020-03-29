@@ -288,24 +288,14 @@ new Vue({
                         for (let i = 0; i < that.chartsData.length; i ++) {
                             let _chartData = that.chartsData[i];
                             let _chartId = _chartData.id;
-                            console.log('that.currentChartId', that.currentChartId, _chartData);
-                            that.currentChartId = _chartId;
-                            console.log('that.currentChartId', that.currentChartId);
                             if (i == 0) {
-                                // that.initPieChart(_chartId, _chartData.type, _chartData.title, _chartData.subtitle, _chartData.xAxis,
-                                //     _chartData.yAxis, _chartData.tooltip, {}, _chartData.tooltip, _chartData.credits, _chartData.series);
-                                that.initEChartsPieChart(_chartId);
+                                that.initEChartsPieChart(_chartId, _chartData.title,
+                                    _chartData.subtitle, _chartData.legendData, _chartData.seriesData);
                             }
                             else {
-                                that.initEChartsCloumnChart(_chartId);
+                                that.initEChartsCloumnChart(_chartId, _chartData.title, _chartData.subtitle,
+                                    _chartData.legendData, _chartData.xAxisData, _chartData.seriesData);
                             }
-                            // if (i == 1) {
-                            //     that.initCloumnChart(_chartId, {}, {});
-                            // }
-                            // else {
-                            //     that.initBarChart(_chartId, _chartData.type, _chartData.title, _chartData.subtitle, _chartData.xAxis,
-                            //         _chartData.yAxis, _chartData.tooltip, {}, _chartData.tooltip, _chartData.credits, _chartData.series);
-                            // }
                         }
                     }
                     break;
@@ -372,225 +362,56 @@ new Vue({
         chartsData: [
             {
                 id: 'bigDataChartId',
-                type: 'pie',
                 title: '党员性别统计',
                 subtitle: 'XXXX党组织',
-                xAxis: {},
-                yAxis: {},
-                tooltip: {
-                    valueSuffix: '%'
-                },
-                plotOptions: {
-                    bar: {
-                        dataLabels: {
-                            enabled: true
-                        }
-                    }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'top',
-                    x: -40,
-                    y: 80,
-                    floating: true,
-                    borderWidth: 1,
-                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#ccaf71',
-                    shadow: true
-                },
-                credits: {
-                    enabled: false
-                },
-                series: [{
-                    name: '占比',
-                    colorByPoint: true,
-                    data: [{
-                        name: '男',
-                        y: 61.41,
-                        total: 30
-                    }, {
-                        name: '女',
-                        y: 38.59,
-                        total: 12
-                    }]
-                }],
+                legendData: ['男士', '女士'],
+                seriesData: [
+                    {value:30, name:'男'},
+                    {value:25, name:'女'}
+                ],
             },
             {
                 id: 'bigDataChartId2',
-                type: 'column',
-                title: '年龄图',
+                title: '年龄',
                 subtitle: 'XXX党组织',
-                xAxis: {
-                    categories: ['20-30', '30-40', '40-50', '50-60', '60以上'],
-                    crosshair: true
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: '共计 (个)人',
-                        align: 'high'
-                    },
-                    labels: {
-                        overflow: 'justify'
-                    }
-                },
-                tooltip: {
-                    valueSuffix: ' 个'
-                },
-                plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
-                    }
-                },
-                legend: {
-                    layout: 'horizontal',
-                    align: 'right',
-                    verticalAlign: 'top',
-                    x: -40,
-                    y: 80,
-                    floating: true,
-                    borderWidth: 1,
-                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#ccaf71',
-                    shadow: true
-                },
-                credits: {
-                    enabled: false
-                },
-                series: [{
-                    name: '20-30',
-                    data: [107]
-                }, {
-                    name: '30-40',
-                    data: [133]
-                }, {
-                    name: '40-50',
-                    data: [814]
-                }, {
-                    name: '50-60',
-                    data: [1216]
-                }, {
-                    name: '60以上',
-                    data: [1216]
-                }],
+                legendData: ['20~30', '30~40', '40~50', '50~60', '60以上'],
+                xAxisData: ['2016年', '2017年', '2018年', '2019年', '2020年'],
+                seriesData: [
+                    [30, 33, 61, 34, 30],
+                    [30, 32, 31, 34, 30],
+                    [20, 12, 11, 24, 20],
+                    [10, 22, 21, 14, 10],
+                    [18, 17, 11, 9, 40],
+                ],
             },
             {
                 id: 'bigDataChartId3',
-                type: 'bar',
-                title: '分地区的世界历史人口',
-                subtitle: '来源: <a href="https://en.wikipedia.org/wiki/World_population">维基百科</a>',
-                xAxis: {
-                    categories: ['非洲', '美洲', '亚洲', '欧洲', '大洋洲'],
-                    title: {
-                        text: null
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: '人口 (百万)',
-                        align: 'high'
-                    },
-                    labels: {
-                        overflow: 'justify'
-                    }
-                },
-                tooltip: {
-                    valueSuffix: ' 百万'
-                },
-                plotOptions: {
-                    bar: {
-                        dataLabels: {
-                            enabled: true
-                        }
-                    }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'top',
-                    x: -40,
-                    y: 80,
-                    floating: true,
-                    borderWidth: 1,
-                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
-                    shadow: true
-                },
-                credits: {
-                    enabled: false
-                },
-                series: [{
-                    name: '1800年',
-                    data: [107, 31, 635, 203, 2]
-                }, {
-                    name: '1900年',
-                    data: [133, 156, 947, 408, 6]
-                }, {
-                    name: '2000年',
-                    data: [814, 841, 3714, 727, 31]
-                }, {
-                    name: '2016年',
-                    data: [1216, 1001, 4436, 738, 40]
-                }],
+                title: '党龄',
+                subtitle: 'XXX党组织',
+                legendData: ['0~5年', '5～10年', '10～15年', '15～20年', '20年以上'],
+                xAxisData: ['2016年', '2017年', '2018年', '2019年', '2020年'],
+                seriesData: [
+                    [20, 35, 12, 34, 30],
+                    [20, 32, 11, 24, 20],
+                    [15, 32, 21, 14, 10],
+                    [24, 36, 11, 29, 20],
+                    [28, 36, 11, 29, 29]
+                ]
             },
             {
                 id: 'bigDataChartId4',
-                type: 'bar',
-                title: '分地区的世界历史人口',
-                subtitle: '来源: <a href="https://en.wikipedia.org/wiki/World_population">维基百科</a>',
-                xAxis: {
-                    categories: ['非洲', '美洲', '亚洲', '欧洲', '大洋洲'],
-                    title: {
-                        text: null
-                    }
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: '人口 (百万)',
-                        align: 'high'
-                    },
-                    labels: {
-                        overflow: 'justify'
-                    }
-                },
-                tooltip: {
-                    valueSuffix: ' 百万'
-                },
-                plotOptions: {
-                    bar: {
-                        dataLabels: {
-                            enabled: true
-                        }
-                    }
-                },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'top',
-                    x: -40,
-                    y: 80,
-                    floating: true,
-                    borderWidth: 1,
-                    backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#ccaf71',
-                    shadow: true
-                },
-                credits: {
-                    enabled: false
-                },
-                series: [{
-                    name: '1800年',
-                    data: [107, 31, 635, 203, 2]
-                }, {
-                    name: '1900年',
-                    data: [133, 156, 947, 408, 6]
-                }, {
-                    name: '2000年',
-                    data: [814, 841, 3714, 727, 31]
-                }, {
-                    name: '2016年',
-                    data: [1216, 1001, 4436, 738, 40]
-                }],
+                title: '学历',
+                subtitle: 'XXX党组织',
+                legendData: ['大专以下', '大专', '本科', '研究生', '博士', '其他'],
+                xAxisData: ['2016年', '2017年', '2018年', '2019年', '2020年'],
+                seriesData: [
+                    [30, 32, 31, 34, 30],
+                    [20, 12, 11, 24, 20],
+                    [10, 22, 21, 24, 10],
+                    [18, 17, 11, 19, 20],
+                    [18, 17, 11, 19, 20],
+                    [18, 17, 11, 19, 20]
+                ],
             }
         ],
         ueditors: {
@@ -5682,26 +5503,41 @@ new Vue({
         /**
          * 基于ECharts的图表
          * @param chartId 图表显示位置的id
+         * @param title 标题
+         * @param subtext 子标题
+         * @param legendData legend数据
+         * @param seriesData 详细(series)数据
          */
-        initEChartsPieChart(chartId) {
+        initEChartsPieChart(chartId, title, subtext, legendData, seriesData) {
             console.log('initEChartsPieChart', chartId);
             let that = this;
             let option = {
                 animation: 'auto',
                 animationDuration: () => 0,
                 title : {
-                    text: '性别',
-                    subtext: 'XX党支部',
+                    text: title || '',
+                    subtext: subtext || '',
                     x:'center'
                 },
                 tooltip : {
                     trigger: 'item',
-                    formatter: "{a} <br/>{b} : {c}人 (占比{d}%)"
+                    formatter: "{a} <br/>{b} : {c}人 (占比{d}%)",
+                },
+                toolbox: {
+                    show: true,
+                    orient: 'vertical',
+                    left: 'right',
+                    top: 'center',
+                    feature: {
+                        mark: {show: true},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
                 },
                 legend: {
                     orient: 'vertical',
                     left: 'left',
-                    data: ['直接访问','邮件营销']
+                    data: legendData || []
                 },
                 series : [
                     {
@@ -5709,10 +5545,7 @@ new Vue({
                         type: 'pie',
                         radius : '55%',
                         center: ['50%', '60%'],
-                        data:[
-                            {value:30, name:'男'},
-                            {value:25, name:'女'}
-                        ],
+                        data: seriesData || [],
                         itemStyle: {
                             emphasis: {
                                 shadowBlur: 10,
@@ -5728,13 +5561,27 @@ new Vue({
                 console.log('_charObj', _charObj);
                 let myChart = echarts.init(_charObj);
                 myChart.setOption(option);
-                console.log('饼图初始化完成....');
+                let chartObj = that.charts.find(function(m){ return m.id == chartId});
+                if (chartObj) {
+                    chartObj.chart = myChart;
+                    return false;
+                }
             } catch (e) {
                 console.error(e)
             }
         },
 
-        initEChartsCloumnChart(chartId) {
+        /**
+         * 构建柱状图
+         * @param chartId 图表ID
+         * @param title 标题
+         * @param subtext 子标题
+         * @param legendData legend数据
+         * @param xAxisData 横坐标数据
+         * @param seriesData series数据
+         */
+        initEChartsCloumnChart(chartId, title, subtext, legendData, xAxisData, seriesData) {
+            legendData = legendData || [];
             let posList = [
                 'left', 'right', 'top', 'bottom',
                 'inside',
@@ -5820,10 +5667,25 @@ new Vue({
                 }
             };
 
+            let _seriesData = [];
+            seriesData = seriesData || [];
+            if (seriesData && seriesData.length > 0 && legendData.length == seriesData.length) {
+                for (let i = 0; i < seriesData.length; i ++) {
+                    let _tData = seriesData[i];
+                    _seriesData.push({
+                        name: legendData[i] || '',
+                        type: 'bar',
+                        barGap: 0,
+                        label: labelOption,
+                        data: _tData || []
+                    });
+                }
+            }
+
             let barOption3 = {
                 title : {
-                    text: '性别',
-                    subtext: 'XX党支部',
+                    text: title || '',
+                    subtext: subtext || '',
                     x:'center'
                 },
                 color: ['#003366', '#006699', '#4cabce', '#e5323e'],
@@ -5835,7 +5697,7 @@ new Vue({
                 },
                 legend: {
                     y: 'bottom',
-                    data: ['Forest', 'Steppe', 'Desert', 'Wetland']
+                    data: legendData || []
                 },
                 toolbox: {
                     show: true,
@@ -5844,7 +5706,7 @@ new Vue({
                     top: 'center',
                     feature: {
                         mark: {show: true},
-                        dataView: {show: true, readOnly: false},
+                        /*dataView: {show: true, readOnly: false},*/
                         magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
                         restore: {show: true},
                         saveAsImage: {show: true}
@@ -5854,7 +5716,7 @@ new Vue({
                     {
                         type: 'category',
                         axisTick: {show: false},
-                        data: ['2012', '2013', '2014', '2015', '2016']
+                        data: xAxisData || []
                     }
                 ],
                 yAxis: [
@@ -5862,36 +5724,16 @@ new Vue({
                         type: 'value'
                     }
                 ],
-                series: [
-                    {
-                        name: 'Forest',
-                        type: 'bar',
-                        barGap: 0,
-                        label: labelOption,
-                        data: [320, 332, 301, 334, 390]
-                    },
-                    {
-                        name: 'Steppe',
-                        type: 'bar',
-                        label: labelOption,
-                        data: [220, 182, 191, 234, 290]
-                    },
-                    {
-                        name: 'Desert',
-                        type: 'bar',
-                        label: labelOption,
-                        data: [150, 232, 201, 154, 190]
-                    },
-                    {
-                        name: 'Wetland',
-                        type: 'bar',
-                        label: labelOption,
-                        data: [98, 77, 101, 99, 40]
-                    }
-                ]
+                series: _seriesData
             };
-            let myChart3 = echarts.init(document.getElementById(chartId));
-            myChart3.setOption(barOption3);
+            let myChart = echarts.init(document.getElementById(chartId));
+            myChart.setOption(barOption3);
+            let that = this;
+            let chartObj = that.charts.find(function(m){ return m.id == chartId});
+            if (chartObj) {
+                chartObj.chart = myChart;
+                return false;
+            }
         },
 
         /**
@@ -6029,7 +5871,6 @@ new Vue({
         that.ueditors.article.addListener('blur', function(editor){
             that.formArticle.content = that.ueditors.article.getContent();
         });
-        //that.initEChartsPieChart('');
 
     },
     destroyed: function() {
