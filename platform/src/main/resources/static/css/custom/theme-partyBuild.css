@@ -343,6 +343,32 @@ font-size: 30px;
 color: #c32c28;
 }
 
+/**
+ * 图表样式
+ */
+.bigData-container {
+    width: 100%;height: auto;
+}
+
+.bigData-container-row1 {
+    display: flex;width: 100%;justify-content: center;align-items: center
+}
+
+.bigData-container-row2 {
+    display: flex;width: 100%;justify-content: center;align-items: center;margin-top: 10px
+}
+
+.bigData-container-row-cell {
+    width: 50%; height: auto
+}
+
+.bigData-container-row-cell-pie {
+    width: 300px; height: 300px;
+}
+
+.bigData-container-row-cell-column {
+    width: 300px; height: 300px;
+}
 
 
 

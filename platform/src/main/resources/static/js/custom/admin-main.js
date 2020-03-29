@@ -5821,6 +5821,11 @@ new Vue({
             };
 
             let barOption3 = {
+                title : {
+                    text: '性别',
+                    subtext: 'XX党支部',
+                    x:'center'
+                },
                 color: ['#003366', '#006699', '#4cabce', '#e5323e'],
                 tooltip: {
                     trigger: 'axis',
@@ -5829,6 +5834,7 @@ new Vue({
                     }
                 },
                 legend: {
+                    y: 'bottom',
                     data: ['Forest', 'Steppe', 'Desert', 'Wetland']
                 },
                 toolbox: {
@@ -5886,185 +5892,6 @@ new Vue({
             };
             let myChart3 = echarts.init(document.getElementById(chartId));
             myChart3.setOption(barOption3);
-        },
-
-
-        /**
-         * 构建柱状图
-         */
-        initCloumnChart(chartId, categories, series) {
-            let that = this;
-            let options = {
-                chart: {
-                    type: 'column'
-                },
-                title: {
-                    text: '年龄图'
-                },
-                subtitle: {
-                    text: 'XXX党委'
-                },
-                colors: ['#C79D6D', '#B5927B', '#CE9B84', '#B7A58C', '#C7A58C'],
-                xAxis: {
-                    categories: ['20-30', '30-40', '40-50', '50-60', '60以上'],
-                    crosshair: true
-                },
-                yAxis: {
-                    min: 0,
-                    title: {
-                        text: '人数'
-                    }
-                },
-                tooltip: {
-                    valueSuffix: ' 人'
-                },
-                plotOptions: {
-                    column: {
-                        pointPadding: 0.2,
-                        borderWidth: 0
-                    }
-                },
-                credits: {
-                    enabled: false
-                },
-                series: [{
-                    name: '共',
-                    colorByPoint: true,
-                    data: [
-                        ['20-30', 10],
-                        ['30-40', 20],
-                        ['40-50', 50],
-                        ['50-60', 55],
-                        ['60以上', 20]
-                    ],
-                    showInLegend: false
-                }]
-            };
-            //Highcharts.chart(chartId, options);
-            let tChart = Highcharts.chart(chartId, options);
-            let chartObj = that.charts.find(function(m){ return m.id == chartId});
-            if (chartObj) {
-                chartObj.chart = tChart;
-                return false;
-            }
-        },
-
-        /**
-         * 构建横向状图图表
-         */
-        initBarChart(chartId, type, title, subtitle, xAxis, yAxis, tooltip, categories, legend, credits, series) {
-            let that = this;
-            let options = {
-                loading: {
-                    hideDuration: 1000,
-                    showDuration: 1000
-                },
-                chart: {
-                    type: type
-                },
-                title: {
-                    text: title
-                },
-                subtitle: {
-                    text: subtitle
-                },
-                xAxis: xAxis,
-                yAxis: yAxis,
-                tooltip: tooltip,
-                plotOptions: {
-                    bar: {
-                        dataLabels: {
-                            enabled: true
-                        }
-                    }
-                },
-                legend: legend,
-                credits: credits,
-                series: series,
-                exporting: {
-                    filename: '测试图表',
-
-                }
-            };
-            let tChart = Highcharts.chart(chartId, options);
-            let chartObj = that.charts.find(function(m){ return m.id == chartId});
-            if (chartObj) {
-                chartObj.chart = tChart;
-                return false;
-            }
-        },
-
-        /**
-         * 重绘
-         * @param chartId 图表ID
-         */
-        redrawBarChart(chartId) {
-            let that = this;
-            console.log('that.charts', that.charts);
-            let chartObj = that.charts.find(function(m){ return m.id == chartId});
-            if (chartObj) {
-                let tChart = chartObj.chart;
-                tChart.update({
-                    series: [{
-                        name: 'Year 1200',
-                        data: [127, 85, 605, 263, 4]
-                    }, {
-                        name: 'Year 1900',
-                        data: [133, 156, 947, 408, 6]
-                    }, {
-                        name: 'Year 2000',
-                        data: [814, 841, 3714, 727, 31]
-                    }, {
-                        name: 'Year 2016',
-                        data: [1218, 1001, 4439, 788, 45]
-                    }]
-                });
-                tChart.redraw();
-                tChart.reflow();
-                return false;
-            }
-        },
-
-        /**
-         * 打印
-         * @param chartId 图表ID
-         */
-        handlePrintChart(chartId) {
-            let that = this;
-            let chartObj = that.charts.find(function(m){ return m.id == chartId});
-            if (chartObj) {
-                chartObj.chart.print();
-                return false;
-            }
-        },
-
-        /**
-         * 下载
-         * @param chartId 图表ID
-         */
-        handleExportChartLocal(chartId) {
-            let that = this;
-            let chartObj = that.charts.find(function(m){ return m.id == chartId});
-            if (chartObj) {
-                chartObj.chart.exportChartLocal();
-                return false;
-            }
-        },
-
-        /**
-         * 导出
-         * @param chartId 图表ID
-         */
-        handleExportChart(chartId) {
-            let that = this;
-            let chartObj = that.charts.find(function(m){ return m.id == chartId});
-            if (chartObj) {
-                chartObj.chart.exportChart({
-                    type: 'application/pdf',
-                    filename: '测试文件'
-                });
-                return false;
-            }
         },
 
         /**
