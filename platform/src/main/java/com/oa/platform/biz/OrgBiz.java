@@ -338,13 +338,13 @@ public class OrgBiz extends BaseBiz {
 	 * @param userId
 	 * @return
 	 */
-	public List<EChartsData> getEchartsDataByCurrentUser(String userId) {
+	public Map<String,Object> getEchartsDataByCurrentUser(String userId) {
 		//获取当前用户可见组织机构
 		List<Organization> orgIdByuserId = orgSerivce.getOrgIdByuserId(userId);
 		if(orgIdByuserId == null || orgIdByuserId.size() == 0) {
-			return null;
+			return new HashMap<String,Object>();
 		}
-		List<EChartsData> result = new ArrayList<EChartsData>();
+		Map<String,Object> result = new HashMap<String,Object>();
 		List<String> rootOrgs = new ArrayList<String>();
 		List<String> rootOrgNames = new ArrayList<String>();
 		List<Organization> getRootOrgId = orgSerivce.getRootOrgId(orgIdByuserId.get(0).getOrgId());
@@ -361,13 +361,13 @@ public class OrgBiz extends BaseBiz {
 		genderEchartData(gender,genderData,getRootOrgId);
 		//年龄柱状图
 		List<Map> ageData = orgSerivce.getAgeEchartBarData(rootOrgs);
-		result.add(gender);
+		result.put("sex",gender);
 		EChartsData age = new EChartsData();
 		age.setTitle("党员年龄统计");
 		age.setLegend(rootOrgNames);
 		age.setAxis(Arrays.asList(AGE_AXIS));
 		ageEchartBarDataTrans(age,ageData,getRootOrgId);
-		result.add(age);
+		result.put("age",age);
 		//党龄柱状图
 		List<Map> partyAgeData = orgSerivce.getPartyAgeEchartBarData(rootOrgs);
 		EChartsData partyAge = new EChartsData();
@@ -375,7 +375,7 @@ public class OrgBiz extends BaseBiz {
 		partyAge.setLegend(rootOrgNames);
 		partyAge.setAxis(Arrays.asList(PARTYAGE_AXIS));
 		partyAgeEchartBarDataTrans(partyAge,partyAgeData,getRootOrgId);
-		result.add(partyAge);
+		result.put("partyAge",partyAge);
 		//学历柱状图
 		List<Map> educationData = orgSerivce.getEducationEchartBarData(rootOrgs);
 		Dict dict = new Dict();
@@ -392,7 +392,7 @@ public class OrgBiz extends BaseBiz {
         educationEb.setLegend(rootOrgNames);
         educationEb.setAxis(educationAxis);
         educationEchartBarDataTrans(educationEb,educationData,educationAxis,getRootOrgId);
-        result.add(educationEb);
+        result.put("education",educationEb);
 		return result;
 	}
 	/**
