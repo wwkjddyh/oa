@@ -1989,6 +1989,9 @@ new Vue({
         	if(that.formdwjbxx.belongArea != null){
         		params.append('belongArea',that.formdwjbxx.belongArea);
         	}
+        	if(that.formdwjbxx.rootOrg != null){
+        		params.append('rootOrg',that.formdwjbxx.rootOrg);
+        	}
         	params.append('leaderDetails',JSON.stringify(that.leaderList));
         	params.append('rewardDetails',JSON.stringify(that.rewardList));
         	params.append('deptDetails',JSON.stringify(that.deptInfoList));
@@ -2402,7 +2405,8 @@ new Vue({
         	if(isAdd == null && type == 'dwjbxx'){
         		let that = this
         		that.formdwjbxx={
-        				upperOrg: scopeRow.orgId
+        				upperOrg: scopeRow.orgId,
+        				rootOrg: scopeRow.rootOrg
         		};
         		that.dwjbxxDialog={
         				title:scopeRow.orgName + '下级组织添加'
