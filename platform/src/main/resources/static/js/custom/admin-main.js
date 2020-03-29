@@ -342,6 +342,12 @@ new Vue({
         scrollBoxContent: '',
         currentArticleFormTitle: '文章',
         currentChartId : CurrentChartId,
+        currUserEchartsData: {   /*当前用户图片数据*/
+            "sex": {},
+            "age": {},
+            "partyAge": {},
+            "education": {}
+        },
         partyMemberStat: {
             '男': 50,
             '女': 30,
@@ -5794,6 +5800,26 @@ new Vue({
             }
             that.$forceUpdate();
         },
+
+        /**
+         * 获得当前用户(大数据)图表数据
+         */
+        getCurrUserEchartsData() {
+            let that = this;
+            that.currUserEchartsData = {};
+            axios.get("/api/org/getEchartsDataByCurrentUser")
+                .then(function(response){/*成功*/
+                    let data = response.data;
+                    //console.log('getCurrUserReceivedNewestNews.data ', data.data.list)
+                    if(parseInt(data.code) === 200) {
+                        that.currUserEchartsData = data.data.result || {};
+                        console.log('that.currUserEchartsData', that.currUserEchartsData);
+                    }
+                })
+                .catch(function(err){/*异常*/
+                    console.log(err);
+                });
+        },
     },
     props: {
 
@@ -5861,6 +5887,7 @@ new Vue({
         this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 10);
         this.getOrgIdByUserId();
         this.getAreaTreeDict();
+        this.getCurrUserEchartsData();
     },
     beforeMount: function() {
         // this.getCurrentUserInfo();
