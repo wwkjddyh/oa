@@ -275,6 +275,11 @@ new Vue({
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
                     that.formSearchRes.currTypeName = '发展党员';
+                    if(that.isSuperAdmin){
+                		that.getAdminUpperOrg();
+                	}else{
+                		that.getUserUpperOrgList();
+                	}
                     that.uploadData = {
                         name: '',
                         type: 'res2-fzdy',
