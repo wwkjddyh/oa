@@ -5531,7 +5531,7 @@ new Vue({
                     feature: {
                         mark: {show: true},
                         restore: {show: true},
-                        saveAsImage: {show: true}
+                        /*saveAsImage: {show: true}*/
                     }
                 },
                 legend: {
@@ -5709,7 +5709,7 @@ new Vue({
                         /*dataView: {show: true, readOnly: false},*/
                         magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
                         restore: {show: true},
-                        saveAsImage: {show: true}
+                        /*saveAsImage: {show: true}*/
                     }
                 },
                 xAxis: [
