@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONArray;
 import com.oa.platform.biz.OrgBiz;
 import com.oa.platform.common.ResultVo;
+import com.oa.platform.entity.EChartsData;
 import com.oa.platform.entity.OrgDeptDetail;
 import com.oa.platform.entity.OrgLeaderDetail;
 import com.oa.platform.entity.OrgRewardDetail;
@@ -216,5 +217,15 @@ public class OrgApiController extends BaseController{
 		User user = getUserOfSecurity();
 		String orgId = orgBiz.getOrgIdByUserId(user.getUserId());
 		return getSuccessResultVo(orgId);
+	}
+	/**
+	 * 获取echarts数据集合
+	 * @return
+	 */
+	@GetMapping("getEchartsDataByCurrentUser")
+	public ResultVo getEchartsDataByCurrentUser() {
+		User user = getUserOfSecurity();
+		List<EChartsData> result = orgBiz.getEchartsDataByCurrentUser(user.getUserId());
+		return getSuccessResultVo(result);
 	}
 }

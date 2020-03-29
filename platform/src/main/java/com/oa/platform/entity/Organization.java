@@ -22,6 +22,8 @@ public class Organization implements Serializable {
 	private String orgCode;
 	//上级党组织
 	private String upperOrg;
+	//根党组织
+	private String rootOrg;
 	//成立时间
 	private String foundTime;
 	//党组织属地关系
@@ -66,8 +68,6 @@ public class Organization implements Serializable {
 	private String updateBy;
 	//是否叶子
 	private String isLeaf;
-	//根组织
-	private String root_org;
 	//预留1
 	private String field1;
 	//预留2
@@ -109,8 +109,15 @@ public class Organization implements Serializable {
 //	public void setLeaderDetails(List<OrgLeaderDetail> leaderDetails) {
 //		this.leaderDetails = leaderDetails;
 //	}
+	
 	public String getOrgId() {
 		return orgId;
+	}
+	public String getRootOrg() {
+		return rootOrg;
+	}
+	public void setRootOrg(String rootOrg) {
+		this.rootOrg = rootOrg;
 	}
 	public void setOrgId(String orgId) {
 		this.orgId = orgId;
@@ -270,12 +277,6 @@ public class Organization implements Serializable {
 	}
 	public void setIsLeaf(String isLeaf) {
 		this.isLeaf = isLeaf;
-	}
-	public String getRoot_org() {
-		return root_org;
-	}
-	public void setRoot_org(String root_org) {
-		this.root_org = root_org;
 	}
 	public String getField1() {
 		return field1;

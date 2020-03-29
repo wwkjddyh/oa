@@ -1,6 +1,7 @@
 package com.oa.platform.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -94,4 +95,35 @@ public interface OrgRepository extends BaseRepository<Organization, String> {
 	List<String> getOrgIdByUserId(@Param("userId") String userId);
 
 	List<String> getLeaderByOrgId(@Param("orgId") String orgId);
+	/**
+	 * 党员年龄柱状图数据
+	 * @param orgIds
+	 * @return
+	 */
+	List<Map> getAgeEchartBarData(@Param("orgIds")List<String> orgIds);
+	/**
+	 * 党员党龄柱状图数据
+	 * @param orgIds
+	 * @return
+	 */
+	List<Map> getPartyAgeEchartBarData(@Param("orgIds")List<String> orgIds);
+	/**
+	 * 党员学历柱状图数据
+	 * @param orgIds
+	 * @return
+	 */
+	List<Map> getEducationEchartBarData(@Param("orgIds")List<String> orgIds);
+	/**
+	 * 党员性别饼状图数据
+	 * @param orgIds
+	 * @return
+	 */
+	List<Map> getGenderEchartData(@Param("orgIds")List<String> orgIds);
+	
+	/**
+	 * 获取组织的根组织
+	 * @param orgId
+	 * @return
+	 */
+	List<Organization> getRootOrgId(@Param("orgId") String orgId);
 }

@@ -5,7 +5,6 @@
 		<result column="org_id" property="orgId" jdbcType="VARCHAR"/>
 		<result column="org_nm" property="orgName" jdbcType="VARCHAR"/>
 		<result column="is_leaf" property="isLeaf" jdbcType="VARCHAR"/>
-		<result column="root_org" property="root_org" jdbcType="VARCHAR"/>
 		<result column="phone" property="phone" jdbcType="VARCHAR"/>
 		<result column="upper_org" property="upperOrg" jdbcType="VARCHAR"/>
 		<result column="found_time" property="foundTime" jdbcType="VARCHAR"/>
@@ -30,7 +29,7 @@
 		<result column="concat_persion" property="concatPersion" jdbcType="VARCHAR"/>
 		<result column="org_job_phone" property="orgJobPhone" jdbcType="VARCHAR"/>
 		<result column="belong_area" property="belongArea" jdbcType="VARCHAR"/>
-		
+		<result column="root_org" property="rootOrg" jdbcType="VARCHAR"/>
 		<result column="create_by" property="createBy" jdbcType="VARCHAR"/>
 		<result column="update_by" property="updateBy" jdbcType="VARCHAR"/>
 		<result column="field1" property="field1" jdbcType="VARCHAR"/>
@@ -94,15 +93,15 @@
 			phone, 
 			found_time, 
 			upper_org, 
-			root_org,
 			is_leaf,
 			status,
 			is_dept,
 			create_on,
 			create_by,
 			update_on,
-			update_by)
-		values (#{orgId},#{orgName},#{orgType},#{concatPersion},#{phone},#{foundTime},#{upperOrg},#{root_org},#{isLeaf},'1','0',now(),#{createBy},now(),#{updateBy})
+			update_by,
+			root_org)
+		values (#{orgId},#{orgName},#{orgType},#{concatPersion},#{phone},#{foundTime},#{upperOrg},#{isLeaf},'1','0',now(),#{createBy},now(),#{updateBy},#{rootOrg})
 	</insert>
 	<insert id="orgAddDetail" parameterType="com.oa.platform.entity.Organization">
 		insert into t_org_detail (
@@ -254,6 +253,7 @@
 					sorg.found_time,
 					sorg.is_dept,
 					sorg.upper_org,
+					sorg.root_org,
 					orgleader.leader 
 				FROM
 					t_sys_org sorg
@@ -273,6 +273,7 @@
 					org.found_time,
 					org.is_dept,
 					org.upper_org,
+					org.root_org,
 					orgleader.leader 
 				FROM
 					t_sys_org org
@@ -296,6 +297,7 @@
 					sorg.found_time,
 					sorg.is_dept,
 					sorg.upper_org,
+					sorg.root_org,
 					orgleader.leader 
 				FROM
 					t_sys_org sorg
@@ -315,6 +317,7 @@
 					org.found_time,
 					org.is_dept,
 					org.upper_org,
+					org.root_org,
 					orgleader.leader 
 				FROM
 					t_sys_org org
@@ -846,4 +849,163 @@
 	<update id="updateOrgUser">
 		update t_org_user set org_id=#{orgId} where user_id=#{userId} and status='1'
 	</update>
+	
+	<!-- 数据可视化 -->
+	<!-- 年龄柱状图数据 -->
+	<select id="getAgeEchartBarData" resultType="java.util.Map">
+		SELECT
+			agetemp.root_org orgId,
+			agetemp.age_temp ageTemp,
+			count( 1 ) partyNum 
+		FROM
+			(
+		SELECT
+			sysorg.root_org,
+		CASE
+			
+			WHEN TIMESTAMPDIFF( YEAR, dtl.birth_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) BETWEEN 20 
+			AND 30 THEN
+			'20-30' 
+			WHEN TIMESTAMPDIFF( YEAR, dtl.birth_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) BETWEEN 30 
+			AND 40 THEN
+			'30-40' 
+			WHEN TIMESTAMPDIFF( YEAR, dtl.birth_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) BETWEEN 40 
+			AND 50 THEN
+			'40-50' 
+			WHEN TIMESTAMPDIFF( YEAR, dtl.birth_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) BETWEEN 50 
+			AND 60 THEN
+			'50-60' 
+			WHEN TIMESTAMPDIFF( YEAR, dtl.birth_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) > 60 THEN
+			'60以上' 
+			END age_temp 
+		FROM
+			t_user usr
+			LEFT JOIN t_user_dtl dtl ON usr.user_id = dtl.user_id
+			LEFT JOIN t_org_user orguser ON usr.user_id = orguser.user_id 
+			LEFT JOIN t_sys_org sysorg ON sysorg.org_id= orguser.org_id
+		WHERE
+			usr.record_flag = '1' 
+			AND sysorg.status = '1'
+			AND dtl.is_party = '1' 
+			AND orguser.STATUS = '1'
+			AND sysorg.root_org in
+			<foreach collection="orgIds" index="index" item="itemId" open="(" separator="," close=")">
+		      #{itemId}
+		    </foreach> 
+			) agetemp 
+		WHERE
+			agetemp.age_temp IS NOT NULL 
+		GROUP BY
+			agetemp.age_temp,
+			agetemp.root_org 
+	</select>
+	<!-- 党龄柱状图数据 -->
+	<select id="getPartyAgeEchartBarData" resultType="java.util.Map">
+		SELECT
+			agetemp.root_org orgId,
+			agetemp.age_temp ageTemp,
+			count( 1 )  partyNum
+		FROM
+			(
+		SELECT
+			sysorg.root_org,
+		CASE
+			
+			WHEN TIMESTAMPDIFF( YEAR, dtl.join_party_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) BETWEEN 0 
+			AND 5 THEN
+			'0-5年' 
+			WHEN TIMESTAMPDIFF( YEAR, dtl.join_party_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) BETWEEN 5 
+			AND 10 THEN
+			'5-10年' 
+			WHEN TIMESTAMPDIFF( YEAR, dtl.join_party_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) BETWEEN 10 
+			AND 15 THEN
+			'10-15年' 
+			WHEN TIMESTAMPDIFF( YEAR, dtl.join_party_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) BETWEEN 15 
+			AND 20 THEN
+			'15-20年' 
+			WHEN TIMESTAMPDIFF( YEAR, dtl.join_party_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) > 20 THEN
+			'20年以上' 
+			END age_temp 
+		FROM
+			t_user usr
+			LEFT JOIN t_user_dtl dtl ON usr.user_id = dtl.user_id
+			LEFT JOIN t_org_user orguser ON usr.user_id = orguser.user_id 
+			LEFT JOIN t_sys_org sysorg ON sysorg.org_id= orguser.org_id
+		WHERE
+			usr.record_flag = '1' 
+			AND dtl.is_party = '1' 
+			AND orguser.STATUS = '1'
+			AND sysorg.STATUS = '1'
+			AND sysorg.root_org in
+			<foreach collection="orgIds" index="index" item="itemId" open="(" separator="," close=")">
+		      #{itemId}
+		    </foreach>  
+			) agetemp 
+		WHERE
+			agetemp.age_temp IS NOT NULL 
+		GROUP BY
+			agetemp.age_temp,
+			agetemp.root_org 
+	</select>
+	<!-- 学历柱状图数据 -->
+	<select id="getEducationEchartBarData" resultType="java.util.Map">
+		SELECT
+			sysorg.root_org orgId,
+			dtl.education,
+			dict.dict_name  educationName,
+			count( 1 )  partyNum
+		FROM
+			t_user usr
+			LEFT JOIN t_user_dtl dtl ON usr.user_id = dtl.user_id
+			LEFT JOIN t_org_user orguser ON usr.user_id = orguser.user_id
+			LEFT JOIN t_dict dict ON dtl.education = dict.dict_id
+			LEFT JOIN t_sys_org sysorg ON sysorg.org_id= orguser.org_id 
+		WHERE
+			usr.record_flag = '1' 
+			AND dtl.is_party = '1' 
+			AND orguser.STATUS = '1' 
+			AND sysorg.STATUS = '1'
+			AND sysorg.root_org in
+			<foreach collection="orgIds" index="index" item="itemId" open="(" separator="," close=")">
+		      #{itemId}
+		    </foreach> 
+		GROUP BY
+			sysorg.root_org,
+			dtl.education
+	</select>
+	<!-- 组织性别饼状图 -->
+	<select id="getGenderEchartData" resultType="java.util.Map">
+		SELECT
+			sysorg.root_org orgId,
+		CASE
+			
+			WHEN dtl.gender = '1' THEN
+			'男' 
+			WHEN dtl.gender = '0' THEN
+			'女' 
+			END gender,
+			count( 1 ) partyNum 
+		FROM
+			t_user usr
+			LEFT JOIN t_user_dtl dtl ON usr.user_id = dtl.user_id
+			LEFT JOIN t_org_user orguser ON usr.user_id = orguser.user_id 
+			LEFT JOIN t_sys_org sysorg ON sysorg.org_id= orguser.org_id 
+		WHERE
+			usr.record_flag = '1' 
+			AND dtl.is_party = '1' 
+			AND orguser.STATUS = '1'
+			AND sysorg.STATUS = '1' 
+			AND sysorg.root_org in
+			<foreach collection="orgIds" index="index" item="itemId" open="(" separator="," close=")">
+		      #{itemId}
+		    </foreach> 
+		GROUP BY
+			sysorg.root_org,
+			gender
+	</select>
+	<select id="getRootOrgId" resultMap="orgMap">
+	
+		select org_id,org_nm from t_sys_org where org_id in 
+		(select distinct root_org from t_sys_org where instr(#{orgId},org_id)>0)
+	</select>
 </mapper>

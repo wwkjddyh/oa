@@ -1,6 +1,7 @@
 package com.oa.platform.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.oa.platform.entity.OrgDeptDetail;
 import com.oa.platform.entity.OrgLeaderDetail;
@@ -86,4 +87,9 @@ public interface OrgService extends BaseService<Organization, String> {
 	List<Organization> getUserUpperOrgList(String orgId);
 	List<String> getOrgIdByUserId(String userId);
 	List<String> getLeaderByOrgId(String orgId);
+	List<Organization> getRootOrgId(String orgId);
+	List<Map> getGenderEchartData(List<String> rootOrgs);
+	List<Map> getAgeEchartBarData(List<String> rootOrgs);
+	List<Map> getEducationEchartBarData(List<String> rootOrgs);
+	List<Map> getPartyAgeEchartBarData(List<String> rootOrgs);
 }

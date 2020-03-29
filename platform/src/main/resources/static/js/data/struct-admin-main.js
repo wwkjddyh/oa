@@ -552,15 +552,15 @@ const formStructConfig = {
     rules: {
         name: [
             { required: true, message: '请输入名称(标题或姓名)', trigger: 'blur' },
-            { min: 3, max: 64, message: '长度在 3 到 64 个字符之间', trigger: 'blur' }
+            { min: 2, max: 64, message: '长度在 2 到 64 个字符之间', trigger: 'blur' }
         ],
         username: [
             { required: true, message: '请输入姓名', trigger: 'blur' },
-            { min: 3, max: 64, message: '长度在 3 到 64 个字符之间', trigger: 'blur' }
+            { min: 2, max: 64, message: '长度在 2 到 64 个字符之间', trigger: 'blur' }
         ],
         nickname: [
             { required: true, message: '请输入昵称', trigger: 'blur' },
-            { min: 3, max: 64, message: '长度在 3 到 64 个字符之间', trigger: 'blur' }
+            { min: 2, max: 64, message: '长度在 2 到 64 个字符之间', trigger: 'blur' }
         ],
         password: [
             { required: true, message: '请输入密码', trigger: 'blur' },

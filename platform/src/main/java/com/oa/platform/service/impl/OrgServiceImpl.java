@@ -1,6 +1,7 @@
 package com.oa.platform.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -183,6 +184,26 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 	@Override
 	public List<String> getLeaderByOrgId(String orgId) {
 		return orgRepository.getLeaderByOrgId(orgId);
+	}
+	@Override
+	public List<Organization> getRootOrgId(String orgId) {
+		return orgRepository.getRootOrgId(orgId);
+	}
+	@Override
+	public List<Map> getGenderEchartData(List<String> rootOrgs) {
+		return orgRepository.getGenderEchartData(rootOrgs);
+	}
+	@Override
+	public List<Map> getAgeEchartBarData(List<String> rootOrgs) {
+		return orgRepository.getAgeEchartBarData(rootOrgs);
+	}
+	@Override
+	public List<Map> getEducationEchartBarData(List<String> rootOrgs) {
+		return orgRepository.getEducationEchartBarData(rootOrgs);
+	}
+	@Override
+	public List<Map> getPartyAgeEchartBarData(List<String> rootOrgs) {
+		return orgRepository.getPartyAgeEchartBarData(rootOrgs);
 	}
 
 }

@@ -1,14 +1,21 @@
 package com.oa.platform.biz;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.github.pagehelper.PageInfo;
+import com.oa.platform.common.Constants;
 import com.oa.platform.common.ResultVo;
+import com.oa.platform.entity.Dict;
+import com.oa.platform.entity.EChartsData;
 import com.oa.platform.entity.OrgDeptDetail;
 import com.oa.platform.entity.OrgLeaderDetail;
 import com.oa.platform.entity.OrgRewardDetail;
@@ -16,6 +23,7 @@ import com.oa.platform.entity.OrgUser;
 import com.oa.platform.entity.Organization;
 import com.oa.platform.entity.User;
 import com.oa.platform.entity.UserDtl;
+import com.oa.platform.service.DictService;
 import com.oa.platform.service.OrgService;
 import com.oa.platform.service.UserService;
 import com.oa.platform.util.StringUtil;
@@ -36,6 +44,12 @@ public class OrgBiz extends BaseBiz {
 	
 	@Value("${userDefaultPwd}")
 	private String userDefaultPwd;
+	@Autowired
+    private DictService dictService;
+	
+	private final static String[] AGE_AXIS = new String[] {"20-30","30-40","40-50","50-60","60以上"};
+	private final static String[] PARTYAGE_AXIS = new String[] {"0-5年","5-10年","10-15年","15-20年","20年以上"};
+	private final static String[] GENDER_AXIS = new String[] {"男","女"};
 	/**
 	 * 获取党组织列表
 	 * @param userId
@@ -64,6 +78,9 @@ public class OrgBiz extends BaseBiz {
 	@Transactional
 	public void orgAdd(Organization organization,List<OrgDeptDetail> deptDetails,List<OrgRewardDetail> rewardDetails,List<OrgLeaderDetail> leaderDetails) {
 		organization.setOrgId(StringUtil.getRandomUUID());
+		if(organization.getUpperOrg() == null || "".equals(organization.getUpperOrg())) {
+			organization.setRootOrg(organization.getOrgId());
+		}
 		orgSerivce.orgAdd(organization);
 		orgSerivce.orgAddDetail(organization);
 		//领导班子，单位信息，奖惩信息操作
@@ -314,6 +331,209 @@ public class OrgBiz extends BaseBiz {
 		}else {
 			return result.get(0);
 		}
+	}
+	
+	/**
+	 * 获取echarts数据结果集
+	 * @param userId
+	 * @return
+	 */
+	public List<EChartsData> getEchartsDataByCurrentUser(String userId) {
+		//获取当前用户可见组织机构
+		List<Organization> orgIdByuserId = orgSerivce.getOrgIdByuserId(userId);
+		if(orgIdByuserId == null || orgIdByuserId.size() == 0) {
+			return null;
+		}
+		List<EChartsData> result = new ArrayList<EChartsData>();
+		List<String> rootOrgs = new ArrayList<String>();
+		List<String> rootOrgNames = new ArrayList<String>();
+		List<Organization> getRootOrgId = orgSerivce.getRootOrgId(orgIdByuserId.get(0).getOrgId());
+		for (Organization organization : getRootOrgId) {
+			rootOrgs.add(organization.getOrgId());
+			rootOrgNames.add(organization.getOrgName());
+		}
+		//性别饼状图数据
+		List<Map> genderData = orgSerivce.getGenderEchartData(rootOrgs);
+		EChartsData gender = new EChartsData();
+		gender.setTitle("党员性别统计");
+		gender.setLegend(rootOrgNames);
+		gender.setAxis(Arrays.asList(GENDER_AXIS));
+		genderEchartData(gender,genderData,getRootOrgId);
+		//年龄柱状图
+		List<Map> ageData = orgSerivce.getAgeEchartBarData(rootOrgs);
+		result.add(gender);
+		EChartsData age = new EChartsData();
+		age.setTitle("党员年龄统计");
+		age.setLegend(rootOrgNames);
+		age.setAxis(Arrays.asList(AGE_AXIS));
+		ageEchartBarDataTrans(age,ageData,getRootOrgId);
+		result.add(age);
+		//党龄柱状图
+		List<Map> partyAgeData = orgSerivce.getPartyAgeEchartBarData(rootOrgs);
+		EChartsData partyAge = new EChartsData();
+		partyAge.setTitle("党员党龄统计");
+		partyAge.setLegend(rootOrgNames);
+		partyAge.setAxis(Arrays.asList(PARTYAGE_AXIS));
+		partyAgeEchartBarDataTrans(partyAge,partyAgeData,getRootOrgId);
+		result.add(partyAge);
+		//学历柱状图
+		List<Map> educationData = orgSerivce.getEducationEchartBarData(rootOrgs);
+		Dict dict = new Dict();
+        dict.setDictType(StringUtil.trim("education"));
+        dict.setRecordFlag(Constants.INT_NORMAL);
+        PageInfo<Dict> pageInfo = dictService.search(dict,1,99999);
+        List<Dict> education = pageInfo.getList();
+        List<String> educationAxis = new ArrayList<String>();
+        for (Dict etcDict : education) {
+        	educationAxis.add(etcDict.getDictName());
+		}
+        EChartsData educationEb = new EChartsData();
+        educationEb.setTitle("党员学历统计");
+        educationEb.setLegend(rootOrgNames);
+        educationEb.setAxis(educationAxis);
+        educationEchartBarDataTrans(educationEb,educationData,educationAxis,getRootOrgId);
+        result.add(educationEb);
+		return result;
+	}
+	/**
+	 * 党员性别统计
+	 * @param gender
+	 * @param genderData
+	 * @param getRootOrgId
+	 */
+	private void genderEchartData(EChartsData gender, List<Map> genderData, List<Organization> getRootOrgId) {
+
+
+		if(gender.getLegend()!=null && gender.getLegend().size() > 0) {
+			List<Object> result = new ArrayList<Object>(); 
+			for (Organization rootOrg : getRootOrgId) {
+				Map<String,Object> singleData = new HashMap<String,Object>();
+				singleData.put("name", rootOrg.getOrgName());
+				List<String> data = new ArrayList<String>();
+				for(int i = 0 ; i< GENDER_AXIS.length;i++) {
+					boolean hasData = false;
+					for (Map map : genderData) {
+						if(rootOrg.getOrgId().equals(map.get("orgId")) && GENDER_AXIS[i].equals(map.get("gender"))) {
+							data.add(String.valueOf(map.get("partyNum")));
+							hasData = true;
+							break;
+						}
+					}
+					if(!hasData) {
+						data.add("0");
+					}
+				}
+				singleData.put("data", data);
+				result.add(singleData);
+			}
+			gender.setData(result);
+		}
+		
+	
+		
+	
+		
+	}
+	/**
+	 * 学历柱状图数据转换
+	 * @param educationEb
+	 * @param educationData
+	 * @param educationLegend
+	 */
+	private void educationEchartBarDataTrans(EChartsData educationEb, List<Map> educationData,
+			List<String> educationLegend,List<Organization> getRootOrgId) {
+		if(educationEb.getLegend()!=null && educationEb.getLegend().size() > 0) {
+			List<Object> result = new ArrayList<Object>(); 
+			for (Organization rootOrg : getRootOrgId) {
+				Map<String,Object> singleData = new HashMap<String,Object>();
+				singleData.put("name", rootOrg.getOrgName());
+				List<String> data = new ArrayList<String>();
+				for(int i = 0 ; i< educationLegend.size();i++) {
+					boolean hasData = false;
+					for (Map map : educationData) {
+						if(rootOrg.getOrgId().equals(map.get("orgId")) && educationLegend.get(i).equals(map.get("educationName"))) {
+							data.add(String.valueOf(map.get("partyNum")));
+							hasData = true;
+							break;
+						}
+					}
+					if(!hasData) {
+						data.add("0");
+					}
+				}
+				singleData.put("data", data);
+				result.add(singleData);
+			}
+			educationEb.setData(result);
+		}
+		
+	}
+	/**
+	 * 党龄柱状图数据转换
+	 * @param partyAge
+	 * @param partyAgeData
+	 */
+	private void partyAgeEchartBarDataTrans(EChartsData partyAge, List<Map> partyAgeData,List<Organization> getRootOrgId) {
+
+		if(partyAge.getLegend()!=null && partyAge.getLegend().size() > 0) {
+			List<Object> result = new ArrayList<Object>(); 
+			for (Organization rootOrg : getRootOrgId) {
+				Map<String,Object> singleData = new HashMap<String,Object>();
+				singleData.put("name", rootOrg.getOrgName());
+				List<String> data = new ArrayList<String>();
+				for(int i = 0 ; i< PARTYAGE_AXIS.length;i++) {
+					boolean hasData = false;
+					for (Map map : partyAgeData) {
+						if(rootOrg.getOrgId().equals(map.get("orgId")) && PARTYAGE_AXIS[i].equals(map.get("ageTemp"))) {
+							data.add(String.valueOf(map.get("partyNum")));
+							hasData = true;
+							break;
+						}
+					}
+					if(!hasData) {
+						data.add("0");
+					}
+				}
+				singleData.put("data", data);
+				result.add(singleData);
+			}
+			partyAge.setData(result);
+		}
+		
+	
+		
+	}
+	/**
+	 * 年龄柱状图数据转换
+	 * @param age
+	 * @param ageData
+	 */
+	private void ageEchartBarDataTrans(EChartsData age, List<Map> ageData,List<Organization> getRootOrgId) {
+		if(age.getLegend()!=null && age.getLegend().size() > 0) {
+			List<Object> result = new ArrayList<Object>(); 
+			for (Organization rootOrg : getRootOrgId) {
+				Map<String,Object> singleData = new HashMap<String,Object>();
+				singleData.put("name", rootOrg.getOrgName());
+				List<String> data = new ArrayList<String>();
+				for(int i = 0 ; i< AGE_AXIS.length;i++) {
+					boolean hasData = false;
+					for (Map map : ageData) {
+						if(rootOrg.getOrgId().equals(map.get("orgId")) && AGE_AXIS[i].equals(map.get("ageTemp"))) {
+							data.add(String.valueOf(map.get("partyNum")));
+							hasData = true;
+							break;
+						}
+					}
+					if(!hasData) {
+						data.add("0");
+					}
+				}
+				singleData.put("data", data);
+				result.add(singleData);
+			}
+			age.setData(result);
+		}
+		
 	}
 	
 	
