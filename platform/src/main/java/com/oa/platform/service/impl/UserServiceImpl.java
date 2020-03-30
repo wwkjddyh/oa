@@ -264,5 +264,11 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
 	}
 
 
+	@Override
+	public List<String> getuserIdByUser(String userName) {
+		return userRepository.getuserIdByUser(userName);
+	}
+
+
 	
 }

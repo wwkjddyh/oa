@@ -1491,9 +1491,9 @@ new Vue({
                                         default: break;
                                     }
                                     //提交成功之后
-                                    if(formName != 'formdwjbxx' && formName != 'formnddyxxcj'){
-                                        that.resetForm(formName);
-                                    }
+//                                    if(formName != 'formdwjbxx' && formName != 'formnddyxxcj'){
+//                                        that.resetForm(formName);
+//                                    }
                                 } else {
                                     this.$message.error('提交失败,请按要求填写表单内容');
                                     return false;
@@ -1648,7 +1648,7 @@ new Vue({
                 case 401:
                     messageContent = '请登录!';
                     messageType = 'warning';
-                    break
+                    break;
                 case 411:
                     if(typeof paramErrorCallback === 'function') {
                         paramErrorCallback();
@@ -3936,8 +3936,11 @@ new Vue({
 //                            }
 //                        }
 //                    }
-                    console.log('userOwnedMenus', that.userOwnedMenus);
-
+                    if(that.isSuperAdmin){
+                		that.getAdminUpperOrg();
+                	}else{
+                		that.getUserUpperOrgList();
+                	}
                 })
                 .catch(function(err){/*异常*/
                     console.log(err);
@@ -6219,11 +6222,7 @@ new Vue({
         this.getOrgIdByUserId();
         this.getAreaTreeDict();
         this.getCurrUserEchartsData();
-        if(that.isSuperAdmin){
-    		that.getAdminUpperOrg();
-    	}else{
-    		that.getUserUpperOrgList();
-    	}
+        
     },
     beforeMount: function() {
         // this.getCurrentUserInfo();

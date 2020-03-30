@@ -478,4 +478,8 @@
   <update id="updateUserEmail">
   	update t_user_dtl set mail=#{mail} where user_id=#{userId}
   </update>
+  <select id="getuserIdByUser" resultType="java.lang.String">
+  		select usr.user_id from t_user usr left join t_user_dtl dtl on usr.user_id=dtl.user_id where
+  			usr.user_name = #{userName} and usr.record_flag='1' and dtl.is_party='0'
+  </select>
 </mapper>
