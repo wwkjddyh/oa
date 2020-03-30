@@ -1,0 +1,79 @@
+{
+  "id": "1723787",
+  "name": "我的阿里图标",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "36507",
+      "name": "已读信息",
+      "font_class": "yiduxinxi",
+      "unicode": "e600",
+      "unicode_decimal": 58880
+    },
+    {
+      "icon_id": "36508",
+      "name": "未读信息",
+      "font_class": "youjianxinxiicon",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
+      "icon_id": "376371",
+      "name": "未读",
+      "font_class": "noread",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "1046659",
+      "name": "024未读信息",
+      "font_class": "024weiduxinxi",
+      "unicode": "e68b",
+      "unicode_decimal": 59019
+    },
+    {
+      "icon_id": "1057186",
+      "name": "已读邮件",
+      "font_class": "yiduyoujian",
+      "unicode": "e6c6",
+      "unicode_decimal": 59078
+    },
+    {
+      "icon_id": "1256757",
+      "name": "已读",
+      "font_class": "yidu",
+      "unicode": "e610",
+      "unicode_decimal": 58896
+    },
+    {
+      "icon_id": "1256758",
+      "name": "未读",
+      "font_class": "weidu",
+      "unicode": "e611",
+      "unicode_decimal": 58897
+    },
+    {
+      "icon_id": "2743896",
+      "name": "已读",
+      "font_class": "yidu1",
+      "unicode": "e647",
+      "unicode_decimal": 58951
+    },
+    {
+      "icon_id": "8138411",
+      "name": "已读邮件",
+      "font_class": "MESSAGEREAD",
+      "unicode": "e604",
+      "unicode_decimal": 58884
+    },
+    {
+      "icon_id": "13266344",
+      "name": "8-未读信息",
+      "font_class": "-weiduxinxi",
+      "unicode": "e614",
+      "unicode_decimal": 58900
+    }
+  ]
+}

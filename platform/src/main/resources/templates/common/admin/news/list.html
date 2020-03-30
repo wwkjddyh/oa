@@ -89,9 +89,9 @@
                         <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" slot="reference" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
                     </el-popover>
                     -->
-                    <a style="color: #303133; cursor: pointer;margin-right: 20px" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
-                    <label v-if="item.status && item.status == 1" style="color: #82848a">(已读)</label>
-                    <label v-if="!item.status || item.status == 0">(未读)</label>
+                    <label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi"></label>
+                    <label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi"></label>
+                    <a style="color: #303133; cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
                 </div>
                 <div style="width: 70%; height: auto" v-if="formSearchNews.isViewed != ''">
                     <a style="color: #303133; cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
