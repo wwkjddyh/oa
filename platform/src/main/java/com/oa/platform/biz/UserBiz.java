@@ -319,9 +319,20 @@ public class UserBiz extends BaseBiz {
                 ret = this.getParamErrorVo();
             }
             else {
-                boolean isRepeat = validRepeat(userId, userName);
+            	boolean isRepeat = false;
+            	List<String> userIds = userService.getuserIdByUser(userName);
+            	if("".equals(userId)) {
+            		if(userIds!= null && userIds.size() > 0) {
+            			isRepeat = true;
+            		}
+            	}else {
+            		if(userIds != null && userIds.size() > 0 && !userIds.get(0).equals(userId)) {
+            			isRepeat = true;
+            		}
+            	}
+                //boolean isRepeat = validRepeat(userId, userName);
                 if (isRepeat) {
-                    ret = this.getParamRepeatErrorVo("用户名");
+                    ret = this.getParamRepeatErrorVo("登录名");
                 }
                 else {
                     User user = new User();

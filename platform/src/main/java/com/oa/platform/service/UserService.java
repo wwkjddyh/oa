@@ -118,4 +118,6 @@ public interface UserService extends BaseService<User,String>, UserDetailsServic
 	List<String> getOrgIdsByCurrentUser(String userId);
 
 	void updateUserEmail(String userId, String mail);
+
+	List<String> getuserIdByUser(String userName);
 }
