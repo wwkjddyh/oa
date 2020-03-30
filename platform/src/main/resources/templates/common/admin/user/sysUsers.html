@@ -34,6 +34,11 @@
                     align="center"
                     label="姓名">
             </el-table-column>
+            <el-table-column
+                    prop="mail"
+                    align="center"
+                    label="邮箱">
+            </el-table-column>
             <!-- <el-table-column
                     prop="gender"
                     align="center"
@@ -93,7 +98,7 @@
             </el-pagination>
         </div>
     </div>
-    <el-dialog title="系统用户" :visible.sync="dialogShow.sysUser" lock-scroll="true" >
+    <el-dialog title="系统用户" :visible.sync="dialogShow.sysUser" lock-scroll="true" v-loading ="fullscreenLoading">
         <el-card shadow="never" style="width: 100%;" type="card">
             <el-form ref="formSysUser" :rules="rules" :model="formSysUser" label-width="100px" size="small">
                 <input type="hidden" name="name" style="display:none;" autocomplete="off"/>
