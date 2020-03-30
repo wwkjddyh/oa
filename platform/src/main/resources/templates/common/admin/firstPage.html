@@ -41,12 +41,12 @@
 				<div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 30px;margin-left: 20px">
 					<el-button v-for="item in firstPageFuncModules" :key="item.url" v-if="item.index <= 2"
 							   :icon="item.iconClass" style="color: #8da7df;width: 100px" size="small"
-							   @click="goToMenu(item)">{{item.name}}</el-button>
+							   @click="goToMenu(item)">&nbsp;&nbsp;{{item.name}}</el-button>
 				</div>
 				<div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 10px;margin-left: 20px">
 					<el-button v-for="item in firstPageFuncModules" :key="item.url" v-if="item.index > 2"
 							   :icon="item.iconClass" style="color: #8da7df;width: 100px" size="small"
-							   @click="goToMenu(item)">{{item.name}}</el-button>
+							   @click="goToMenu(item)">&nbsp;&nbsp;{{item.name}}</el-button>
 				</div>
 				<!--
 				<el-row><span class="firstPage-resDownload_title">资料下载</span></el-row>
