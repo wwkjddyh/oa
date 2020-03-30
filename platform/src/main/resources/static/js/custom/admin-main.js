@@ -6206,6 +6206,7 @@ new Vue({
             });
     },
     created: function () {
+        let that = this;
         //this.loadArticleTypes();
         this.getCurrentUserInfo();
         this.firstPageDyzlxz();
