@@ -1,10 +1,10 @@
 package com.oa.platform.service;
 
-import com.oa.platform.entity.News;
-import com.oa.platform.entity.NewsSendRecord;
-
 import java.util.List;
 import java.util.Map;
+
+import com.oa.platform.entity.Mail;
+import com.oa.platform.entity.NewsSendRecord;
 
 /**
  * 邮件发送
@@ -17,7 +17,7 @@ public interface MailService {
      * 发送简单邮件
      * @return
      */
-    Map<String, Object> sendSimpleMail();
+    Map<String, Object> sendSimpleMail(Mail mail);
 
     /**
      * 发送带附件邮件

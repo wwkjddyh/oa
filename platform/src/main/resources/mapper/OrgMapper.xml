@@ -913,18 +913,18 @@
 			
 			WHEN TIMESTAMPDIFF( YEAR, dtl.join_party_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) BETWEEN 0 
 			AND 5 THEN
-			'0-5年' 
+			'0-5' 
 			WHEN TIMESTAMPDIFF( YEAR, dtl.join_party_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) BETWEEN 5 
 			AND 10 THEN
-			'5-10年' 
+			'5-10' 
 			WHEN TIMESTAMPDIFF( YEAR, dtl.join_party_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) BETWEEN 10 
 			AND 15 THEN
-			'10-15年' 
+			'10-15' 
 			WHEN TIMESTAMPDIFF( YEAR, dtl.join_party_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) BETWEEN 15 
 			AND 20 THEN
-			'15-20年' 
+			'15-20' 
 			WHEN TIMESTAMPDIFF( YEAR, dtl.join_party_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) > 20 THEN
-			'20年以上' 
+			'20以上' 
 			END age_temp 
 		FROM
 			t_user usr

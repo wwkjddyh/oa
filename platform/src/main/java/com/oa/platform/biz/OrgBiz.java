@@ -48,7 +48,7 @@ public class OrgBiz extends BaseBiz {
     private DictService dictService;
 	
 	private final static String[] AGE_AXIS = new String[] {"20-30","30-40","40-50","50-60","60以上"};
-	private final static String[] PARTYAGE_AXIS = new String[] {"0-5年","5-10年","10-15年","15-20年","20年以上"};
+	private final static String[] PARTYAGE_AXIS = new String[] {"0-5","5-10","10-15","15-20","20以上"};
 	private final static String[] GENDER_AXIS = new String[] {"男","女"};
 	/**
 	 * 获取党组织列表

@@ -3,6 +3,7 @@ package com.oa.platform.biz;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.oa.platform.common.Constants;
+import com.oa.platform.entity.Mail;
 import com.oa.platform.entity.News;
 import com.oa.platform.entity.NewsSendRecord;
 import com.oa.platform.service.MailService;
@@ -84,6 +85,19 @@ public class NewsBiz extends BaseBiz {
                         }
                         newsService.batchSaveNewsSendRecord(sendRecords);
                         newsService.save(news);
+                        if(news.getSendMail() == 1) {
+	                        List<String> sendToList = newsService.getMailByUserIds(receiverId);
+	                        List<String> sendMail = newsService.getMailByUserIds(senderId);
+	                        if(sendToList != null && sendToList.size() > 0 && sendMail != null 
+	                        		&& sendMail.size() > 0) {
+		                        Mail mail = new Mail();
+		                        mail.setSubject(news.getTitle());
+		                        mail.setContent(news.getContent());
+		                        mail.setSendTo(sendToList.toArray(new String[sendToList.size()]));
+		                        mail.setForm(sendMail.get(0));
+		                        mailService.sendSimpleMail(mail);
+	                        }
+                        }
                     }
                     else {
                         ret = this.getParamErrorVo();
@@ -270,7 +284,7 @@ public class NewsBiz extends BaseBiz {
     public Map<String, Object> sendMail() {
         ret = null;
         try {
-            mailService.sendSimpleMail();
+            //mailService.sendSimpleMail();
             ret = this.getSuccessVo("", "");
         }
         catch(Exception e) {

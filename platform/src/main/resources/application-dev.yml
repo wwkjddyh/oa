@@ -18,7 +18,7 @@ spring:
   banner:
     charset: UTF-8
   resources:
-    static-locations: file:/Users/baby/work/upload/,classpath:/static/
+    static-locations: file:G:\oaImg,classpath:/static/
   application:
     name: oa-platform
   thymeleaf:
@@ -34,10 +34,10 @@ spring:
       max-file-size: 100MB
       max-request-size: 1000MB
   mail:
-    host: smtp.qq.com
-    username: 445121408
+    host: smtp.yeah.net
+    username: yuzaosen
     default-encoding: utf-8
-    password: XXXXXX
+    password: LCPTWKHCLJYHRYSV
     properties:
       mail:
         smtp:
@@ -77,8 +77,8 @@ spring:
       enabled: always # 彩色日志设置
 
 upload:
-  save-dir: /Users/baby/work/upload/
-
+#  save-dir: /Users/baby/work/upload/
+  save-dir: G:\oaImg
 platform:
 
 

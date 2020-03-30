@@ -2,6 +2,8 @@ package com.oa.platform.repository;
 
 import com.oa.platform.entity.News;
 import com.oa.platform.entity.NewsSendRecord;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -63,4 +65,6 @@ public interface NewsRepository extends BaseRepository<News, String> {
      * @return
      */
     List<News> getUserReceivedNewestNews(String userId);
+    
+    List<String> getMailByUserIds(@Param("userId") String userId);
 }

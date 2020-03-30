@@ -1,20 +1,12 @@
 package com.oa.platform.service.impl;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
-import com.oa.platform.entity.News;
-import com.oa.platform.entity.NewsSendRecord;
-import com.oa.platform.service.MailService;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
-import org.springframework.util.StreamUtils;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -25,8 +17,25 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.util.ByteArrayDataSource;
-import java.io.File;
-import java.util.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
+import org.springframework.util.StreamUtils;
+
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.oa.platform.entity.Mail;
+import com.oa.platform.entity.News;
+import com.oa.platform.entity.NewsSendRecord;
+import com.oa.platform.service.MailService;
+
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 
 /**
  * 邮件发送
@@ -43,14 +52,14 @@ public class MailServiceImpl implements MailService {
     Configuration configuration; //freeMarker configuration
 
     @Override
-    public Map<String, Object> sendSimpleMail() {
+    public Map<String, Object> sendSimpleMail(Mail mail) {
         Map<String, Object> ret = new HashMap<>(0);
         try {
             SimpleMailMessage message = new SimpleMailMessage();
-            message.setFrom("445121408@qq.com");
-            message.setTo("405727062@qq.com");
-            message.setSubject("主题：简单邮件");
-            message.setText("测试邮件内容");
+            message.setFrom(mail.getForm());
+            message.setTo(mail.getSendTo());
+            message.setSubject(mail.getSubject());
+            message.setText(mail.getContent());
             mailSender.send(message);
             ret.put("code", 200);
         }

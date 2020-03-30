@@ -475,4 +475,7 @@
 	( SELECT news_id FROM t_news_send_record WHERE record_flag = 1 AND receiver_id = #{userId} ORDER BY send_time DESC, `status` ASC LIMIT 8
 	) t2 WHERE t1.record_id = t2.news_id
   </select>
+  <select id="getMailByUserIds" resultType="java.lang.String">
+  		select distinct mail from t_user_dtl where instr(#{userId},user_id)>0 and is_party='0'
+  </select>
 </mapper>
