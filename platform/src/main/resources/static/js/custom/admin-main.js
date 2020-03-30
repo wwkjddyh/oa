@@ -55,11 +55,7 @@ new Vue({
                 case 'sysUsers':
                     that.getAllAuthRole();
                     that.getNddyxxOptions();
-                    if(that.isSuperAdmin){
-                		that.getAdminUpperOrg();
-                	}else{
-                		that.getUserUpperOrgList();
-                	}
+                    
                     that.loadSysUsers('',1, that.pager.sysUser.pageSize);
                     break;
                 case 'dwjbxx':
@@ -140,11 +136,7 @@ new Vue({
                 case 'nddyxxcj':
                 	that.setDyxxYear();
                 	//that.getUpperOrg();
-                	if(that.isSuperAdmin){
-                		that.getAdminUpperOrg();
-                	}else{
-                		that.getUserUpperOrgList();
-                	}
+                	
                 	that.getNddyxxOptions();
                 	that.loadNddyxxcj();
                 	break;
@@ -275,11 +267,7 @@ new Vue({
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
                     that.formSearchRes.currTypeName = '发展党员';
-                    if(that.isSuperAdmin){
-                		that.getAdminUpperOrg();
-                	}else{
-                		that.getUserUpperOrgList();
-                	}
+                    
                     that.uploadData = {
                         name: '',
                         type: 'res2-fzdy',
@@ -1720,6 +1708,7 @@ new Vue({
                 params.append('passwordOrgi', that.formSysUser.passwordOrgi || '');
                 params.append('langConfId', '');
                 params.append('orgId', that.formSysUser.orgId || '');
+                params.append('mail',that.formSysUser.mail || '')
             }
             else {
                 userId = that.formUser.id || '';
@@ -2635,7 +2624,8 @@ new Vue({
                                 recordFlag: entry.recordFlag,
                                 userSex: entry.userSex,
                                 userSexName: entry.userSexName,
-                                orgId:entry.orgId
+                                orgId:entry.orgId,
+                                mail:entry.mail
 	                        };
 	                    }
 	                    that.dialogShow.sysUser = !that.dialogShow.sysUser;
@@ -6228,6 +6218,11 @@ new Vue({
         this.getOrgIdByUserId();
         this.getAreaTreeDict();
         this.getCurrUserEchartsData();
+        if(that.isSuperAdmin){
+    		that.getAdminUpperOrg();
+    	}else{
+    		that.getUserUpperOrgList();
+    	}
     },
     beforeMount: function() {
         // this.getCurrentUserInfo();

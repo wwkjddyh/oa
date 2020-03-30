@@ -24,6 +24,7 @@
     <result column="gender" property="gender" jdbcType="VARCHAR"/>
     <result column="education" property="education" jdbcType="VARCHAR"/>
     <result column="org_id" property="orgId" jdbcType="VARCHAR"/>
+    <result column="mail" property="mail" jdbcType="VARCHAR"/>
   </resultMap>
 
   <resultMap id="userDtl" type="com.oa.platform.entity.UserDtl">
@@ -295,7 +296,7 @@
         t.lang_name, t.lang_code,dtl.gender,
         TIMESTAMPDIFF(YEAR,dtl.birth_time,DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%S')) age,
         TIMESTAMPDIFF(YEAR,dtl.join_party_time,DATE_FORMAT(NOW(), '%Y-%m-%d %H:%i:%S')) party_age,
-        dtl.education,orguser.org_id
+        dtl.education,orguser.org_id,dtl.mail
     FROM (
       SELECT t1.user_id, t1.user_type, t1.user_name, t1.user_pwd, t1.user_nickname, t1.record_flag,
         t1.last_login_time,t1.record_time,t1.update_time,
@@ -474,5 +475,7 @@
   <update id="resetPwd">
   	update t_user set user_pwd=#{userDefaultPwd} where user_id=#{userId}
   </update>
-  
+  <update id="updateUserEmail">
+  	update t_user_dtl set mail=#{mail} where user_id=#{userId}
+  </update>
 </mapper>

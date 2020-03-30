@@ -432,9 +432,10 @@ public class UserApiController extends BaseController {
             @RequestParam(defaultValue = "1",required = false) Integer recordFlag,
             @RequestParam(defaultValue = "",required = false) String oldPassword,
             @RequestParam(defaultValue = "",required = false) String passwordOrgi,
-            @RequestParam(defaultValue = "",required = false) String orgId) {
+            @RequestParam(defaultValue = "",required = false) String orgId,
+            String mail) {
         return userBiz.saveUserBaseInfo(userId, userType, userName, userNickname,
-                userPwd, langConfId, recordFlag, oldPassword, passwordOrgi,orgId);
+                userPwd, langConfId, recordFlag, oldPassword, passwordOrgi,orgId,mail);
     }
 
     /**

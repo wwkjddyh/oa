@@ -257,5 +257,12 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
 	}
 
 
+	@Override
+	public void updateUserEmail(String userId, String mail) {
+		userRepository.updateUserEmail(userId,mail);
+		
+	}
+
+
 	
 }

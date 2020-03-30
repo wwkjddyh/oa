@@ -69,4 +69,6 @@ public interface UserRepository extends BaseRepository<User,String> {
 	void resetPwd(@Param("userId")String userId, @Param("userDefaultPwd") String userDefaultPwd);
 
 	List searchUsersByOrgIds(@Param("user") User user, @Param("isSuperAdmin") boolean isSuperAdmin,@Param("orgIds") List<String> orgIds);
+
+	void updateUserEmail(@Param("userId")String userId, @Param("mail") String mail);
 }

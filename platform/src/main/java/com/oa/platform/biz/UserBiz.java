@@ -308,7 +308,7 @@ public class UserBiz extends BaseBiz {
     @Transactional
     public Map<String, Object> saveUserBaseInfo(String userId, String userType, String userName, String userNickname,
                                                 String userPwd, String langConfId, Integer recordFlag,
-                                                String oldPassword, String passwordOrgi,String orgId) {
+                                                String oldPassword, String passwordOrgi,String orgId,String mail) {
         userId = StringUtil.trim(userId);
         userName = StringUtil.trim(userName);
         userType = StringUtil.trim(userType, User.TYPE_PERSON + "");
@@ -340,9 +340,10 @@ public class UserBiz extends BaseBiz {
                         dtl.setUserId(user.getUserId());
                         dtl.setLeader("0");
                         dtl.setParty("0");
+                        dtl.setMail(mail);
                 		orgSerivce.saveOrgUser(user.getUserId(),orgId);
                 		userService.saveUserDtl(dtl);
-                        ret = this.getSuccessVo("", "");
+                        ret = this.getSuccessVo("", ""); 
                     }
                     else {
                       
@@ -354,6 +355,7 @@ public class UserBiz extends BaseBiz {
                         	orgSerivce.delUserOrg(userId);
                         }
                         userService.update(user);
+                        userService.updateUserEmail(user.getUserId(),mail);
                         ret = this.getSuccessVo("", "");
                        
                     }

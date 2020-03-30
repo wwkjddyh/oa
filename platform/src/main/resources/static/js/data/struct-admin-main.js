@@ -689,6 +689,10 @@ const formStructConfig = {
         orgId: [
             { required: true, message: '请选择所在党组织', trigger: 'blur' },
         ],
+        
+        mail: [
+            { required: true, message: '请填写邮箱', trigger: 'blur' },
+        ],
     },
     dateDickerOptions: {
 
