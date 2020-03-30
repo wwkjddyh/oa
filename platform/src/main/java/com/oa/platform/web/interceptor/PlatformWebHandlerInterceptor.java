@@ -87,11 +87,6 @@ public class PlatformWebHandlerInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        if (!isLogon) {
-            response.sendRedirect("/");
-            return false;
-        }
-
         /*
         //当请求去的是登陆页面就直接放行
         if(request.getRequestURI().contains("login")) {
