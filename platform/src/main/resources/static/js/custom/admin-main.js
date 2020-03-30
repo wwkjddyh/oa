@@ -722,6 +722,28 @@ new Vue({
         firstPage1:[
             {
                 index:0,
+                name:'党组织管理',
+                url:'dwjbxx',
+                imgUrl:'/images/icon/orgadmin.png',
+                modelName:'党委基本信息'
+            },
+            {
+                index:1,
+                name:'党员管理',
+                url:'nddyxxcj',
+                imgUrl:'/images/icon/dangyuanguanli.png',
+                modelName:'年度党员信息采集'
+            },
+            {
+                index:2,
+                name:'党费管理',
+                url:'nddfszqkgs',
+                imgUrl:'/images/icon/dues.png',
+                modelName:'年度党费收支情况公示'
+            },
+            /*
+            {
+                index:0,
                 name:'通知公告',
                 url:'announce',
                 modelName:'通知公告',
@@ -747,37 +769,57 @@ new Vue({
                 url:'bigData',
                 imgUrl:'/images/icon/bigdata.png',
                 modelName:'大数据'
-            }
+            }*/
         ],
         firstPage2:[
             {
                 index:0,
-                name:'党组织管理',
-                url:'dwjbxx',
-                imgUrl:'/images/icon/orgadmin.png',
-                modelName:'党委基本信息'
-            },
-            {
-                index:1,
-                name:'党员管理',
-                url:'nddyxxcj',
-                imgUrl:'/images/icon/dangyuanguanli.png',
-                modelName:'年度党员信息采集'
-            },
-            {
-                index:2,
-                name:'党费管理',
-                url:'nddfszqkgs',
-                imgUrl:'/images/icon/dues.png',
-                modelName:'年度党费收支情况公示'
-            },
-            {
-                index:3,
                 name:'换届管理',
                 url:'hjgztz',
                 imgUrl:'/images/icon/huanjie.png',
                 modelName:'换届工作台账'
+            },
+            {
+                index:1,
+                name:'简报',
+                url:'articles',
+                imgUrl:'/images/icon/brief.png',
+                modelName:'简报'
             }
+        ],
+        firstPageFuncModules: [ /*首页功能模块区域*/
+            {
+                index: 1,
+                name:'通知公告',
+                url: 'announce',
+                imgUrl:'/images/icon/news.png',
+                modelName:'通知公告',
+                iconClass: 'iconfont icon-MESSAGEREAD',
+            },
+            {
+                index:2,
+                name:'视频会议',
+                url:'faceMeet',
+                imgUrl:'/images/icon/facemeet.png',
+                modelName:'视频会议',
+                iconClass: 'iconfont icon-shipinhuiyi',
+            },
+            {
+                index:3,
+                name:'大数据',
+                url:'bigData',
+                imgUrl:'/images/icon/bigdata.png',
+                modelName:'大数据',
+                iconClass: 'iconfont icon-dashuju',
+            },
+            {
+                index: 4,
+                name:'用户管理',
+                url: 'sysUsers',
+                imgUrl:'',
+                modelName:'用户管理',
+                iconClass: 'iconfont icon-yonghuguanli',
+            },
         ],
         yearList:[],
         yearMonths: [],

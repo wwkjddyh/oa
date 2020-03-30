@@ -1,13 +1,14 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      xmlns:th="http://www.w3.org/1999/xhtml">
+	  xmlns:th="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <div th:fragment="content">
 	<el-row>
-		<el-col :span="12" >
+		<el-col :span="10" >
 			<el-row class="firstPage-quickEntry">
 			<div>
-				<el-row><span class="firstPage-quickEntry_title">快速入口</span></el-row>
+				<el-row><span class="firstPage-quickEntry_title" style="margin-left: 20px">快捷方式</span></el-row>
 				<el-row>
+					<!--
 					<el-col :span="4" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 2 : 0" class="firstPage-quickEntry_row">
 						<div class="firstPage-quickEntry-item" @click="goToMenu(item)">
 							<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
@@ -20,10 +21,34 @@
 							<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
 						</div>
 					</el-col>
+					-->
+					<div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 10px;">
+						<div class="firstPage-quickEntry-item2" @click="goToMenu(item)" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 2 : 0">
+							<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
+							<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
+						</div>
+					</div>
+					<div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 10px;">
+						<div class="firstPage-quickEntry-item2" @click="goToMenu(item)" v-for="item in firstPage2" :key="item.url" :offset="item.index > 0 ? 2 : 0">
+							<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
+							<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
+						</div>
+					</div>
 				</el-row>
 			</div>
 			</el-row>
 			<el-row class="firstPage-resDownload">
+				<div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 30px;margin-left: 20px">
+					<el-button v-for="item in firstPageFuncModules" :key="item.url" v-if="item.index <= 2"
+							   :icon="item.iconClass" style="color: #8da7df;width: 100px" size="small"
+							   @click="goToMenu(item)">{{item.name}}</el-button>
+				</div>
+				<div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 10px;margin-left: 20px">
+					<el-button v-for="item in firstPageFuncModules" :key="item.url" v-if="item.index > 2"
+							   :icon="item.iconClass" style="color: #8da7df;width: 100px" size="small"
+							   @click="goToMenu(item)">{{item.name}}</el-button>
+				</div>
+				<!--
 				<el-row><span class="firstPage-resDownload_title">资料下载</span></el-row>
 				<el-row>
 					<el-tabs type="border-card" class="firstPage-resDownload-tabs" @tab-click="firstPageDyzlxz()"  v-model="firstPageZlxz">
@@ -60,9 +85,10 @@
 					  </el-tab-pane>
 					</el-tabs>
 				</el-row>
+				-->
 			</el-row>
 		</el-col>
-		<el-col :span="12" class="firstPage-briefs">
+		<el-col :span="14" class="firstPage-briefs">
 			<el-row>
 				<el-row ><div><span class="firstPage-briefs-items_title">消息通知</span></div></el-row>
 				<div v-for="item in currUserReceiverNewsRecords" class="firstPage-briefs-item">

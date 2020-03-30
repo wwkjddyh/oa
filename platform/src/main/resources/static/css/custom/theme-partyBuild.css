@@ -207,6 +207,17 @@
     justify-content:center;
 }
 
+.firstPage-quickEntry-item2 {
+    cursor:pointer;
+    height:100px;
+    width:80px;
+    flex-direction: column;
+    display: -webkit-flex;
+    align-items:center;
+    justify-content:center;
+    margin: 10px;
+}
+
 .firstPage-quickEntry-item_img{
     width: 60px;
     height: 60px;
