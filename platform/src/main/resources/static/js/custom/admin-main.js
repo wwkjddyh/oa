@@ -6225,7 +6225,69 @@ new Vue({
         
     },
     beforeMount: function() {
+        let that = this;
         // this.getCurrentUserInfo();
+
+        axios.interceptors.response.use(function (response) {
+            if (response && response.data) {
+                let codeVal = parseInt(response.data.code);
+                let messageContent = '', messageType = 'info';
+                switch (codeVal) {
+                    case 200:
+                        return response;
+                        break;
+                    case 401:
+                        messageContent = '请登录!';
+                        messageType = 'warning';
+                        that.$message({
+                            message: messageContent,
+                            type: messageType
+                        });
+                        return false;
+                        break;
+                    case 411:
+                        messageContent = '请求参数异常!';
+                        messageType = 'warning';
+                        that.$message({
+                            message: messageContent,
+                            type: messageType
+                        });
+                        return false;
+                        break;
+                    case 555:
+                        messageContent = '"'+response.data.data+'"与已有数据重复!';
+                        messageType = 'warning';
+                        that.$message({
+                            message: messageContent,
+                            type: messageType
+                        });
+                        return false;
+                        break;
+                    default:
+                        window.location.href = '/';
+                        break;
+                }
+            }
+            else {
+                window.location.href = '/';
+                return response;
+            }
+
+        }, function (error) {
+            // 对响应错误做点什么
+            switch (error.response.status) {
+                case 401:
+                    window.location.href = '/';
+                    return Promise.reject(error);
+                case 404:
+                    window.location.href = '/';
+                    return Promise.reject(error);
+                case 500:
+                    window.location.href = '/';
+                    return Promise.reject(error);
+            }
+            return Promise.reject(error);
+        });
     },
     mounted: function () {
         let that = this;
