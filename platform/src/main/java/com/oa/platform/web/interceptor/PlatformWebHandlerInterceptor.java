@@ -65,7 +65,8 @@ public class PlatformWebHandlerInterceptor implements HandlerInterceptor {
         //Rest请求验证
         if(requestUri.contains("/api/")) {
             if(!isLogon) {
-                print(response,unLogonMsg);
+//                print(response,unLogonMsg);
+                response.sendRedirect("/");
                 return false;
             }
         }
@@ -75,7 +76,8 @@ public class PlatformWebHandlerInterceptor implements HandlerInterceptor {
         if(xRequestedWith != null && xRequestedWith.equalsIgnoreCase("XMLHttpRequest")) {
             //如果是ajax请求响应头会有x-requested-with
             if(!isLogon) {
-                print(response,unLogonMsg);
+//                print(response,unLogonMsg);
+                response.sendRedirect("/");
                 return false;
             }
         }
