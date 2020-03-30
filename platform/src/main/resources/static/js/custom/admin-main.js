@@ -428,10 +428,18 @@ new Vue({
                         partyAgeChart.legendData, partyAgeChart.xAxisData, partyAgeChart.seriesData);
                     that.initEChartsCloumnChart2(educationChart.id, educationChart.title, educationChart.subtitle,
                         educationChart.legendData, educationChart.xAxisData, educationChart.seriesData);
+
+                    /*
                     that.initEChartsCloumnChart3('bigDataChartId5', '', '',
                         [], [], []);
                     that.initEChartsCloumnChart2('bigDataChartId5', educationChart.title, educationChart.subtitle,
                         educationChart.legendData, educationChart.xAxisData, educationChart.seriesData);
+
+
+                    that.initEChartsCloumnChart2('bigDataChartId5', educationChart.title, educationChart.subtitle,
+                        educationChart.legendData, educationChart.xAxisData, educationChart.seriesData);
+                    that.initEChartsCloumnChart4();
+                     */
 
                     /*
                     if (that.chartsData) {
@@ -5720,6 +5728,11 @@ new Vue({
                                 shadowOffsetX: 0,
                                 shadowColor: 'rgba(0, 0, 0, 0.5)'
                             }
+                        },
+                        label: {
+                            normal: {
+                                formatter: '{c} 占 {d}%'
+                            }
                         }
                     }
                 ]
@@ -5914,6 +5927,17 @@ new Vue({
          * @param seriesData series数据
          */
         initEChartsCloumnChart2(chartId, title, subtext, legendData, xAxisData, seriesData) {
+            let labelOption = {
+                normal: {
+                    show: true,
+                    position: 'insideBottom',
+                    rotate: 90,
+                    textStyle: {
+                        align: 'left',
+                        verticalAlign: 'middle'
+                    }
+                }
+            };
             let options = {
                 title : {
                     text: title || '',
@@ -5951,7 +5975,8 @@ new Vue({
                 },
                 series: [{
                     data: seriesData,
-                    type: 'bar'
+                    type: 'bar',
+                    label: labelOption,
                 }]
             };
             let myChart = echarts.init(document.getElementById(chartId));
@@ -5974,6 +5999,17 @@ new Vue({
          * @param seriesData series数据
          */
         initEChartsCloumnChart3(chartId, title, subtext, legendData, xAxisData, seriesData) {
+            let labelOption = {
+                normal: {
+                    show: true,
+                    position: 'insideBottom',
+                    rotate: 90,
+                    textStyle: {
+                        align: 'left',
+                        verticalAlign: 'middle'
+                    }
+                }
+            };
             let options = {
                 xAxis: {
                     type: 'category',
@@ -5991,6 +6027,60 @@ new Vue({
                     }
                 }]
             };
+            let myChart = echarts.init(document.getElementById(chartId));
+            myChart.setOption(options);
+            let that = this;
+            let chartObj = that.charts.find(function(m){ return m.id == chartId});
+            if (chartObj) {
+                chartObj.chart = myChart;
+                return false;
+            }
+        },
+
+        initEChartsCloumnChart4() {
+            let labelOption = {
+                normal: {
+                    show: true,
+                    position: 'insideBottom',
+                    rotate: 90,
+                    textStyle: {
+                        align: 'left',
+                        verticalAlign: 'middle'
+                    }
+                }
+            };
+            let options = {
+                title : {
+                    text: '测试柱状图',
+                    subtext: 'XXX党委',
+                    x:'center'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {},
+                xAxis: {
+                    data: ['1','2','3','4','5','6']
+                },
+                yAxis: [{
+                    min: 5000000
+                }, {
+                }],
+                grid: {
+                    left: 100
+                },
+                series: [{
+                    //name: 'bar',
+                    type: 'bar',
+                    label: labelOption,
+                    data: [5590986,5644154,5682473,5709709,5748763,5770601],
+                    animation: true
+                }]
+            };
+            let chartId = 'bigDataChartId6';
             let myChart = echarts.init(document.getElementById(chartId));
             myChart.setOption(options);
             let that = this;
