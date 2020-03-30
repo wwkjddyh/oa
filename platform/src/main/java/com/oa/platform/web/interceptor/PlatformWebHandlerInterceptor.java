@@ -76,13 +76,18 @@ public class PlatformWebHandlerInterceptor implements HandlerInterceptor {
         if(xRequestedWith != null && xRequestedWith.equalsIgnoreCase("XMLHttpRequest")) {
             //如果是ajax请求响应头会有x-requested-with
             if(!isLogon) {
-//                print(response,unLogonMsg);
-                response.sendRedirect("/");
+                print(response, unLogonMsg);
+//                response.sendRedirect("/");
                 return false;
             }
         }
 
         if(requestUri.contains("/error")) {
+            response.sendRedirect("/");
+            return false;
+        }
+
+        if (!isLogon) {
             response.sendRedirect("/");
             return false;
         }
