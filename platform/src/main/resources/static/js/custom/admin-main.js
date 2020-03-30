@@ -1648,7 +1648,7 @@ new Vue({
                 case 401:
                     messageContent = '请登录!';
                     messageType = 'warning';
-                    break
+                    break;
                 case 411:
                     if(typeof paramErrorCallback === 'function') {
                         paramErrorCallback();
