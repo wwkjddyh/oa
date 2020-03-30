@@ -864,7 +864,7 @@ new Vue({
         isSuperAdmin: false,
         currUserReceiverBriefRecords: [],
         currUserReceiverNewsRecords: [],
-        
+        faceMeetCode:'',
         ssdzzqk:[
         	{
         		orgId: '1231231231',
@@ -2382,7 +2382,13 @@ new Vue({
                 console.warn(err);
             });
         },
-
+        goToFaceMeet(){
+        	if(this.faceMeetCode != '' && this.faceMeetCode != null){
+        		let url = "https://www.527meeting.com/go?code=" + this.faceMeetCode;
+        		window.open(url);
+        	}
+        	this.faceMeetCode = '';
+        },
         /**
          * 更新资源附件信息
          */
