@@ -35,9 +35,10 @@ spring:
       max-request-size: 1000MB
   mail:
     host: smtp.yeah.net
-    username: yuzaosen
+    username: tjzjdw
     default-encoding: utf-8
-    password: LCPTWKHCLJYHRYSV
+    #yuzaosen password: LCPTWKHCLJYHRYSV
+    password: YSGZZWQBJIBVJYKX
     properties:
       mail:
         smtp:

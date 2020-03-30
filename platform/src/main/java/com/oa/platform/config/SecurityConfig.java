@@ -68,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //session管理 只允许一个用户登录,如果同一个账户两次登录,那么第一个账户将被踢下线,跳转到登录页面
         http.sessionManagement().sessionFixation().changeSessionId()
-                .maximumSessions(1).expiredUrl("/");
+                .maximumSessions(1).expiredUrl("/login");
 
         // RemeberMe
         http.rememberMe().key("webmvc#FD637E6D9C0F1A5A67082AF56CE32485");

@@ -1763,7 +1763,7 @@ new Vue({
                 params.append('passwordOrgi', that.formUser.passwordOrgi || '');
                 params.append('langConfId','');
             }
-
+            that.fullscreenLoading = true;
             axios.post("/api/user/saveUserBaseInfo", params)
                 .then(function(response){
                     let responseCode = parseInt(response.data.code);
@@ -1797,7 +1797,9 @@ new Vue({
                             that.$message.error( response.data.msg);
                         }
                     }
+                    that.fullscreenLoading = false;
                 }).catch(function(err){
+                	that.fullscreenLoading = false;
                 console.warn(err);
             });
         },
@@ -2310,6 +2312,7 @@ new Vue({
                 operName = '修改';
                 // params.append('recordId',that.formNews.recordId || '');
             }
+            that.fullscreenLoading=true;
             axios.post("/api/news/save", _data, {
                 headers: {
                     "Content-type": "application/json;charset=utf-8"
@@ -2321,7 +2324,9 @@ new Vue({
                         that.pager.news.currentPage = 1;
                         that.loadNews('',1, that.pager.news.pageSize);
                     });
+                    that.fullscreenLoading=false;
                 }).catch(function(err){
+                	that.fullscreenLoading=false;
                 console.warn(err);
             });
         },
@@ -2870,6 +2875,8 @@ new Vue({
                         that.getAllMsgCategories();
                         if(isAdd) {
                             that.formNews = {
+                            		sendSms:0,
+                            		sendMail:0
                             };
                         }
                         else {

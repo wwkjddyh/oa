@@ -94,7 +94,7 @@ public class NewsBiz extends BaseBiz {
 		                        mail.setSubject(news.getTitle());
 		                        mail.setContent(news.getContent());
 		                        mail.setSendTo(sendToList.toArray(new String[sendToList.size()]));
-		                        mail.setForm(sendMail.get(0));
+		                        mail.setForm("tjzjdw@yeah.net");
 		                        mailService.sendSimpleMail(mail);
 	                        }
                         }
