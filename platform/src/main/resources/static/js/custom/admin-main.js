@@ -6153,6 +6153,31 @@ new Vue({
                     console.log(err);
                 });
         },
+
+        /**
+         * 处理401、500返回
+         * @param response 响应信息
+         */
+        handleResponse(response) {
+            let that = this;
+            let codeVal = parseInt(response.data.code);
+            let messageContent = '', messageType = 'info';
+            switch (codeVal) {
+                case 401:
+                    messageContent = '请登录!';
+                    messageType = 'warning';
+                    break;
+                case 500:
+                    messageContent = '请登录!';
+                    messageType = 'warning';
+                    break;
+            }
+            that.$message({
+                message: messageContent,
+                type: messageType
+            });
+            return false;
+        },
     },
     props: {
 
