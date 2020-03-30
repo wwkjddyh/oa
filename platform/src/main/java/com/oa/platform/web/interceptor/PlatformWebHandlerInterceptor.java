@@ -65,8 +65,8 @@ public class PlatformWebHandlerInterceptor implements HandlerInterceptor {
         //Rest请求验证
         if(requestUri.contains("/api/")) {
             if(!isLogon) {
-//                print(response,unLogonMsg);
-                response.sendRedirect("/");
+                print(response, unLogonMsg);
+//                response.sendRedirect("/");
                 return false;
             }
         }
