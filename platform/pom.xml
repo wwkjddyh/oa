@@ -227,6 +227,13 @@
 			<systemPath>${project.basedir}/libs/ueditor-0.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>
 		-->
+		<dependency>
+			<groupId>com.ueditor</groupId>
+			<artifactId>ueditor</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/libs/ueditor-0.0.1-SNAPSHOT.jar</systemPath>
+		</dependency>
 
 		<!-- ueditor end -->
 	</dependencies>
@@ -313,6 +320,27 @@
 					</webResources>
 				</configuration>
 			</plugin>
+			<!--
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.2.0</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			-->
 		</plugins>
 	</build>
 
