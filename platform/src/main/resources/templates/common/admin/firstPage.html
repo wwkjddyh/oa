@@ -95,8 +95,8 @@
 					<hr style="height:1px;border:none;border-top:1px solid #e5e5e5;"/></div></el-row>
 				<div v-for="item in currUserReceiverNewsRecords" class="firstPage-briefs-item">
 					<div class="firstPage-briefs-item_title">
-                        <label v-if="item.status && item.status == 1" >【已读】</label>
-                        <label v-if="!item.status || item.status == 0" >【未读】</label>
+                        <label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi">【已读】</label>
+                        <label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi">【未读】</label>
                         <a class="firstPage-briefs_item_title-a" @click="handleNoticeView(item.recordId)">{{item.newsTitle || ''}}</a>
 					</div>
 					<div class="firstPage-briefs-item_time">
