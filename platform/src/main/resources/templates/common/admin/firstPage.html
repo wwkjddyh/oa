@@ -103,8 +103,8 @@
 					<hr style="height:1px;border:none;border-top:1px solid #e5e5e5;margin-top: 20px;color: #cecece"/></div></el-row>
 				<div v-for="item in currUserReceiverNewsRecords" class="firstPage-briefs-item" style="margin-right: 110px">
 					<div class="firstPage-briefs-item_title">
-                        <label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi">【已读】</label>
-                        <label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi">【未读】</label>
+                        <label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi" style="color:#4f4f4f;">【已读】</label>
+                        <label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi" style="color:#4f4f4f;">【未读】</label>
                         <a class="firstPage-briefs_item_title-a" @click="handleNoticeView(item.recordId)">{{item.newsTitle || ''}}</a>
 					</div>
 					<div class="firstPage-briefs-item_time">
@@ -113,7 +113,7 @@
 				</div>
 			</el-row>
 			<el-row class="firstPage-briefs-items_row" style="margin-top: 70px">
-				<el-row ><div style="margin-right: 110px"><span class="firstPage-briefs-items_title" style="color:#4f4f4f">工作简报</span>
+				<el-row ><div style="margin-right: 110px"><span class="firstPage-briefs-items_title" style="color:#4f4f4f;">工作简报</span>
 					<hr style="height:1px;border:none;border-top:1px solid #e5e5e5;margin-top: 20px;color: #cecece"/></div></el-row>
 				<div v-for="item in currUserReceiverBriefRecords" class="firstPage-briefs-item" style="margin-right: 110px">
 					<div class="firstPage-briefs-item_title">
