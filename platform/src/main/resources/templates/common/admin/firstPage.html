@@ -92,7 +92,7 @@
 		<el-col :span="14" class="firstPage-briefs">
 			<el-row>
 				<el-row ><div><span class="firstPage-briefs-items_title" style="color:#303133">通知消息</span>
-					<hr style="height:1px;border:none;border-top:1px solid rgb(228, 231, 237);"/></div></el-row>
+					<hr style="height:1px;border:none;border-top:1px solid #e5e5e5;"/></div></el-row>
 				<div v-for="item in currUserReceiverNewsRecords" class="firstPage-briefs-item">
 					<div class="firstPage-briefs-item_title">
                         <label v-if="item.status && item.status == 1" >【已读】</label>
@@ -106,7 +106,7 @@
 			</el-row>
 			<el-row class="firstPage-briefs-items_row">
 				<el-row ><div><span class="firstPage-briefs-items_title" style="color:#303133">工作简报</span>
-					<hr style="height:1px;border:none;border-top:1px solid rgb(228, 231, 237);"/></div></el-row>
+					<hr style="height:1px;border:none;border-top:1px solid #e5e5e5;"/></div></el-row>
 				<div v-for="item in currUserReceiverBriefRecords" class="firstPage-briefs-item">
 					<div class="firstPage-briefs-item_title">
 						<a class="firstPage-briefs_item_title-a" @click="handleBriefView(item.briefId)">{{item.briefTitle || ''}}</a>
