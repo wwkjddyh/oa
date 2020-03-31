@@ -54,7 +54,7 @@
                             width="260"
                             label="操作">
                         <template slot-scope="scope" >
-                            <div style="display: flex;width:100%" align="right">
+                            <div style="display: flex;width:100%;justify-content: flex-end" align="right">
                             	<el-button size="mini" v-if="scope.row.level < 2" @click="edit('dwjbxx',scope.$index,scope.row,null)" >添加下级组织</el-button>
                                 <el-button size="mini" @click="edit('dwjbxx',scope.$index,scope.row,false)" >修改</el-button>
                                 <el-button size="mini" type="danger" @click="dwjbxxDel(scope.row,'dwjbxx')" >删除</el-button>
