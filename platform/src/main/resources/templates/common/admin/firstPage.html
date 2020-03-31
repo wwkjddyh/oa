@@ -41,12 +41,15 @@
 				<el-row><span class="firstPage-resDownload_title" style="margin-left: 110px;color:#4f4f4f">功能板块</span></el-row>
 				<div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 30px;margin-left: 73px;">
 						
-						<div class="firstPage-function-item" @click="goToMenu(item)" v-for="item in firstPageFuncModules" :key="item.url">
-							
+					<div v-for="(item, index) in firstPageFuncModules" :key="item.url" style="display: flex">
+						<div class="firstPage-function-item" @click="goToMenu(item)"  >
 							<i :class="item.iconClass" style="font-size:30px;color:rgb(0, 161, 255)"></i>
 							<span class="firstPage-function-item_name">{{item.name}}</span>
 						</div>
+						<div v-if="index !== firstPageFuncModules.length - 1" style="float:left;width: 2px;height: 30px;margin-top: calc(50% - 15px); background: #d6d6d6;"></div>
 					</div>
+
+				</div>
 				<!-- <div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 30px;margin-left: 110px">
 					<el-button v-for="item in firstPageFuncModules" :key="item.url" v-if="item.index <= 2"
 							   :icon="item.iconClass" style="color: #8da7df;width: 100px" size="small"
