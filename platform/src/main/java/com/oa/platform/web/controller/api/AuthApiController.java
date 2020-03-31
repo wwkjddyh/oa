@@ -1,14 +1,16 @@
 package com.oa.platform.web.controller.api;
 
-import com.oa.platform.biz.LogBiz;
-import com.oa.platform.biz.RoleBiz;
-import com.oa.platform.common.Constants;
-import com.oa.platform.common.StatusCode;
-import com.oa.platform.web.controller.BaseController;
-import com.oa.platform.entity.User;
-import com.oa.platform.entity.UserDtl;
-import com.oa.platform.util.StringUtil;
+import java.io.UnsupportedEncodingException;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,12 +19,22 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
+import com.oa.platform.biz.LogBiz;
+import com.oa.platform.biz.RoleBiz;
+import com.oa.platform.common.Constants;
+import com.oa.platform.common.ResultVo;
+import com.oa.platform.common.StatusCode;
+import com.oa.platform.entity.User;
+import com.oa.platform.entity.UserDtl;
+import com.oa.platform.util.StringUtil;
+import com.oa.platform.web.controller.BaseController;
 
 /**
  * 权限API接口
@@ -45,10 +57,44 @@ public class AuthApiController extends BaseController {
     @Autowired
   //  @Qualifier(value = "sessionRegistry")
     private SessionRegistry sessionRegistry;
-
+    
+    //短信权限码
+    @Value("${phoneCode.auth_string}")
+	private String authString;
+    //获取验证码url
+    @Value("${phoneCode.getSmsUrl}")
+	private String smsUrl;
+    //验证码校验url
+    @Value("${phoneCode.validateSmsUrl}")
+	private String validateSmsUrl;
+    //模板id
+    @Value("${phoneCode.temp_id}")
+	private String temp_id;
     @Autowired
     private LogBiz logBiz;
-
+    /**
+     * 获取短信验证码
+     * @param userId
+     * @return
+     */
+    public ResultVo getSMS(String userId) {
+    	
+    	try {
+    		//加密
+			String authorization = Base64.getEncoder().encodeToString(authString.getBytes("UTF-8"));
+			Map<String,String> headerMap = new HashMap<String,String>();
+			headerMap.put("Authorization", authorization);
+			Map<String,String> params = new HashMap<String,String>();
+			params.put("mobile", "17501697782");
+			params.put("temp_id", temp_id);
+			//post请求获取短信验证码
+			roleBiz.httpRequest(smsUrl, JSONObject.toJSONString(params), headerMap);
+		} catch (UnsupportedEncodingException e) {
+			
+			e.printStackTrace();
+		}
+    	return getSuccessResultVo(null);
+    }
     /**
      * 异步登录
      * @param username 用户名
