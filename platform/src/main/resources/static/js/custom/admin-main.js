@@ -475,7 +475,7 @@ new Vue({
         def_menu_id: 'firstPage',
         currAction: 'append',
         isCollapse: false,
-        headerTitle: '智慧党建',
+        headerTitle: '奥维云创基层党建信息化系统',
         menuCollapseDivClass: 'menu-collapse-div',
         menuCollapseIcon: 'el-icon-s-fold',
         activeTabName: 'first',

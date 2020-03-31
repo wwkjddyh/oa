@@ -11,15 +11,25 @@ import com.oa.platform.entity.User;
 import com.oa.platform.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -438,5 +448,34 @@ public abstract class BaseBiz {
             val = StringUtil.trim(request.getParameter(paramName),defVal);
         }
         return val;
+    }
+    /**
+     * 发送post请求
+     * @param url
+     * @param jsonParam
+     * @param headParam
+     * @return
+     */
+    public ResponseEntity<String> httpRequest(String url,String jsonParam,Map<String, String> headParam){
+    	try {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(new MediaType("application","JSON",Charset.forName("UTF-8")));
+			headers.setAccept(Arrays.asList(new MediaType[] {new MediaType("application","JSON",Charset.forName("UTF-8"))}));
+			//请求头追加
+			if(headParam != null) {
+				for (Map.Entry<String, String> entry : headParam.entrySet()) {
+					headers.add(entry.getKey(), entry.getValue());
+				}
+			}
+			HttpEntity<String> requestEntity = new HttpEntity<String>(jsonParam,headers);
+			HttpMethod post = HttpMethod.POST;
+			ResponseEntity<String> exchange = new ResponseEntity<String>("",HttpStatus.OK);
+			RestTemplate restTemplate = new RestTemplate();
+			exchange = restTemplate.exchange(url, post,requestEntity,String.class);
+			return exchange;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("",HttpStatus.INTERNAL_SERVER_ERROR);
+		}
     }
 }
