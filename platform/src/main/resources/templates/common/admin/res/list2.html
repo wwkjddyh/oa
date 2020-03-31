@@ -124,7 +124,7 @@
             </el-form>
         </el-card>
     </el-dialog>
-    <el-dialog title="上传" :visible.sync="dialogShow.resUpload" lock-scroll="true" width="800px">
+    <el-dialog title="上传附件" :visible.sync="dialogShow.resUpload" lock-scroll="true" width="30%">
         <el-upload style="width: 300px;" size="small"
                    ref="uploadRes2"
                    class="upload-demo"
@@ -155,7 +155,7 @@
         -->
         <div style="margin-top: 20px">
             <el-button @click="closeUpload2" plain size="mini" icon="el-icon-close">取消</el-button>
-            <el-button @click="submitUpload2" type="primary" plain size="mini" icon="el-icon-check">上传</el-button>
+            <el-button @click="submitUpload2" type="primary" plain size="mini" icon="el-icon-check">保存</el-button>
         </div>
     </el-dialog>
 </div>
