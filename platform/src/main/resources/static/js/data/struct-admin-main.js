@@ -693,6 +693,7 @@ const formStructConfig = {
         mail: [
             { required: true, message: '请填写邮箱', trigger: 'blur' },
         ],
+        
     },
     dateDickerOptions: {
 

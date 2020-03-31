@@ -570,7 +570,7 @@
 		      :visible.sync="dialogShow.dept"
 		      append-to-body>
 		      <el-card shadow="always" style="width: 100%;" type="card">
-	              <el-form ref="formDept"   style="width: 100%;" label-position="top">
+	              <el-form ref="formDept" :rules="rules" :model="formDept"  style="width: 100%;" label-position="top">
 	              	<el-form-item label="单位名称" prop="deptName"  size="mini" style="width: 100%;">
                             <el-input v-model="formDept.deptName"  size="medium" 
                             	auto-complete="off"  maxlength="255" placeholder="单位名称" ></el-input>                           
@@ -580,7 +580,7 @@
                             	auto-complete="off"  maxlength="255" placeholder="单位性质类别" ></el-input>                           
                     </el-form-item>
                     <el-form-item label="单位(机构)类型" prop="deptType"  size="mini" style="width: 100%;">                          
-							    <el-cascader
+							    <!-- <el-cascader
 								    v-model="formDept.deptType"
 								    :options="deptOrgType"
 								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
@@ -588,13 +588,15 @@
 								    size="medium"
 								    filterable
 								    clearable
-								    ></el-cascader>                         
+								    ></el-cascader> -->  
+								    <el-input v-model="formDept.deptType"  size="medium" 
+                            	auto-complete="off"  maxlength="255" placeholder="单位(机构)类型" ></el-input>                       
                     </el-form-item>
 	              </el-form>
               </el-card>
               <span slot="footer" class="dialog-footer" align="center">
                  <div align="center">
-				    <el-button @click="formTaleConfirm('dept')" type="primary" plain align="center">确定</el-button>
+				    <el-button @click="formTaleConfirm('formDept')" type="primary" plain align="center">确定</el-button>
                     <el-button @click="dialogShow.dept = false" type="cancel" plain align="center">取消</el-button>
 				 </div> 
 				 </span>

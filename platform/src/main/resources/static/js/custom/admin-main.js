@@ -997,7 +997,6 @@ new Vue({
         orignRewardName:[],
         allowOrgLevel:[],
         authModules: [],
-        deptOrgType:[],
         leaderList:[
         ],
         firstPageZlxz:'dygl',
@@ -2659,7 +2658,7 @@ new Vue({
 	             			
 	             			that.dialogShow.reward =false;
 	             			break;
-	             		case 'dept':
+	             		case 'formDept':
 	             			let rowValue2 = that.formDept;
 	             			let scopeIndex2 = that.formDept.index;
 	             			that.deptInfoList[scopeIndex2] =rowValue2;
