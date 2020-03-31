@@ -34,10 +34,11 @@ spring:
       max-file-size: 100MB
       max-request-size: 1000MB
   mail:
-    host: smtp.qq.com
-    username: 445121408
+    host: smtp.yeah.net
+    username: tjzjdw
     default-encoding: utf-8
-    password: XXXXXX
+    #yuzaosen password: LCPTWKHCLJYHRYSV
+    password: YSGZZWQBJIBVJYKX
     properties:
       mail:
         smtp:
@@ -78,5 +79,14 @@ upload:
 
 platform:
 
+phoneCode:
+  appKey: d298e756ed36a142a1939d69
+  masterSecret: d9294591c4f3e0f7905576f1
+  temp_id: d9294591c4f3e0f7905576f1
+  auth_string: ${phoneCode.appKey}:${phoneCode.masterSecret}
+  #获取短信文本验证码url
+  getSmsUrl: https://api.sms.jpush.cn/v1/codes
+  #短信文本验证码校验url
+  validateSmsUrl: https://api.sms.jpush.cn/v1/codes/
 
 
