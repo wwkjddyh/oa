@@ -57,7 +57,7 @@
  容器
  */
 .main-el-container {
-    height: calc(100vh - 9vh - 58px);
+    height: calc(100vh - 6vh - 58px);
     border: 0;
 }
 
