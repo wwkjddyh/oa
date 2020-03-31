@@ -290,24 +290,51 @@ new Vue({
                         sexChart.title = _tChartData.title || '';
                         let _subtitle = '';
                         let _tSubTitleArr = _tChartData.legend || [];
-                        if (_tSubTitleArr.length > 0) {
-                            _subtitle = _tSubTitleArr[0];
-                        }
-                        sexChart.subtitle = _subtitle;
-                        let _legendArr = _tChartData.axis || [];
-                        sexChart.legendData = _legendArr;
-                        let _seriesData = [];
-                        if (_tChartData.data) {
-                            let _seriesArr = _tChartData.data || [];
-                            if (_seriesArr.length > 0) {
-                                let _sData = _seriesArr[0].data || {};
-                                _seriesData = [
-                                    {value: parseInt(_sData[0]), name: _legendArr[0]},
-                                    {value: parseInt(_sData[1]), name: _legendArr[1]}
-                                ];
+                        let _legendLen = _tSubTitleArr.length;
+                        if (_legendLen == 1) {
+                            if (_tSubTitleArr.length > 0) {
+                                _subtitle = _tSubTitleArr[0];
                             }
+                            sexChart.subtitle = _subtitle;
+                            let _legendArr = _tChartData.axis || [];
+                            sexChart.legendData = _legendArr;
+                            let _seriesData = [];
+                            if (_tChartData.data) {
+                                let _seriesArr = _tChartData.data || [];
+                                if (_seriesArr.length > 0) {
+                                    let _sData = _seriesArr[0].data || {};
+                                    _seriesData = [
+                                        {value: parseInt(_sData[0]), name: _legendArr[0]},
+                                        {value: parseInt(_sData[1]), name: _legendArr[1]}
+                                    ];
+                                }
+                            }
+                            sexChart.seriesData = _seriesData;
+
+                            that.initEChartsPieChart(sexChart.id, sexChart.title,
+                                sexChart.subtitle, sexChart.legendData, sexChart.seriesData);
                         }
-                        sexChart.seriesData = _seriesData;
+                        else if (_legendLen > 1) {
+                            sexChart.legendData = _tChartData.legend || [];
+                            sexChart.axis = _tChartData.axis || [];
+                            let _seriesData = [];
+                            if (_tChartData.data) {
+                                let _seriesArr = _tChartData.data || [];
+                                let _seriesLen = _seriesArr.length;
+                                if (_seriesLen > 0) {
+                                    for (let i = 0; i < _seriesLen; i ++) {
+                                        let _sData = _seriesArr[i];
+                                        _seriesData.push({
+                                            name: _sData.name || '',
+                                            data: _sData.data || [],
+                                        })
+                                    }
+                                }
+                            }
+                            sexChart.seriesData = _seriesData;
+                            that.initEChartsCloumnChart5(sexChart);
+                        }
+
                     }
                     let ageChart = {
                         id: 'bigDataChartId2',
@@ -320,23 +347,49 @@ new Vue({
                     if (that.currUserEchartsData['age']) {
                         let _tChartData = that.currUserEchartsData['age'];
                         ageChart.title = _tChartData.title || '';
-                        let _subtitle = '';
                         let _tSubTitleArr = _tChartData.legend || [];
-                        if (_tSubTitleArr.length > 0) {
-                            _subtitle = _tSubTitleArr[0];
-                        }
-                        ageChart.subtitle = _subtitle;
-                        ageChart.xAxisData = _tChartData.axis || [];
-
-                        let _seriesData = [];
-                        let _sDataArr = _tChartData.data || [];
-                        if (_sDataArr.length > 0) {
-                            for (let i = 0; i < _sDataArr.length; i ++) {
-                                let _sData = _sDataArr[i];
-                                _seriesData.push(_sData['data']);
+                        let _legendLen = _tSubTitleArr.length;
+                        if (_legendLen == 1) {
+                            let _subtitle = '';
+                            if (_tSubTitleArr.length > 0) {
+                                _subtitle = _tSubTitleArr[0];
                             }
+                            ageChart.subtitle = _subtitle;
+                            ageChart.xAxisData = _tChartData.axis || [];
+
+                            let _seriesData = [];
+                            let _sDataArr = _tChartData.data || [];
+                            if (_sDataArr.length > 0) {
+                                for (let i = 0; i < _sDataArr.length; i++) {
+                                    let _sData = _sDataArr[i];
+                                    _seriesData.push(_sData['data']);
+                                }
+                            }
+                            ageChart.seriesData = _seriesData.length > 0 ? _seriesData[0] : [];
+                            that.initEChartsCloumnChart2(ageChart.id, ageChart.title, ageChart.subtitle,
+                                ageChart.legendData, ageChart.xAxisData, ageChart.seriesData);
                         }
-                        ageChart.seriesData = _seriesData.length > 0 ? _seriesData[0] : [];
+                        else if (_legendLen > 1) {
+                            ageChart.legendData = _tChartData.legend || [];
+                            ageChart.axis = _tChartData.axis || [];
+                            let _seriesData = [];
+                            if (_tChartData.data) {
+                                let _seriesArr = _tChartData.data || [];
+                                let _seriesLen = _seriesArr.length;
+                                if (_seriesLen > 0) {
+                                    for (let i = 0; i < _seriesLen; i ++) {
+                                        let _sData = _seriesArr[i];
+                                        _seriesData.push({
+                                            name: _sData.name || '',
+                                            data: _sData.data || [],
+                                        })
+                                    }
+                                }
+                            }
+                            ageChart.seriesData = _seriesData;
+                            that.initEChartsCloumnChart5(ageChart);
+                        }
+
                     }
 
                     let partyAgeChart = {
@@ -352,21 +405,47 @@ new Vue({
                         partyAgeChart.title = _tChartData.title || '';
                         let _subtitle = '';
                         let _tSubTitleArr = _tChartData.legend || [];
-                        if (_tSubTitleArr.length > 0) {
-                            _subtitle = _tSubTitleArr[0];
-                        }
-                        partyAgeChart.subtitle = _subtitle;
-                        partyAgeChart.xAxisData = _tChartData.axis || [];
-
-                        let _seriesData = [];
-                        let _sDataArr = _tChartData.data || [];
-                        if (_sDataArr.length > 0) {
-                            for (let i = 0; i < _sDataArr.length; i ++) {
-                                let _sData = _sDataArr[i];
-                                _seriesData.push(_sData['data']);
+                        let _legendLen = _tSubTitleArr.length;
+                        if (_legendLen == 1) {
+                            if (_tSubTitleArr.length > 0) {
+                                _subtitle = _tSubTitleArr[0];
                             }
+                            partyAgeChart.subtitle = _subtitle;
+                            partyAgeChart.xAxisData = _tChartData.axis || [];
+
+                            let _seriesData = [];
+                            let _sDataArr = _tChartData.data || [];
+                            if (_sDataArr.length > 0) {
+                                for (let i = 0; i < _sDataArr.length; i++) {
+                                    let _sData = _sDataArr[i];
+                                    _seriesData.push(_sData['data']);
+                                }
+                            }
+                            partyAgeChart.seriesData = _seriesData.length > 0 ? _seriesData[0] : [];
+
+                            that.initEChartsCloumnChart2(partyAgeChart.id, partyAgeChart.title, partyAgeChart.subtitle,
+                                partyAgeChart.legendData, partyAgeChart.xAxisData, partyAgeChart.seriesData);
                         }
-                        partyAgeChart.seriesData = _seriesData.length > 0 ? _seriesData[0] : [];
+                        else if (_legendLen > 1) {
+                            partyAgeChart.legendData = _tChartData.legend || [];
+                            partyAgeChart.axis = _tChartData.axis || [];
+                            let _seriesData = [];
+                            if (_tChartData.data) {
+                                let _seriesArr = _tChartData.data || [];
+                                let _seriesLen = _seriesArr.length;
+                                if (_seriesLen > 0) {
+                                    for (let i = 0; i < _seriesLen; i ++) {
+                                        let _sData = _seriesArr[i];
+                                        _seriesData.push({
+                                            name: _sData.name || '',
+                                            data: _sData.data || [],
+                                        })
+                                    }
+                                }
+                            }
+                            partyAgeChart.seriesData = _seriesData;
+                            that.initEChartsCloumnChart5(partyAgeChart);
+                        }
                     }
 
                     let educationChart = {
@@ -383,39 +462,66 @@ new Vue({
                         educationChart.title = _tChartData.title || '';
                         let _subtitle = '';
                         let _tSubTitleArr = _tChartData.legend || [];
-                        if (_tSubTitleArr.length > 0) {
-                            _subtitle = _tSubTitleArr[0];
-                        }
-                        educationChart.subtitle = _subtitle;
-                        educationChart.xAxisData = _tChartData.axis || [];
-
-                        let _seriesData = [];
-                        let _sDataArr = _tChartData.data || [];
-                        if (_sDataArr.length > 0) {
-                            for (let i = 0; i < _sDataArr.length; i ++) {
-                                let _sData = _sDataArr[i];
-                                _seriesData.push(_sData['data']);
+                        let _legendLen = _tSubTitleArr.length;
+                        if (_legendLen == 1) {
+                            if (_tSubTitleArr.length > 0) {
+                                _subtitle = _tSubTitleArr[0];
                             }
+                            educationChart.subtitle = _subtitle;
+                            educationChart.xAxisData = _tChartData.axis || [];
+
+                            let _seriesData = [];
+                            let _sDataArr = _tChartData.data || [];
+                            if (_sDataArr.length > 0) {
+                                for (let i = 0; i < _sDataArr.length; i++) {
+                                    let _sData = _sDataArr[i];
+                                    _seriesData.push(_sData['data']);
+                                }
+                            }
+                            educationChart.seriesData = _seriesData.length > 0 ? _seriesData[0] : [];
+
+                            that.initEChartsCloumnChart2(educationChart.id, educationChart.title, educationChart.subtitle,
+                                educationChart.legendData, educationChart.xAxisData, educationChart.seriesData);
                         }
-                        educationChart.seriesData = _seriesData.length > 0 ? _seriesData[0] : [];
+                        else if (_legendLen > 1) {
+                            educationChart.legendData = _tChartData.legend || [];
+                            educationChart.axis = _tChartData.axis || [];
+                            let _seriesData = [];
+                            if (_tChartData.data) {
+                                let _seriesArr = _tChartData.data || [];
+                                let _seriesLen = _seriesArr.length;
+                                if (_seriesLen > 0) {
+                                    for (let i = 0; i < _seriesLen; i ++) {
+                                        let _sData = _seriesArr[i];
+                                        _seriesData.push({
+                                            name: _sData.name || '',
+                                            data: _sData.data || [],
+                                        })
+                                    }
+                                }
+                            }
+                            educationChart.seriesData = _seriesData;
+                            that.initEChartsCloumnChart5(educationChart);
+                        }
+
                     }
 
-                    console.log('that.chartsData', sexChart, ageChart, partyAgeChart, educationChart)
-                    that.initEChartsPieChart(sexChart.id, sexChart.title,
-                        sexChart.subtitle, sexChart.legendData, sexChart.seriesData);
-                    // that.initEChartsCloumnChart(ageChart.id, ageChart.title, ageChart.subtitle,
+                    // console.log('that.chartsData', sexChart, ageChart, partyAgeChart, educationChart)
+                    // that.initEChartsPieChart(sexChart.id, sexChart.title,
+                    //     sexChart.subtitle, sexChart.legendData, sexChart.seriesData);
+                    // // that.initEChartsCloumnChart(ageChart.id, ageChart.title, ageChart.subtitle,
+                    // //     ageChart.legendData, ageChart.xAxisData, ageChart.seriesData);
+                    // // that.initEChartsCloumnChart(partyAgeChart.id, partyAgeChart.title, partyAgeChart.subtitle,
+                    // //     partyAgeChart.legendData, partyAgeChart.xAxisData, partyAgeChart.seriesData);
+                    // // that.initEChartsCloumnChart(educationChart.id, educationChart.title, educationChart.subtitle,
+                    // //     educationChart.legendData, educationChart.xAxisData, educationChart.seriesData);
+                    //
+                    // that.initEChartsCloumnChart2(ageChart.id, ageChart.title, ageChart.subtitle,
                     //     ageChart.legendData, ageChart.xAxisData, ageChart.seriesData);
-                    // that.initEChartsCloumnChart(partyAgeChart.id, partyAgeChart.title, partyAgeChart.subtitle,
+                    // that.initEChartsCloumnChart2(partyAgeChart.id, partyAgeChart.title, partyAgeChart.subtitle,
                     //     partyAgeChart.legendData, partyAgeChart.xAxisData, partyAgeChart.seriesData);
-                    // that.initEChartsCloumnChart(educationChart.id, educationChart.title, educationChart.subtitle,
+                    // that.initEChartsCloumnChart2(educationChart.id, educationChart.title, educationChart.subtitle,
                     //     educationChart.legendData, educationChart.xAxisData, educationChart.seriesData);
-
-                    that.initEChartsCloumnChart2(ageChart.id, ageChart.title, ageChart.subtitle,
-                        ageChart.legendData, ageChart.xAxisData, ageChart.seriesData);
-                    that.initEChartsCloumnChart2(partyAgeChart.id, partyAgeChart.title, partyAgeChart.subtitle,
-                        partyAgeChart.legendData, partyAgeChart.xAxisData, partyAgeChart.seriesData);
-                    that.initEChartsCloumnChart2(educationChart.id, educationChart.title, educationChart.subtitle,
-                        educationChart.legendData, educationChart.xAxisData, educationChart.seriesData);
 
                     /*
                     that.initEChartsCloumnChart3('bigDataChartId5', '', '',
@@ -6131,6 +6237,162 @@ new Vue({
                 chartObj.chart = myChart;
                 return false;
             }
+        },
+
+        initEChartsCloumnChart5(tChart) {
+            let posList = [
+                'left', 'right', 'top', 'bottom',
+                'inside',
+                'insideTop', 'insideLeft', 'insideRight', 'insideBottom',
+                'insideTopLeft', 'insideTopRight', 'insideBottomLeft', 'insideBottomRight'
+            ];
+
+            let app = {};
+            app.configParameters = {
+                rotate: {
+                    min: -90,
+                    max: 90
+                },
+                align: {
+                    options: {
+                        left: 'left',
+                        center: 'center',
+                        right: 'right'
+                    }
+                },
+                verticalAlign: {
+                    options: {
+                        top: 'top',
+                        middle: 'middle',
+                        bottom: 'bottom'
+                    }
+                },
+                position: {
+                    options: echarts.util.reduce(posList, function (map, pos) {
+                        map[pos] = pos;
+                        return map;
+                    }, {})
+                },
+                distance: {
+                    min: 0,
+                    max: 100
+                }
+            };
+
+            app.config = {
+                rotate: 90,
+                align: 'left',
+                verticalAlign: 'middle',
+                position: 'insideBottom',
+                distance: 15,
+                onChange: function () {
+                    let labelOption = {
+                        normal: {
+                            rotate: app.config.rotate,
+                            align: app.config.align,
+                            verticalAlign: app.config.verticalAlign,
+                            position: app.config.position,
+                            distance: app.config.distance
+                        }
+                    };
+                    myChart.setOption({
+                        series: [{
+                            label: labelOption
+                        }, {
+                            label: labelOption
+                        }, {
+                            label: labelOption
+                        }, {
+                            label: labelOption
+                        }]
+                    });
+                }
+            };
+
+
+            let labelOption = {
+                show: true,
+                position: app.config.position,
+                distance: app.config.distance,
+                align: app.config.align,
+                verticalAlign: app.config.verticalAlign,
+                rotate: app.config.rotate,
+                formatter: '{c}  {name|{a}}',
+                fontSize: 16,
+                rich: {
+                    name: {
+                        textBorderColor: '#fff'
+                    }
+                }
+            };
+
+
+            let _seriesData = [];
+            if (tChart.seriesData) {
+                let _seriesArr = tChart.seriesData || [];
+                let _seriesLen = _seriesArr.length;
+                if (_seriesLen > 0) {
+                    for (let i = 0; i < _seriesLen; i ++) {
+                        let _sData = _seriesArr[i];
+                        console.log('_sData', _sData)
+                        _seriesData.push({
+                            name: _sData.name || '',
+                            data: _sData.data || [],
+                            type: 'bar',
+                            barGap: 0,
+                            label: labelOption,
+                        })
+                    }
+                }
+            }
+            tChart.seriesData = _seriesData;
+            console.log('tChart', tChart);
+
+            let option = {
+                title : {
+                    text: tChart.title || '',
+                    subtext: tChart.subtext || '',
+                    x:'center'
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                legend: {
+                    y: 'bottom',
+                    data: tChart.legendData || []
+                },
+                toolbox: {
+                    show: true,
+                    orient: 'vertical',
+                    left: 'right',
+                    top: 'center',
+                    feature: {
+                        mark: {show: true},
+                        magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                        restore: {show: true},
+                        /*saveAsImage: {show: true}*/
+                    }
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        axisTick: {show: false},
+                        data: tChart.axis || []
+                    }
+                ],
+                yAxis: [
+                    {
+                        type: 'value'
+                    }
+                ],
+                series: tChart.seriesData || []
+            };
+            let chartId = tChart.id;
+            let myChart = echarts.init(document.getElementById(chartId));
+            myChart.setOption(option);
         },
 
         /**
