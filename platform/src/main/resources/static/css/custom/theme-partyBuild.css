@@ -87,6 +87,10 @@
     background: #f3e9bd !important;
 }
 
+.el-menu--collapse .el-menu .el-submenu, .el-menu--popup {
+    min-width: 315px;
+}
+
 .el-submenu__title:focus, .el-submenu__title:hover{
     outline: 0 !important;
     color: #4c4c41 !important;
@@ -335,7 +339,8 @@
 .menu-collapse-div {
     position: absolute;
     bottom: 90px;
-    left: 180px;
+    /*left: 180px;*/
+    left: 295px;
     z-index: 100;
 }
 
@@ -353,8 +358,13 @@
     /*-moz-transition-delay: 300ms;*/
 }
 
+/*@keyframes my-collapse-css{*/
+/*    from {left: 180px}*/
+/*    to {left: 49px}*/
+/*}*/
+
 @keyframes my-collapse-css{
-    from {left: 180px}
+    from {left: 275px}
     to {left: 49px}
 }
 

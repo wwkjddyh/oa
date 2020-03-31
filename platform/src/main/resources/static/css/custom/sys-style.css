@@ -56,9 +56,13 @@
 
 }
 
+/*.el-menu-vertical-demo:not(.el-menu--collapse) {*/
+/*    width: 200px;*/
+/*    min-height: 400px;*/
+/*}*/
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
-    min-height: 400px;
+    width: 315px;
+    height: 100%;
 }
 .el-menu-vertical-demo {
     width: auto;
