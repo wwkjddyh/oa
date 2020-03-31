@@ -39,10 +39,10 @@
 			</el-row>
 			<el-row class="firstPage-resDownload" style="margin-top: 100px">
 				<el-row><span class="firstPage-resDownload_title" style="margin-left: 110px;color:#303133">功能板块</span></el-row>
-				<div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 30px;margin-left: 90px;">
+				<div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 30px;margin-left: 140px;">
 						
 						<div class="firstPage-function-item" @click="goToMenu(item)" v-for="item in firstPageFuncModules" :key="item.url">
-		
+							
 							<i :class="item.iconClass" style="font-size:30px;color:rgb(0, 161, 255)"></i>
 							<span class="firstPage-function-item_name">{{item.name}}</span>
 						</div>

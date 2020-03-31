@@ -57,7 +57,7 @@
  容器
  */
 .main-el-container {
-    height: calc(100vh - 10vh - 58px);
+    height: calc(100vh - 9vh - 58px);
     border: 0;
 }
 
@@ -223,6 +223,14 @@
     cursor:pointer;
     height:120px;
     width:100px;
+    flex-direction: column;
+    display: -webkit-flex;
+    align-items:center;
+    justify-content:center;
+}
+.firstPage-function-line-item{
+	height:50px;
+    width:10px;
     flex-direction: column;
     display: -webkit-flex;
     align-items:center;
