@@ -477,7 +477,7 @@
 							    </el-date-picker>                          
                     </el-form-item>
                     <el-form-item label="职务级别" prop="positionLevel"  size="mini" style="width: 100%;">
-                            <el-select v-model="formLeader.positionLevel" placeholder="请选择" style="width: 100%;"
+                            <!-- <el-select v-model="formLeader.positionLevel" placeholder="请选择" style="width: 100%;"
 								    	size="medium">
 								    <el-option
 								      v-for="item in positionLevel"
@@ -485,7 +485,9 @@
 								      :label="item.dictName"
 								      :value="item.dictId">
 								    </el-option>
-								  </el-select>                           
+								  </el-select>  -->   
+								  <el-input v-model="formLeader.positionLevel"  size="medium" 
+                            	auto-complete="off"  maxlength="255" placeholder="职务级别" ></el-input>                           
                     </el-form-item>
                     
                     

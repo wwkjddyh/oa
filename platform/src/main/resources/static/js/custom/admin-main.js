@@ -992,12 +992,10 @@ new Vue({
         formReward:[],
         education:[],
         bachelor:[],
-        nation:[],
         positon:[],
         rewardName:[],
         orignRewardName:[],
         allowOrgLevel:[],
-        positionLevel:[],
         authModules: [],
         deptOrgType:[],
         leaderList:[
@@ -2692,7 +2690,7 @@ new Vue({
                 let data = response.data.data;
                 let jsonData = JSON.parse(data);
                 that.formPartInfo.gender = that.getGenderValue(scopeRow.gender);
-                that.formPartInfo.nation = that.getNationValue(scopeRow.nation);
+                that.formPartInfo.nation = scopeRow.nation;
                 that.formPartInfo.education = that.getEducationValue(jsonData.education);
                 that.formPartInfo.bachelor = that.getBachelorValue(jsonData.bachelor);
                 that.formPartInfo.orgName = that.getOrgValue(scopeRow.actOrg);
@@ -4576,13 +4574,13 @@ new Vue({
         },
         getNddyxxOptions(){
         	let that = this;
-        	axios.get("/api/dict/search",{params:{
+        	/*axios.get("/api/dict/search",{params:{
         		dictType:'nation'
             }}).then(function(response){
         		if(parseInt(response.status) == 200 ){
         			that.nation = response.data.data.list;
         		}
-        	});
+        	});*/
         	axios.get("/api/dict/search",{params:{
         		dictType:'bachelor'
             }}).then(function(response){
@@ -4681,13 +4679,13 @@ new Vue({
         			that.positon = response.data.data.list;
         		}
         	});
-        	axios.get("/api/dict/search",{params:{
+        	/*axios.get("/api/dict/search",{params:{
         		dictType:'positionLevel'
             }}).then(function(response){
         		if(parseInt(response.status) == 200 ){
         			that.positionLevel = response.data.data.list;
         		}
-        	});
+        	});*/
         	
         	axios.get("/api/dict/search",{params:{
         		dictType:'allowOrgLevel'
