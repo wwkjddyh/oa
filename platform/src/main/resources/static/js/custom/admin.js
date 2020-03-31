@@ -3,7 +3,9 @@ new Vue({
     data: {
         formLogon: {},
         rules: {},
-        fullscreenLoading:false
+        fullscreenLoading:false,
+        smsFlag:false,
+        haveSms:true
     },
     methods: {
         resetForm() {
@@ -11,6 +13,25 @@ new Vue({
             that.formLogon.username = '';
             that.formLogon.password = '';
             that.formLogon.verifyCode = '';
+        },
+        validate(){
+        	let that = this;
+            let error = "";
+            let _verifyCode = that.formLogon.verifyCode.replace(/(^\s*)|(\s*$)/g, "");
+            let nameLen = that.formLogon.username.replace(/(^\s*)|(\s*$)/g, "").length,
+            pwdLen = that.formLogon.password.length,
+            verifyCodeLen = _verifyCode.length;
+	        
+	        if(verifyCodeLen === 0) {
+	            error = "验证码不能为空";
+	        }
+	        else if(verifyCodeLen != 4) {
+	            error = "验证码长度必须为: 4 (个字符)";
+	        }
+	
+	        if(error == '') {
+	        	smsFlag=true;
+	        }
         },
         submitForm() {
             let that = this;
