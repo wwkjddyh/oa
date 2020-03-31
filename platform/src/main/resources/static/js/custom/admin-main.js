@@ -781,10 +781,10 @@ new Vue({
             },
             {
                 index:1,
-                name:'简报',
+                name:'工作简报',
                 url:'articles',
                 imgUrl:'/images/icon/brief.png',
-                modelName:'简报'
+                modelName:'工作简报'
             }
         ],
         firstPageFuncModules: [ /*首页功能模块区域*/

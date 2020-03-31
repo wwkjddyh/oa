@@ -184,9 +184,8 @@
 }
 
 .firstPage-quickEntry_title {
-    font-size:18px;
+    font-size:30px;
     color: #ff7575;
-    font-weight: bold;
 }
 
 .firstPage-quickEntry_row {
@@ -209,24 +208,35 @@
 
 .firstPage-quickEntry-item2 {
     cursor:pointer;
-    height:100px;
-    width:80px;
+    height:120px;
+    width:180px;
     flex-direction: column;
     display: -webkit-flex;
     align-items:center;
     justify-content:center;
-    margin: 10px;
 }
-
+.firstPage-function-item {
+    cursor:pointer;
+    height:120px;
+    width:100px;
+    flex-direction: column;
+    display: -webkit-flex;
+    align-items:center;
+    justify-content:center;
+}
 .firstPage-quickEntry-item_img{
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
 }
 
 .firstPage-quickEntry-item_name{
     margin-top: 5px;
 }
-
+.firstPage-function-item_name{
+    margin-top: 5px;
+    font-size:10px;
+    color:rgb(0, 161, 255);
+}
 /* 首页-下载 */
 .firstPage-resDownload {
     height: 252px;
@@ -234,8 +244,7 @@
 }
 
 .firstPage-resDownload_title {
-    font-size:18px;
-    font-weight: bold;
+    font-size:30px;
     color: #ff7575;
 }
 
@@ -289,8 +298,8 @@
 }
 
 .firstPage-briefs-items_title {
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 30px;
+    
     color: #ff7575;
 }
 .firstPage-briefs-item {
@@ -304,12 +313,13 @@
     height: auto;
 }
 .firstPage-briefs_item_title-a{
+	font-size:18px;
     color: #303133;
     cursor: pointer;
 }
 .firstPage-briefs-item_time {
     width: 85px;
-    font-size: 13px;
+    font-size: 15px;
     color: #303133;
 }
 

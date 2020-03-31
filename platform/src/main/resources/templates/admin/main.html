@@ -27,10 +27,11 @@
 </head>
 <body>
 <div id="admin-main" v-cloak>
-    <el-header class="main-el-header">
+	<el-container>
+    <el-header class="main-el-header" style="heigth:10%;">
         <div th:include="/common/admin/header :: header"></div>
     </el-header>
-    <el-container class="main-el-container">
+    <el-container class="main-el-container" >
         <el-aside style="width: auto;overflow-x: hidden ;background-color: #f5dab1;">
             <div th:replace="/common/admin/menu :: menu"></div>
         </el-aside>
@@ -191,13 +192,12 @@
                     </div>
                 </keep-alive>
             </el-main>
-            <!--
-            <el-footer style="background-color:#eee;margin-top:20px">
-                    <div th:replace="/common/admin/footer :: footer"></div>
-                </el-footer>
-            -->
+
+            
         </el-container>
     </el-container>
+	<el-footer class="main-el-footer" style="heigth:10%;"><img src="images/company.jpg"></el-footer>
+	</el-container>
 </div>
 </body>
 <script src="/js/highcharts/highcharts.js" charset="utf-8" th:src="@{~/js/highcharts/highcharts.js}"></script>
