@@ -35,7 +35,7 @@
                             width="200">
                             <template v-slot="scope">
 						         {{ scope.row.userName}}
-						         <i class="el-icon-star-on" style="color: red" v-if="scope.row.starFlag == 1" size="medium"></i>
+						         
 						    </template>
                             
                     </el-table-column>
@@ -58,12 +58,12 @@
                             label="出生日期">
                     </el-table-column>
                     <el-table-column
-                            prop="nationName"
+                            prop="nation"
                             align="center"
                             label="民族">
-                            <template v-slot="scope">
+                            <!-- <template v-slot="scope">
 						         {{ getNationValue(scope.row.nation)}}
-						    </template>
+						    </template> -->
                     </el-table-column>
                     <el-table-column
                             prop="educationName"
@@ -156,7 +156,7 @@
                     	<el-col :span="11">
 	                        <el-form-item label="民族" prop="nation"  size="mini" style="width: 100%;">
 	                           
-								    <el-select v-model="formnddyxxcj.nation" placeholder="请选择" style="width: 421.66px;"
+								    <!-- <el-select v-model="formnddyxxcj.nation" placeholder="请选择" style="width: 421.66px;"
 								    	size="medium">
 								    <el-option
 								      v-for="item in nation"
@@ -165,7 +165,9 @@
 								      :label="item.dictName"
 								      :value="item.dictId">
 								    </el-option>
-								  </el-select>
+								  </el-select> -->
+								  <el-input v-model="formnddyxxcj.nation"  size="medium"
+                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="民族" ></el-input>
 	                        </el-form-item>
                         </el-col>
                         <el-col :span="2">

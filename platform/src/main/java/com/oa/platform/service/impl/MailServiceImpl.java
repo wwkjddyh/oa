@@ -23,6 +23,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.StreamUtils;
@@ -52,6 +53,7 @@ public class MailServiceImpl implements MailService {
     Configuration configuration; //freeMarker configuration
 
     @Override
+    @Async("asyncServiceExecutor")
     public Map<String, Object> sendSimpleMail(Mail mail) {
         Map<String, Object> ret = new HashMap<>(0);
         try {

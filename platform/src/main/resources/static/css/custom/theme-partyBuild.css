@@ -188,8 +188,8 @@
 }
 
 .firstPage-quickEntry_title {
-    font-size:30px;
-    color: #ff7575;
+    font-size:24px;
+    color: #4f4f4f;
 }
 
 .firstPage-quickEntry_row {
@@ -212,7 +212,7 @@
 
 .firstPage-quickEntry-item2 {
     cursor:pointer;
-    height:120px;
+    height:140px;
     width:180px;
     flex-direction: column;
     display: -webkit-flex;
@@ -222,7 +222,7 @@
 .firstPage-function-item {
     cursor:pointer;
     height:120px;
-    width:100px;
+    width:128px;
     flex-direction: column;
     display: -webkit-flex;
     align-items:center;
@@ -242,7 +242,8 @@
 }
 
 .firstPage-quickEntry-item_name{
-    margin-top: 5px;
+    margin-top: 27px;
+    font-size: 18px;
 }
 .firstPage-function-item_name{
     margin-top: 5px;
@@ -256,8 +257,8 @@
 }
 
 .firstPage-resDownload_title {
-    font-size:30px;
-    color: #ff7575;
+    font-size:24px;
+    color: #4f4f4f;
 }
 
 .firstPage-resDownload-tabs {
@@ -310,9 +311,9 @@
 }
 
 .firstPage-briefs-items_title {
-    font-size: 30px;
+    font-size: 24px;
     
-    color: #ff7575;
+    color: #4f4f4f;
 }
 .firstPage-briefs-item {
     margin-top: 10px;

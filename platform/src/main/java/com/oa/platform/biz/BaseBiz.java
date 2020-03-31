@@ -11,6 +11,7 @@ import com.oa.platform.entity.User;
 import com.oa.platform.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -462,15 +463,15 @@ public abstract class BaseBiz {
 			headers.setContentType(new MediaType("application","JSON",Charset.forName("UTF-8")));
 			headers.setAccept(Arrays.asList(new MediaType[] {new MediaType("application","JSON",Charset.forName("UTF-8"))}));
 			//请求头追加
-			if(headParam != null) {
-				for (Map.Entry<String, String> entry : headParam.entrySet()) {
-					headers.add(entry.getKey(), entry.getValue());
-				}
-			}
+			/*
+			 * if(headParam != null) { for (Map.Entry<String, String> entry :
+			 * headParam.entrySet()) { headers.add(entry.getKey(), entry.getValue()); } }
+			 */
 			HttpEntity<String> requestEntity = new HttpEntity<String>(jsonParam,headers);
 			HttpMethod post = HttpMethod.POST;
 			ResponseEntity<String> exchange = new ResponseEntity<String>("",HttpStatus.OK);
-			RestTemplate restTemplate = new RestTemplate();
+			RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+			RestTemplate restTemplate = restTemplateBuilder.basicAuthentication("f80135530a915fbbf58c4bda", "c48c26a3c991c174d954611f").build();
 			exchange = restTemplate.exchange(url, post,requestEntity,String.class);
 			return exchange;
 		} catch (Exception e) {

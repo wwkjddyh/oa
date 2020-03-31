@@ -77,13 +77,14 @@ public class AuthApiController extends BaseController {
      * @param userId
      * @return
      */
+    @GetMapping("getSMS")
     public ResultVo getSMS(String userId) {
     	
     	try {
     		//加密
 			String authorization = Base64.getEncoder().encodeToString(authString.getBytes("UTF-8"));
 			Map<String,String> headerMap = new HashMap<String,String>();
-			headerMap.put("Authorization", authorization);
+			headerMap.put("Authorization", authString);
 			Map<String,String> params = new HashMap<String,String>();
 			params.put("mobile", "17501697782");
 			params.put("temp_id", temp_id);

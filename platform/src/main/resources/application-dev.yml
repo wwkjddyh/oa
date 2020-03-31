@@ -34,11 +34,11 @@ spring:
       max-file-size: 100MB
       max-request-size: 1000MB
   mail:
-    host: smtp.yeah.net
+    host: smtp.126.com
     username: tjzjdw
     default-encoding: utf-8
     #yuzaosen password: LCPTWKHCLJYHRYSV
-    password: YSGZZWQBJIBVJYKX
+    password: CIODPNLRUWUZFDAI
     properties:
       mail:
         smtp:
@@ -81,9 +81,9 @@ upload:
 #  save-dir: /Users/baby/work/upload/
   save-dir: G:\oaImg
 phoneCode:
-  appKey: d298e756ed36a142a1939d69
-  masterSecret: d9294591c4f3e0f7905576f1
-  temp_id: d9294591c4f3e0f7905576f1
+  appKey: f80135530a915fbbf58c4bda
+  masterSecret: c48c26a3c991c174d954611f
+  temp_id: 1
   auth_string: ${phoneCode.appKey}:${phoneCode.masterSecret}
     #获取短信文本验证码url
   getSmsUrl: https://api.sms.jpush.cn/v1/codes
