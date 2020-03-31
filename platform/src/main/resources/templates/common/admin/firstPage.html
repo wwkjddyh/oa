@@ -6,7 +6,7 @@
 		<el-col :span="10" >
 			<el-row class="firstPage-quickEntry">
 			<div>
-				<el-row><span class="firstPage-quickEntry_title" style="margin-left: 20px">快捷方式</span></el-row>
+				<el-row><span class="firstPage-quickEntry_title" style="margin-left: 20px;color:#303133">快捷方式</span></el-row>
 				<el-row>
 					<!--
 					<el-col :span="4" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 2 : 0" class="firstPage-quickEntry_row">
@@ -38,6 +38,7 @@
 			</div>
 			</el-row>
 			<el-row class="firstPage-resDownload">
+				<el-row><span class="firstPage-resDownload_title" style="margin-left: 20px;color:#303133">功能板块</span></el-row>
 				<div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 30px;margin-left: 20px">
 					<el-button v-for="item in firstPageFuncModules" :key="item.url" v-if="item.index <= 2"
 							   :icon="item.iconClass" style="color: #8da7df;width: 100px" size="small"
@@ -90,7 +91,8 @@
 		</el-col>
 		<el-col :span="14" class="firstPage-briefs">
 			<el-row>
-				<el-row ><div><span class="firstPage-briefs-items_title">消息通知</span></div></el-row>
+				<el-row ><div><span class="firstPage-briefs-items_title" style="color:#303133">通知消息</span>
+					<hr style="height:1px;border:none;border-top:1px solid rgb(228, 231, 237);"/></div></el-row>
 				<div v-for="item in currUserReceiverNewsRecords" class="firstPage-briefs-item">
 					<div class="firstPage-briefs-item_title">
                         <label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi"></label>
@@ -103,7 +105,8 @@
 				</div>
 			</el-row>
 			<el-row class="firstPage-briefs-items_row">
-				<el-row ><div><span class="firstPage-briefs-items_title">新闻简报</span></div></el-row>
+				<el-row ><div><span class="firstPage-briefs-items_title" style="color:#303133">工作简报</span>
+					<hr style="height:1px;border:none;border-top:1px solid rgb(228, 231, 237);"/></div></el-row>
 				<div v-for="item in currUserReceiverBriefRecords" class="firstPage-briefs-item">
 					<div class="firstPage-briefs-item_title">
 						<a class="firstPage-briefs_item_title-a" @click="handleBriefView(item.briefId)">{{item.briefTitle || ''}}</a>
