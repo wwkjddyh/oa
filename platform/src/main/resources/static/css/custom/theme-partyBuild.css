@@ -80,16 +80,16 @@
 
 .el-menu-item:hover{
     outline: 0 !important;
-    color: rgb(222, 39, 14) !important;
+    color: #4c4c41 !important;
 }
 .el-menu-item.is-active {
-    color: #fff3f3 !important;
-    background: rgb(222, 39, 14) !important;
+    color: #4c4c41 !important;
+    background: #f3e9bd !important;
 }
 
 .el-submenu__title:focus, .el-submenu__title:hover{
     outline: 0 !important;
-    color: #ccaf71 !important;
+    color: #4c4c41 !important;
     background: none !important;
 }
 
