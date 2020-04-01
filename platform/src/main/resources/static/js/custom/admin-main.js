@@ -1166,7 +1166,17 @@ new Vue({
             'application/vnd.ms-excel, application/vnd.ms-excel, application/vnd.ms-excel, text/xml, application/xml,' +
             'aplication/zip, audio/3gpp, video/3gpp, audio/ac3, allpication/vnd.ms-asf, audio/basic, text/csv,' +
             'application/msword, application/msword, application/xml-dtd, image/vnd.dwg, image/vnd.dxf, audio/mpeg,' +
-            'audio/mp4, video/mp4, video/mpeg, application/vnd.ms-project, application/ogg, audio/ogg',
+            'audio/mp4, video/mp4, video/mpeg, application/vnd.ms-project, application/ogg, audio/ogg,' +
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, '+
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.template,'+
+            'application/vnd.openxmlformats-officedocument.presentationml.template,' +
+            'application/vnd.openxmlformats-officedocument.presentationml.slideshow,' +
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation,' +
+            'application/vnd.openxmlformats-officedocument.presentationml.slide,' +
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document,' +
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.template,' +
+            'application/vnd.ms-excel.addin.macroEnabled.12,' +
+            'application/vnd.ms-excel.sheet.binary.macroEnabled.12',
         editableTabsOptions: {
 
             editableTabsValue: 'firstPage',
@@ -5793,6 +5803,7 @@ new Vue({
                 if (!_url.endsWith('/')) {
                     _url += '/';
                 }
+
                 let _accessUrl = (res.accessUrl || '').replace(/\\/g, "/");
                 if (_accessUrl.startsWith('/')) {
                     _url += _accessUrl.substring(1);
@@ -5800,7 +5811,18 @@ new Vue({
                 else {
                     _url += _accessUrl;
                 }
-                window.open(_url);
+
+                // 如果是office文档特殊处理
+                let _accessUrl2 = _accessUrl.toLowerCase();
+                if (_accessUrl2.endsWith('.ppt') || _accessUrl2.endsWith('.pptx') || _accessUrl2.endsWith('.xls')
+                    || _accessUrl2.endsWith('.xlsx') || _accessUrl2.endsWith('.doc') || _accessUrl2.endsWith('.docx')) {
+                    // https://view.officeapps.live.com/op/view.aspx?src=http://www.tanwenfang.com./file/176bd4cb-e893-4dde-b20e-a98bb836b07e.docx
+                        _url = "https://view.officeapps.live.com/op/view.aspx?src=" + _url;
+                        window.open(_url)
+                }
+                else {
+                    window.open(_url);
+                }
             }
         },
 
