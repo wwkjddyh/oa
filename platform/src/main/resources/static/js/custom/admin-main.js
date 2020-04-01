@@ -5507,14 +5507,27 @@ new Vue({
             return that.$confirm(`确定移除 ${ file.name }？`);
         },
 
-        submitUpload() {
+        /**
+         * 上传提交
+         * @param isResDl 是否为资料下载,默认为false
+         * @returns {boolean}
+         */
+        submitUpload(isResDl) {
             let that = this;
+            isResDl = isResDl == true ? true : false;
             console.log('uploadFileList', that.uploadFileList, that.formRes);
             //this.$refs.uploadRes.submit();
             if (that.formRes.publishTime == '') {
                 this.$message.error('请选择发布日期!');
                 return false;
             }
+            if (!isResDl) {
+                if (that.formRes.assTypeId == '') {
+                    this.$message.error('请选择其他分类!');
+                    return false;
+                }
+            }
+
             if (that.formRes.resName == '') {
                 this.$message.error('请填写资料名称!');
                 return false;

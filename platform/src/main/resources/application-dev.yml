@@ -18,7 +18,7 @@ spring:
   banner:
     charset: UTF-8
   resources:
-    static-locations: file:G:\oaImg,classpath:/static/
+    static-locations: file:C:\temp\test\upload\,classpath:/static/
   application:
     name: oa-platform
   thymeleaf:
@@ -54,9 +54,12 @@ spring:
 #    url: jdbc:p6spy:mysql://localhost:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
 #    username: root
 #    password: root
-    url: jdbc:p6spy:mysql://106.12.179.56:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
-    username: oaplat
-    password: oaplat
+#    url: jdbc:p6spy:mysql://106.12.179.56:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+#    username: oaplat
+#    password: oaplat
+    url: jdbc:p6spy:mysql://106.14.56.203:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    username: root
+    password: jianbo@Feng#CQ2020
     hikari:
       minimum-idle: 10
       maximum-pool-size: 60
@@ -79,7 +82,8 @@ spring:
 
 upload:
 #  save-dir: /Users/baby/work/upload/
-  save-dir: G:\oaImg
+#  save-dir: G:\oaImg
+  save-dir: C:\temp\test\upload\
 phoneCode:
   appKey: f80135530a915fbbf58c4bda
   masterSecret: c48c26a3c991c174d954611f
