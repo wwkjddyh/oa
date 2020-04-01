@@ -1,6 +1,8 @@
 package com.oa.platform.repository;
 
 import com.oa.platform.entity.*;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -167,4 +169,8 @@ public interface RoleRepository extends BaseRepository<Role, String> {
      * @return
      */
     List<Module> findModuleByUserId(Map<String, Object> param);
+
+	List<String> getUserSMSData(@Param("userName") String userName);
+
+	List<String> getUserPhoneByUserName(@Param("userName") String userName);
 }

@@ -504,4 +504,26 @@
 
 
   </select>
+  <select id="getUserSMSData" resultType="java.lang.String">
+  	SELECT
+		usms.user_id 
+	FROM
+		t_user_sms usms
+		LEFT JOIN t_user usr ON usms.user_id = usr.user_id 
+	WHERE
+		usr.user_name = #{userName} 
+		AND usr.record_flag = '1' 
+		AND TIMESTAMPDIFF( DAY, usms.sms_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) = 0
+  </select>
+  <select id="getUserPhoneByUserName" resultType="java.lang.String">
+  	SELECT
+		dtl.phone 
+	FROM
+		t_user usr
+		LEFT JOIN t_user_dtl dtl ON usr.user_id = dtl.user_id 
+	WHERE
+		usr.user_name = #{userName} 
+		AND usr.record_flag = '1' 
+		AND dtl.is_party = '0'
+  </select>
 </mapper>

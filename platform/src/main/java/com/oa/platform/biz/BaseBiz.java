@@ -457,7 +457,7 @@ public abstract class BaseBiz {
      * @param headParam
      * @return
      */
-    public ResponseEntity<String> httpRequest(String url,String jsonParam,Map<String, String> headParam){
+    public ResponseEntity<String> httpRequest(String url,String jsonParam,String appKey,String masterSecret){
     	try {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(new MediaType("application","JSON",Charset.forName("UTF-8")));
@@ -471,7 +471,7 @@ public abstract class BaseBiz {
 			HttpMethod post = HttpMethod.POST;
 			ResponseEntity<String> exchange = new ResponseEntity<String>("",HttpStatus.OK);
 			RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
-			RestTemplate restTemplate = restTemplateBuilder.basicAuthentication("f80135530a915fbbf58c4bda", "c48c26a3c991c174d954611f").build();
+			RestTemplate restTemplate = restTemplateBuilder.basicAuthentication(appKey, masterSecret).build();
 			exchange = restTemplate.exchange(url, post,requestEntity,String.class);
 			return exchange;
 		} catch (Exception e) {

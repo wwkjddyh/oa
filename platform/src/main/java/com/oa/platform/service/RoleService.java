@@ -229,4 +229,10 @@ public interface RoleService extends BaseService<Role, String> {
      */
     List<Module> findModuleByUserId(String userId, Integer isMenu);
 
+	void getSms(String smsUrl, String jsonString, String appKey, String masterSecret);
+
+	List<String> getUserSMSData(String userId);
+
+	List<String> getUserPhoneByUserName(String userId);
+
 }
