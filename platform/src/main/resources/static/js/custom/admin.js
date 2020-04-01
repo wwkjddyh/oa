@@ -5,7 +5,7 @@ new Vue({
         rules: {},
         fullscreenLoading:false,
         smsFlag:false,
-        haveSms:true
+        haveSms:false
     },
     methods: {
         resetForm() {
