@@ -8,14 +8,14 @@
             <el-tooltip class="item" effect="dark" placement="top">
                 <div slot="content">关键字</div><i class="el-icon-question"></i></el-tooltip>
                 -->
-            <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" style="float:right">检索</el-button>
+            
         </el-form-item>
     </el-form>
     <!--
     <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
     -->
     <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
-    <el-button plain @click="searchForm('formSearchRes')" size="mini" icon="el-icon-refresh">刷新</el-button>
+    <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
 
     <div style="margin-top: 20px">
         <el-table size="small"
