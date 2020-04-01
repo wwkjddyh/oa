@@ -70,7 +70,7 @@
                     width="343"
                     label="操作">
                 <template slot-scope="scope">
-                    <div style="display: flex;width:100%">
+                    <div style="display: flex;width:100%;justify-content: flex-end;">
                         <el-button size="mini" @click="edit('res', scope.$index,scope.row, false)" icon="el-icon-edit">修改</el-button>
                         <el-button size="mini" :disabled="scope.row.originalName === ''" type="" icon="el-icon-view" @click="handleViewRes(scope.row)">预览</el-button>
                         <el-button size="mini" :disabled="scope.row.originalName === ''" type="" icon="el-icon-download" @click="handleDownloadRes(scope.row)">下载</el-button>

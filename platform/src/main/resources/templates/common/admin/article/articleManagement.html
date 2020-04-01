@@ -66,7 +66,7 @@
                     width="180"
                     label="操作">
                 <template slot-scope="scope">
-                    <div style="display: flex;width:100%">
+                    <div style="display: flex;width:100%;justify-content: flex-end;">
                         <el-button size="mini" @click="edit('article',scope.$index,scope.row,false)" icon="el-icon-edit">修改</el-button>
                         <el-button size="mini" type="danger" @click="handleDel(scope.$index,'article')" icon="el-icon-delete">删除</el-button>
                     </div>
