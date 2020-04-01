@@ -117,7 +117,7 @@ public interface UserService extends BaseService<User,String>, UserDetailsServic
 	 */
 	List<String> getOrgIdsByCurrentUser(String userId);
 
-	void updateUserEmail(String userId, String mail);
+	void updateUserEmailAndPhone(String userId, String mail,String phone);
 
 	List<String> getuserIdByUser(String userName);
 }

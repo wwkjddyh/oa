@@ -70,7 +70,7 @@ public interface UserRepository extends BaseRepository<User,String> {
 
 	List searchUsersByOrgIds(@Param("user") User user, @Param("isSuperAdmin") boolean isSuperAdmin,@Param("orgIds") List<String> orgIds);
 
-	void updateUserEmail(@Param("userId")String userId, @Param("mail") String mail);
+	void updateUserEmailAndPhone(@Param("userId")String userId, @Param("mail") String mail,@Param("phone") String phone);
 
 	List<String> getuserIdByUser(@Param("userName") String userName);
 }

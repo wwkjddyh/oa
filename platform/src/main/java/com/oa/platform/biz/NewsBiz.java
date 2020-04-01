@@ -85,6 +85,7 @@ public class NewsBiz extends BaseBiz {
                         }
                         newsService.batchSaveNewsSendRecord(sendRecords);
                         newsService.save(news);
+                        //发邮件
                         if(news.getSendMail() == 1) {
 	                        List<String> sendToList = newsService.getMailByUserIds(receiverId);
 	                        List<String> sendMail = newsService.getMailByUserIds(senderId);
@@ -97,6 +98,10 @@ public class NewsBiz extends BaseBiz {
 		                        mail.setForm("tjzjdw@126.com");
 		                        mailService.sendSimpleMail(mail);
 	                        }
+                        }
+                        //发短信
+                        if(news.getSendSms() == 1) {
+                        	
                         }
                     }
                     else {

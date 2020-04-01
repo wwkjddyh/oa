@@ -708,4 +708,27 @@ public class RoleBiz extends BaseBiz {
         }
         return ret;
     }
+    /**
+     * 获取短信验证码
+     * @param smsUrl
+     * @param jsonString
+     * @param appKey
+     * @param masterSecret
+     */
+	public void getSms(String smsUrl, String jsonString, String appKey, String masterSecret) {
+		
+		roleService.getSms(smsUrl,jsonString,appKey,masterSecret);
+	}
+
+	public List<String> getUserSMSData(String userId) {
+		return roleService.getUserSMSData(userId);
+	}
+	/**
+	 * 获取用户电话号码
+	 * @param userId
+	 * @return
+	 */
+	public List<String> getUserPhoneByUserName(String userId) {
+		return roleService.getUserPhoneByUserName(userId);
+	}
 }

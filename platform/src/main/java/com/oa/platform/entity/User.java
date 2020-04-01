@@ -140,8 +140,17 @@ public class User implements UserDetails, Serializable {
     private String education;
     private String orgId;
     private String mail;
+    private String phone;
     
-    public String getMail() {
+    public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getMail() {
 		return mail;
 	}
 

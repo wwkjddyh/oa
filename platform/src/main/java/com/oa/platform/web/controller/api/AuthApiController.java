@@ -1,8 +1,7 @@
 package com.oa.platform.web.controller.api;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Base64;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,8 +58,11 @@ public class AuthApiController extends BaseController {
     private SessionRegistry sessionRegistry;
     
     //短信权限码
-    @Value("${phoneCode.auth_string}")
-	private String authString;
+    @Value("${phoneCode.appKey}")
+	private String appKey;
+    //短信权限码
+    @Value("${phoneCode.masterSecret}")
+	private String masterSecret;
     //获取验证码url
     @Value("${phoneCode.getSmsUrl}")
 	private String smsUrl;
@@ -79,22 +81,41 @@ public class AuthApiController extends BaseController {
      */
     @GetMapping("getSMS")
     public ResultVo getSMS(String userId) {
-    	
-    	try {
-    		//加密
-			String authorization = Base64.getEncoder().encodeToString(authString.getBytes("UTF-8"));
-			Map<String,String> headerMap = new HashMap<String,String>();
-			headerMap.put("Authorization", authString);
-			Map<String,String> params = new HashMap<String,String>();
-			params.put("mobile", "17501697782");
-			params.put("temp_id", temp_id);
-			//post请求获取短信验证码
-			roleBiz.httpRequest(smsUrl, JSONObject.toJSONString(params), headerMap);
-		} catch (UnsupportedEncodingException e) {
-			
-			e.printStackTrace();
-		}
+    		if(userId == null || "".equals(userId)) {
+    			return getErroResultVo(500,"请先填写登录名",null);
+    		}
+    		//一天内用户是否使用短信进行验证登录
+    		List<String> userSms = roleBiz.getUserSMSData(userId);
+    		if(userSms == null || userSms.size() == 0) {
+	    		//获取用户手机号码
+	    		List<String> userPhone = roleBiz.getUserPhoneByUserName(userId);
+	    		if(userPhone != null && userPhone.size()>0) {
+	    			Map<String,String> params = new HashMap<String,String>();
+					params.put("mobile", userPhone.get(0));
+					params.put("temp_id", temp_id);
+					//post请求获取短信验证码
+					//roleBiz.httpRequest(smsUrl, JSONObject.toJSONString(params), appKey,masterSecret);
+					roleBiz.getSms(smsUrl, JSONObject.toJSONString(params), appKey,masterSecret);
+	    		}else {
+	    			return getErroResultVo(500,"当前用户无手机号码或无效",null);
+	    		}
+    		}
+		
     	return getSuccessResultVo(null);
+    }
+    /**
+     * 是否短信验证
+     * @param userId
+     * @return
+     */
+    @GetMapping("needSms")
+    public ResultVo needSms(String userId) {
+    	List<String> userSms = roleBiz.getUserSMSData(userId);
+		if(userSms == null || userSms.size() == 0) {
+			return getSuccessResultVo(true);
+		}else {
+			return getSuccessResultVo(false);
+		}
     }
     /**
      * 异步登录

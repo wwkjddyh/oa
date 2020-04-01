@@ -8,10 +8,21 @@ import com.oa.platform.repository.RoleRepository;
 import com.oa.platform.service.RoleService;
 import com.oa.platform.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -238,4 +249,38 @@ public class RoleServiceImpl extends AbstractBaseService<Role, String> implement
         param.put("userId", userId);
         return roleRepository.findModuleByUserId(param);
     }
+
+	@Override
+	@Async("asyncServiceExecutor")
+	public void getSms(String smsUrl, String jsonString, String appKey, String masterSecret) {
+		try {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(new MediaType("application","JSON",Charset.forName("UTF-8")));
+			headers.setAccept(Arrays.asList(new MediaType[] {new MediaType("application","JSON",Charset.forName("UTF-8"))}));
+			//请求头追加
+			/*
+			 * if(headParam != null) { for (Map.Entry<String, String> entry :
+			 * headParam.entrySet()) { headers.add(entry.getKey(), entry.getValue()); } }
+			 */
+			HttpEntity<String> requestEntity = new HttpEntity<String>(jsonString,headers);
+			HttpMethod post = HttpMethod.POST;
+			//ResponseEntity<String> exchange = new ResponseEntity<String>("",HttpStatus.OK);
+			RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+			RestTemplate restTemplate = restTemplateBuilder.basicAuthentication(appKey, masterSecret).build();
+			restTemplate.exchange(smsUrl, post,requestEntity,String.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public List<String> getUserSMSData(String userId) {
+		return roleRepository.getUserSMSData(userId);
+	}
+
+	@Override
+	public List<String> getUserPhoneByUserName(String userId) {
+		return roleRepository.getUserPhoneByUserName(userId);
+	}
 }
