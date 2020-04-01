@@ -1882,6 +1882,7 @@ new Vue({
             that.fullscreenLoading = true;
             axios.post("/api/user/saveUserBaseInfo", params)
                 .then(function(response){
+                	that.handleResponse(response);
                     let responseCode = parseInt(response.data.code);
                     if(responseCode === 200){
                         if (isAdmin) {
@@ -1933,6 +1934,7 @@ new Vue({
 
             axios.post("/api/user/modifyPwd", params)
                 .then(function(response){
+                	that.handleResponse(response);
                     let responseCode = parseInt(response.data.code);
                     if(responseCode === 200){
                         that.dialogShow.modifyPwd = false;
@@ -1982,6 +1984,7 @@ new Vue({
             }
             axios.post("/api/user/saveModule",params)
                 .then(function(response){
+                	that.handleResponse(response);
                     that.responseMessageHandler(response, '模块信息', operName, function() {
                         that.dialogShow.authModule = false;
                         that.pager.authModule.currentPage = 1;
@@ -2012,6 +2015,7 @@ new Vue({
             }
             axios.post("/api/user/saveRole",params)
                 .then(function(response){
+                	that.handleResponse(response);
                     that.responseMessageHandler(response, '角色信息', operName,
                         function(){
                             that.dialogShow.role = false;
@@ -2064,6 +2068,7 @@ new Vue({
 
             axios.post("/api/article/save", params)
                 .then(function(response){
+                	that.handleResponse(response);
                     let responseCode = parseInt(response.data.code);
                     if(responseCode === 200){
                         that.dialogShow.article = false;
@@ -2132,6 +2137,7 @@ new Vue({
             }
             axios.post("/api/category/saveCategoryType",params)
                 .then(function(response){
+                	that.handleResponse(response);
                     that.responseMessageHandler(response, '分类类别信息', operName, function() {
                         that.dialogShow.categoryType = false;
                         that.pager.categoryType.currentPage = 1;
@@ -2206,6 +2212,7 @@ new Vue({
         	that.fullscreenLoading = true;
         	axios.post("/api/org/orgUserOpreate",params)
     		.then(function(response){
+    			that.handleResponse(response);
     			if(parseInt(response.data.code) === 200){
     				that.dialogShow.nddyxxcj =false;
         			that.loadNddyxxcj();
@@ -2313,6 +2320,7 @@ new Vue({
         	that.fullscreenLoading = true;
         	axios.post("/api/org/orgOpreate",params)
         		.then(function(response){
+        			that.handleResponse(response);
         			if(parseInt(response.data.code) === 200){
         				that.dialogShow.dwjbxx =false;
             			that.formdwjbxx={};
@@ -2348,6 +2356,7 @@ new Vue({
             }
             axios.post("/api/category/saveCategory",params)
                 .then(function(response){
+                	that.handleResponse(response);
                     that.responseMessageHandler(response, '分类信息', operName, function() {
                         that.dialogShow.category = false;
                         that.pager.category.currentPage = 1;
@@ -2373,6 +2382,7 @@ new Vue({
             }
             axios.post("/api/title/saveLangConf",params)
                 .then(function(response){
+                	that.handleResponse(response);
                     that.responseMessageHandler(response, '语言配置', operName, function() {
                         that.dialogShow.langConf = false;
                         that.pager.langConf.currentPage = 1;
@@ -2435,6 +2445,7 @@ new Vue({
                 }
                 })
                 .then(function(response){
+                	that.handleResponse(response);
                     that.responseMessageHandler(response, '消息', operName, function() {
                         that.dialogShow.news = false;
                         that.pager.news.currentPage = 1;
@@ -2450,6 +2461,7 @@ new Vue({
         	let that = this;
         	axios.get("/api/org/getOrgIdByUserId")
             .then(function(response){/*成功*/
+            	that.handleResponse(response);
                 let data = response.data;
                 if(parseInt(response.data.code) == 200 ){
                     that.currentUserOrgId = response.data.result;
@@ -2476,6 +2488,7 @@ new Vue({
             }
             axios.post("/api/dues/save",params)
                 .then(function(response){
+                	that.handleResponse(response);
                     that.responseMessageHandler(response, '党费缴纳', operName, function() {
                         that.dialogShow.partyDues = false;
                         that.pager.partyDues.currentPage = 1;
@@ -2533,6 +2546,7 @@ new Vue({
                     }
                 })
                 .then(function(response){
+                	that.handleResponse(response);
                     that.responseMessageHandler(response, '资源信息', operName, function() {
                         that.dialogShow.res = false;
                         that.pager.res.currentPage = 1;
@@ -2563,6 +2577,7 @@ new Vue({
             params.append('attaContent', entry.attaContent || '');
             axios.post("/api/res/uploadAttachmentInfo", params)
                 .then(function(response){
+                	that.handleResponse(response);
                     if(parseInt(response.data.code) === 200){
                         that.dialogShow.resUpload = false;
                         //that.loadResList('', 1, that.pager.res.pageSize);
@@ -2699,6 +2714,7 @@ new Vue({
         	let url = "/api/user/getDtl/" +scopeRow.userId;
     		axios.get(url,null)
             .then(function(response){/*成功*/
+            	that.handleResponse(response);
                 let data = response.data.data;
                 let jsonData = JSON.parse(data);
                 that.formPartInfo.gender = that.getGenderValue(scopeRow.gender);
@@ -2878,6 +2894,7 @@ new Vue({
                         	let url = "/api/user/getDtl/" +scopeRow.userId;
                     		axios.get(url,null)
                             .then(function(response){/*成功*/
+                            	that.handleResponse(response);
                                 let data = response.data.data;
                                 let jsonData = JSON.parse(data);
                                 jsonData.userName = scopeRow.userName;
@@ -2938,6 +2955,7 @@ new Vue({
 	                			orgId: scopeRow.orgId
 	                        }})
 	                        .then(function(response){/*成功*/
+	                        	that.handleResponse(response);
 	                            let data = response.data;
 	                            if(parseInt(data.code) === 200) {
 	                            	that.formdwjbxx = response.data.result
@@ -2951,6 +2969,7 @@ new Vue({
 	                			orgId: scopeRow.orgId
 	                        }})
 	                        .then(function(response){/*成功*/
+	                        	that.handleResponse(response);
 	                            let data = response.data;
 	                            if(parseInt(data.code) === 200) {
 	                            	that.leaderList = response.data.result
@@ -2965,6 +2984,7 @@ new Vue({
 	                			orgId: scopeRow.orgId
 	                        }})
 	                        .then(function(response){/*成功*/
+	                        	that.handleResponse(response);
 	                            let data = response.data;
 	                            if(parseInt(data.code) === 200) {
 	                            	that.rewardList = response.data.result
@@ -2978,6 +2998,7 @@ new Vue({
 	                			orgId: scopeRow.orgId
 	                        }})
 	                        .then(function(response){/*成功*/
+	                        	that.handleResponse(response);
 	                            let data = response.data;
 	                            if(parseInt(data.code) === 200) {
 	                            	that.deptInfoList = response.data.result
@@ -3270,6 +3291,7 @@ new Vue({
                                 that.dwjbxxLoading = true;
                                 axios.post("/api/org/delOrg",params)
                                     .then(function(response){
+                                    	that.handleResponse(response);
                                         if(parseInt(response.data.code) === 200){
                                         	that.loadDwjbxx();
                                             that.$message({
@@ -3293,6 +3315,7 @@ new Vue({
                             	
                                 axios.post("/api/org/delOrgUser",params2)
                                     .then(function(response){
+                                    	that.handleResponse(response);
                                         if(parseInt(response.data.code) === 200){
                                         	that.loadNddyxxcj();
                                             that.$message({
@@ -3340,6 +3363,7 @@ new Vue({
                                 sysUserParams.append("userId", sysUserEntry.userId);
                                 axios.post("/api/user/deleteByUserId", sysUserParams)
                                     .then(function(response){
+                                    	that.handleResponse(response);
                                         if(parseInt(response.data.code) === 200){
                                             that.sysUsers.splice(idx, 1);
                                             that.pager.sysUser.currentPage = 1;
@@ -3359,6 +3383,7 @@ new Vue({
                                 memberUserParams.append("userId", memberUserEntry.userId);
                                 axios.post("/api/user/deleteByUserId", memberUserParams)
                                     .then(function(response){
+                                    	that.handleResponse(response);
                                         if(parseInt(response.data.code) === 200){
                                             that.memberUsers.splice(idx, );
                                             that.pager.user.currentPage = 1;
@@ -3379,6 +3404,7 @@ new Vue({
                                 moduleParams.append("flag", '0');
                                 axios.post("/api/user/updateModuleFlagById",moduleParams)
                                     .then(function(response){
+                                    	that.handleResponse(response);
                                         if(parseInt(response.data.code) === 200){
                                             that.authModules.splice(idx,1);
                                             that.pager.authModule.currentPage = 1;
@@ -3399,6 +3425,7 @@ new Vue({
                                 roleParams.append("flag", '0');
                                 axios.post("/api/user/updateRoleFlagById",roleParams)
                                     .then(function(response){
+                                    	that.handleResponse(response);
                                         if(parseInt(response.data.code) === 200){
                                             that.roles.splice(idx,1);
                                             that.pager.role.currentPage = 1;
@@ -3420,6 +3447,7 @@ new Vue({
                                 params.append('flag','0');
                                 axios.post("/api/category/updateFlagById",params)
                                     .then(function(response){
+                                    	that.handleResponse(response);
                                         if(parseInt(response.data.code) === 200){
                                             that.categories.splice(idx,1);
                                             that.pager.category.currentPage = 1;
@@ -3446,6 +3474,7 @@ new Vue({
                                 params.append('flag','0');
                                 axios.post("/api/category/updateTypeFlagById",params)
                                     .then(function(response){
+                                    	that.handleResponse(response);
                                         if(parseInt(response.data.code) === 200){
                                             that.categoryTypes.splice(idx,1);
                                             that.pager.categoryType.currentPage = 1;
@@ -3472,6 +3501,7 @@ new Vue({
                                 params.append('flag','0');
                                 axios.post("/api/title/updateLangFlagById",params)
                                     .then(function(response){
+                                    	that.handleResponse(response);
                                         if(parseInt(response.data.code) === 200){
                                             that.langConfs.splice(idx,1);
                                             that.pager.langConf.currentPage = 1;
@@ -3498,6 +3528,7 @@ new Vue({
                                 params.append('flag','0');
                                 axios.post("/api/news/updateFlagById",params)
                                     .then(function(response){
+                                    	that.handleResponse(response);
                                         if(parseInt(response.data.code) === 200){
                                             that.newsArray.splice(idx,1);
                                             that.pager.news.currentPage = 1;
@@ -3524,6 +3555,7 @@ new Vue({
                                 params.append('flag','0');
                                 axios.post("/api/article/updateArticleFlagById",params)
                                     .then(function(response){
+                                    	that.handleResponse(response);
                                         if(parseInt(response.data.code) === 200){
                                             that.articles.splice(idx,1);
                                             that.pager.article.currentPage = 1;
@@ -3550,6 +3582,7 @@ new Vue({
                                 params.append('flag','0');
                                 axios.post("/api/dues/deleteById",params)
                                     .then(function(response){
+                                    	that.handleResponse(response);
                                         if(parseInt(response.data.code) === 200){
                                             that.partyDuesArray.splice(idx,1);
                                             that.pager.partyDues.currentPage = 1;
@@ -3576,6 +3609,7 @@ new Vue({
                                 params.append('flag','0');
                                 axios.post("/api/res/deleteById",params)
                                     .then(function(response){
+                                    	that.handleResponse(response);
                                         if(parseInt(response.data.code) === 200){
                                             that.resArray.splice(idx,1);
                                             that.pager.res.currentPage = 1;
@@ -3617,6 +3651,7 @@ new Vue({
                     roleId: role.roleId
                 }})
                 .then(function(response){/*成功*/
+                	that.handleResponse(response);
                     let data = response.data;
                     if(parseInt(data.code) === 200) {
                         let checkedEntries = data.data;
@@ -3653,6 +3688,7 @@ new Vue({
                     userId: user.userId
                 }})
                 .then(function(response){/*成功*/
+                	that.handleResponse(response);
                     let data = response.data;
                     if(parseInt(data.code) === 200) {
                         let checkedEntries = data.data;
@@ -3698,6 +3734,7 @@ new Vue({
                             roleModuleParams.append('moduleIds',that.checkBoxOptions.roleModule);
                             axios.post("/api/user/saveRoleModule", roleModuleParams)
                                 .then(function(response){
+                                	that.handleResponse(response);
                                     if(parseInt(response.data.code) === 200){
                                         that.dialogShow.roleModule = false;
                                         that.$message({
@@ -3724,6 +3761,7 @@ new Vue({
                             userRoleParams.append('roleIds', that.checkBoxOptions.userRole);
                             axios.post("/api/user/saveUserRole", userRoleParams)
                                 .then(function(response){
+                                	that.handleResponse(response);
                                     if(parseInt(response.data.code) === 200){
                                         that.dialogShow.userRole = false;
                                         that.$message({
@@ -3750,6 +3788,7 @@ new Vue({
                             sysUserRoleParams.append('roleIds', that.checkBoxOptions.sysUserRole);
                             axios.post("/api/user/saveUserRole", sysUserRoleParams)
                                 .then(function(response){
+                                	that.handleResponse(response);
                                     if(parseInt(response.data.code) === 200){
                                         that.dialogShow.userRole = false;
                                         that.$message({
@@ -3773,8 +3812,9 @@ new Vue({
             let that = this;
             that.allSysUsers = [];
             axios.get("/api/user/allSysUsers")
-                .then(function(response){/!*成功*!/
-                    let data = response.data;
+                .then(function(response){
+                	that.handleResponse(response);
+                	let data = response.data;
                     if(parseInt(data.code) === 200) {
                         that.allSysUsers = data.data;
                     }
@@ -3792,7 +3832,8 @@ new Vue({
             that.allSysUsersMap = [];
             axios.get("/api/user/allSysUsersMap")
                 .then(function(response){/!*成功*!/
-                    let data = response.data;
+                	that.handleResponse(response);
+                	let data = response.data;
                     if(parseInt(data.code) === 200) {
                         that.allSysUsersMap = data.data;
                     }
@@ -3811,7 +3852,8 @@ new Vue({
             that.allRoles = [];
             axios.get("/api/user/getAllRoles")
                 .then(function(response){/!*成功*!/
-                    let data = response.data;
+                	that.handleResponse(response);
+                	let data = response.data;
                     if(parseInt(data.code) === 200) {
                         that.allRoles = data.data;
                     }
@@ -3831,8 +3873,9 @@ new Vue({
             axios.get("/api/dict/getByType", {params:{
                     type: _type
                 }})
-                .then(function(response){/!*成功*!/
-                    let data = response.data;
+                .then(function(response){
+                	that.handleResponse(response);
+                	let data = response.data;
                     if(parseInt(data.code) === 200) {
                         that.typeDicts = data.data;
                     }
@@ -3851,7 +3894,8 @@ new Vue({
             axios.get("/api/dict/getByType", {params:{
                     type: 'resOtherType'
                 }})
-                .then(function(response){/!*成功*!/
+                .then(function(response){
+                	that.handleResponse(response);
                     let data = response.data;
                     if(parseInt(data.code) === 200) {
                         that.resOtherTypes = data.data;
@@ -3869,7 +3913,8 @@ new Vue({
             let that = this;
             that.yearMonths = [];
             axios.get("/api/dict/getYearMonths")
-                .then(function(response){/*成功*/
+                .then(function(response){
+                	that.handleResponse(response);
                     let data = response.data;
                     if(parseInt(data.code) === 200) {
                         that.yearMonths = data.data;
@@ -3887,7 +3932,8 @@ new Vue({
             let that = this;
             that.allModules = [];
             axios.get("/api/user/getModules")
-                .then(function(response){/*成功*/
+                .then(function(response){
+                	that.handleResponse(response);
                     let data = response.data;
                     if(parseInt(data.code) === 200) {
                         that.allModules = data.data;
@@ -3905,7 +3951,8 @@ new Vue({
             let that = this;
             that.articleCategories = [];
             axios.get("/api/category/allArticleCategories")
-                .then(function(response){/*成功*/
+                .then(function(response){
+                	that.handleResponse(response);
                     let data = response.data;
                     if(parseInt(data.code) === 200) {
                         that.articleCategories = data.data;
@@ -3937,7 +3984,8 @@ new Vue({
                     pageNum: 1,
                     pageSize: 10
                 }})
-                .then(function(response){/*成功*/
+                .then(function(response){
+                	that.handleResponse(response);
                     let data = response.data;
                     //console.log('getCurrUserReceivedNewestNews.data ', data.data.list)
                     if(parseInt(data.code) === 200) {
@@ -3965,7 +4013,8 @@ new Vue({
                         pageNum: 1,
                         pageSize: 10
                     }})
-                    .then(function(response){/*成功*/
+                    .then(function(response){
+                    	that.handleResponse(response);
                         let data = response.data;
                         //console.log('getCurrUserReceivedNewestNews.data ', data.data.list)
                         if(parseInt(data.code) === 200) {
@@ -4038,7 +4087,8 @@ new Vue({
 
             axios.get("/api/auth/getCurrentUser")
                 .then(function(response){/*成功*/
-                    let data = response.data;
+                	that.handleResponse(response);
+                	let data = response.data;
                     that.currentUser = data.data;
                     that.setDwjbxxAuth();
                     let __modules = data.data['modules'] || [];
@@ -4121,7 +4171,8 @@ new Vue({
             that.allCategoryTypes = [];
             axios.get("/api/category/allCategoryTypes")
                 .then(function(response){/*成功*/
-                    let data = response.data;
+                	that.handleResponse(response);
+                	let data = response.data;
                     if(parseInt(data.code) === 200) {
                         that.allCategoryTypes = data.data;
                     }
@@ -4139,7 +4190,8 @@ new Vue({
             that.allMsgCategories = [];
             axios.get("/api/category/allMsgCategories")
                 .then(function(response){/*成功*/
-                    let data = response.data;
+                	that.handleResponse(response);
+                	let data = response.data;
                     if(parseInt(data.code) === 200) {
                         that.allMsgCategories = data.data;
                     }
@@ -4160,7 +4212,8 @@ new Vue({
             that.allLangConfs = [];
             axios.get("/api/title/allLang")
                 .then(function(response){/*成功*/
-                    let data = response.data;
+                	that.handleResponse(response);
+                	let data = response.data;
                     if(parseInt(data.code) === 200) {
                         that.allLangConfs = data.data;
                     }
@@ -4181,7 +4234,8 @@ new Vue({
                     roleId: roleId
                 }})
                 .then(function(response){/*成功*/
-                    let data = response.data;
+                	that.handleResponse(response);
+                	let data = response.data;
                     if(parseInt(data.code) === 200) {
                         that.roleModules = JSON.parse(data.data);
                     }
@@ -4202,7 +4256,8 @@ new Vue({
                     userId: userId
                 }})
                 .then(function(response){/*成功*/
-                    let data = response.data;
+                	that.handleResponse(response);
+                	let data = response.data;
                     if(parseInt(data.code) === 200) {
                         that.userRoles = JSON.parse(data.data);
                     }
@@ -4225,7 +4280,8 @@ new Vue({
                     isMenu: that.formSearchAuthModule.isMenu,
                 }})
                 .then(function(response){/*成功*/
-                    if(parseInt(response.status) == 200 ) {
+                	that.handleResponse(response);
+                	if(parseInt(response.status) == 200 ) {
                         that.authModules = response.data.data.list;
                         that.pager.authModule.totalCount = response.data.data.total;
                     }
@@ -4307,7 +4363,8 @@ new Vue({
                     pageSize:pageSize
                 }})
                 .then(function(response){/*成功*/
-                    if(parseInt(response.status) == 200 ) {
+                	that.handleResponse(response);
+                	if(parseInt(response.status) == 200 ) {
                         that.roles = response.data.data.list;
                         that.pager.authRole.totalCount = response.data.data.total;
                     }
@@ -4339,8 +4396,9 @@ new Vue({
                     pageNum: pageNum,
                     pageSize:pageSize
                 }})
-                .then(function(response){/!*成功*!/
-                    if(parseInt(response.status) == 200 ) {
+                .then(function(response){
+                	that.handleResponse(response);
+                	if(parseInt(response.status) == 200 ) {
                         that.memberUsers = response.data.data.list ? response.data.data.list : []
                         that.pager.user.totalCount = response.data.data.total || 0;
                     }
@@ -4375,7 +4433,8 @@ new Vue({
                     isSuperAdmin: that.isSuperAdmin
                 }})
                 .then(function(response){/*成功*/
-                    if(parseInt(response.status) == 200 ) {
+                	that.handleResponse(response);
+                	if(parseInt(response.status) == 200 ) {
                     	let result = response.data.data.list;
                     	for(let i = 0; i < result.length;i++){
                     		if(result[i].orgId != null && result[i].orgId != ""){
@@ -4497,7 +4556,8 @@ new Vue({
         	axios.get("/api/org/getOrgList",{params:{
         		isSuperAdmin:that.isSuperAdmin
             }}).then(function(response){
-        		if(parseInt(response.data.code) == 200 ){
+            	that.handleResponse(response);
+            	if(parseInt(response.data.code) == 200 ){
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.dwjbxxTreeLevel.level = 0;
         			that.dwjbxxTableData = that.getTreeData(response.data.result, parentArr);
@@ -4526,7 +4586,8 @@ new Vue({
                 year: that.dyxxyear.year,
                 isSuperAdmin:that.isSuperAdmin
             }}).then(function(response){
-        		if(parseInt(response.data.code) == 200 ){
+            	that.handleResponse(response);
+            	if(parseInt(response.data.code) == 200 ){
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			if(parentArr == null){
         				that.nddyxxcjTableData = response.data.result;
@@ -4548,6 +4609,7 @@ new Vue({
         	let that = this;
         	let treeTable =[];
         	axios.get("/api/org/getUpperOrgList",null).then(function(response){
+        		that.handleResponse(response);
         		if(parseInt(response.status) == 200 ){
         			for(let i =0 ; i <response.data.result.length;i++){
         				response.data.result[i].value=response.data.result[i].orgId;
@@ -4563,6 +4625,7 @@ new Vue({
         	let that = this;
         	let treeTable =[];
         	axios.get("/api/org/getUpperOrgList",null).then(function(response){
+        		that.handleResponse(response);
         		if(parseInt(response.status) == 200 ){
         			for(let i =0 ; i <response.data.result.length;i++){
         				response.data.result[i].value=response.data.result[i].orgId;
@@ -4578,6 +4641,7 @@ new Vue({
         	let that = this;
         	let treeTable =[];
         	axios.get("/api/org/getUserUpperOrgList",null).then(function(response){
+        		that.handleResponse(response);
         		if(parseInt(response.status) == 200 ){
         			for(let i =0 ; i <response.data.result.length;i++){
         				response.data.result[i].value=response.data.result[i].orgId;
@@ -4600,14 +4664,16 @@ new Vue({
         	axios.get("/api/dict/search",{params:{
         		dictType:'bachelor'
             }}).then(function(response){
-        		if(parseInt(response.status) == 200 ){
+            	that.handleResponse(response);
+            	if(parseInt(response.status) == 200 ){
         			that.bachelor = response.data.data.list;
         		}
         	});
         	axios.get("/api/dict/search",{params:{
         		dictType:'education'
             }}).then(function(response){
-        		if(parseInt(response.status) == 200 ){
+            	that.handleResponse(response);
+            	if(parseInt(response.status) == 200 ){
         			that.education = response.data.data.list;
         		}
         	});
@@ -4617,7 +4683,8 @@ new Vue({
         	axios.get("/api/treeDict/getTreeDictByType",{params:{
         		treeType:'2'
             }}).then(function(response){
-        		if(parseInt(response.status) == 200 ){
+            	that.handleResponse(response);
+            	if(parseInt(response.status) == 200 ){
         			for(let i =0 ; i <response.data.result.length;i++){
         				response.data.result[i].value=response.data.result[i].nodeId;
         				response.data.result[i].label=response.data.result[i].nodeName;
@@ -4632,7 +4699,8 @@ new Vue({
         	axios.get("/api/treeDict/getTreeDictByType",{params:{
         		treeType:'4'
             }}).then(function(response){
-        		if(parseInt(response.status) == 200 ){
+            	that.handleResponse(response);
+            	if(parseInt(response.status) == 200 ){
         			for(let i =0 ; i <response.data.result.length;i++){
         				response.data.result[i].value=response.data.result[i].nodeId;
         				response.data.result[i].label=response.data.result[i].nodeName;
@@ -4647,7 +4715,8 @@ new Vue({
         	axios.get("/api/treeDict/getTreeDictByType",{params:{
         		treeType:'3'
             }}).then(function(response){
-        		if(parseInt(response.status) == 200 ){
+            	that.handleResponse(response);
+            	if(parseInt(response.status) == 200 ){
         			for(let i =0 ; i <response.data.result.length;i++){
         				response.data.result[i].value=response.data.result[i].nodeId;
         				response.data.result[i].label=response.data.result[i].nodeName;
@@ -4663,35 +4732,40 @@ new Vue({
         	axios.get("/api/dict/search",{params:{
         		dictType:'leadTime'
             }}).then(function(response){
-        		if(parseInt(response.status) == 200 ){
+            	that.handleResponse(response);
+            	if(parseInt(response.status) == 200 ){
         			that.leadTime = response.data.data.list;
         		}
         	});
         	axios.get("/api/dict/search",{params:{
         		dictType:'orgType'
             }}).then(function(response){
-        		if(parseInt(response.status) == 200 ){
+            	that.handleResponse(response);
+            	if(parseInt(response.status) == 200 ){
         			that.orgType = response.data.data.list;
         		}
         	});
         	axios.get("/api/dict/search",{params:{
         		dictType:'isDelPartPersonAuth'
             }}).then(function(response){
-        		if(parseInt(response.status) == 200 ){
+            	that.handleResponse(response);
+            	if(parseInt(response.status) == 200 ){
         			that.isDelPartPersonAuth = response.data.data.list;
         		}
         	});
         	axios.get("/api/dict/search",{params:{
         		dictType:'elecType'
             }}).then(function(response){
-        		if(parseInt(response.status) == 200 ){
+            	that.handleResponse(response);
+            	if(parseInt(response.status) == 200 ){
         			that.elctType = response.data.data.list;
         		}
         	});
         	axios.get("/api/dict/search",{params:{
         		dictType:'positionType'
             }}).then(function(response){
-        		if(parseInt(response.status) == 200 ){
+            	that.handleResponse(response);
+            	if(parseInt(response.status) == 200 ){
         			that.positon = response.data.data.list;
         		}
         	});
@@ -4706,7 +4780,8 @@ new Vue({
         	axios.get("/api/dict/search",{params:{
         		dictType:'allowOrgLevel'
             }}).then(function(response){
-        		if(parseInt(response.status) == 200 ){
+            	that.handleResponse(response);
+            	if(parseInt(response.status) == 200 ){
         			that.allowOrgLevel = response.data.data.list;
         		}
         	});
@@ -4777,7 +4852,8 @@ new Vue({
                   userId:row.userId
               }})
               .then(function(response){/*成功*/
-              	if(parseInt(response.data.code) === 200){
+            	  that.handleResponse(response);
+            	  if(parseInt(response.data.code) === 200){
       				
                       that.$message({
                           message: '重置成功',
@@ -4829,7 +4905,8 @@ new Vue({
                     pageSize:pageSize
                 }})
                 .then(function(response){/*成功*/
-                    if(parseInt(response.status) == 200 ) {
+                	that.handleResponse(response);
+                	if(parseInt(response.status) == 200 ) {
                         that.categories = response.data.data.list;
                         that.pager.category.totalCount = response.data.data.total;
                     }
@@ -4861,7 +4938,8 @@ new Vue({
                     pageSize:pageSize
                 }})
                 .then(function(response){/*成功*/
-                    if(parseInt(response.status) == 200 ) {
+                	that.handleResponse(response);
+                	if(parseInt(response.status) == 200 ) {
                         that.categoryTypes = response.data.data.list;
                         that.pager.categoryType.totalCount = response.data.data.total;
                     }
@@ -4893,7 +4971,8 @@ new Vue({
                     pageSize:pageSize
                 }})
                 .then(function(response){/*成功*/
-                    if(parseInt(response.status) == 200 ) {
+                	that.handleResponse(response);
+                	if(parseInt(response.status) == 200 ) {
                         that.langConfs = response.data.data.list;
                         that.pager.langConf.totalCount = response.data.data.total;
                     }
@@ -4930,7 +5009,8 @@ new Vue({
                     isViewed: _isViewed,
                 }})
                 .then(function(response){/*成功*/
-                    if(parseInt(response.status) == 200 ) {
+                	that.handleResponse(response);
+                	if(parseInt(response.status) == 200 ) {
                         that.newsArray = response.data.data.list;
                         that.pager.news.totalCount = response.data.data.total;
                     }
@@ -5068,7 +5148,8 @@ new Vue({
                     params.append('recordId', _recordId);
                     axios.post("/api/news/viewNews", params)
                         .then(function(response){
-                            if(parseInt(response.data.code) === 200){
+                        	that.handleResponse(response);
+                        	if(parseInt(response.data.code) === 200){
                                 that.searchForm('formSearchNews');
                                 console.log('查看成功。。。', _recordId);
                             }
@@ -5093,7 +5174,8 @@ new Vue({
                         recordId: _recordId,
                     }})
                     .then(function(response){
-                        if(parseInt(response.data.code) === 200){
+                    	that.handleResponse(response);
+                    	if(parseInt(response.data.code) === 200){
                             //console.log('handleBriefView => response.data.data', response.data.data)
                             that.currBrief = response.data.data;
                             that.dialogShow.viewBrief = !that.dialogShow.viewBrief;
@@ -5123,7 +5205,8 @@ new Vue({
                         params.append('recordId', _recordId);
                         axios.post("/api/news/viewNews", params)
                             .then(function(response){
-                                if(parseInt(response.data.code) === 200){
+                            	that.handleResponse(response);
+                            	if(parseInt(response.data.code) === 200){
                                     //that.searchForm('formSearchNews');
                                     console.log('查看成功。。。', _recordId);
                                 }
@@ -5207,7 +5290,8 @@ new Vue({
                     creatorId: that.currentUser.userId,
                 }})
                 .then(function(response){/*成功*/
-                    if(parseInt(response.status) == 200 ) {
+                	that.handleResponse(response);
+                	if(parseInt(response.status) == 200 ) {
                         that.articles = response.data.data.list;
                         that.pager.article.totalCount = response.data.data.total;
                     }
@@ -5243,7 +5327,8 @@ new Vue({
                     viewTime: that.formSearchBriefSendRecord.viewTime,
                 }})
                 .then(function(response){/*成功*/
-                    if(parseInt(response.status) == 200 ) {
+                	that.handleResponse(response);
+                	if(parseInt(response.status) == 200 ) {
                         that.currUserReceiverBriefRecords = response.data.data.list;
                         that.pager.briefSendRecord.totalCount = response.data.data.total;
                     }
@@ -5275,7 +5360,8 @@ new Vue({
                     pageSize:pageSize,
                 }})
                 .then(function(response){/*成功*/
-                    if(parseInt(response.status) == 200 ) {
+                	that.handleResponse(response);
+                	if(parseInt(response.status) == 200 ) {
                         that.partyDuesArray = response.data.data.list;
                         that.pager.partyDues.totalCount = response.data.data.total;
                     }
@@ -5313,7 +5399,8 @@ new Vue({
                     pageSize: pageSize,
                 }})
                 .then(function(response){/*成功*/
-                    if(parseInt(response.status) == 200 ) {
+                	that.handleResponse(response);
+                	if(parseInt(response.status) == 200 ) {
                         that.resArray = response.data.data.list;
                         that.pager.res.totalCount = response.data.data.total;
                     }
@@ -5345,7 +5432,8 @@ new Vue({
                     pageSize:pageSize,
                 }})
                 .then(function(response){/*成功*/
-                    if(parseInt(response.status) == 200 ) {
+                	that.handleResponse(response);
+                	if(parseInt(response.status) == 200 ) {
                         that.resDlArray = response.data.data.list;
                         that.pager.resDl.totalCount = response.data.data.total;
                     }
@@ -6497,6 +6585,7 @@ new Vue({
             that.currUserEchartsData = {};
             axios.get("/api/org/getEchartsDataByCurrentUser")
                 .then(function(response){/*成功*/
+                	that.handleResponse(response);
                     let data = response.data;
                     //console.log('getCurrUserReceivedNewestNews.data ', data.data.list)
                     if(parseInt(data.code) === 200) {
@@ -6514,23 +6603,18 @@ new Vue({
          * @param response 响应信息
          */
         handleResponse(response) {
-            let that = this;
+            //let that = this;
             let codeVal = parseInt(response.data.code);
-            let messageContent = '', messageType = 'info';
+            //let messageContent = '', messageType = 'info';
             switch (codeVal) {
                 case 401:
-                    messageContent = '请登录!';
-                    messageType = 'warning';
-                    break;
-                case 500:
-                    messageContent = '请登录!';
-                    messageType = 'warning';
+                    window.location.href= window.location.protocol+'//'+window.location.host;
                     break;
             }
-            that.$message({
+            /*that.$message({
                 message: messageContent,
                 type: messageType
-            });
+            });*/
             return false;
         },
     },
@@ -6542,7 +6626,8 @@ new Vue({
         axios.defaults.withCredentials = true;
         axios.get("/api/admin/main/struct")
             .then(function(response){/*成功*/
-                let config = response.data.formStructConfig;
+            	that.handleResponse(response);
+            	let config = response.data.formStructConfig;
                 that.formUser = config.formUser;
                 that.formSysUser = config.formSysUser;
                 that.formUserType = config.formUserType;
