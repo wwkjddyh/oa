@@ -1160,8 +1160,8 @@ new Vue({
         nation: '',
         rules: {},
         uploadData: {},
-        uploadAccept: 'image/gif, image/jpeg, text/plain, application/pdf, image/gif, image/png, ' +
-            'application/vnd.ms-powerpoint, application/vnd.ms-powerpoint, application/vnd.ms-powerpoint, ' +
+        uploadAccept: 'image/gif, image/jpeg, text/plain, application/pdf, image/png,' +
+            'application/vnd.ms-powerpoint, ' +
             'application/rtf, text/rtf, ' +
             /*'application/vnd.ms-works, ' +*/
             'application/vnd.ms-excel, text/xml, application/xml,' +
