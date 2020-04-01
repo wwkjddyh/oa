@@ -1865,7 +1865,8 @@ new Vue({
                 params.append('passwordOrgi', that.formSysUser.passwordOrgi || '');
                 params.append('langConfId', '');
                 params.append('orgId', that.formSysUser.orgId || '');
-                params.append('mail',that.formSysUser.mail || '')
+                params.append('mail',that.formSysUser.mail || '');
+                params.append('phone',that.formSysUser.phone || '');
             }
             else {
                 userId = that.formUser.id || '';
@@ -2787,7 +2788,8 @@ new Vue({
                                 userSex: entry.userSex,
                                 userSexName: entry.userSexName,
                                 orgId:entry.orgId,
-                                mail:entry.mail
+                                mail:entry.mail,
+                                phone:entry.phone
 	                        };
 	                    }
 	                    that.dialogShow.sysUser = !that.dialogShow.sysUser;
@@ -4426,7 +4428,10 @@ new Vue({
             that.checkBoxAll.roleModule = (checkedCount === that.allModules.length);
             that.isIndeterminate.roleModule = checkedCount > 0 && checkedCount < that.allModules.length;
         },
-
+        gzzdDownLoad(fileName){
+        	window.open('/api/file/dlRes/res-dfgl/dzzgl.pdf/dzzgl.pdf'
+            );
+        },
         /**
          * (系统)用户-权限全选
          * @param val
