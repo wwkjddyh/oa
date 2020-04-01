@@ -12,7 +12,7 @@
 								    :options="userUpperOrg"
 								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
 								    style="width: 300px;"
-								    size="medium"
+								    size="small"
 								    filterable
 								    collapse-tags
 								    clearable
@@ -26,15 +26,15 @@
             </el-form-item>
         </el-col>
         <el-col :span="12">
-            <el-form-item label="其他分类">
+            <el-form-item label="其他分类" v-if="uploadData.type === 'res2-fzdy'">
                 <el-select v-model="formSearchRes.assTypeId" style="width: 300px; font-size: 12px" placeholder="请选择分类" size="small">
                     <el-option label="全部" value="">全部</el-option>
                     <el-option v-for="item in resOtherTypes" :key="item.dictId" :label="item.dictName" :value="item.dictId"></el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="模糊搜索">
-                <el-input v-model="formSearchRes.key" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
-                <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" style="float:right">检索</el-button>
+                <el-input v-model="formSearchRes.key" size="small" auto-complete="off" style="width: 220px;" maxlength="512" placeholder="关键字"></el-input>
+                <el-button size="small" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" style="">检索</el-button>
             </el-form-item>
         </el-col>
     </el-form>
@@ -71,9 +71,9 @@
                     label="操作">
                 <template slot-scope="scope">
                     <div style="display: flex;width:100%;justify-content: flex-end;">
-                        <el-button size="mini" @click="edit('res', scope.$index,scope.row, false)" icon="el-icon-edit">修改</el-button>
                         <el-button size="mini" :disabled="scope.row.originalName === ''" type="" icon="el-icon-view" @click="handleViewRes(scope.row)">预览</el-button>
                         <el-button size="mini" :disabled="scope.row.originalName === ''" type="" icon="el-icon-download" @click="handleDownloadRes(scope.row)">下载</el-button>
+                        <el-button size="mini" @click="edit('res', scope.$index,scope.row, false)" icon="el-icon-edit">修改</el-button>
 <!--                        <el-button size="mini" :disabled="scope.row.originalName !== ''" @click="handleUpload2(scope.row)" icon="el-icon-upload2">上传</el-button>-->
                         <el-button size="mini" type="danger" @click="handleDel(scope.$index, 'res')" icon="el-icon-delete">删除</el-button>
                     </div>
@@ -105,7 +105,7 @@
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">发布日期</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
-                <el-form-item label="其他分类" prop="assTypeId">
+                <el-form-item label="其他分类" prop="assTypeId" v-if="uploadData.type === 'res2-fzdy'">
                     <el-select v-model="formRes.assTypeId" style="width: 300px;" placeholder="请选择分类" size="small">
                         <el-option v-for="item in resOtherTypes" :key="item.dictId" :label="item.dictName" :value="item.dictId"></el-option>
                     </el-select>

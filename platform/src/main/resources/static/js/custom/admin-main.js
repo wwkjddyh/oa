@@ -5539,9 +5539,12 @@ new Vue({
                 return false;
             }
             if (!isResDl) {
-                if (that.formRes.assTypeId == '') {
-                    this.$message.error('请选择其他分类!');
-                    return false;
+                /*仅当'发展党员时'才进行其他分类判定*/
+                if (that.uploadData.type === 'res2-fzdy') {
+                    if (that.formRes.assTypeId == '') {
+                        this.$message.error('请选择其他分类!');
+                        return false;
+                    }
                 }
             }
 
