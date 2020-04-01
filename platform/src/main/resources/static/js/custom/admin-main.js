@@ -1162,10 +1162,12 @@ new Vue({
         uploadData: {},
         uploadAccept: 'image/gif, image/jpeg, text/plain, application/pdf, image/gif, image/png, ' +
             'application/vnd.ms-powerpoint, application/vnd.ms-powerpoint, application/vnd.ms-powerpoint, ' +
-            'application/rtf, text/rtf, application/vnd.ms-works, application/vnd.ms-excel, application/vnd.ms-excel,' +
-            'application/vnd.ms-excel, application/vnd.ms-excel, application/vnd.ms-excel, text/xml, application/xml,' +
+            'application/rtf, text/rtf, ' +
+            /*'application/vnd.ms-works, ' +*/
+            'application/vnd.ms-excel, text/xml, application/xml,' +
             'aplication/zip, audio/3gpp, video/3gpp, audio/ac3, allpication/vnd.ms-asf, audio/basic, text/csv,' +
-            'application/msword, application/msword, application/xml-dtd, image/vnd.dwg, image/vnd.dxf, audio/mpeg,' +
+            /*'application/msword, ' +*/
+            'application/xml-dtd, image/vnd.dwg, image/vnd.dxf, audio/mpeg,' +
             'audio/mp4, video/mp4, video/mpeg, application/vnd.ms-project, application/ogg, audio/ogg,' +
             'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, '+
             'application/vnd.openxmlformats-officedocument.spreadsheetml.template,'+
@@ -5815,7 +5817,9 @@ new Vue({
                 // 如果是office文档特殊处理
                 let _accessUrl2 = _accessUrl.toLowerCase();
                 if (_accessUrl2.endsWith('.ppt') || _accessUrl2.endsWith('.pptx') || _accessUrl2.endsWith('.xls')
-                    || _accessUrl2.endsWith('.xlsx') || _accessUrl2.endsWith('.doc') || _accessUrl2.endsWith('.docx')) {
+                    || _accessUrl2.endsWith('.xlsx') || _accessUrl2.endsWith('.doc') || _accessUrl2.endsWith('.docx')
+                    || _accessUrl2.endsWith('.xltx') || _accessUrl2.endsWith('.ppsx') || _accessUrl2.endsWith('.sldx')
+                    || _accessUrl2.endsWith('.dotx') || _accessUrl2.endsWith('.xlsm') || _accessUrl2.endsWith('.xlsb')) {
                     // https://view.officeapps.live.com/op/view.aspx?src=http://www.tanwenfang.com./file/176bd4cb-e893-4dde-b20e-a98bb836b07e.docx
                         _url = "https://view.officeapps.live.com/op/view.aspx?src=" + _url;
                         window.open(_url)
