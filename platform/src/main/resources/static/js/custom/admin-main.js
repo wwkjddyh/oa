@@ -5410,6 +5410,7 @@ new Vue({
          */
         loadResList(criteria, pageNum, pageSize) {
             let that = this;
+            //console.log('loadResList->that.formSearchRes', that.formSearchRes)
             axios.get("/api/res/search", {params:{
                     key: that.formSearchRes.key,
                     typeId: that.formSearchRes.typeId,

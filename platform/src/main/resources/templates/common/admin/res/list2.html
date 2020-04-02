@@ -27,7 +27,7 @@
                 -->
                 <el-radio-group v-model="formSearchRes.assTypeId" size="mini">
                     <el-radio label="" style="margin-top: 10px;">全部</el-radio>
-                    <el-radio v-for="item in resOtherTypes" :label="item.dictName" :value="item.dictId" :key="item.dictId" style="margin-top: 10px;"></el-radio>
+                    <el-radio v-for="item in resOtherTypes" :label="item.dictId" :value="item.dictId" :key="item.dictId" style="margin-top: 10px;">{{item.dictName}}</el-radio>
                 </el-radio-group>
             </el-form-item>
         </el-col>
@@ -119,11 +119,16 @@
                         <div slot="content">发布日期</div><i class="el-icon-question"></i></el-tooltip>
                 </el-form-item>
                 <el-form-item label="其他分类" prop="assTypeId" v-if="uploadData.type === 'res2-fzdy'">
+                    <!--
                     <el-select v-model="formRes.assTypeId" style="width: 300px;" placeholder="请选择分类" size="small">
                         <el-option v-for="item in resOtherTypes" :key="item.dictId" :label="item.dictName" :value="item.dictId"></el-option>
                     </el-select>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">其他分类</div><i class="el-icon-question"></i></el-tooltip>
+                    -->
+                    <el-radio-group v-model="formRes.assTypeId" size="mini">
+                        <el-radio v-for="item in resOtherTypes" :label="item.dictId" :value="item.dictId" :key="item.dictId">{{item.dictName}}</el-radio>
+                    </el-radio-group>
                 </el-form-item>
                 <el-form-item label="资料名称" prop="resName">
                     <el-input v-model="formRes.resName" size="small" auto-complete="off" style="width: 472px;" maxlength="512" placeholder="资料名称"></el-input>
