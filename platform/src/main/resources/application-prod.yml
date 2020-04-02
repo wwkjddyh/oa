@@ -7,7 +7,7 @@ server:
     max-threads: 1000
   servlet:
     session:
-      timeout: 300m
+      timeout: 10m
       cookie:
         max-age: 18000
         http-only: false

@@ -101,10 +101,10 @@
 			</el-row>
 		</el-col>
 		<el-col :span="11" class="firstPage-briefs">
-			<el-row>
-				<el-row ><div style="margin-right: 110px"><span class="firstPage-briefs-items_title" style="color:#4f4f4f">通知消息</span>
+			<el-row style="height:250px">
+				<el-row ><div style="margin-right: 110px"><span class="firstPage-briefs-items_title" style="color:#4f4f4f">通知通告</span>
 					<hr style="height:1px;border:none;border-top:1px solid #e5e5e5;margin-top: 20px;color: #cecece"/></div></el-row>
-				<div v-for="item in currUserReceiverNewsRecords" class="firstPage-briefs-item" style="margin-right: 110px">
+				<div v-for="item in currUserReceiverNewsRecordsfirstPage" class="firstPage-briefs-item" style="margin-right: 110px">
 					<div class="firstPage-briefs-item_title">
                         <label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi" style="color:#4f4f4f;">【已读】</label>
                         <label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi" style="color:#4f4f4f;">【未读】</label>
@@ -114,17 +114,23 @@
 						{{item.sendTime ? item.sendTime.substr(0, 10) : '--'}}
 					</div>
 				</div>
+				<div v-if="currUserReceiverNewsRecordsfirstPage.length > 0" style="margin-top: 15px;right:1px">
+					<el-link :underline="false" type="primary" @click="moreAnnounce()">查看更多<i class="el-icon-more"></i></el-link>
+				</div>
 			</el-row>
-			<el-row class="firstPage-briefs-items_row" style="margin-top: 70px">
+			<el-row class="firstPage-briefs-items_row" style="margin-top: 70px;height:250px">
 				<el-row ><div style="margin-right: 110px"><span class="firstPage-briefs-items_title" style="color:#4f4f4f;">工作简报</span>
 					<hr style="height:1px;border:none;border-top:1px solid #e5e5e5;margin-top: 20px;color: #cecece"/></div></el-row>
-				<div v-for="item in currUserReceiverBriefRecords" class="firstPage-briefs-item" style="margin-right: 110px">
+				<div v-for="item in currUserReceiverBriefRecordsfirstPage" class="firstPage-briefs-item" style="margin-right: 110px">
 					<div class="firstPage-briefs-item_title">
 						<a class="firstPage-briefs_item_title-a" @click="handleBriefView(item.briefId)">{{item.briefTitle || ''}}</a>
 					</div>
 					<div class="firstPage-briefs-item_time">
 						{{item.sendTime.substr(0, 10)}}
 					</div>
+				</div>
+				<div v-if="currUserReceiverBriefRecordsfirstPage.length > 0" style="margin-top: 15px;right:1px">
+					<el-link :underline="false" @click="moreArticle()" type="primary">查看更多<i class="el-icon-more"></i></el-link>
 				</div>
 			</el-row>
 		</el-col>
