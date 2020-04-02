@@ -141,9 +141,10 @@ new Vue({
                 	that.loadNddyxxcj();
                 	break;
 
+                /*
                 case 'ndsjdfqk':
                     that.loadPartyDues('', 1, that.pager.partyDues.pageSize);
-                    break;Re
+                    break;*/
                 case 'dfglzlxz':    //党费资料下载
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '01ef5219-464e-44a3-890a-557e3bbabd4e';
@@ -199,6 +200,7 @@ new Vue({
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
                     that.formSearchRes.currTypeName = '年度党费收支情况公示';
+                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
                     that.uploadData = {
                         name: '',
                         type: 'res2-nddfszqkgs',
@@ -216,6 +218,7 @@ new Vue({
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
                     that.formSearchRes.currTypeName = '年度党费收支结存情况';
+                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
                     that.uploadData = {
                         name: '',
                         type: 'res2-nddfszjcqk',
@@ -233,6 +236,7 @@ new Vue({
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
                     that.formSearchRes.currTypeName = '年度换届工作计划';
+                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
                     that.uploadData = {
                         name: '',
                         type: 'res2-ndhjgzjh',
@@ -250,9 +254,28 @@ new Vue({
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
                     that.formSearchRes.currTypeName = '换届工作台账';
+                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
                     that.uploadData = {
                         name: '',
                         type: 'res2-hjgztz',
+                        parse: '1',
+                    };
+                    that.loadResList('', 1, that.pager.res.pageSize);
+                    break;
+                case 'ndsjdfqk':    // 年度党费上缴情况
+                    that.getResOtherTypes();
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = '0737d01e-b6f9-4567-8892-63fa9071903f';
+                    that.formRes.typeName = '年度党费上缴情况';
+                    that.formSearchRes.typeId = '0737d01e-b6f9-4567-8892-63fa9071903f';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '年度党费上缴情况';
+                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
+                    that.uploadData = {
+                        name: '',
+                        type: 'res2-ndsjdfqk',
                         parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
@@ -267,7 +290,7 @@ new Vue({
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
                     that.formSearchRes.currTypeName = '发展党员';
-                    
+                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
                     that.uploadData = {
                         name: '',
                         type: 'res2-fzdy',
@@ -6616,6 +6639,21 @@ new Vue({
                 type: messageType
             });*/
             return false;
+        },
+
+        /**
+         * 获得当前年月，默认格式(yyyy-MM)
+         */
+        getCurrYearMonth() {
+            let currDate = new Date();
+            //currDate.setTime(currDate.getTime());
+            let _month = currDate.getMonth()+1;
+            _month = _month <= 9 ? '0' + _month : _month + '';
+            let _day = currDate.getDate();
+            _day = _day <= 9 ? '0' + _day : _day + '';
+            let currDateStr = currDate.getFullYear()+"-" + _month + "-" + _day;
+            console.log('getCurrYearMonth', currDateStr);
+            return currDateStr;
         },
     },
     props: {
