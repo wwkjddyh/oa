@@ -300,6 +300,22 @@ new Vue({
                     break;
                 case 'bigData':     // 大数据
                     //that.getCurrUserEchartsData();
+
+                    // 初始化组织列表<修改前显示方案(2020/04/02)>
+                    if (that.currUserEchartsData['sex']) {
+                        let _tChartData = JSON.parse(JSON.stringify(that.currUserEchartsData['sex']));
+                        let _tSubTitleArr = _tChartData.legend || [];
+                        let _legendLen = _tSubTitleArr.length;
+                        if (_legendLen == 1) {
+                            that.currUserLegendArr = _tSubTitleArr;
+                            that.currUserLegendChange = _tSubTitleArr[0];
+                        }
+                        else {
+                            that.currUserLegendArr = ['全部'].concat( _tSubTitleArr);
+                        }
+                    }
+
+                    /* //修改前显示方案(2020/04/02)
                     let sexChart = {
                         id: 'bigDataChartId',
                         title: '',
@@ -551,7 +567,10 @@ new Vue({
                             that.initEChartsCloumnChart5(educationChart);
                         }
 
-                    }
+                    }*/
+
+                    //修改后显示方案(2020/04/02)
+                    that.handleBigDataChange(that.currUserLegendChange);
 
                     // console.log('that.chartsData', sexChart, ageChart, partyAgeChart, educationChart)
                     // that.initEChartsPieChart(sexChart.id, sexChart.title,
@@ -645,6 +664,7 @@ new Vue({
             "education": {}
         },
         currUserLegendArr: ['全部'],
+        currUserLegendChange: '全部',
         partyMemberStat: {
             '男': 50,
             '女': 30,
@@ -6689,9 +6709,9 @@ new Vue({
          */
         handleBigDataChange(val) {
             let that = this;
-            console.log('handleBigDataChange.val', val, that.currUserEchartsData)
+            // console.log('handleBigDataChange.val', val, that.currUserEchartsData)
             if (that.currUserLegendArr.length > 1) {
-                console.log('handleBigDataChange做汇总处理', '当前选择=>', val);
+                // console.log('handleBigDataChange做汇总处理', '当前选择=>', val);
                 if (val === '全部') {
                     let sexChart = {
                         id: 'bigDataChartId',
@@ -6964,6 +6984,173 @@ new Vue({
             }
             else {
                 console.log('handleBigDataChange不做汇总处理');
+                let sexChart = {
+                    id: 'bigDataChartId',
+                    title: '',
+                    subtitle: '',
+                    legendData: [],
+                    seriesData: [],
+                };
+                if (that.currUserEchartsData['sex']) {
+                    let _tChartData = JSON.parse(JSON.stringify(that.currUserEchartsData['sex']));
+                    console.log('_tChartData', _tChartData);
+                    sexChart.title = _tChartData.title || '';
+                    let _subtitle = '';
+                    let _tSubTitleArr = _tChartData.legend || [];
+                    let _legendLen = _tSubTitleArr.length;
+                    if (_legendLen == 1) {
+                        if (_tSubTitleArr.length > 0) {
+                            _subtitle = _tSubTitleArr[0];
+                        }
+                        sexChart.subtitle = _subtitle;
+                        let _legendArr = _tChartData.axis || [];
+                        sexChart.legendData = _legendArr;
+                        let _seriesData = [];
+                        if (_tChartData.data) {
+                            let _seriesArr = _tChartData.data || [];
+                            if (_seriesArr.length > 0) {
+                                let _sData = _seriesArr[0].data || [];
+                                _seriesData = [
+                                    {value: parseInt(_sData[0]), name: _legendArr[0]},
+                                    {value: parseInt(_sData[1]), name: _legendArr[1]}
+                                ];
+                            }
+                        }
+                        sexChart.seriesData = _seriesData;
+
+                        that.initEChartsPieChart(sexChart.id, sexChart.title,
+                            sexChart.subtitle, sexChart.legendData, sexChart.seriesData);
+                    }
+                    else if (_legendLen > 1) {
+                        sexChart.legendData = _tChartData.legend || [];
+                        sexChart.axis = _tChartData.axis || [];
+                        let _seriesData = [];
+                        if (_tChartData.data) {
+                            let _seriesArr = _tChartData.data || [];
+                            let _seriesLen = _seriesArr.length;
+                            if (_seriesLen > 0) {
+                                for (let i = 0; i < _seriesLen; i ++) {
+                                    let _sData = _seriesArr[i];
+                                    _seriesData.push({
+                                        name: _sData.name || '',
+                                        data: _sData.data || [],
+                                    })
+                                }
+                            }
+                        }
+                        sexChart.seriesData = _seriesData;
+                        that.initEChartsCloumnChart5(sexChart);
+                    }
+
+                }
+                let ageChart = {
+                    id: 'bigDataChartId2',
+                    title: '',
+                    subtitle: '',
+                    legendData: [],
+                    xAxisData: [],
+                    seriesData: [],
+                };
+                if (that.currUserEchartsData['age']) {
+                    let _tChartData = JSON.parse(JSON.stringify(that.currUserEchartsData['age']));
+                    ageChart.title = _tChartData.title || '';
+                    let _tSubTitleArr = _tChartData.legend || [];
+                    let _legendLen = _tSubTitleArr.length;
+                    if (_legendLen == 1) {
+                        let _subtitle = '';
+                        if (_tSubTitleArr.length > 0) {
+                            _subtitle = _tSubTitleArr[0];
+                        }
+                        ageChart.subtitle = _subtitle;
+                        ageChart.xAxisData = _tChartData.axis || [];
+
+                        let _seriesData = [];
+                        let _sDataArr = _tChartData.data || [];
+                        if (_sDataArr.length > 0) {
+                            for (let i = 0; i < _sDataArr.length; i++) {
+                                let _sData = _sDataArr[i];
+                                _seriesData.push(_sData['data']);
+                            }
+                        }
+                        ageChart.seriesData = _seriesData.length > 0 ? _seriesData[0] : [];
+                        that.initEChartsCloumnChart2(ageChart.id, ageChart.title, ageChart.subtitle,
+                            ageChart.legendData, ageChart.xAxisData, ageChart.seriesData);
+                    }
+                }
+
+                let partyAgeChart = {
+                    id: 'bigDataChartId3',
+                    title: '',
+                    subtitle: '',
+                    legendData: [],
+                    xAxisData: [],
+                    seriesData: []
+                };
+                if (that.currUserEchartsData['partyAge']) {
+                    let _tChartData = JSON.parse(JSON.stringify(that.currUserEchartsData['partyAge']));
+                    partyAgeChart.title = _tChartData.title || '';
+                    let _subtitle = '';
+                    let _tSubTitleArr = _tChartData.legend || [];
+                    let _legendLen = _tSubTitleArr.length;
+                    if (_legendLen == 1) {
+                        if (_tSubTitleArr.length > 0) {
+                            _subtitle = _tSubTitleArr[0];
+                        }
+                        partyAgeChart.subtitle = _subtitle;
+                        partyAgeChart.xAxisData = _tChartData.axis || [];
+
+                        let _seriesData = [];
+                        let _sDataArr = _tChartData.data || [];
+                        if (_sDataArr.length > 0) {
+                            for (let i = 0; i < _sDataArr.length; i++) {
+                                let _sData = _sDataArr[i];
+                                _seriesData.push(_sData['data']);
+                            }
+                        }
+                        partyAgeChart.seriesData = _seriesData.length > 0 ? _seriesData[0] : [];
+
+                        that.initEChartsCloumnChart2(partyAgeChart.id, partyAgeChart.title, partyAgeChart.subtitle,
+                            partyAgeChart.legendData, partyAgeChart.xAxisData, partyAgeChart.seriesData);
+                    }
+                }
+
+                let educationChart = {
+                    id: 'bigDataChartId4',
+                    title: '',
+                    subtitle: '',
+                    legendData: [],
+                    xAxisData: [],
+                    seriesData: [],
+                };
+
+                if (that.currUserEchartsData['education']) {
+                    let _tChartData = JSON.parse(JSON.stringify(that.currUserEchartsData['education']));
+                    educationChart.title = _tChartData.title || '';
+                    let _subtitle = '';
+                    let _tSubTitleArr = _tChartData.legend || [];
+                    let _legendLen = _tSubTitleArr.length;
+                    if (_legendLen == 1) {
+                        if (_tSubTitleArr.length > 0) {
+                            _subtitle = _tSubTitleArr[0];
+                        }
+                        educationChart.subtitle = _subtitle;
+                        educationChart.xAxisData = _tChartData.axis || [];
+
+                        let _seriesData = [];
+                        let _sDataArr = _tChartData.data || [];
+                        if (_sDataArr.length > 0) {
+                            for (let i = 0; i < _sDataArr.length; i++) {
+                                let _sData = _sDataArr[i];
+                                _seriesData.push(_sData['data']);
+                            }
+                        }
+                        educationChart.seriesData = _seriesData.length > 0 ? _seriesData[0] : [];
+
+                        that.initEChartsCloumnChart2(educationChart.id, educationChart.title, educationChart.subtitle,
+                            educationChart.legendData, educationChart.xAxisData, educationChart.seriesData);
+                    }
+
+                }
             }
             // if (val === '全部') { // 全部做汇总
             //     if (that.currUserLegendArr.length === 1) {  /*不做统计处理*/
