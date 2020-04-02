@@ -190,6 +190,66 @@ new Vue({
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
+                case 'dyfgzd':    // 党员管理相关法规制度
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = 'fa0921b0-1646-4af1-b590-d0a5d8bdce43';
+                    that.formSearchRes.typeId = 'fa0921b0-1646-4af1-b590-d0a5d8bdce43';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '党员管理相关法规制度';
+                    that.uploadData = {
+                        name: '',
+                        type: 'res-dyfgzd',
+                        parse: '1',
+                    };
+                    that.loadResList('', 1, that.pager.res.pageSize);
+                    break;
+                case 'dzzfgzd':    // 党组织管理相关法规制度
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = '9234abe3-8999-45b8-8ad5-55409946e547';
+                    that.formSearchRes.typeId = '9234abe3-8999-45b8-8ad5-55409946e547';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '党组织管理相关法规制度';
+                    that.uploadData = {
+                        name: '',
+                        type: 'res-dzzfgzd',
+                        parse: '1',
+                    };
+                    that.loadResList('', 1, that.pager.res.pageSize);
+                    break;
+                case 'dffgzd':    // 党费管理相关法规制度
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = 'e78acbc2-ea9d-4589-b833-0472e532a61a';
+                    that.formSearchRes.typeId = 'e78acbc2-ea9d-4589-b833-0472e532a61a';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '党费管理相关法规制度';
+                    that.uploadData = {
+                        name: '',
+                        type: 'res-dffgzd',
+                        parse: '1',
+                    };
+                    that.loadResList('', 1, that.pager.res.pageSize);
+                    break;
+                case 'hjfgzd':    // 换届管理相关法规制度
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = '598f7307-104d-4cc1-b0e9-d61749286c5e';
+                    that.formSearchRes.typeId = '598f7307-104d-4cc1-b0e9-d61749286c5e';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '换届管理相关法规制度';
+                    that.uploadData = {
+                        name: '',
+                        type: 'res-hjfgzd',
+                        parse: '1',
+                    };
+                    that.loadResList('', 1, that.pager.res.pageSize);
+                    break;
                 case 'nddfszqkgs':    // 年度党费收支情况公示
                     that.getResOtherTypes();
                     that.formSearchRes.key = '';

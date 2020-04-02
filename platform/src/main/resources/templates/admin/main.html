@@ -107,11 +107,15 @@
                         <el-card shadow="never" v-if="showContent == 'firstPage'" key="firstPage">
                             <div th:replace="/common/admin/firstPage :: content"/>
                         </el-card>
+                        <!--党员管理法规制度-->
                         <el-card shadow="never" v-if="showContent == 'dyfgzd'" key="dyfgzd">
-                            <div th:replace="/common/admin/dygl/dyfgzd :: content"/>
+<!--                            <div th:replace="/common/admin/dygl/dyfgzd :: content"/>-->
+                            <div th:replace="/common/admin/res/list :: content"/>
                         </el-card>
+                        <!--党组织法规制度-->
                         <el-card shadow="never" v-if="showContent == 'dzzfgzd'" key="dzzfgzd">
-                            <div th:replace="/common/admin/dzz/dzzfgzd :: content"/>
+<!--                            <div th:replace="/common/admin/dzz/dzzfgzd :: content"/>-->
+                            <div th:replace="/common/admin/res/list :: content"/>
                         </el-card>
                         <el-card shadow="never" v-if="showContent == 'dwjbxx'" key="dwjbxx">
                             <div th:replace="/common/admin/dzz/dwjbxx :: content"/>
@@ -119,8 +123,10 @@
                         <el-card shadow="never" v-if="showContent == 'nddyxxcj'" key="nddyxxcj">
                             <div th:replace="/common/admin/dygl/nddyxxcj :: content"/>
                         </el-card>
+                        <!--党费法规制度-->
                         <el-card shadow="never" v-if="showContent == 'dffgzd'" key="dffgzd">
-                            <div th:replace="/common/admin/dfgl/dffgzd :: content"/>
+<!--                            <div th:replace="/common/admin/dfgl/dffgzd :: content"/>-->
+                            <div th:replace="/common/admin/res/list :: content"/>
                         </el-card>
                         <!--年度党费上缴情况-->
                         <!--
@@ -137,7 +143,8 @@
                         </el-card>
 
                         <el-card shadow="never" v-if="showContent == 'hjfgzd'" key="hjfgzd">
-                            <div th:replace="/common/admin/hjgl/hjfgzd :: content"/>
+<!--                            <div th:replace="/common/admin/hjgl/hjfgzd :: content"/>-->
+                            <div th:replace="/common/admin/res/list :: content"/>
                         </el-card>
                         <!--通知通告-->
                         <el-card shadow="never" v-if="showContent == 'announce'" key="announce">
@@ -158,7 +165,6 @@
                         <el-card shadow="never" v-if="showContent == 'dyglzlxz'" key="dyglzlxz">
                             <div th:replace="/common/admin/res/list :: content"/>
                         </el-card>
-
                         <!--年度党费收支情况公示-->
                         <el-card shadow="never" v-if="showContent == 'nddfszqkgs'" key="nddfszqkgs">
                             <div th:replace="/common/admin/res/list2 :: content"/>
