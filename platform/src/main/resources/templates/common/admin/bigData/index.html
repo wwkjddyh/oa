@@ -2,6 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
     <div class="bigData-container">
+        <el-select  style="width: 300px;margin-bottom: 10px" placeholder="请选择组织" size="small" @change="handleBigDataChange">
+            <el-option v-for="item in currUserLegendArr" :key="item" :label="item" :value="item"></el-option>
+        </el-select>
         <div class="bigData-container-row1">
             <div class="bigData-container-row-cell">
                 <div id="bigDataChartId" class="bigData-container-row-cell-pie"></div>

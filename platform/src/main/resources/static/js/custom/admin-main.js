@@ -315,6 +315,12 @@ new Vue({
                         let _tSubTitleArr = _tChartData.legend || [];
                         let _legendLen = _tSubTitleArr.length;
                         if (_legendLen == 1) {
+                            that.currUserLegendArr = _tSubTitleArr;
+                        }
+                        else {
+                            that.currUserLegendArr = ['全部'].concat( _tSubTitleArr);
+                        }
+                        if (_legendLen == 1) {
                             if (_tSubTitleArr.length > 0) {
                                 _subtitle = _tSubTitleArr[0];
                             }
@@ -373,6 +379,12 @@ new Vue({
                         let _tSubTitleArr = _tChartData.legend || [];
                         let _legendLen = _tSubTitleArr.length;
                         if (_legendLen == 1) {
+                            that.currUserLegendArr = _tSubTitleArr;
+                        }
+                        else {
+                            that.currUserLegendArr = ['全部'].concat( _tSubTitleArr);
+                        }
+                        if (_legendLen == 1) {
                             let _subtitle = '';
                             if (_tSubTitleArr.length > 0) {
                                 _subtitle = _tSubTitleArr[0];
@@ -430,6 +442,12 @@ new Vue({
                         let _tSubTitleArr = _tChartData.legend || [];
                         let _legendLen = _tSubTitleArr.length;
                         if (_legendLen == 1) {
+                            that.currUserLegendArr = _tSubTitleArr;
+                        }
+                        else {
+                            that.currUserLegendArr = ['全部'].concat( _tSubTitleArr);
+                        }
+                        if (_legendLen == 1) {
                             if (_tSubTitleArr.length > 0) {
                                 _subtitle = _tSubTitleArr[0];
                             }
@@ -486,6 +504,12 @@ new Vue({
                         let _subtitle = '';
                         let _tSubTitleArr = _tChartData.legend || [];
                         let _legendLen = _tSubTitleArr.length;
+                        if (_legendLen == 1) {
+                            that.currUserLegendArr = _tSubTitleArr;
+                        }
+                        else {
+                            that.currUserLegendArr = ['全部'].concat( _tSubTitleArr);
+                        }
                         if (_legendLen == 1) {
                             if (_tSubTitleArr.length > 0) {
                                 _subtitle = _tSubTitleArr[0];
@@ -620,6 +644,7 @@ new Vue({
             "partyAge": {},
             "education": {}
         },
+        currUserLegendArr: ['全部'],
         partyMemberStat: {
             '男': 50,
             '女': 30,
@@ -6656,6 +6681,23 @@ new Vue({
             let currDateStr = currDate.getFullYear()+"-" + _month;
             console.log('getCurrYearMonth', currDateStr);
             return currDateStr;
+        },
+
+        /**
+         * 大数据组织选择
+         * @param val
+         */
+        handleBigDataChange(val) {
+            let that = this;
+            console.log('handleBigDataChange.val', val)
+            if (val === '全部') { // 全部做汇总
+                if (that.currUserLegendArr.length === 1) {  /*不做统计处理*/
+                    console.log('handleBigDataChange不做汇总处理');
+                }
+                else {
+                    console.log('handleBigDataChange做汇总处理');
+                }
+            }
         },
     },
     props: {
