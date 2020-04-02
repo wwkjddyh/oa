@@ -6716,7 +6716,7 @@ new Vue({
                                 for (let i = 0; i < _sLen; i ++) {
                                     let _seData = _seriesArr[i].data;
                                     sData0 = sData0 + (_seData[0] ? parseInt(_seData[0]) : 0);
-                                    sData1 = sData1 + (_seData[0] ? parseInt(_seData[0]) : 0);
+                                    sData1 = sData1 + (_seData[1] ? parseInt(_seData[1]) : 0);
                                 }
                                 _seriesData = [
                                     {value: parseInt(sData0), name: _legendArr[0]},
@@ -6728,6 +6728,117 @@ new Vue({
                         console.log('sex.sexChart', sexChart);
                         that.initEChartsPieChart(sexChart.id, sexChart.title,
                             sexChart.subtitle, sexChart.legendData, sexChart.seriesData);
+                    }
+
+                    let ageChart = {
+                        id: 'bigDataChartId2',
+                        title: '',
+                        subtitle: '',
+                        legendData: [],
+                        xAxisData: [],
+                        seriesData: [],
+                    };
+                    if (that.currUserEchartsData['age']) {
+                        let _tChartData = JSON.parse(JSON.stringify(that.currUserEchartsData['age']));
+                        ageChart.title = _tChartData.title || '';
+                        ageChart.subtitle = val;
+                        ageChart.xAxisData = _tChartData.axis || [];
+                        ageChart.legendData = [val];
+                        let _seriesData = [];
+                        let _sDataArr = _tChartData.data || [];
+                        let _sLen = _sDataArr.length;
+                        if (_sLen > 0) {
+                            let sData = [];
+                            for (let i = 0; i < _sLen; i ++) {
+                                let _seData = _sDataArr[i].data;
+                                if ( i == 0) {
+                                    sData = _seData;
+                                }
+                                else {
+                                    for (let j = 0; j < _seData.length; j ++) {
+                                        sData[j] = parseInt(sData[j]) + parseInt(_seData[j]);
+                                    }
+                                }
+                            }
+                            _seriesData = sData;
+                        }
+                        ageChart.seriesData = _seriesData;
+                        that.initEChartsCloumnChart2(ageChart.id, ageChart.title, ageChart.subtitle,
+                            ageChart.legendData, ageChart.xAxisData, ageChart.seriesData);
+                    }
+
+                    let partyAgeChart = {
+                        id: 'bigDataChartId3',
+                        title: '',
+                        subtitle: '',
+                        legendData: [],
+                        xAxisData: [],
+                        seriesData: []
+                    };
+                    if (that.currUserEchartsData['partyAge']) {
+                        let _tChartData = JSON.parse(JSON.stringify(that.currUserEchartsData['partyAge']));
+                        partyAgeChart.title = _tChartData.title || '';
+                        partyAgeChart.subtitle = val;
+                        partyAgeChart.xAxisData = _tChartData.axis || [];
+                        partyAgeChart.legendData = [val];
+                        let _seriesData = [];
+                        let _sDataArr = _tChartData.data || [];
+                        let _sLen = _sDataArr.length;
+                        if (_sLen > 0) {
+                            let sData = [];
+                            for (let i = 0; i < _sLen; i ++) {
+                                let _seData = _sDataArr[i].data;
+                                if ( i == 0) {
+                                    sData = _seData;
+                                }
+                                else {
+                                    for (let j = 0; j < _seData.length; j ++) {
+                                        sData[j] = parseInt(sData[j]) + parseInt(_seData[j]);
+                                    }
+                                }
+                            }
+                            _seriesData = sData;
+                        }
+                        partyAgeChart.seriesData = _seriesData;
+                        that.initEChartsCloumnChart2(partyAgeChart.id, partyAgeChart.title, partyAgeChart.subtitle,
+                            partyAgeChart.legendData, partyAgeChart.xAxisData, partyAgeChart.seriesData);
+                    }
+
+                    let educationChart = {
+                        id: 'bigDataChartId4',
+                        title: '',
+                        subtitle: '',
+                        legendData: [],
+                        xAxisData: [],
+                        seriesData: [],
+                    };
+                    if (that.currUserEchartsData['education']) {
+                        let _tChartData = JSON.parse(JSON.stringify(that.currUserEchartsData['education']));
+                        educationChart.title = _tChartData.title || '';
+                        educationChart.subtitle = val;
+                        educationChart.xAxisData = _tChartData.axis || [];
+                        educationChart.legendData = [val];
+                        let _seriesData = [];
+                        let _sDataArr = _tChartData.data || [];
+                        let _sLen = _sDataArr.length;
+                        if (_sLen > 0) {
+                            let sData = [];
+                            for (let i = 0; i < _sLen; i ++) {
+                                let _seData = _sDataArr[i].data;
+                                if ( i == 0) {
+                                    sData = _seData;
+                                }
+                                else {
+                                    for (let j = 0; j < _seData.length; j ++) {
+                                        sData[j] = parseInt(sData[j]) + parseInt(_seData[j]);
+                                    }
+                                }
+                            }
+                            _seriesData = sData;
+                        }
+                        educationChart.seriesData = _seriesData;
+                        that.initEChartsCloumnChart2(educationChart.id, educationChart.title, educationChart.subtitle,
+                            educationChart.legendData, educationChart.xAxisData, educationChart.seriesData);
                     }
                 }
                 else {
@@ -6764,6 +6875,90 @@ new Vue({
                         console.log('sex.sexChart', sexChart);
                         that.initEChartsPieChart(sexChart.id, sexChart.title,
                             sexChart.subtitle, sexChart.legendData, sexChart.seriesData);
+                    }
+
+                    let ageChart = {
+                        id: 'bigDataChartId2',
+                        title: '',
+                        subtitle: '',
+                        legendData: [],
+                        xAxisData: [],
+                        seriesData: [],
+                    };
+                    if (that.currUserEchartsData['age']) {
+                        let _tChartData = JSON.parse(JSON.stringify(that.currUserEchartsData['age']));
+                        ageChart.title = _tChartData.title || '';
+                        ageChart.subtitle = val;
+                        ageChart.xAxisData = _tChartData.axis || [];
+                        ageChart.legendData = [val];
+                        let _seriesData = [];
+                        let _sDataArr = _tChartData.data || [];
+                        if (_sDataArr.length > 0) {
+                            let _sDArr = _sDataArr.filter(_serie => _serie.name == val);
+                            if (_sDArr && _sDArr.length > 0) {
+                                let _sData = _sDArr[0];
+                                _seriesData = _sData['data'];
+                            }
+                        }
+                        ageChart.seriesData = _seriesData;
+                        that.initEChartsCloumnChart2(ageChart.id, ageChart.title, ageChart.subtitle,
+                            ageChart.legendData, ageChart.xAxisData, ageChart.seriesData);
+                    }
+
+                    let partyAgeChart = {
+                        id: 'bigDataChartId3',
+                        title: '',
+                        subtitle: '',
+                        legendData: [],
+                        xAxisData: [],
+                        seriesData: []
+                    };
+                    if (that.currUserEchartsData['partyAge']) {
+                        let _tChartData = JSON.parse(JSON.stringify(that.currUserEchartsData['partyAge']));
+                        partyAgeChart.title = _tChartData.title || '';
+                        partyAgeChart.subtitle = val;
+                        partyAgeChart.xAxisData = _tChartData.axis || [];
+                        partyAgeChart.legendData = [val];
+                        let _seriesData = [];
+                        let _sDataArr = _tChartData.data || [];
+                        if (_sDataArr.length > 0) {
+                            let _sDArr = _sDataArr.filter(_serie => _serie.name == val);
+                            if (_sDArr && _sDArr.length > 0) {
+                                let _sData = _sDArr[0];
+                                _seriesData = _sData['data'];
+                            }
+                        }
+                        partyAgeChart.seriesData = _seriesData;
+                        that.initEChartsCloumnChart2(partyAgeChart.id, partyAgeChart.title, partyAgeChart.subtitle,
+                            partyAgeChart.legendData, partyAgeChart.xAxisData, partyAgeChart.seriesData);
+                    }
+
+                    let educationChart = {
+                        id: 'bigDataChartId4',
+                        title: '',
+                        subtitle: '',
+                        legendData: [],
+                        xAxisData: [],
+                        seriesData: [],
+                    };
+                    if (that.currUserEchartsData['education']) {
+                        let _tChartData = JSON.parse(JSON.stringify(that.currUserEchartsData['education']));
+                        educationChart.title = _tChartData.title || '';
+                        educationChart.subtitle = val;
+                        educationChart.xAxisData = _tChartData.axis || [];
+                        educationChart.legendData = [val];
+                        let _seriesData = [];
+                        let _sDataArr = _tChartData.data || [];
+                        if (_sDataArr.length > 0) {
+                            let _sDArr = _sDataArr.filter(_serie => _serie.name == val);
+                            if (_sDArr && _sDArr.length > 0) {
+                                let _sData = _sDArr[0];
+                                _seriesData = _sData['data'];
+                            }
+                        }
+                        educationChart.seriesData = _seriesData;
+                        that.initEChartsCloumnChart2(educationChart.id, educationChart.title, educationChart.subtitle,
+                            educationChart.legendData, educationChart.xAxisData, educationChart.seriesData);
                     }
                 }
             }
