@@ -5792,9 +5792,12 @@ new Vue({
             isResDl = isResDl == true ? true : false;
             console.log('uploadFileList', that.uploadFileList, that.formRes);
             //this.$refs.uploadRes.submit();
-            if (that.formRes.publishTime == '') {
-                this.$message.error('请选择发布日期!');
-                return false;
+            if (that.uploadData.type != 'res-dyfgzd' && that.uploadData.type != 'res-dzzfgzd'
+                && that.uploadData.type != 'res-dffgzd' && that.uploadData.type != 'res-hjfgzd') {
+                if (that.formRes.publishTime == '') {
+                    this.$message.error('请选择发布日期!');
+                    return false;
+                }
             }
             if (!isResDl) {
                 /*仅当'发展党员时'才进行其他分类判定*/

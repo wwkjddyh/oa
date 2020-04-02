@@ -32,7 +32,7 @@
                 </template>
             </el-table-column>
             -->
-            <el-table-column
+            <el-table-column v-if="uploadData.type != 'res-dyfgzd' && uploadData.type != 'res-dzzfgzd' && uploadData.type != 'res-dffgzd' && uploadData.type != 'res-hjfgzd'"
                     prop="publishTime"
                     label="发布日期"
                     width="150">
@@ -70,7 +70,7 @@
     <el-dialog title="上传" :visible.sync="dialogShow.res" lock-scroll="true" width="800px">
         <el-card shadow="never" style="width: 100%;" type="card">
             <el-form ref="formRes" :rules="rules" :model="formRes" label-width="100px" :validate-on-rule-change="false" size="small">
-                <el-form-item label="发布日期" prop="publishTime">
+                <el-form-item label="发布日期" prop="publishTime" v-if="uploadData.type != 'res-dyfgzd' && uploadData.type != 'res-dzzfgzd' && uploadData.type != 'res-dffgzd' && uploadData.type != 'res-hjfgzd'">
                     <el-date-picker style="width: 300px;" size="small"
                                     v-model="formRes.publishTime"
                                     type="date"

@@ -49,6 +49,12 @@ public class ResBiz extends BaseBiz {
                     // 获取组织ID
                     String orgId = "";
                     res.setOrgId(orgId);
+                    // 针对法规制度上传，不需要发布时间的问题，做特殊处理
+                    String publishTime = StringUtil.trim(res.getPublishTime());
+                    if ("".equals(publishTime)) {
+                        publishTime = DateUtil.currDateFormat(null);
+                    }
+                    res.setPublishTime(publishTime);
                     resService.save(res);
                 }
                 else {
