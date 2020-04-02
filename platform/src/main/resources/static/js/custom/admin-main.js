@@ -127,7 +127,7 @@ new Vue({
                             receiverIdArrStr: '',
                         };
                         setTimeout(function() {
-                            that.ueditors.article.setContent('', false);
+                            that.ueditors.article.setContent(that.defaultBriefContent, false);
                         }, 500);
                         that.briefReceiveUserIds = [];
                         console.log('that.formArticle203', that.formArticle);
@@ -715,6 +715,8 @@ new Vue({
         showContent: 'firstPage',
         receiverUserName: '',
         scrollBoxContent: '',
+        defaultBriefContent: '<p style="text-align: center;"><strong><span style="font-size: 24px; color: rgb(255, 0, 0);">党建工作简报&nbsp; &nbsp; 年&nbsp; &nbsp;期</span></strong><br/>' +
+            '</p><p><strong><span style="font-size: 24px; color: rgb(255, 0, 0);"><br/></span></strong></p><p><br/></p>',
         currentArticleFormTitle: '文章',
         currentChartId : CurrentChartId,
         currUserEchartsData: {   /*当前用户图片数据*/
