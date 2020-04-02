@@ -331,7 +331,7 @@ new Vue({
                             if (_tChartData.data) {
                                 let _seriesArr = _tChartData.data || [];
                                 if (_seriesArr.length > 0) {
-                                    let _sData = _seriesArr[0].data || {};
+                                    let _sData = _seriesArr[0].data || [];
                                     _seriesData = [
                                         {value: parseInt(_sData[0]), name: _legendArr[0]},
                                         {value: parseInt(_sData[1]), name: _legendArr[1]}
@@ -6070,7 +6070,7 @@ new Vue({
                 let _charObj = document.getElementById(chartId);
                 console.log('_charObj', _charObj);
                 let myChart = echarts.init(_charObj);
-                myChart.setOption(option);
+                myChart.setOption(option, true);
                 let chartObj = that.charts.find(function(m){ return m.id == chartId});
                 if (chartObj) {
                     chartObj.chart = myChart;
@@ -6237,7 +6237,7 @@ new Vue({
                 series: _seriesData
             };
             let myChart = echarts.init(document.getElementById(chartId));
-            myChart.setOption(barOption3);
+            myChart.setOption(barOption3, true);
             let that = this;
             let chartObj = that.charts.find(function(m){ return m.id == chartId});
             if (chartObj) {
@@ -6309,7 +6309,7 @@ new Vue({
                 }]
             };
             let myChart = echarts.init(document.getElementById(chartId));
-            myChart.setOption(options);
+            myChart.setOption(options, true);
             let that = this;
             let chartObj = that.charts.find(function(m){ return m.id == chartId});
             if (chartObj) {
@@ -6411,7 +6411,7 @@ new Vue({
             };
             let chartId = 'bigDataChartId6';
             let myChart = echarts.init(document.getElementById(chartId));
-            myChart.setOption(options);
+            myChart.setOption(options, true);
             let that = this;
             let chartObj = that.charts.find(function(m){ return m.id == chartId});
             if (chartObj) {
@@ -6573,7 +6573,7 @@ new Vue({
             };
             let chartId = tChart.id;
             let myChart = echarts.init(document.getElementById(chartId));
-            myChart.setOption(option);
+            myChart.setOption(option, true);
         },
 
         /**
@@ -6689,15 +6689,95 @@ new Vue({
          */
         handleBigDataChange(val) {
             let that = this;
-            console.log('handleBigDataChange.val', val)
-            if (val === '全部') { // 全部做汇总
-                if (that.currUserLegendArr.length === 1) {  /*不做统计处理*/
-                    console.log('handleBigDataChange不做汇总处理');
+            console.log('handleBigDataChange.val', val, that.currUserEchartsData)
+            if (that.currUserLegendArr.length > 1) {
+                console.log('handleBigDataChange做汇总处理', '当前选择=>', val);
+                if (val === '全部') {
+                    let sexChart = {
+                        id: 'bigDataChartId',
+                        title: '',
+                        subtitle: '',
+                        legendData: [],
+                        seriesData: [],
+                    };
+                    if (that.currUserEchartsData['sex']) {
+                        let _tChartData = JSON.parse(JSON.stringify(that.currUserEchartsData['sex']));
+                        console.log('sex._tChartData', _tChartData);
+                        sexChart.title = _tChartData.title || '';
+                        sexChart.subtitle = val;
+                        let _legendArr = _tChartData.axis || [];
+                        sexChart.legendData = _legendArr;
+                        let _seriesData = [];
+                        if (_tChartData.data) {
+                            let _seriesArr = _tChartData.data || [];
+                            let _sLen = _seriesArr.length;
+                            if (_sLen > 0) {
+                                let sData0 = 0, sData1 = 0;
+                                for (let i = 0; i < _sLen; i ++) {
+                                    let _seData = _seriesArr[i].data;
+                                    sData0 = sData0 + (_seData[0] ? parseInt(_seData[0]) : 0);
+                                    sData1 = sData1 + (_seData[0] ? parseInt(_seData[0]) : 0);
+                                }
+                                _seriesData = [
+                                    {value: parseInt(sData0), name: _legendArr[0]},
+                                    {value: parseInt(sData1), name: _legendArr[1]}
+                                ];
+                            }
+                        }
+                        sexChart.seriesData = _seriesData;
+                        console.log('sex.sexChart', sexChart);
+                        that.initEChartsPieChart(sexChart.id, sexChart.title,
+                            sexChart.subtitle, sexChart.legendData, sexChart.seriesData);
+                    }
                 }
                 else {
-                    console.log('handleBigDataChange做汇总处理');
+                    let sexChart = {
+                        id: 'bigDataChartId',
+                        title: '',
+                        subtitle: '',
+                        legendData: [],
+                        seriesData: [],
+                    };
+                    if (that.currUserEchartsData['sex']) {
+                        let _tChartData = JSON.parse(JSON.stringify(that.currUserEchartsData['sex']));
+                        console.log('sex._tChartData', _tChartData);
+                        sexChart.title = _tChartData.title || '';
+                        sexChart.subtitle = val;
+                        let _legendArr = _tChartData.axis || [];
+                        sexChart.legendData = _legendArr;
+                        let _seriesData = [];
+                        if (_tChartData.data) {
+                            let _seriesArr = _tChartData.data || [];
+                            if (_seriesArr.length > 0) {
+                                let _seData = _seriesArr.filter(_serie => _serie.name == val);
+                                console.log('_seData', _seData)
+                                if (_seData) {
+                                    let _sData = _seData[0].data || [];
+                                    _seriesData = [
+                                        {value: parseInt(_sData[0]), name: _legendArr[0]},
+                                        {value: parseInt(_sData[1]), name: _legendArr[1]}
+                                    ];
+                                }
+                            }
+                        }
+                        sexChart.seriesData = _seriesData;
+                        console.log('sex.sexChart', sexChart);
+                        that.initEChartsPieChart(sexChart.id, sexChart.title,
+                            sexChart.subtitle, sexChart.legendData, sexChart.seriesData);
+                    }
                 }
             }
+            else {
+                console.log('handleBigDataChange不做汇总处理');
+            }
+            // if (val === '全部') { // 全部做汇总
+            //     if (that.currUserLegendArr.length === 1) {  /*不做统计处理*/
+            //         console.log('handleBigDataChange不做汇总处理');
+            //     }
+            //     else {
+            //         console.log('handleBigDataChange做汇总处理');
+            //     }
+            // }
         },
     },
     props: {
