@@ -6651,7 +6651,8 @@ new Vue({
             _month = _month <= 9 ? '0' + _month : _month + '';
             let _day = currDate.getDate();
             _day = _day <= 9 ? '0' + _day : _day + '';
-            let currDateStr = currDate.getFullYear()+"-" + _month + "-" + _day;
+            //let currDateStr = currDate.getFullYear()+"-" + _month + "-" + _day;
+            let currDateStr = currDate.getFullYear()+"-" + _month;
             console.log('getCurrYearMonth', currDateStr);
             return currDateStr;
         },

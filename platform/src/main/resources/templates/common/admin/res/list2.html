@@ -19,10 +19,16 @@
 								    ></el-cascader> 
             </el-form-item>
             <el-form-item label="其他分类" v-if="uploadData.type === 'res2-fzdy'">
+                <!--
                 <el-select v-model="formSearchRes.assTypeId" style="width: 300px; font-size: 12px" placeholder="请选择分类" size="small">
                     <el-option label="全部" value="">全部</el-option>
                     <el-option v-for="item in resOtherTypes" :key="item.dictId" :label="item.dictName" :value="item.dictId"></el-option>
                 </el-select>
+                -->
+                <el-radio-group v-model="formSearchRes.assTypeId" size="mini">
+                    <el-radio label="" style="margin-top: 10px;">全部</el-radio>
+                    <el-radio v-for="item in resOtherTypes" :label="item.dictName" :value="item.dictId" :key="item.dictId" style="margin-top: 10px;"></el-radio>
+                </el-radio-group>
             </el-form-item>
         </el-col>
         <el-col :span="12" >
