@@ -622,13 +622,13 @@ new Vue({
                 case 'faceMeet':    // 视频会议
                     break;
                 case 'firstPage':
-                	that.firstPageDyzlxz();
+                	//that.firstPageDyzlxz();
                 	that.formSearchArticle.sendType = '1';
                     that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
                     //that.loadArticles('',1, that.pager.article.pageSize);
                     that.currAction = 'append';
                     that.def_menu_id = 'articles';
-                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, 15);
+                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, 5);
                     break;
             }
         },
@@ -1073,6 +1073,8 @@ new Vue({
         isSuperAdmin: false,
         currUserReceiverBriefRecords: [],
         currUserReceiverNewsRecords: [],
+        currUserReceiverBriefRecordsfirstPage: [],
+        currUserReceiverNewsRecordsfirstPage: [],
         faceMeetCode:'',
         ssdzzqk:[
         	{
@@ -1844,9 +1846,9 @@ new Vue({
         	that.dyxxyear.year = currentYear;
         	that.yearList=[];
         	that.yearList.push(currentYear);
-        	that.yearList.push(currentYear-1);
+        	/*that.yearList.push(currentYear-1);
         	that.yearList.push(currentYear-2);
-        	that.yearList.push(currentYear-3);
+        	that.yearList.push(currentYear-3);*/
         },
         /**
          * 响应消息处理
@@ -4050,7 +4052,7 @@ new Vue({
             that.scrollBoxContent = '';
             axios.get("/api/news/getCurrUserNews", {params:{
                     pageNum: 1,
-                    pageSize: 10
+                    pageSize: 5
                 }})
                 .then(function(response){
                 	that.handleResponse(response);
@@ -4058,7 +4060,7 @@ new Vue({
                     //console.log('getCurrUserReceivedNewestNews.data ', data.data.list)
                     if(parseInt(data.code) === 200) {
                         let _newsArr = data.data.list || [];
-                        that.currUserReceiverNewsRecords = _newsArr;
+                        that.currUserReceiverNewsRecordsfirstPage = _newsArr;
                         let _content = '';
                         for (let i = 0; i < _newsArr.length; i ++) {
                             let _news = _newsArr[i];
@@ -4087,7 +4089,7 @@ new Vue({
                         //console.log('getCurrUserReceivedNewestNews.data ', data.data.list)
                         if(parseInt(data.code) === 200) {
                             let _newsArr = data.data.list || [];
-                            that.currUserReceiverNewsRecords = _newsArr;
+                            that.currUserReceiverNewsRecordsfirstPage = _newsArr;
                             let _content = '';
                             for (let i = 0; i < _newsArr.length; i ++) {
                                 let _news = _newsArr[i];
@@ -4144,92 +4146,93 @@ new Vue({
             return dataArr
           },
           
-        /**
-         * 获得当前用户信息
-         */
-        getCurrentUserInfo() {
-            let that = this;
-            that.currentUser = {};
-            that.userOwnedModules = [];
-            that.userOwnedMenus = [];
+          /**
+           * 获得当前用户信息
+           */
+          getCurrentUserInfo() {
+              let that = this;
+              that.currentUser = {};
+              that.userOwnedModules = [];
+              that.userOwnedMenus = [];
 
-            axios.get("/api/auth/getCurrentUser")
-                .then(function(response){/*成功*/
-                	that.handleResponse(response);
-                	let data = response.data;
-                    that.currentUser = data.data;
-                    that.setDwjbxxAuth();
-                    let __modules = data.data['modules'] || [];
-                    let parentArr = __modules.filter(l => (l.parentId === null || l.parentId === ''));
-                    that.userOwnedMenus = that.getMenuData(__modules,parentArr);
-                    that.userOwnedModules = __modules;
-//                    let moduleLen = __modules.length;
-//                    for (let i = 0; i < moduleLen; i ++) {
-//                        let __module = __modules[i];
-//                        let __moduleId = __module.moduleId;
-//                        if (__module.isMenu == 1) {
-//                            let __moduleUrl = __module.moduleUrl || '';
-//                            if (__module.parentId == '' || __module.parentId == null) {
-//                                let __subMenus = [];
-//                                if (__moduleUrl === '') { // 有子菜单
-//                                    for (let j = 0; j < moduleLen; j++) {
-//                                        let __module2 = __modules[j];
-//                                        if (__module2.isMenu == 1 && __module2.parentId == __moduleId) {
-//                                            __subMenus.push(__module2);
-//                                        }
-//                                    }
-//                                    if (__subMenus.length > 0) {
-//                                        that.userOwnedMenus.push({
-//                                            moduleId: __moduleId,
-//                                            parentId: __module.parentId,
-//                                            moduleName: __module.moduleName,
-//                                            moduleDesc: __module.moduleDesc,
-//                                            moduleUrl: __module.moduleUrl,
-//                                            isLeaf: __module.isLeaf,
-//                                            fullModuleName: __module.fullModuleName,
-//                                            moduleCode: __module.moduleCode,
-//                                            order: __module.order,
-//                                            moduleIcon: __module.moduleIcon,
-//                                            moduleStyle: __module.moduleStyle,
-//                                            moduleLogo: __module.moduleLogo,
-//                                            isMenu: __module.isMenu,
-//                                            subs: __subMenus,
-//                                        });
-//                                    }
-//                                }
-//                                else {  // 没有子菜单
-//                                    that.userOwnedMenus.push({
-//                                        moduleId: __moduleId,
-//                                        parentId: __module.parentId,
-//                                        moduleName: __module.moduleName,
-//                                        moduleDesc: __module.moduleDesc,
-//                                        moduleUrl: __module.moduleUrl,
-//                                        isLeaf: __module.isLeaf,
-//                                        fullModuleName: __module.fullModuleName,
-//                                        moduleCode: __module.moduleCode,
-//                                        order: __module.order,
-//                                        moduleIcon: __module.moduleIcon,
-//                                        moduleStyle: __module.moduleStyle,
-//                                        moduleLogo: __module.moduleLogo,
-//                                        isMenu: __module.isMenu,
-//                                        subs: __subMenus,
-//                                    });
-//                                }
-//
-//
-//                            }
-//                        }
-//                    }
-                    if(that.isSuperAdmin){
-                		that.getAdminUpperOrg();
-                	}else{
-                		that.getUserUpperOrgList();
-                	}
-                })
-                .catch(function(err){/*异常*/
-                    console.log(err);
-                });
-        },
+              axios.get("/api/auth/getCurrentUser")
+                  .then(function(response){/*成功*/
+                  	that.handleResponse(response);
+                  	let data = response.data;
+                      that.currentUser = data.data;
+                      that.setDwjbxxAuth();
+                      let __modules = data.data['modules'] || [];
+                      //let parentArr = __modules.filter(l => (l.parentId === null || l.parentId === ''));
+                      //that.userOwnedMenus = that.getMenuData(__modules,parentArr);
+                      that.userOwnedModules = __modules;
+                      let moduleLen = __modules.length;
+                      for (let i = 0; i < moduleLen; i ++) {
+                          let __module = __modules[i];
+                          let __moduleId = __module.moduleId;
+                          if (__module.isMenu == 1) {
+                              let __moduleUrl = __module.moduleUrl || '';
+                              if (__module.parentId == '' || __module.parentId == null) {
+                                  let __subMenus = [];
+                                  if (__moduleUrl === '') { // 有子菜单
+                                      for (let j = 0; j < moduleLen; j++) {
+                                          let __module2 = __modules[j];
+                                          if (__module2.isMenu == 1 && __module2.parentId == __moduleId) {
+                                              __subMenus.push(__module2);
+                                          }
+                                      }
+                                      if (__subMenus.length > 0) {
+                                          that.userOwnedMenus.push({
+                                              moduleId: __moduleId,
+                                              parentId: __module.parentId,
+                                              moduleName: __module.moduleName,
+                                              moduleDesc: __module.moduleDesc,
+                                              moduleUrl: __module.moduleUrl,
+                                              isLeaf: __module.isLeaf,
+                                              fullModuleName: __module.fullModuleName,
+                                              moduleCode: __module.moduleCode,
+                                              order: __module.order,
+                                              moduleIcon: __module.moduleIcon,
+                                              moduleStyle: __module.moduleStyle,
+                                              moduleLogo: __module.moduleLogo,
+                                              isMenu: __module.isMenu,
+                                              subs: __subMenus,
+                                          });
+                                      }
+                                  }
+                                  else {  // 没有子菜单
+                                      that.userOwnedMenus.push({
+                                          moduleId: __moduleId,
+                                          parentId: __module.parentId,
+                                          moduleName: __module.moduleName,
+                                          moduleDesc: __module.moduleDesc,
+                                          moduleUrl: __module.moduleUrl,
+                                          isLeaf: __module.isLeaf,
+                                          fullModuleName: __module.fullModuleName,
+                                          moduleCode: __module.moduleCode,
+                                          order: __module.order,
+                                          moduleIcon: __module.moduleIcon,
+                                          moduleStyle: __module.moduleStyle,
+                                          moduleLogo: __module.moduleLogo,
+                                          isMenu: __module.isMenu,
+                                          subs: __subMenus,
+                                      });
+                                  }
+
+
+                              }
+                          }
+                      }
+                      console.log(that.userOwnedMenus)
+                      if(that.isSuperAdmin){
+                  		that.getAdminUpperOrg();
+                  	}else{
+                  		that.getUserUpperOrgList();
+                  	}
+                  })
+                  .catch(function(err){/*异常*/
+                      console.log(err);
+                  });
+          },
 
         /**
          * 获得所有分类类别信息
@@ -5263,9 +5266,9 @@ new Vue({
             let that = this;
             _recordId = _recordId || '';
             that.currNotice = {};
-            if ('' != _recordId && that.currUserReceiverNewsRecords) {
-                for (let i = 0; i < that.currUserReceiverNewsRecords.length; i ++) {
-                    let __notice = that.currUserReceiverNewsRecords[i];
+            if ('' != _recordId && that.currUserReceiverNewsRecordsfirstPage) {
+                for (let i = 0; i < that.currUserReceiverNewsRecordsfirstPage.length; i ++) {
+                    let __notice = that.currUserReceiverNewsRecordsfirstPage[i];
                     if ((__notice.recordId || '') === _recordId) {
                         that.currNotice = __notice;
                         that.dialogShow.viewNotice = !that.dialogShow.viewNotice;
@@ -5398,6 +5401,9 @@ new Vue({
                 	that.handleResponse(response);
                 	if(parseInt(response.status) == 200 ) {
                         that.currUserReceiverBriefRecords = response.data.data.list;
+                        if(pageSize == 5){
+                        	that.currUserReceiverBriefRecordsfirstPage =response.data.data.list;
+                        }
                         that.pager.briefSendRecord.totalCount = response.data.data.total;
                     }
                 })
@@ -5416,7 +5422,42 @@ new Vue({
             this.pager.briefSendRecord.currentPage = val;
             this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize);
         },
-
+        /**
+         * index:0,
+                name:'通知公告',
+                url:'announce',
+                modelName:'通知公告',
+                imgUrl:'/images/icon/news.png'
+         */
+        moreAnnounce(){
+        	let that = this;
+        	that.showContent  = 'announce';
+        	that.def_menu_id = 'announce';
+        	let model = {};
+        	model.moduleCode = 'announce';
+        	model.moduleName = '通知公告';
+        	that.handleAddTab2(model);
+            that.$forceUpdate();
+        },
+        /**
+         * {
+                index:1,
+                name:'工作简报',
+                url:'articles',
+                imgUrl:'/images/icon/brief.png',
+                modelName:'工作简报'
+            }
+         */
+        moreArticle(){
+        	let that = this;
+        	that.showContent  = 'articles';
+        	that.def_menu_id = 'articles';
+        	let model = {};
+        	model.moduleCode = 'articles';
+        	model.moduleName = '工作简报';
+        	that.handleAddTab2(model);
+            that.$forceUpdate();
+        },
         /**
          * 加载(当前用户)党费缴纳信息
          */
@@ -7221,13 +7262,13 @@ new Vue({
         let that = this;
         //this.loadArticleTypes();
         this.getCurrentUserInfo();
-        this.firstPageDyzlxz();
+        //this.firstPageDyzlxz();
         this.formSearchArticle.sendType = '1';
         this.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
         //that.loadArticles('',1, that.pager.article.pageSize);
         this.currAction = 'append';
         //this.def_menu_id = 'articles';
-        this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 10);
+        this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 5);
         this.getOrgIdByUserId();
         this.getAreaTreeDict();
         this.getCurrUserEchartsData();
