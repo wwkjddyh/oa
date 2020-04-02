@@ -29,7 +29,7 @@
             </el-form>
             <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
             -->
-    <el-button plain @click="edit('article', '', '', true)" size="mini" icon="el-icon-plus">新增</el-button>
+    <el-button plain @click="edit('article', '', '', true)" size="mini" icon="el-icon-plus" v-if="userOwnedModuleMaps['editBrief'] && userOwnedModuleMaps['editBrief'] != undefined">新增</el-button>
     <div style="margin-top: 20px">
         <div v-for="item in currUserReceiverBriefRecords" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
             <div style="width: 70%; height: auto">
