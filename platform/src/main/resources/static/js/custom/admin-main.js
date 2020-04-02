@@ -909,6 +909,7 @@ new Vue({
         dwjbxxTableData: [],
         upperOrg:[],
         currentUser: {},        // 当前用户信息
+        userOwnedModuleMaps: {},  //  当前用户所拥有(的所有角色)的模块<Map格式>
         userOwnedModules: [],    //  当前用户所拥有(的所有角色)的模块
         userOwnedMenus: [],     // 当前用户所拥有(的所有角色)的菜单
         formUser: {},
@@ -4212,6 +4213,7 @@ new Vue({
           getCurrentUserInfo() {
               let that = this;
               that.currentUser = {};
+              that.userOwnedModuleMaps = {};
               that.userOwnedModules = [];
               that.userOwnedMenus = [];
 
@@ -4225,6 +4227,17 @@ new Vue({
                       //let parentArr = __modules.filter(l => (l.parentId === null || l.parentId === ''));
                       //that.userOwnedMenus = that.getMenuData(__modules,parentArr);
                       that.userOwnedModules = __modules;
+                      // 初始化当前用户所拥有(的所有角色)的模块<Map格式>
+                      for (let i = 0; i < __modules.length; i ++) {
+                          let __module = __modules[i];
+                          let _moduleCode = '';
+                          if (__module && __module.moduleCode) {
+                              _moduleCode = __module.moduleCode || '';
+                          }
+                          that.userOwnedModuleMaps[_moduleCode] = __module;
+                      }
+                      // console.log('that.userOwnedModuleMaps.__modules', __modules, that.userOwnedModuleMaps)
+
                       let moduleLen = __modules.length;
                       for (let i = 0; i < moduleLen; i ++) {
                           let __module = __modules[i];
