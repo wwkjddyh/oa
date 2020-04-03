@@ -15,20 +15,22 @@
              text-color="#4c4c41"
              active-text-color="#4c4c41"
              >
-             <el-menu-item :index="__menu.moduleCode" v-for="__menu in userOwnedMenus" :key="__menu.moduleId" v-if="__menu.subs.length == 0"
-                      style="font-size: 18px;">
-            <i :class="__menu.moduleIcon" ></i>
-            <span slot="title" style="font-size: 18px;">{{__menu.moduleName}}</span>
-        </el-menu-item>
-        <el-submenu :index="__menu.moduleCode" v-for="__menu in userOwnedMenus" :key="__menu.moduleId" v-if="__menu.subs.length > 0"
-                    style="font-size: 18px; ">
-            <template slot="title">
+        <template v-for="__menu in userOwnedMenus">
+            <el-menu-item :index="__menu.moduleCode" :key="__menu.moduleId" v-if="__menu.subs.length == 0"
+                          style="font-size: 18px;">
                 <i :class="__menu.moduleIcon" ></i>
-                <span slot="title" style="font-size: 18px; ">{{__menu.moduleName}}</span>
-            </template>
-            <el-menu-item v-for="__subMenu in __menu.subs" :index="__subMenu.moduleCode" :key="__subMenu.moduleId"
-                          style="font-size: 18px; ">{{__subMenu.moduleName}}</el-menu-item>
-        </el-submenu>
+                <span slot="title" style="font-size: 18px;">{{__menu.moduleName}}</span>
+            </el-menu-item>
+            <el-submenu :index="__menu.moduleCode" :key="__menu.moduleId" v-if="__menu.subs.length > 0"
+                        style="font-size: 18px; ">
+                <template slot="title">
+                    <i :class="__menu.moduleIcon" ></i>
+                    <span slot="title" style="font-size: 18px; ">{{__menu.moduleName}}</span>
+                </template>
+                <el-menu-item v-for="__subMenu in __menu.subs" :index="__subMenu.moduleCode" :key="__subMenu.moduleId"
+                              style="font-size: 18px; ">{{__subMenu.moduleName}}</el-menu-item>
+            </el-submenu>
+        </template>
         <!-- <el-menu-item :index="__menu.moduleCode" v-for="__menu in userOwnedMenus" :key="__menu.moduleId" v-if="__menu.subs == null"
                       style="font-size: 18px; " >
                  <template slot="title">
