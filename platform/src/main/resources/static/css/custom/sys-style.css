@@ -1,7 +1,8 @@
 .el-header {
     /*background-color: #ccaf71 !important;*/
     color: white;
-    line-height: 60px;
+    height: 100px;
+    line-height: 100px;
     width: 100%;
 }
 

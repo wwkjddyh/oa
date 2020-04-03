@@ -1,7 +1,11 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <div th:fragment="menu">
-    <div v-bind:class="menuCollapseDivClass">
+    <!--浮动菜单折叠图标-->
+    <div v-bind:class="menuCollapseDivClass" style="display: none">
+        <i v-bind:class="menuCollapseIcon" class="menu-collapse-icon-inner" @click="handleMenuCollapse"></i>
+    </div>
+    <div class="menuCollapseDiv">
         <i v-bind:class="menuCollapseIcon" class="menu-collapse-icon-inner" @click="handleMenuCollapse"></i>
     </div>
     <!-- # el-menu 中，default-active不能和:default-openeds；否则，default-active不起作用-->
@@ -17,18 +21,18 @@
              >
         <template v-for="__menu in userOwnedMenus">
             <el-menu-item :index="__menu.moduleCode" :key="__menu.moduleId" v-if="__menu.subs.length == 0"
-                          style="font-size: 18px;">
+                          style="font-size: 18px;height: 70px;line-height: 70px;">
                 <i :class="__menu.moduleIcon" ></i>
                 <span slot="title" style="font-size: 18px;">{{__menu.moduleName}}</span>
             </el-menu-item>
             <el-submenu :index="__menu.moduleCode" :key="__menu.moduleId" v-if="__menu.subs.length > 0"
-                        style="font-size: 18px; ">
+                        style="font-size: 18px; min-height: 70px">
                 <template slot="title">
                     <i :class="__menu.moduleIcon" ></i>
-                    <span slot="title" style="font-size: 18px; ">{{__menu.moduleName}}</span>
+                    <span slot="title" style="font-size: 18px;height: 70px;line-height: 70px;">{{__menu.moduleName}}</span>
                 </template>
                 <el-menu-item v-for="__subMenu in __menu.subs" :index="__subMenu.moduleCode" :key="__subMenu.moduleId"
-                              style="font-size: 18px; ">{{__subMenu.moduleName}}</el-menu-item>
+                              style="font-size: 18px;height: 70px;line-height: 70px;">{{__subMenu.moduleName}}</el-menu-item>
             </el-submenu>
         </template>
         <!-- <el-menu-item :index="__menu.moduleCode" v-for="__menu in userOwnedMenus" :key="__menu.moduleId" v-if="__menu.subs == null"
