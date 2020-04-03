@@ -92,7 +92,7 @@ public class AuthApiController extends BaseController {
     		if(userSms == null || userSms.size() == 0) {
 	    		//获取用户手机号码
 	    		List<String> userPhone = roleBiz.getUserPhoneByUserName(userId);
-	    		if(userPhone != null && userPhone.size()>0) {
+	    		if(userPhone != null && userPhone.size()>0 && userPhone.get(0) != null && !"".equals(userPhone.get(0))) {
 	    			Map<String,String> params = new HashMap<String,String>();
 					params.put("mobile", userPhone.get(0));
 					params.put("temp_id", temp_id);
