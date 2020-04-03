@@ -36,7 +36,7 @@
         </el-aside>
 
         <el-container>
-            <el-main stype="width: 100%;margin-left:10px;margin-top:10px">
+            <el-main stype="width: 100%;margin-left:10px;margin-top:10px;margin-bottom:-100px">
                 <!--
                 <div class="scroll-box">
                     <p class="animate">
@@ -85,7 +85,7 @@
 
 
                 <keep-alive :max="30">
-                    <div style="margin-top: 10px">
+                    <div style="margin-top: 10px;margin-bottom: -20px">
                         <el-card shadow="never" v-if="showContent == 'modules'" key="modules">
                             <div th:replace="/common/admin/user/modules :: content"/>
                         </el-card>
