@@ -2,139 +2,24 @@
 <html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	  xmlns:th="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <div th:fragment="content">
-	<el-row>
-		<el-col :span="11" >
-			<el-row class="firstPage-quickEntry">
-			<div>
-				<el-row><span class="firstPage-quickEntry_title" style="margin-left: 110px;">快捷方式</span></el-row>
-				<el-row>
-					<!--
-					<el-col :span="4" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 2 : 0" class="firstPage-quickEntry_row">
-						<div class="firstPage-quickEntry-item" @click="goToMenu(item)">
-							<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
-							<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
-						</div>
-					</el-col>
-					<el-col :span="4" v-for="item in firstPage2" :key="item.url" :offset="item.index > 0 ? 2 : 0" class="firstPage-quickEntry_row2">
-						<div class="firstPage-quickEntry-item" @click="goToMenu(item)">
-							<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
-							<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
-						</div>
-					</el-col>
-					-->
-					<div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 30px;margin-left: 70px;">
-						<div class="firstPage-quickEntry-item2" @click="goToMenu(item)" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 2 : 0">
-							<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
-							<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
-						</div>
-					</div>
-					<div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 40px;margin-left: 70px;">
-						<div class="firstPage-quickEntry-item2" @click="goToMenu(item)" v-for="item in firstPage2" :key="item.url" :offset="item.index > 0 ? 2 : 0">
-							<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
-							<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
-						</div>
-					</div>
-				</el-row>
+	<div style="border: 0;width: calc(100% + 40px); height: auto;margin: -20px;">
+		<div style="width: 100%; height: 300px;padding: 0;display: flex;vertical-align: middle;">
+			<div style="width: calc(40% - 15px);margin-right:30px;border-width: 1px;border-radius: 3px;border-color: #E4E7ED;border-style: solid;float: left">
+				快捷方式
 			</div>
-			</el-row>
-			<el-row class="firstPage-resDownload" style="margin-top: 225px">
-				<el-row><span class="firstPage-resDownload_title" style="margin-left: 110px;color:#4f4f4f">功能板块</span></el-row>
-				<div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 30px;margin-left: 73px;">
-						
-					<div v-for="(item, index) in firstPageFuncModules" :key="item.url" style="display: flex">
-						<div class="firstPage-function-item" @click="goToMenu(item)"  >
-							<i :class="item.iconClass" style="font-size:30px;color:rgb(0, 161, 255)"></i>
-							<span class="firstPage-function-item_name">{{item.name}}</span>
-						</div>
-						<div v-if="index !== firstPageFuncModules.length - 1" style="float:left;width: 2px;height: 30px;margin-top: calc(50% - 15px); background: #d6d6d6;"></div>
-					</div>
-
-				</div>
-				<!-- <div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 30px;margin-left: 110px">
-					<el-button v-for="item in firstPageFuncModules" :key="item.url" v-if="item.index <= 2"
-							   :icon="item.iconClass" style="color: #8da7df;width: 100px" size="small"
-							   @click="goToMenu(item)">&nbsp;&nbsp;{{item.name}}</el-button>
-				</div>
-				<div style="display: flex;display: -webkit-flex;align-items:flex-start;justify-content:left;width: 100%;margin-top: 10px;margin-left: 110px">
-					<el-button v-for="item in firstPageFuncModules" :key="item.url" v-if="item.index > 2"
-							   :icon="item.iconClass" style="color: #8da7df;width: 100px" size="small"
-							   @click="goToMenu(item)">&nbsp;&nbsp;{{item.name}}</el-button>
-				</div> -->
-				<!--
-				<el-row><span class="firstPage-resDownload_title">资料下载</span></el-row>
-				<el-row>
-					<el-tabs type="border-card" class="firstPage-resDownload-tabs" @tab-click="firstPageDyzlxz()"  v-model="firstPageZlxz">
-					  <el-tab-pane label="党员管理" name="dygl" class="khaki-color">
-						  <div v-for="item in resArray" class="firstPage-resDownload-tab">
-							  <div class="firstPage-resDownload-tab_name">
-								  <a class="firstPage-resDownload-tab_name-a" @click="handleDownloadRes(item)">{{item.resName || ''}}</a>
-							  </div>
-							  <div class="firstPage-resDownload-tab_time">
-								  {{item.publishTime.substr(0, 10)}}
-							  </div>
-
-						  </div>
-					  </el-tab-pane>
-					  <el-tab-pane label="党费管理" name="dfgl" class="khaki-color">
-						  <div v-for="item in resArray" class="firstPage-resDownload-tab">
-							  <div class="firstPage-resDownload-tab_name">
-								  <a class="firstPage-resDownload-tab_name-a" @click="handleDownloadRes(item)">{{item.resName || ''}}</a>
-							  </div>
-							  <div class="firstPage-resDownload-tab_time">
-								  {{item.publishTime.substr(0, 10)}}
-							  </div>
-						  </div>
-					  </el-tab-pane>
-					  <el-tab-pane label="换届管理" name="hjgl" class="khaki-color">
-						  <div v-for="item in resArray" class="firstPage-resDownload-tab">
-							  <div class="firstPage-resDownload-tab_name">
-								  <a class="firstPage-resDownload-tab_name-a" @click="handleDownloadRes(item)">{{item.resName || ''}}</a>
-							  </div>
-							  <div class="firstPage-resDownload-tab_time">
-								  {{item.publishTime.substr(0, 10)}}
-							  </div>
-						  </div>
-					  </el-tab-pane>
-					</el-tabs>
-				</el-row>
-				-->
-			</el-row>
-		</el-col>
-		<el-col :span="11" class="firstPage-briefs">
-			<el-row style="height:250px">
-				<el-row ><div style="margin-right: 110px"><span class="firstPage-briefs-items_title" style="color:#4f4f4f">通知公告</span>
-					<hr style="height:1px;border:none;border-top:1px solid #e5e5e5;margin-top: 20px;color: #cecece"/></div></el-row>
-				<div v-for="item in currUserReceiverNewsRecordsfirstPage" class="firstPage-briefs-item" style="margin-right: 110px">
-					<div class="firstPage-briefs-item_title">
-                        <label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi" style="color:#4f4f4f;">【已读】</label>
-                        <label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi" style="color:#4f4f4f;">【未读】</label>
-                        <a class="firstPage-briefs_item_title-a" @click="handleNoticeView(item.recordId)">{{item.newsTitle || ''}}</a>
-					</div>
-					<div class="firstPage-briefs-item_time">
-						{{item.sendTime ? item.sendTime.substr(0, 10) : '--'}}
-					</div>
-				</div>
-				<div v-if="currUserReceiverNewsRecordsfirstPage.length > 0" style="margin-top: 15px;right:1px">
-					<el-link :underline="false" type="primary" @click="moreAnnounce()">查看更多<i class="el-icon-more"></i></el-link>
-				</div>
-			</el-row>
-			<el-row class="firstPage-briefs-items_row" style="margin-top: 70px;height:250px">
-				<el-row ><div style="margin-right: 110px"><span class="firstPage-briefs-items_title" style="color:#4f4f4f;">工作简报</span>
-					<hr style="height:1px;border:none;border-top:1px solid #e5e5e5;margin-top: 20px;color: #cecece"/></div></el-row>
-				<div v-for="item in currUserReceiverBriefRecordsfirstPage" class="firstPage-briefs-item" style="margin-right: 110px">
-					<div class="firstPage-briefs-item_title">
-						<a class="firstPage-briefs_item_title-a" @click="handleBriefView(item.briefId)">{{item.briefTitle || ''}}</a>
-					</div>
-					<div class="firstPage-briefs-item_time">
-						{{item.sendTime.substr(0, 10)}}
-					</div>
-				</div>
-				<div v-if="currUserReceiverBriefRecordsfirstPage.length > 0" style="margin-top: 15px;right:1px">
-					<el-link :underline="false" @click="moreArticle()" type="primary">查看更多<i class="el-icon-more"></i></el-link>
-				</div>
-			</el-row>
-		</el-col>
-	</el-row>
+			<div style="width: calc(60% - 15px);border-width: 1px;border-radius: 3px;border-color: #E4E7ED;border-style: solid;">
+				通知消息
+			</div>
+		</div>
+		<div style="width: 100%; height: 300px; margin: 30px 0 0 0;padding: 0;display: flex;vertical-align: middle;">
+			<div style="width: calc(40% - 15px);margin-right:30px;border-width: 1px;border-radius: 3px;border-color: #E4E7ED;border-style: solid;float: left">
+				功能板块
+			</div>
+			<div style="width: calc(60% - 15px);border-width: 1px;border-radius: 3px;border-color: #E4E7ED;border-style: solid;">
+				工作简报
+			</div>
+		</div>
+	</div>
 	<el-dialog :title="(currBrief.title || '')" :visible.sync="dialogShow.viewBrief" lock-scroll="true" width="100%"
                center="true" class="firstPage-briefs-brief_dialog">
         <div class="firstPage-briefs-brief_dialog-content" v-html="(currBrief.content || '')">
