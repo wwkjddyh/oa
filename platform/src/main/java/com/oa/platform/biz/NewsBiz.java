@@ -1,5 +1,16 @@
 package com.oa.platform.biz;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.oa.platform.common.Constants;
@@ -13,12 +24,6 @@ import com.oa.platform.service.UserService;
 import com.oa.platform.util.DateUtil;
 import com.oa.platform.util.StringUtil;
 import com.oa.platform.util.ThreadUtil;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 /**
  * 消息业务处理
@@ -39,13 +44,24 @@ public class NewsBiz extends BaseBiz {
 
     @Autowired
     private MailService mailService;
-
+    //短信权限码
+    @Value("${phoneCode.appKey}")
+	private String appKey;
+    //短信权限码
+    @Value("${phoneCode.masterSecret}")
+	private String masterSecret;
+    //url
+    @Value("${phoneCode.mutiModelSmsUrl}")
+	private String mutiModelSmsUrl;
+    //模板id
+    @Value("${phoneCode.muti_model_temp_id}")
+	private String muti_model_temp_id;
     /**
      * 保存信息
      * @param news 消息
      * @return
      */
-    public Map<String, Object> save(News news) {
+    public Map<String, Object> save(News news,String senderUserName) {
         ret = null;
         if (news == null) {
             ret = this.getParamErrorVo();
@@ -101,7 +117,23 @@ public class NewsBiz extends BaseBiz {
                         }
                         //发短信
                         if(news.getSendSms() == 1) {
-                        	
+                        	List<String> phoneList = newsService.getPhoneByUserIds(receiverId);
+                        	if(phoneList != null && phoneList.size() > 0 ) {
+	                        	Map<String,Object> params = new HashMap<String,Object>();
+	                        	params.put("temp_id", muti_model_temp_id);
+	                        	List<Map<String,Object>> recipients = new ArrayList<Map<String,Object>>();
+	                        	for (String phone : phoneList) {
+	                        		Map<String,Object> receiveParam = new HashMap<String,Object>();
+	                        		receiveParam.put("mobile", phone);
+	                        		Map<String,String> temp_para = new HashMap<String,String>();
+	                        		temp_para.put("userName", senderUserName);
+	                        		temp_para.put("announceSubject", news.getTitle());
+	                        		receiveParam.put("temp_para", temp_para);
+	                        		recipients.add(receiveParam);
+								}
+	                        	params.put("recipients", recipients);
+	                        	roleService.sendAnnounceSMS(mutiModelSmsUrl, JSONObject.toJSONString(params), appKey, masterSecret);
+                        	}
                         }
                     }
                     else {

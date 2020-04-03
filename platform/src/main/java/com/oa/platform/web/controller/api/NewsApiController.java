@@ -4,6 +4,7 @@ import com.oa.platform.biz.NewsBiz;
 import com.oa.platform.common.Constants;
 import com.oa.platform.common.StatusCode;
 import com.oa.platform.entity.News;
+import com.oa.platform.entity.User;
 import com.oa.platform.util.StringUtil;
 import com.oa.platform.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,8 @@ public class NewsApiController extends BaseController {
      */
     @PostMapping("save")
     public Map<String, Object> save(@RequestBody News news) {
-        return newsBiz.save(news);
+    	User user = getUserOfSecurity();
+        return newsBiz.save(news,user.getUserNickname());
     }
 
     /**

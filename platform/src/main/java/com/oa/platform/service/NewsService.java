@@ -73,4 +73,6 @@ public interface NewsService extends BaseService<News, String> {
     List<News> getUserReceivedNewestNews(String userId);
 
 	List<String> getMailByUserIds(String receiverId);
+
+	List<String> getPhoneByUserIds(String receiverId);
 }

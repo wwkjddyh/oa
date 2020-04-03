@@ -526,4 +526,37 @@
 		AND usr.record_flag = '1' 
 		AND dtl.is_party = '0'
   </select>
+  <update id="updateSmsReturnCodeByUser">
+  	UPDATE t_user usr
+		LEFT JOIN t_user_dtl dtl ON usr.user_id = dtl.user_id 
+		SET usr.sms_return_code = #{returnCode} 
+		WHERE
+			usr.user_name = #{userName} 
+			AND usr.record_flag = 1 
+			AND dtl.is_party = '0'
+  </update>
+  <select id="getsmsReturnCode" resultType="java.lang.String">
+  		SELECT
+			usr.sms_return_code 
+		FROM
+			t_user usr
+			LEFT JOIN t_user_dtl dtl ON usr.user_id = dtl.user_id 
+		WHERE
+			usr.user_name = #{userName} 
+			AND usr.record_flag = 1 
+			AND dtl.is_party = '0'
+  </select>
+  <insert id="saveUserSMSInfo">
+  	INSERT INTO t_user_sms ( user_id, sms_time )
+	VALUES
+		( (SELECT
+			usr.user_id 
+		FROM
+			t_user usr
+			LEFT JOIN t_user_dtl dtl ON usr.user_id = dtl.user_id 
+		WHERE
+			usr.user_name = #{userId} 
+			AND usr.record_flag = 1 
+			AND dtl.is_party = '0'), now())
+  </insert>
 </mapper>

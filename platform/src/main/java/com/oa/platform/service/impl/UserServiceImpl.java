@@ -107,6 +107,7 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+    	//throw new UsernameNotFoundException("jflaksdfjlaksjf1!");
         return findUserByName(s);
     }
 

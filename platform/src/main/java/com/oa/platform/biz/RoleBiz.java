@@ -715,9 +715,9 @@ public class RoleBiz extends BaseBiz {
      * @param appKey
      * @param masterSecret
      */
-	public void getSms(String smsUrl, String jsonString, String appKey, String masterSecret) {
+	public void getSms(String userName,String smsUrl, String jsonString, String appKey, String masterSecret) {
 		
-		roleService.getSms(smsUrl,jsonString,appKey,masterSecret);
+		roleService.getSms(userName,smsUrl,jsonString,appKey,masterSecret);
 	}
 
 	public List<String> getUserSMSData(String userId) {
@@ -730,5 +730,19 @@ public class RoleBiz extends BaseBiz {
 	 */
 	public List<String> getUserPhoneByUserName(String userId) {
 		return roleService.getUserPhoneByUserName(userId);
+	}
+
+	public List<String> getsmsReturnCode(String username) {
+		return roleService.getsmsReturnCode(username);
+	}
+
+	public boolean validateSms(String smsUrl, String jsonString, String appKey, String masterSecret) {
+		
+		return roleService.validateSms(smsUrl,jsonString,appKey,masterSecret);
+	}
+
+	public void saveUserSMSInfo(String userId) {
+		roleService.saveUserSMSInfo(userId);
+		
 	}
 }

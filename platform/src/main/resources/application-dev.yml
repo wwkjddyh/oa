@@ -57,9 +57,9 @@ spring:
 #    url: jdbc:p6spy:mysql://106.12.179.56:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
 #    username: oaplat
 #    password: oaplat
-    url: jdbc:p6spy:mysql://106.14.56.203:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
-    username: root
-    password: jianbo@Feng#CQ2020
+    url: jdbc:p6spy:mysql://106.12.179.56:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    username: oaplat
+    password: oaplat
     hikari:
       minimum-idle: 10
       maximum-pool-size: 60
@@ -85,13 +85,16 @@ upload:
 #  save-dir: G:\oaImg
   save-dir: C:\temp\test\upload\
 phoneCode:
-  appKey: f80135530a915fbbf58c4bda
-  masterSecret: c48c26a3c991c174d954611f
+  appKey: 84913cd49e8744a149bc4d67
+  masterSecret: 3fda59e70101c017b9f70a86
   temp_id: 1
+  sign_id: 13320
   auth_string: ${phoneCode.appKey}:${phoneCode.masterSecret}
     #获取短信文本验证码url
   getSmsUrl: https://api.sms.jpush.cn/v1/codes
      #短信文本验证码校验url
   validateSmsUrl: https://api.sms.jpush.cn/v1/codes/
+  mutiModelSmsUrl: https://api.sms.jpush.cn/v1/messages/batch
+  muti_model_temp_id: 178216
   
 

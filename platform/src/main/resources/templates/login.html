@@ -44,9 +44,10 @@
 				            <img onclick="refreshVerifyCode('verifyImg');" src="/api/verify/code" id="verifyImg" style="margin-left: 18px; cursor: pointer;"/>
 				        </div>
 				        <div style="margin-top: 10px;display: flex;" v-if="haveSms">
-				            <el-input  v-model="formLogon.verifySms" name="verifySms" size="medium" auto-complete="off" maxlength="10" style="width: 250px" placeholder="短信验证码"></el-input>
-				        	<el-button @click="getSms()"  type="success" size="small"  style="margin-left: 8px;width:90px" :v-bind:disabled="smsFlag">获取</el-button>
+				            <el-input  id="verifySms" v-model="formLogon.verifySms" name="verifySms" size="medium" auto-complete="off" maxlength="10" style="width: 250px" placeholder="短信验证码"></el-input>
+				        	<el-button @click="getSms()"  type="info" size="small"  style="margin-left: 8px;width:90px" :disabled='smsFlag'>{{seconds}}</el-button>
 				        </div>
+				       
 				        <div style="margin-top: 10px;display: flex;">
 				            <el-button @click="submitForm()"  type="success" size="small" class="button" align="left" style="width:350px">登录</el-button>
 				        </div>

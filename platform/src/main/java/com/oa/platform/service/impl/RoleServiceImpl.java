@@ -1,5 +1,7 @@
 package com.oa.platform.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Maps;
@@ -249,10 +251,63 @@ public class RoleServiceImpl extends AbstractBaseService<Role, String> implement
         param.put("userId", userId);
         return roleRepository.findModuleByUserId(param);
     }
-
+    @Override
+	public boolean validateSms(String smsUrl, String jsonString, String appKey, String masterSecret) {
+    	boolean success = false;
+    	try {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(new MediaType("application","JSON",Charset.forName("UTF-8")));
+			headers.setAccept(Arrays.asList(new MediaType[] {new MediaType("application","JSON",Charset.forName("UTF-8"))}));
+			//请求头追加
+			/*
+			 * if(headParam != null) { for (Map.Entry<String, String> entry :
+			 * headParam.entrySet()) { headers.add(entry.getKey(), entry.getValue()); } }
+			 */
+			HttpEntity<String> requestEntity = new HttpEntity<String>(jsonString,headers);
+			HttpMethod post = HttpMethod.POST;
+			//ResponseEntity<String> exchange = new ResponseEntity<String>("",HttpStatus.OK);
+			RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+			RestTemplate restTemplate = restTemplateBuilder.basicAuthentication(appKey, masterSecret).build();
+			ResponseEntity<String> exchange = restTemplate.exchange(smsUrl, post,requestEntity,String.class);
+			JSONObject jsonBody = JSON.parseObject(exchange.getBody());
+			if(jsonBody.getString("is_valid") != null && "true".equals(jsonBody.getString("is_valid"))) {
+				success = true;
+			}
+			return success;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+	}
+    @Override
+	@Async("asyncServiceExecutor")
+    public void sendAnnounceSMS(String url,String jsonParam,String appKey,String masterSecret) {
+    	try {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setContentType(new MediaType("application","JSON",Charset.forName("UTF-8")));
+			headers.setAccept(Arrays.asList(new MediaType[] {new MediaType("application","JSON",Charset.forName("UTF-8"))}));
+			//请求头追加
+			/*
+			 * if(headParam != null) { for (Map.Entry<String, String> entry :
+			 * headParam.entrySet()) { headers.add(entry.getKey(), entry.getValue()); } }
+			 */
+			HttpEntity<String> requestEntity = new HttpEntity<String>(jsonParam,headers);
+			HttpMethod post = HttpMethod.POST;
+			//ResponseEntity<String> exchange = new ResponseEntity<String>("",HttpStatus.OK);
+			RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
+			RestTemplate restTemplate = restTemplateBuilder.basicAuthentication(appKey, masterSecret).build();
+			ResponseEntity<String> exchange = restTemplate.exchange(url, post,requestEntity,String.class);
+			JSONObject jsonBody = JSON.parseObject(exchange.getBody());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+    }
 	@Override
 	@Async("asyncServiceExecutor")
-	public void getSms(String smsUrl, String jsonString, String appKey, String masterSecret) {
+	public void getSms(String userName,String smsUrl, String jsonString, String appKey, String masterSecret) {
 		try {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setContentType(new MediaType("application","JSON",Charset.forName("UTF-8")));
@@ -267,7 +322,11 @@ public class RoleServiceImpl extends AbstractBaseService<Role, String> implement
 			//ResponseEntity<String> exchange = new ResponseEntity<String>("",HttpStatus.OK);
 			RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
 			RestTemplate restTemplate = restTemplateBuilder.basicAuthentication(appKey, masterSecret).build();
-			restTemplate.exchange(smsUrl, post,requestEntity,String.class);
+			ResponseEntity<String> exchange = restTemplate.exchange(smsUrl, post,requestEntity,String.class);
+			JSONObject jsonBody = JSON.parseObject(exchange.getBody());
+			if(jsonBody.getString("msg_id") != null && !"".equals(jsonBody.getString("msg_id"))) {
+				roleRepository.updateSmsReturnCodeByUser(jsonBody.getString("msg_id"),userName);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -283,4 +342,17 @@ public class RoleServiceImpl extends AbstractBaseService<Role, String> implement
 	public List<String> getUserPhoneByUserName(String userId) {
 		return roleRepository.getUserPhoneByUserName(userId);
 	}
+
+	@Override
+	public List<String> getsmsReturnCode(String username) {
+		return roleRepository.getsmsReturnCode(username);
+	}
+
+	@Override
+	public void saveUserSMSInfo(String userId) {
+		roleRepository.saveUserSMSInfo(userId);
+		
+	}
+
+	
 }

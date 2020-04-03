@@ -72,6 +72,9 @@ public class AuthApiController extends BaseController {
     //模板id
     @Value("${phoneCode.temp_id}")
 	private String temp_id;
+    //签名id
+    @Value("${phoneCode.sign_id}")
+	private String sign_id;
     @Autowired
     private LogBiz logBiz;
     /**
@@ -93,9 +96,11 @@ public class AuthApiController extends BaseController {
 	    			Map<String,String> params = new HashMap<String,String>();
 					params.put("mobile", userPhone.get(0));
 					params.put("temp_id", temp_id);
+					params.put("sign_id", sign_id);
 					//post请求获取短信验证码
 					//roleBiz.httpRequest(smsUrl, JSONObject.toJSONString(params), appKey,masterSecret);
-					roleBiz.getSms(smsUrl, JSONObject.toJSONString(params), appKey,masterSecret);
+					roleBiz.getSms(userId,smsUrl, JSONObject.toJSONString(params), appKey,masterSecret);
+					return getSuccessResultVo(userPhone.get(0));
 	    		}else {
 	    			return getErroResultVo(500,"当前用户无手机号码或无效",null);
 	    		}
@@ -103,6 +108,7 @@ public class AuthApiController extends BaseController {
 		
     	return getSuccessResultVo(null);
     }
+    
     /**
      * 是否短信验证
      * @param userId
@@ -118,13 +124,45 @@ public class AuthApiController extends BaseController {
 		}
     }
     /**
+     * 短信验证码校验
+     * @return
+     */
+    @GetMapping("validateSMS")
+    public ResultVo validateSMS(String verifySms,String userName) {
+    	if(verifySms == null || "".equals(verifySms)) {
+    		return getErroResultVo(500, "短信验证码不能为空", null);
+    	}
+    	if(userName == null || "".equals(userName)) {
+    		return getErroResultVo(500, "登录名不能为空", null);
+    	}
+    	//短信验证码校验
+		List<String> smsReturnCode = roleBiz.getsmsReturnCode(userName);
+		if(smsReturnCode != null && smsReturnCode.size()>0) {
+			//接口验证
+			String url = validateSmsUrl +smsReturnCode.get(0)+"/valid";
+			//List<String> userPhone = roleBiz.getUserPhoneByUserName(userName);
+			Map<String,String> params = new HashMap<String,String>();
+			params.put("code", verifySms);
+			
+			boolean isSuccess = roleBiz.validateSms(url, JSONObject.toJSONString(params), appKey,masterSecret);
+			if(!isSuccess) {
+				return getErroResultVo(500, "短信验证码不正确或过期", null);
+			}else {
+				roleBiz.saveUserSMSInfo(userName);
+			}
+		}else {
+			return getErroResultVo(500, "短信验证出错", null);
+		}
+    	return getSuccessResultVo(null);
+    }
+    /**
      * 异步登录
      * @param username 用户名
      * @param password 用户密码
      * @return
      */
-    @PostMapping("/login")
-    public Map<String,Object> login(@RequestParam String username, @RequestParam String password) {
+    @PostMapping("/loginPlat")
+    public Map<String,Object> login(@RequestParam String username, @RequestParam String password,String verifySms) {
         //登录 身份认证
         // 这句代码会自动执行咱们自定义的 "MyUserDetailService.java" 身份认证类
         //1: 将用户名和密码封装成UsernamePasswordAuthenticationToken  new UsernamePasswordAuthenticationToken(username, password)
@@ -141,6 +179,23 @@ public class AuthApiController extends BaseController {
         try {
 //            List<Object> allPrincipals = sessionRegistry.getAllPrincipals();
 //            System.err.println("allPrincipals:"+ JSONObject.toJSONString(allPrincipals));
+        	if(verifySms != null && !"".equals(verifySms)) {
+        		//短信验证码校验
+        		List<String> smsReturnCode = roleBiz.getsmsReturnCode(username);
+        		if(smsReturnCode != null && smsReturnCode.size()>0) {
+        			//接口验证
+        			String url = validateSmsUrl +smsReturnCode.get(0)+"/valid";
+        			Map<String,String> params = new HashMap<String,String>();
+					params.put("code", verifySms);
+					boolean isSuccess = roleBiz.validateSms(smsUrl, JSONObject.toJSONString(params), appKey,masterSecret);
+					if(!isSuccess) {
+						return StringUtil.getResultVo(StatusCode.UNAUTHORIZED,"验证码错误","");
+					}
+        		}else {
+        			return StringUtil.getResultVo(StatusCode.UNAUTHORIZED,"短信验证出错","");
+        		}
+        	}
+        	
             Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             SecurityContext securityContext = SecurityContextHolder.getContext();
             securityContext.setAuthentication(authentication);
@@ -181,6 +236,11 @@ public class AuthApiController extends BaseController {
                             WebAuthenticationDetails details = (WebAuthenticationDetails) authentication.getDetails();
                             ipAddr = details.getRemoteAddress();
                         }
+                        //保存短信成功登录信息
+                        if(verifySms != null && !"".equals(verifySms)) {
+                        	roleBiz.saveUserSMSInfo(user.getUserId());
+                        }
+                        	
                         //保存登录信息
                         logBiz.saveLoginLog(user.getUserId(),ipAddr);
                     }

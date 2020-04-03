@@ -67,4 +67,6 @@ public interface NewsRepository extends BaseRepository<News, String> {
     List<News> getUserReceivedNewestNews(String userId);
     
     List<String> getMailByUserIds(@Param("userId") String userId);
+
+	List<String> getPhoneByUserIds(@Param("userId") String userId);
 }

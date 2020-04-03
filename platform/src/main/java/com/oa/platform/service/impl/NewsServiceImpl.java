@@ -77,4 +77,9 @@ public class NewsServiceImpl extends AbstractBaseService<News, String> implement
 	public List<String> getMailByUserIds(String receiverId) {
 		return newsRepository.getMailByUserIds(receiverId);
 	}
+
+	@Override
+	public List<String> getPhoneByUserIds(String receiverId) {
+		return newsRepository.getPhoneByUserIds(receiverId);
+	}
 }

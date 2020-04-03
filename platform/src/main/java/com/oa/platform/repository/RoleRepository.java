@@ -173,4 +173,10 @@ public interface RoleRepository extends BaseRepository<Role, String> {
 	List<String> getUserSMSData(@Param("userName") String userName);
 
 	List<String> getUserPhoneByUserName(@Param("userName") String userName);
+
+	void updateSmsReturnCodeByUser(@Param("returnCode") String returnCode, @Param("userName") String userName);
+
+	List<String> getsmsReturnCode(@Param("userName") String username);
+
+	void saveUserSMSInfo(@Param("userId") String userId);
 }

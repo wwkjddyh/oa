@@ -86,13 +86,14 @@ upload:
 platform:
 
 phoneCode:
-  appKey: d298e756ed36a142a1939d69
-  masterSecret: d9294591c4f3e0f7905576f1
-  temp_id: d9294591c4f3e0f7905576f1
+  appKey: 84913cd49e8744a149bc4d67
+  masterSecret: 3fda59e70101c017b9f70a86
+  temp_id: 1
+  sign_id: 13320
   auth_string: ${phoneCode.appKey}:${phoneCode.masterSecret}
-  #获取短信文本验证码url
+    #获取短信文本验证码url
   getSmsUrl: https://api.sms.jpush.cn/v1/codes
-  #短信文本验证码校验url
+     #短信文本验证码校验url
   validateSmsUrl: https://api.sms.jpush.cn/v1/codes/
-
-
+  mutiModelSmsUrl: https://api.sms.jpush.cn/v1/messages/batch
+  muti_model_temp_id: 178216

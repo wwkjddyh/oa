@@ -478,4 +478,7 @@
   <select id="getMailByUserIds" resultType="java.lang.String">
   		select distinct mail from t_user_dtl where instr(#{userId},user_id)>0 and is_party='0'
   </select>
+  <select id="getPhoneByUserIds" resultType="java.lang.String">
+  		select distinct phone from t_user_dtl where instr(#{userId},user_id)>0 and is_party='0'
+  </select>
 </mapper>
