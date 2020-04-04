@@ -4124,7 +4124,7 @@ new Vue({
             that.scrollBoxContent = '';
             axios.get("/api/news/getCurrUserNews", {params:{
                     pageNum: 1,
-                    pageSize: 10
+                    pageSize: 6
                 }})
                 .then(function(response){
                 	that.handleResponse(response);
@@ -4153,7 +4153,7 @@ new Vue({
                 that.scrollBoxContent = '';
                 axios.get("/api/news/getCurrUserNews", {params:{
                         pageNum: 1,
-                        pageSize: 10
+                        pageSize: 6
                     }})
                     .then(function(response){
                     	that.handleResponse(response);

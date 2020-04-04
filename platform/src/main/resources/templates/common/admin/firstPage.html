@@ -25,10 +25,11 @@
 			<div style="width: calc(60% - 15px);border-width: 1px;border-radius: 3px;border-color: #E4E7ED;border-style: solid;">
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
 					<i class="el-icon-menu" style="font-size: 20px;line-height: 20px;height: 20px;font-weight: bolder;color:#646464">&nbsp;通知公告</i>
+					<el-link v-if="currUserReceiverNewsRecordsfirstPage.length ==  6" :underline="false" type="primary" @click="moreAnnounce()" style="margin-left: 80%;">查看更多<i class="el-icon-more"></i></el-link>
 					<hr style="height:2px;border:none;border-top:3px solid #e5e5e5;margin-top: 10px;color: #cecece"/>
 				</div>
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
-					<div v-for="item in currUserReceiverNewsRecordsfirstPage" class="firstPage-briefs-item">
+					<div v-for="item in currUserReceiverNewsRecordsfirstPage" class="firstPage-briefs-item" style="margin-top:30px">
 						<div class="firstPage-briefs-item_title">
 							<label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi" style="color:#4f4f4f;font-size: 12px;">【已读】</label>
 							<label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi" style="color:#4f4f4f;font-size: 12px;">【未读】</label>
@@ -38,9 +39,7 @@
 							{{item.sendTime ? item.sendTime.substr(0, 10) : '--'}}
 						</div>
 					</div>
-					<div v-if="currUserReceiverNewsRecordsfirstPage.length ==  10" style="margin-top: 15px;right:1px">
-					<el-link :underline="false" type="primary" @click="moreAnnounce()">查看更多<i class="el-icon-more"></i></el-link>
-				</div>
+					
 				</div>
 			</div>
 		</div>
@@ -68,6 +67,7 @@
 			<div style="width: calc(60% - 15px);border-width: 1px;border-radius: 3px;border-color: #E4E7ED;border-style: solid;">
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
 					<i class="el-icon-menu" style="font-size: 20px;line-height: 20px;height: 20px;font-weight: bolder;color:#646464">&nbsp;工作简报</i>
+					<el-link v-if="currUserReceiverBriefRecordsfirstPage.length == 5" :underline="false" @click="moreArticle()" type="primary" style="margin-left: 80%;">查看更多<i class="el-icon-more"></i></el-link>
 					<hr style="height:2px;border:none;border-top:3px solid #e5e5e5;margin-top: 10px;color: #cecece"/>
 				</div>
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
@@ -79,9 +79,7 @@
 							{{item.sendTime.substr(0, 10)}}
 						</div>
 					</div>
-					<div v-if="currUserReceiverBriefRecordsfirstPage.length == 5" style="margin-left: 15px;margin-top: 15px;right:1px">
-						<el-link :underline="false" @click="moreArticle()" type="primary">查看更多<i class="el-icon-more"></i></el-link>
-					</div>
+					
 				</div>
 			</div>
 		</div>
