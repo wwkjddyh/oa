@@ -290,9 +290,9 @@
     justify-content:center;
 }
 .firstPage-function-item {
-    cursor:pointer;
-    height:120px;
-    width:128px;
+    cursor: pointer;
+    height: 120px;
+    width: 128px;
     flex-direction: column;
     display: -webkit-flex;
     align-items:center;
@@ -382,28 +382,31 @@
 
 .firstPage-briefs-items_title {
     font-size: 24px;
-    
     color: #4f4f4f;
 }
 .firstPage-briefs-item {
     margin-top: 10px;
+    font-size: 12px;
     display: flex;
     display: -webkit-flex;
-    align-items:center;
+    align-items: center;
+    justify-content: space-between;
 }
 .firstPage-briefs-item_title{
     width: calc(100% - 85px);
+    font-size: 12px;
     height: auto;
 }
 .firstPage-briefs_item_title-a{
-	font-size:18px;
+	font-size: 12px;
     color: #4f4f4f;
     cursor: pointer;
 }
 .firstPage-briefs-item_time {
-    width: 85px;
-    font-size: 15px;
+    /*width: 85px;*/
+    font-size: 12px;
     color: #4f4f4f;
+    margin-right: 0;
 }
 
 .firstPage-briefs-brief_dialog {

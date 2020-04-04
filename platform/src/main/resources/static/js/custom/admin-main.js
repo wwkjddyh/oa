@@ -1022,9 +1022,17 @@ new Vue({
                 url:'articles',
                 imgUrl:'/images/icon/brief.png',
                 modelName:'工作简报'
+            },
+            {
+                index:2,
+                name:'通知公告',
+                url:'announce',
+                imgUrl:'/images/icon/news.png',
+                modelName:'通知公告'
             }
         ],
         firstPageFuncModules: [ /*首页功能模块区域*/
+            /*
             {
                 index: 1,
                 name:'通知公告',
@@ -1033,6 +1041,7 @@ new Vue({
                 modelName:'通知公告',
                 iconClass: 'iconfont icon-MESSAGEREAD',
             },
+             */
             {
                 index:2,
                 name:'视频会议',
