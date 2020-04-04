@@ -49,7 +49,7 @@
 		<div style="margin-top: 2px;">
 			<span style="font-family:微软雅黑;font-size:37px;font-weight: bolder;color:rgb(199, 34, 8);">奥维云创基层党建信息化系统</span>
 		</div>
-		<div style="background:#ffe8ce;">
+		<div style="background:#ffe8ce;" v-loading="fullscreenLoading" element-loading-text="登录中...">
 			<div th:if="${loginError}" style="font-size:14px;color:red;">用户名或密码错误</div>
 				<form id="logonForm" th:action="@{/login}" method="post" v-model="formLogon" label-width="100px">
 					<div style="margin-top: 25px;margin-left: 37px;display: flex">
