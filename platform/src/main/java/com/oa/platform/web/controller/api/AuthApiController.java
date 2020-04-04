@@ -128,7 +128,7 @@ public class AuthApiController extends BaseController {
 	    		}
     		}
 		
-    	return getSuccessResultVo(null);
+    		return getErroResultVo(500,"当前用户一天内已进行短信登录，请勿重复获取",null);
     }
     /**
      * 手机号格式校验
