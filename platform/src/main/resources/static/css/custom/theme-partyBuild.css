@@ -296,7 +296,7 @@
 .firstPage-function-item {
     cursor: pointer;
     height: 120px;
-    width: 128px;
+    width: 120px;
     flex-direction: column;
     display: -webkit-flex;
     align-items:center;
