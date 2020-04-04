@@ -51,12 +51,18 @@
 					<i class="iconfont icon-gongneng-" style="font-size: 20px;line-height: 20px;height: 20px;color:#646464">&nbsp;功能模块</i>
 					<hr style="height:2px;border:none;border-top:3px solid #e5e5e5;margin-top: 10px;color: #cecece"/>
 				</div>
-				<div style="width: calc(100% - 0px);padding: 0;border: 0;display: inline-flex;justify-content: space-between;">
+				<!-- <div style="width: calc(100% - 0px);padding: 0;border: 0;display: inline-flex;justify-content: space-between;">
 					<div v-for="(item, index) in firstPageFuncModules" :key="item.url">
 						<div class="firstPage-function-item" @click="goToMenu(item)"  >
 							<i :class="item.iconClass" style="font-size:30px;color:rgb(0, 161, 255)"></i>
 							<span class="firstPage-function-item_name">{{item.name}}</span>
 						</div>
+					</div>
+				</div> -->
+				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;display: inline-flex;justify-content: space-between;">
+					<div class="firstPage-quickEntry-item2" @click="goToMenu(item)" v-for="item in firstPage3" :key="item.url" :offset="item.index > 0 ? 2 : 0">
+						<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
+						<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
 					</div>
 				</div>
 <!--				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;display: inline-flex;justify-content: space-between;">-->

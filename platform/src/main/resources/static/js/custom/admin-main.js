@@ -1008,6 +1008,58 @@ new Vue({
                 modelName:'大数据'
             }*/
         ],
+        firstPage3:[
+            {
+                index:0,
+                name:'视频会议',
+                url:'faceMeet',
+                imgUrl:'/images/icon/facemeet.png',
+                modelName:'视频会议'
+            },
+            {
+                index:1,
+                name:'大数据',
+                url:'bigData',
+                imgUrl:'/images/icon/bigdata.png',
+                modelName:'大数据'
+            },
+            {
+                index:2,
+                name:'用户管理',
+                url:'sysUsers',
+                imgUrl:'/images/icon/user.png',
+                modelName:'系统用户'
+            },
+            /*
+            {
+                index:0,
+                name:'通知公告',
+                url:'announce',
+                modelName:'通知公告',
+                imgUrl:'/images/icon/news.png'
+            },
+            {
+                index:1,
+                name:'简报',
+                url:'articles',
+                imgUrl:'/images/icon/brief.png',
+                modelName:'简报'
+            },
+            {
+                index:2,
+                name:'视频会议',
+                url:'faceMeet',
+                imgUrl:'/images/icon/facemeet.png',
+                modelName:'视频会议'
+            },
+            {
+                index:3,
+                name:'大数据',
+                url:'bigData',
+                imgUrl:'/images/icon/bigdata.png',
+                modelName:'大数据'
+            }*/
+        ],
         firstPage2:[
             {
                 index:0,
