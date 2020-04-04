@@ -181,6 +181,8 @@ new Vue({
                                     		//that.fullscreenLoading = true;
                                             document.getElementById("logonForm").submit();
                                     		//that.login(that);
+                                    	
+                                    	
                                     	}else{
                                     		that.$message({
                                                 message: '请进行短信验证',

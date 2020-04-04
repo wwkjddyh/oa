@@ -21,40 +21,62 @@
 		.el-loading-spinner .circular{height:42px;width:42px;-webkit-animation:loading-rotate 2s linear infinite;animation:loading-rotate 2s linear infinite}
 		.el-loading-spinner .path{-webkit-animation:loading-dash 1.5s ease-in-out infinite;animation:loading-dash 1.5s ease-in-out infinite;stroke-dasharray:90,150;stroke-dashoffset:0;stroke-width:2;stroke:#ccaf71;stroke-linecap:round}
 		.el-loading-spinner i{color:#ccaf71}
+		.el-button--info {
+			background-color:#11b578;
+			border-color:#11b578;
+    		}
 		.el-button--info.is-disabled,.el-button--info.is-disabled:active,.el-button--info.is-disabled:focus,.el-button--info.is-disabled:hover{color:#FFF;background-color:#e0e0e0;border-color:#e0e0e0}
 	</style>
 </head>
 <body style="margin:0; padding:0; width:100%; height:100%;">
 <div id="admin" style="width:100%;height:100%;position:absolute;" class="loginImg">
 	<div class="loginForm">
-			<el-card class="box-card" v-loading="fullscreenLoading" element-loading-text="登录中...">
-				<div style="margin-top: 2px;display: flex">
-						<span style="font-size:25px;font-weight: bolder;color:#866133;margin-left:13px">奥维云创基层党建信息化系统</span>
+	<div style="margin-top: 2px;display: flex;">
+						<span style="font-family:微软雅黑;font-size:37px;font-weight: bolder;color:rgb(199, 34, 8);margin-left:40px">奥维云创基层党建信息化系统</span>
 				</div>
-				<div style="margin-top:15px">
+<!-- 			<el-card class="box-card" v-loading="fullscreenLoading" element-loading-text="登录中..." style="padding:5px;background:rgb(251, 157, 142);">
+ -->				<div style="margin-top: 15px;padding:10px;background:rgb(251, 157, 142);width:545px" v-loading="fullscreenLoading" element-loading-text="登录中...">
+				<div style="padding:20px;background:#ffe8ce;">
 					<div th:if="${loginError}" style="font-size:14px;color:red;">用户名或密码错误</div>
 				    <form id="logonForm" th:action="@{/login}" method="post" v-model="formLogon" label-width="100px">
-				        <div style="margin-top: 10px;display: flex">
-				            <el-input id="username" name="username" v-model="formLogon.username" size="medium" auto-complete="off" maxlength="64" style="width: 350px" placeholder="用户名"></el-input>
+				        <div style="margin-top: 35px;margin-left: 37px;display: flex">
+				        	<span style="color:#6f6d6e">用户名:</span>
 				        </div>
-				        <div style="margin-top: 10px;display: flex;">
-				            <el-input id="password" @keyup.enter.native="submitForm" name="password" type="password" v-model="formLogon.password" size="medium" auto-complete="off" maxlength="64" style="width: 350px" placeholder="密码"></el-input>
+				        <div style="margin-right: 37px;margin-left: 37px;margin-top: 10px;display: flex">
+				            <el-input @keyup.enter.native="submitForm" id="username" name="username" v-model="formLogon.username" size="medium" auto-complete="off" maxlength="64" style="width: 430px" placeholder="请输入您的用户名">
+				            	<i slot="prefix" class="el-icon-s-custom" style="font-size:28px;color:rgb(199, 34, 8);margin-top:5px"></i>
+				            </el-input>
 				        </div>
-				        <div style="margin-top: 10px;display: flex;">
-				            <el-input id="verifyCode" @keyup.native="validate" @keyup.enter.native="submitForm" name="verifyCode" v-model="formLogon.verifyCode" size="medium" auto-complete="off" maxlength="4" style="width: 250px" placeholder="验证码"></el-input>
-				            <img onclick="refreshVerifyCode('verifyImg');" src="/api/verify/code" id="verifyImg" style="margin-left: 18px; cursor: pointer;"/>
+				        <div style="margin-left: 37px;margin-top: 10px;display: flex">
+				        	<span style="color:#6f6d6e">密码:</span>
 				        </div>
-				        <div style="margin-top: 10px;display: flex;" v-if="haveSms">
-				            <el-input  id="verifySms" v-model="formLogon.verifySms" name="verifySms" size="medium" auto-complete="off" maxlength="10" style="width: 250px" placeholder="短信验证码"></el-input>
-				        	<el-button @click="getSms()"  type="info" size="small"  style="margin-left: 8px;width:90px;" :disabled='smsFlag'>{{seconds}}</el-button>
+				        <div style="margin-right: 37px;margin-left: 37px;margin-top: 10px;display: flex;">
+				            <el-input id="password" @keyup.enter.native="submitForm" name="password" type="password" v-model="formLogon.password" size="medium" auto-complete="off" maxlength="64" style="width: 430px;" placeholder="请输入您的密码">
+				            	<i slot="prefix" class="el-icon-toilet-paper" style="font-size:28px;color:rgb(199, 34, 8);margin-top:5px"></i>
+				            </el-input>
+				        </div>
+				        <div style="margin-left: 37px;margin-top: 10px;display: flex">
+				        	<span style="color:#6f6d6e">验证码:</span>
+				        </div>
+				        <div style="margin-right: 37px;margin-left: 37px;margin-top: 10px;display: flex;">
+				            <el-input id="verifyCode"  @keyup.enter.native="submitForm" name="verifyCode" v-model="formLogon.verifyCode" size="medium" auto-complete="off" maxlength="4" style="width: 330px" placeholder="请输入您的验证码"></el-input>
+				            <img onclick="refreshVerifyCode('verifyImg');" src="/api/verify/code" id="verifyImg" style="margin-left: 18px; cursor: pointer;background:rgb(251, 157, 142);"/>
+				        </div>
+				        <div style="margin-left: 37px;margin-top: 10px;display: flex" v-if="haveSms">
+				        	<span style="color:#6f6d6e">短信验证码:</span>
+				        </div>
+				        <div style="margin-right: 37px;margin-left: 37px;margin-top: 10px;display: flex;" v-if="haveSms">
+				            <el-input @keyup.enter.native="submitForm" id="verifySms" v-model="formLogon.verifySms" name="verifySms" size="medium" auto-complete="off" maxlength="10" style="width: 330px" placeholder="请输入您的短信验证码"></el-input>
+				        	<el-button @click="getSms()"  type="info" size="small"  style="margin-left: 18px;width:80px;" :disabled='smsFlag'>{{seconds}}</el-button>
 				        </div>
 				       
-				        <div style="margin-top: 10px;display: flex;">
-				            <el-button @click="submitForm()"  type="success" size="small" class="button" align="left" style="width:350px">登录</el-button>
+				        <div style="margin-right: 37px;margin-left: 37px;margin-top: 20px;display: flex;">
+				            <el-button @click="submitForm()"  type="danger" size="small"  align="left" style="width:430px;height:50px;background-color:#de1a1a"><span style="font-size:20px">点&nbsp;击&nbsp;登&nbsp;录</span></el-button>
 				        </div>
 				    </form>
 				 </div>
-			</el-card>
+			<!-- </el-card> -->
+			</div>
 		</div>
     
 </div>
@@ -64,15 +86,17 @@
 	}
 	.loginForm{
 		position:absolute;
-		right:20%;
-		top:40%;
+		right:35%;
+		top:25%;
 	}
 	.paltName{
 		position:absolute;
 		left:30%;
 		top:30%;
 	}
+ }
 </style>
+	
 </body>
 <script src="/js/vue/vue.min.js" th:src="@{~/js/vue/vue.min.js}"></script>
 <script src="/js/axios/axios.min.js" th:src="@{~/js/axios/axios.min.js}"></script>
