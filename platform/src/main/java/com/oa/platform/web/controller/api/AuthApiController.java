@@ -18,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,6 +79,21 @@ public class AuthApiController extends BaseController {
     @Autowired
     private LogBiz logBiz;
     /**
+     	* 手机号格式校验正则
+     */
+    public static final String PHONE_REGEX = "^1(3[0-9]|4[57]|5[0-35-9]|7[0135678]|8[0-9])\\d{8}$";
+
+    /**
+     	* 手机号脱敏筛选正则
+     */
+    public static final String PHONE_BLUR_REGEX = "(\\d{3})\\d{4}(\\d{4})";
+
+    /**
+     	* 手机号脱敏替换正则
+     */
+    public static final String PHONE_BLUR_REPLACE_REGEX = "$1****$2";
+
+    /**
      * 获取短信验证码
      * @param userId
      * @return
@@ -90,25 +106,41 @@ public class AuthApiController extends BaseController {
     		//一天内用户是否使用短信进行验证登录
     		List<String> userSms = roleBiz.getUserSMSData(userId);
     		if(userSms == null || userSms.size() == 0) {
+    			
 	    		//获取用户手机号码
 	    		List<String> userPhone = roleBiz.getUserPhoneByUserName(userId);
 	    		if(userPhone != null && userPhone.size()>0 && userPhone.get(0) != null && !"".equals(userPhone.get(0))) {
-	    			Map<String,String> params = new HashMap<String,String>();
-					params.put("mobile", userPhone.get(0));
-					params.put("temp_id", temp_id);
-					params.put("sign_id", sign_id);
-					//post请求获取短信验证码
-					//roleBiz.httpRequest(smsUrl, JSONObject.toJSONString(params), appKey,masterSecret);
-					roleBiz.getSms(userId,smsUrl, JSONObject.toJSONString(params), appKey,masterSecret);
-					return getSuccessResultVo(userPhone.get(0));
+	    			boolean checkPhone = checkPhone(userPhone.get(0));
+	    			if(checkPhone) {
+		    			Map<String,String> params = new HashMap<String,String>();
+						params.put("mobile", userPhone.get(0));
+						params.put("temp_id", temp_id);
+						params.put("sign_id", sign_id);
+						//post请求获取短信验证码
+						//roleBiz.httpRequest(smsUrl, JSONObject.toJSONString(params), appKey,masterSecret);
+						roleBiz.getSms(userId,smsUrl, JSONObject.toJSONString(params), appKey,masterSecret);
+						return getSuccessResultVo(userPhone.get(0).replaceAll(PHONE_BLUR_REGEX, PHONE_BLUR_REPLACE_REGEX));
+	    			}else {
+	    				return getErroResultVo(5000,"无效的手机号码 "+userPhone.get(0),null);
+	    			}
 	    		}else {
-	    			return getErroResultVo(500,"当前用户无手机号码或无效",null);
+	    			return getErroResultVo(500,"当前用户无手机号码",null);
 	    		}
     		}
 		
     	return getSuccessResultVo(null);
     }
-    
+    /**
+     * 手机号格式校验
+     * @param phone
+     * @return
+     */
+    public static final boolean checkPhone(String phone) {
+        if (StringUtils.isEmpty(phone)) {
+            return false;
+        }
+        return phone.matches(PHONE_REGEX);
+    }
     /**
      * 是否短信验证
      * @param userId
