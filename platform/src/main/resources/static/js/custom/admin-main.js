@@ -4124,7 +4124,7 @@ new Vue({
             that.scrollBoxContent = '';
             axios.get("/api/news/getCurrUserNews", {params:{
                     pageNum: 1,
-                    pageSize: 5
+                    pageSize: 10
                 }})
                 .then(function(response){
                 	that.handleResponse(response);
