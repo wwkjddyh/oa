@@ -6,6 +6,174 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "408327",
+      "name": "快捷菜单",
+      "font_class": "kuaijiecaidan",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
+      "icon_id": "409445",
+      "name": "快捷菜单",
+      "font_class": "kuaijiecaidan1",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "741048",
+      "name": "登出 退出 关闭",
+      "font_class": "dengchutuichuguanbi",
+      "unicode": "e846",
+      "unicode_decimal": 59462
+    },
+    {
+      "icon_id": "778499",
+      "name": "用户名",
+      "font_class": "yonghuming",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "1010127",
+      "name": "登录",
+      "font_class": "denglu",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "1115027",
+      "name": "登出",
+      "font_class": "dengchu",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    },
+    {
+      "icon_id": "1263279",
+      "name": "简报",
+      "font_class": "jianbao",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "1309003",
+      "name": "947菜单_简报",
+      "font_class": "947caidan_jianbao",
+      "unicode": "e688",
+      "unicode_decimal": 59016
+    },
+    {
+      "icon_id": "1494621",
+      "name": "大数据",
+      "font_class": "dashuju1",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "4320335",
+      "name": "登录",
+      "font_class": "denglu1",
+      "unicode": "e653",
+      "unicode_decimal": 58963
+    },
+    {
+      "icon_id": "4506837",
+      "name": "功能定义",
+      "font_class": "gongnengdingyi",
+      "unicode": "ebb7",
+      "unicode_decimal": 60343
+    },
+    {
+      "icon_id": "5112802",
+      "name": "视频会议-线性icon",
+      "font_class": "ziyuan",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
+      "icon_id": "5117612",
+      "name": "视频会议-色块icon",
+      "font_class": "icon",
+      "unicode": "e654",
+      "unicode_decimal": 58964
+    },
+    {
+      "icon_id": "5777215",
+      "name": "通知消息",
+      "font_class": "tongzhi",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "5944365",
+      "name": "功能",
+      "font_class": "gongneng",
+      "unicode": "e641",
+      "unicode_decimal": 58945
+    },
+    {
+      "icon_id": "6263321",
+      "name": "大数据",
+      "font_class": "dashuju2",
+      "unicode": "e666",
+      "unicode_decimal": 58982
+    },
+    {
+      "icon_id": "6842458",
+      "name": "功能设置",
+      "font_class": "gongnengshezhi",
+      "unicode": "e625",
+      "unicode_decimal": 58917
+    },
+    {
+      "icon_id": "6884426",
+      "name": "通知消息",
+      "font_class": "tongzhixiaoxi",
+      "unicode": "e615",
+      "unicode_decimal": 58901
+    },
+    {
+      "icon_id": "7762181",
+      "name": "密码",
+      "font_class": "ziyuanxhdpi",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "8081367",
+      "name": "功能",
+      "font_class": "iconfront-",
+      "unicode": "e60c",
+      "unicode_decimal": 58892
+    },
+    {
+      "icon_id": "8207762",
+      "name": "通知消息",
+      "font_class": "tongzhixiaoxi1",
+      "unicode": "e670",
+      "unicode_decimal": 58992
+    },
+    {
+      "icon_id": "8821262",
+      "name": "功能-01",
+      "font_class": "gongneng-",
+      "unicode": "e616",
+      "unicode_decimal": 58902
+    },
+    {
+      "icon_id": "10056806",
+      "name": "简报",
+      "font_class": "jianbao1",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "7536894",
+      "name": "通知公告",
+      "font_class": "icon-test",
+      "unicode": "e618",
+      "unicode_decimal": 58904
+    },
+    {
       "icon_id": "979936",
       "name": "视频会议",
       "font_class": "shipinhuiyi",
