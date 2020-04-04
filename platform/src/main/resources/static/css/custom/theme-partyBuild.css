@@ -130,7 +130,7 @@
 .el-menu--collapse .el-menu .el-submenu, .el-menu--popup {
     height: 70px;
     line-height: 70px;
-    min-width: 250px;
+    min-width: 315px;
 }
 
 .el-submenu__title:focus, .el-submenu__title:hover{

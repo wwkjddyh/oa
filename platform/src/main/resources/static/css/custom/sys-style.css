@@ -62,8 +62,7 @@
 /*    min-height: 400px;*/
 /*}*/
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-    /*width: 315px;*/
-    width: 250px;
+    width: 315px;
     height: 100%;
 }
 .el-menu-vertical-demo {
