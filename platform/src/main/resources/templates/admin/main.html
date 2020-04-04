@@ -53,7 +53,9 @@
                         </el-carousel-item>
                     </el-carousel>
                     -->
-                    <div style="width: calc(100% - 35px);margin-left: 10px;margin-top:10px;">
+                    <!--修改前-->
+                    <!--
+                    <div style="width: calc(100% - 35px);margin-left: 10px;margin-top:10px;border-top: #E4E7ED solid 1px;">
                         <el-tabs v-model="editableTabsOptions.editableTabsValue" type="card"
                                  @tab-remove="handleRemoveTab"
                                  @tab-click="handleClickTab"
@@ -70,7 +72,42 @@
                             </el-tab-pane>
                         </el-tabs>
                     </div>
+                    -->
+                    <!--修改后-->
+                    <div style="width: calc(100% - 45px);margin-left: 10px;margin-top:10px;border-top: #E4E7ED solid 1px;">
+                        <el-tabs v-model="editableTabsOptions.editableTabsValue" type="card"
+                                 @tab-remove="handleRemoveTab"
+                                 @tab-click="handleClickTab"
+                                 style="font-size: 12px; font-weight: bolder;" size="mini"
+                        >
+                            <el-tab-pane
+                                    v-for="(item, index) in editableTabsOptions.editableTabs"
+                                    :key="item.name"
+                                    :label="item.title"
+                                    :name="item.name"
+                                    :closable="item.closable"
+                                    style="font-size: 12px; font-weight: bolder;"
+                            >
+                            </el-tab-pane>
+                        </el-tabs>
+                    </div>
+                    <div style="width: 25px;height: 48px;border-right: #E4E7ED solid 1px;border-top: #E4E7ED solid 1px;border-bottom: #E4E7ED solid 1px;margin-top: -5px">
+                        <div style="width: 25px;height: 25px;border-left: #E4E7ED solid 1px;border-bottom: #E4E7ED solid 1px; float: right;display: flex;justify-content: center;align-items: center;">
+<!--                            <i class="el-icon-arrow-left" style="font-size: 18px;color: #E4E7ED;font-weight: bolder"></i>-->
+                            <el-dropdown style="cursor: pointer;"
+                                         @command="handleTabsDropdown" size="mini">
+                                <i class="el-icon-arrow-left" style="font-size: 18px;color: #afafaf;"></i>
+                                <el-dropdown-menu slot="dropdown" size="mini">
+                                    <el-dropdown-item command="other" style="font-size: 10px;cursor: pointer;">关闭其他</el-dropdown-item>
+                                    <el-dropdown-item command="all" style="font-size: 10px;cursor: pointer;">关闭全部</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </el-dropdown>
+                        </div>
+                    </div>
+
 <!--                    <div style="width: 15px;border-bottom: 1px solid #E4E7ED; margin-bottom: 1px;">-->
+                    <!-- 修改前样式 -->
+                    <!--
                     <div style="width: 15px;height: 44px;line-height: 44px; border-bottom: 1px solid #E4E7ED;margin-bottom:1px;">
                         <el-dropdown style="cursor: pointer;"
                                      @command="handleTabsDropdown" size="mini">
@@ -81,6 +118,7 @@
                             </el-dropdown-menu>
                         </el-dropdown>
                     </div>
+                    -->
                 </div>
 
 
