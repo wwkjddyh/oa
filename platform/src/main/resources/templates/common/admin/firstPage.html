@@ -70,7 +70,7 @@
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
 					<div v-for="item in currUserReceiverBriefRecordsfirstPage" class="firstPage-briefs-item">
 						<div class="firstPage-briefs-item_title">
-							<a class="firstPage-briefs_item_title-a" @click="handleBriefView(item.briefId)">{{item.briefTitle || ''}}</a>
+							<a class="firstPage-briefs_item_title-a" @click="handleBriefView(item.briefId)"><i style="margin-left: 15px;margin-right: 15px">•</i>{{item.briefTitle || ''}}</a>
 						</div>
 						<div class="firstPage-briefs-item_time">
 							{{item.sendTime.substr(0, 10)}}
