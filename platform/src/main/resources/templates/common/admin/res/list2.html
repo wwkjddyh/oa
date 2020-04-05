@@ -77,10 +77,16 @@
                     prop="publishTime"
                     label="发布日期"
                     width="150">
+                <template slot-scope="scope">
+                    <span style="color: #4f4f4f;font-size: 16px;">{{scope.row.publishTime}}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="resName"
-                    label="名称">
+                    label="名称" style="color: #4f4f4f;font-size: 16px;">
+                <template slot-scope="scope">
+                    <span style="color: #4f4f4f;font-size: 16px;">{{scope.row.resName}}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     align="center"
