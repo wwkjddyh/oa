@@ -15,32 +15,53 @@
                             prop="orgName"
                             label="单位名称"
                             align="center">
+                        <template slot-scope="scope">
+                            <span class="list-row-base-style">{{scope.row.orgName}}</span>
+                        </template>
                     </el-table-column>
                     <el-table-column
                             prop="upperOrgName"
                             label="所属组织名称"
                             align="center"
                             >
+                        <template slot-scope="scope">
+                            <span class="list-row-base-style">{{scope.row.upperOrgName}}</span>
+                        </template>
                     </el-table-column>
                     <el-table-column
                             prop="upperOrgAttr"
                             label="单位所在组织属性" align="center">
+                        <template slot-scope="scope">
+                            <span class="list-row-base-style">{{scope.row.upperOrgAttr}}</span>
+                        </template>
                     </el-table-column>
                     <el-table-column
                             prop="orgAttr"
                             label="单位属性" align="center">
+                        <template slot-scope="scope">
+                            <span class="list-row-base-style">{{scope.row.orgAttr}}</span>
+                        </template>
                     </el-table-column>
                     <el-table-column
                             prop="contactPersion"
                             label="联系人" align="center">
+                        <template slot-scope="scope">
+                            <span class="list-row-base-style">{{scope.row.contactPersion}}</span>
+                        </template>
                     </el-table-column>
                     <el-table-column
                             prop="phone"
                             label="联系电话" align="center">
+                        <template slot-scope="scope">
+                            <span class="list-row-base-style">{{scope.row.phone}}</span>
+                        </template>
                     </el-table-column>
                     <el-table-column
                             prop="count"
                             label="党员人数" align="center">
+                        <template slot-scope="scope">
+                            <span class="list-row-base-style">{{scope.row.count}}</span>
+                        </template>
                     </el-table-column>
                     <el-table-column
                             align="center"

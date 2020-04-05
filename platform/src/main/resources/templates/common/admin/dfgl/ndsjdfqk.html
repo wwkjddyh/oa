@@ -41,19 +41,31 @@
                     prop="payTime"
                     label="上缴时间"
                     width="110">
+                <template slot-scope="scope">
+                    <span class="list-row-base-style">{{scope.row.payTime}}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="payPeriod"
                     label="上缴哪季度党费">
+                <template slot-scope="scope">
+                    <span class="list-row-base-style">{{scope.row.payPeriod}}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="payAmount"
                     label="上缴金额"
                     width="100">
+                <template slot-scope="scope">
+                    <span class="list-row-base-style">{{scope.row.payAmount}}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="remark"
                     label="备注">
+                <template slot-scope="scope">
+                    <span class="list-row-base-style">{{scope.row.remark}}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     align="center"

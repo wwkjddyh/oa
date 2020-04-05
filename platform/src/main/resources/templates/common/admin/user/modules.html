@@ -58,41 +58,56 @@
                 style="width: 100%">
             <el-table-column
                     align="center"
-                    width="50"
+                    width="70"
                     label="序号">
                 <template slot-scope="scope">
-                    {{scope.$index+1}}
+                    <span class="list-row-base-style">{{scope.$index+1}}</span>
                 </template>
             </el-table-column>
             <el-table-column
                     prop="moduleName"
                     label="名称"
                     width="200">
+                <template slot-scope="scope">
+                    <span class="list-row-base-style">{{scope.row.moduleName}}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="moduleCode"
                     label="代码"
                     width="100">
+                <template slot-scope="scope">
+                    <span class="list-row-base-style">{{scope.row.moduleCode}}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="fullModuleName"
                     label="全部名称"
                     width="200">
+                <template slot-scope="scope">
+                    <span class="list-row-base-style">{{scope.row.fullModuleName}}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="moduleUrl"
                     label="路径">
+                <template slot-scope="scope">
+                    <span class="list-row-base-style">{{scope.row.moduleUrl}}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="moduleDesc"
                     label="描述">
+                <template slot-scope="scope">
+                    <span class="list-row-base-style">{{scope.row.moduleDesc}}</span>
+                </template>
             </el-table-column>
             <el-table-column
                     prop="isLeaf"
                     label="模块类型"
                     width="100">
                 <template slot-scope="scope">
-                    {{scope.row.isLeaf === 0 ? '节点':'叶子'}}
+                    <span class="list-row-base-style">{{scope.row.isLeaf === 0 ? '节点':'叶子'}}</span>
                 </template>
             </el-table-column>
             <el-table-column
@@ -100,7 +115,7 @@
                     label="是否菜单"
                     width="100">
                 <template slot-scope="scope">
-                    {{scope.row.isMenu === 1 ? '是':'否'}}
+                    <span class="list-row-base-style">{{scope.row.isMenu === 0 ? '节点':'叶子'}}</span>
                 </template>
             </el-table-column>
             <el-table-column

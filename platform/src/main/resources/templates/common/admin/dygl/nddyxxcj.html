@@ -28,35 +28,42 @@
                             label="组织简称"
                             align="left"
                             width="250">
+						<template slot-scope="scope">
+							<span class="list-row-base-style">{{scope.row.orgName}}</span>
+						</template>
                     </el-table-column>
                     <el-table-column
                             prop="userName"
                             label="姓名"
                             align="center"
                             width="200">
-                            <template v-slot="scope">
-						         {{ scope.row.userName}}
-						         
-						    </template>
-                            
+						<template slot-scope="scope">
+							<span class="list-row-base-style">{{scope.row.userName}}</span>
+						</template>
                     </el-table-column>
                     <el-table-column
                             prop="genderName"
                             align="center"
                             label="性别">
-                            <template v-slot="scope">
-						         {{ getGenderValue(scope.row.gender)}}
-						    </template>
+						<template slot-scope="scope">
+							<span class="list-row-base-style">{{ getGenderValue(scope.row.gender)}}</span>
+						</template>
                     </el-table-column>
                     <el-table-column
                             prop="phone"
                             align="center"
                             label="联系方式">
+						<template slot-scope="scope">
+							<span class="list-row-base-style">{{scope.row.phone}}</span>
+						</template>
                     </el-table-column>
                     <el-table-column
                             prop="birthTime"
                             align="center"
                             label="出生日期">
+						<template slot-scope="scope">
+							<span class="list-row-base-style">{{scope.row.birthTime}}</span>
+						</template>
                     </el-table-column>
                     <el-table-column
                             prop="nation"
@@ -65,14 +72,17 @@
                             <!-- <template v-slot="scope">
 						         {{ getNationValue(scope.row.nation)}}
 						    </template> -->
+						<template slot-scope="scope">
+							<span class="list-row-base-style">{{scope.row.nation}}</span>
+						</template>
                     </el-table-column>
                     <el-table-column
                             prop="educationName"
                             align="center"
                             label="学历">
-                            <template v-slot="scope">
-						         {{ getEducationValue(scope.row.education)}}
-						    </template>
+						<template slot-scope="scope">
+							<span class="list-row-base-style">{{ getEducationValue(scope.row.education)}}</span>
+						</template>
                     </el-table-column>
                     <el-table-column
                             align="center"
