@@ -505,5 +505,36 @@
     width: 400px; height: 400px;
 }
 
+.chat-div {
+    position: fixed;
+    top: calc(50vh - 150px);
+    height: 300px;
+    right: 7px;
+    width: 70px;
+    background-color: #E4E7ED;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    /* display: table-column; */
+    flex-direction: column;
+    align-items: center;
+}
+
+.chat-div i {
+    font-size: 40px;
+    color: #bebebe;
+}
+
+.chat-div div {
+    width:20px;
+    word-wrap: break-word;
+    font-size: 20px;
+    color: #bebebe;
+    line-height: 20px;
+    margin-top: 15px
+}
+
 
 
