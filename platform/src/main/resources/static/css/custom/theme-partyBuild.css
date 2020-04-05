@@ -312,18 +312,20 @@
     justify-content:center;
 }
 .firstPage-quickEntry-item_img{
-    width: 80px;
-    height: 80px;
+    width: 72px;
+    height: 72px;
+    color: #4f4f4f;
 }
 
 .firstPage-quickEntry-item_name{
     margin-top: 27px;
     font-size: 18px;
+    color: #4f4f4f;
 }
 .firstPage-function-item_name{
     margin-top: 5px;
     font-size:10px;
-    color:rgb(0, 161, 255);
+    color: #4f4f4f;
 }
 /* 首页-下载 */
 .firstPage-resDownload {
@@ -390,7 +392,7 @@
     color: #4f4f4f;
 }
 .firstPage-briefs-item {
-    margin-top: 10px;
+    margin-top: 25px;
     font-size: 12px;
     display: flex;
     display: -webkit-flex;
@@ -398,18 +400,18 @@
     justify-content: space-between;
 }
 .firstPage-briefs-item_title{
-    width: calc(100% - 85px);
+    width: calc(100% - 120px);
     font-size: 12px;
     height: auto;
 }
 .firstPage-briefs_item_title-a{
-	font-size: 12px;
+	font-size: 16px;
     color: #4f4f4f;
     cursor: pointer;
 }
 .firstPage-briefs-item_time {
     /*width: 85px;*/
-    font-size: 12px;
+    font-size: 16px;
     color: #4f4f4f;
     margin-right: 0;
 }

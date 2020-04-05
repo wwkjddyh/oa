@@ -1,6 +1,10 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
+    <el-button plain @click="edit('news','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
+    <el-button round @click="handleNewsSearchByViewed('')" size="mini" :type="formSearchNews.allBtnType">全部</el-button>
+    <el-button round @click="handleNewsSearchByViewed('1')" size="mini" :type="formSearchNews.viewedBtnType">已读</el-button>
+    <el-button round @click="handleNewsSearchByViewed('0')" size="mini" :type="formSearchNews.unViewedBtnType">未读</el-button>
     <!--
     <el-tabs v-model="activeTabName" type="card">
         <el-tab-pane label="通知公告" name="first">
@@ -8,7 +12,7 @@
     </el-tabs>
     -->
         
-        <el-input placeholder="关键字"  class="input-with-select" size="mini" style="width: 30%" v-model="formSearchNews.title">
+        <el-input placeholder="关键字"  class="input-with-select" size="mini" style="width: 30%; margin-left: 10px" v-model="formSearchNews.title">
 					    <el-button slot="append" icon="el-icon-search" @click="searchForm('formSearchNews')"></el-button>
 					 </el-input>
     <!--
@@ -18,10 +22,6 @@
     <!--
     <el-button plain @click="searchForm('formSearchNews')" size="mini"><i class="el-icon-refresh"></i>&nbsp;刷新</el-button>
     -->
-    <el-button round @click="handleNewsSearchByViewed('')" size="mini" :type="formSearchNews.allBtnType">全部</el-button>
-    <el-button round @click="handleNewsSearchByViewed('1')" size="mini" :type="formSearchNews.viewedBtnType">已读</el-button>
-    <el-button round @click="handleNewsSearchByViewed('0')" size="mini" :type="formSearchNews.unViewedBtnType">未读</el-button>
-	<el-button plain @click="edit('news','','',true)" size="mini" icon="el-icon-plus" style="float: right">新增</el-button>
     <div style="margin-top: 20px">
         <!--
         <el-table
