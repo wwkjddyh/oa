@@ -92,4 +92,5 @@ public interface OrgService extends BaseService<Organization, String> {
 	List<Map> getAgeEchartBarData(List<String> rootOrgs);
 	List<Map> getEducationEchartBarData(List<String> rootOrgs);
 	List<Map> getPartyAgeEchartBarData(List<String> rootOrgs);
+	List<Organization> getRootOrgList(String userId);
 }

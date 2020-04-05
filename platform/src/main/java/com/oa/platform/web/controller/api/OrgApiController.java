@@ -66,6 +66,16 @@ public class OrgApiController extends BaseController{
 		return getSuccessResultVo(result);
 	}
 	/**
+	 * 获取上级党组织列表
+	 * @return
+	 */
+	@GetMapping("getRootOrgList")
+	public ResultVo getRootOrgList() {
+		User user = getUserOfSecurity();
+		List<Organization> result = orgBiz.getRootOrgList(user.getUserId());
+		return getSuccessResultVo(result);
+	}
+	/**
 	 * 根据用户获取用户所在组织及下级组织
 	 * @return
 	 */
