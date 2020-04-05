@@ -1,12 +1,10 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
-    <el-form ref="formSearchNews" :model="formSearchNews" label-width="85px" size="small">
-        <el-col :span="12">
+    <el-form ref="formSearchRes" :model="formSearchRes" label-width="70px" size="small">
+        <el-col :span="24">
+            <!--
             <el-form-item label="党组织机构" v-if="userOwnedModuleMaps['viewOrg'] && userOwnedModuleMaps['viewOrg'] != undefined">
-                <!-- <el-select v-model="formSearchRes.orgId" style="width: 300px;" placeholder="请选择党组织机构" size="small">
-                    <el-option label="全部" value="">全部</el-option>
-                </el-select> -->
                 <el-cascader
 								    v-model="formSearchRes.orgId"
 								    :options="userRootOrg"
@@ -18,6 +16,7 @@
 								    clearable
 								    ></el-cascader> 
             </el-form-item>
+            -->
             <el-form-item label="文件分类" v-if="uploadData.type === 'res2-fzdy'">
                 <!--
                 <el-select v-model="formSearchRes.assTypeId" style="width: 300px; font-size: 12px" placeholder="请选择分类" size="small">
@@ -48,15 +47,21 @@
             </el-form-item>
             -->
         </el-col>
-    	<el-col>
-    	<el-form-item label="" label-width="0px">
-    		<el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
-            <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
-    	</el-form-item>
-    	</el-col>
-    		
     </el-form>
-    
+    <div>
+        <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
+        <el-cascader v-if="userOwnedModuleMaps['viewOrg'] && userOwnedModuleMaps['viewOrg'] != undefined"
+                     v-model="formSearchRes.orgId"
+                     :options="userRootOrg"
+                     :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
+                     style="width: 300px;margin-left: 5px;margin-right: 5px;"
+                     size="mini"
+                     filterable
+                     collapse-tags
+                     clearable
+        ></el-cascader>
+        <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
+    </div>
     		
     <div style="margin-top: 20px">
         <el-table size="small"
