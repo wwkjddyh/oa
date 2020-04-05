@@ -2,9 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 <div th:fragment="content">
-    <el-tabs v-model="activeTabName" type="card">
             <el-button plain @click="edit('dwjbxx','','',true)" type="primary" size="mini" v-if="isSuperAdmin"><i class="el-icon-plus"></i>新增</el-button>
-            <!-- <el-button plain type="danger" size="mini"><i class="el-icon-close" size=""></i>删除</el-button> -->
             <el-button plain size="mini"  @click="searchForm('searchDwjbxx')" ><i class="el-icon-refresh"></i>刷新</el-button>
             <div style="margin-top: 20px">
                 <el-table
@@ -602,11 +600,6 @@
 				 </span>
 		    </el-dialog>
             </el-dialog>
-    </el-tabs>
 </div>
-<style>
-  body {
-    margin: 0;
-  }
-</style>
+
 </html>
