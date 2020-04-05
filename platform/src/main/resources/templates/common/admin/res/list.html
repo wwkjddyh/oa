@@ -3,25 +3,23 @@
 <div th:fragment="content">
     <el-form ref="formSearchNews" :model="formSearchNews" label-width="70px" size="small">
         <el-form-item label="模糊搜索">
-            <el-input v-model="formSearchRes.key" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="关键字"></el-input>
+            <el-input v-model="formSearchRes.key" size="small" auto-complete="off" style="width: 300px;margin-right: 10px" maxlength="512" placeholder="关键字"></el-input>
             <!--
             <el-tooltip class="item" effect="dark" placement="top">
                 <div slot="content">关键字</div><i class="el-icon-question"></i></el-tooltip>
                 -->
-            
+            <el-button plain @click="edit('res','','',true)" size="small" icon="el-icon-upload2">新建上传</el-button>
+            <el-button size="small" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
         </el-form-item>
     </el-form>
     <!--
     <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
     -->
-    <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
-    <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
-
     <div style="margin-top: 20px">
         <el-table size="small"
                 :data="resArray"
                 border
-                style="width: 100%; color: #4f4f4f">
+                style="width: 100%; color: #4f4f4f;font-size: 16px;">
             <!--
             <el-table-column
                     align="center"

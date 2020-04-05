@@ -715,8 +715,15 @@ new Vue({
         showContent: 'firstPage',
         receiverUserName: '',
         scrollBoxContent: '',
-        defaultBriefContent: '<p style="text-align: center;"><strong><span style="font-size: 24px; color: rgb(255, 0, 0);">党建工作简报&nbsp; &nbsp; 年&nbsp; &nbsp;期</span></strong><br/>' +
-            '</p><p><strong><span style="font-size: 24px; color: rgb(255, 0, 0);"><br/></span></strong></p><p><br/></p>',
+        defaultBriefContent: '<p style="text-align: center; margin-bottom: 20px;">\n' +
+            '    <strong><span style="font-size:48px;font-family:宋体;color:red">党 建 工 作 简 报</span></strong>\n' +
+            '</p >\n' +
+            '<p style="text-align:center">\n' +
+            '    <span style="font-size:19px;font-family:宋体;color:red">&nbsp; &nbsp;XXXX</span><span style="font-size:19px;font-family:宋体;color:red">年XX期&nbsp; &nbsp; &nbsp; &nbsp; 中共天津市住房和城乡建设委员会委员会</span>\n' +
+            '</p >\n' +
+            '<p style="text-align: center;">\n' +
+            '    <span style="font-size: 19px; font-family: 宋体; text-decoration: underline; color: rgb(255, 0, 0);">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>\n' +
+            '</p >',
         currentArticleFormTitle: '文章',
         currentChartId : CurrentChartId,
         currUserEchartsData: {   /*当前用户图片数据*/
