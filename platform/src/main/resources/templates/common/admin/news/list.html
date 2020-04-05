@@ -87,15 +87,15 @@
                         <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" slot="reference" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
                     </el-popover>
                     -->
-                    <label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi" style="font-size: 16px;"></label>
-                    <label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi" style="font-size: 16px;"></label>
-                    <a style="color: #303133; cursor: pointer;font-size: 16px;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
+                    <label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi" style="font-size: 16px;color: #4f4f4f;"></label>
+                    <label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi" style="font-size: 16px;color: #4f4f4f;"></label>
+                    <a style="color: #4f4f4f; cursor: pointer;font-size: 16px;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
                 </div>
                 <div style="width: 70%; height: auto" v-if="formSearchNews.isViewed != ''">
-                    <a style="color: #303133; cursor: pointer;font-size: 16px;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
+                    <a style="color: #4f4f4f; cursor: pointer;font-size: 16px;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
                 </div>
-                <div style="width: 30%; font-size: 16px; color: #8c939d;">
-                    {{item.sendTime}}
+                <div style="width: 30%; font-size: 16px; color: #4f4f4f;">
+                    {{item.sendTime.substr(0, 10)}}
                 </div>
             </div>
         </div>
