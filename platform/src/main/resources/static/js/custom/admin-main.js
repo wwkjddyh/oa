@@ -4098,9 +4098,7 @@ new Vue({
                 .then(function(response){
                 	that.handleResponse(response);
                     let data = response.data;
-                    if(parseInt(data.code) === 200) {
-                        that.resOtherTypes = data.data;
-                    }
+                    that.resOtherTypes = data.data;
                 })
                 .catch(function(err){/!*异常*!/
                     console.log(err);

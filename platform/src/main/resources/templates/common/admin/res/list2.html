@@ -25,10 +25,12 @@
                     <el-option v-for="item in resOtherTypes" :key="item.dictId" :label="item.dictName" :value="item.dictId"></el-option>
                 </el-select>
                 -->
-                <el-radio-group v-model="formSearchRes.assTypeId" size="mini">
-                    <el-radio label="" style="margin-top: 10px;">全部</el-radio>
-                    <el-radio v-for="item in resOtherTypes" :label="item.dictId" :value="item.dictId" :key="item.dictId" style="margin-top: 10px;">{{item.dictName}}</el-radio>
-                </el-radio-group>
+                <div style="border: 0;display: flex">
+                    <el-radio-group v-model="formSearchRes.assTypeId" size="mini">
+                        <el-radio label="" >全部</el-radio>
+                        <el-radio v-for="item in resOtherTypes" :label="item.dictId" :value="item.dictId" :key="item.dictId" style="margin-top: 10px;">{{item.dictName}}</el-radio>
+                    </el-radio-group>
+                </div>
             </el-form-item>
         </el-col>
         <el-col :span="12" >
