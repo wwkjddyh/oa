@@ -1005,7 +1005,8 @@
 	</select>
 	<select id="getRootOrgId" resultMap="orgMap">
 	
-		select org_id,org_nm from t_sys_org where org_id in 
+		select org_id,org_nm,upper_org from t_sys_org where status='1' and org_id in 
 		(select distinct root_org from t_sys_org where instr(#{orgId},org_id)>0)
 	</select>
+
 </mapper>

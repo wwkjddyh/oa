@@ -205,5 +205,9 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 	public List<Map> getPartyAgeEchartBarData(List<String> rootOrgs) {
 		return orgRepository.getPartyAgeEchartBarData(rootOrgs);
 	}
+	@Override
+	public List<Organization> getRootOrgList(String userId) {
+		return null;
+	}
 
 }

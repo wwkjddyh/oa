@@ -395,6 +395,12 @@ public class OrgBiz extends BaseBiz {
         result.put("education",educationEb);
 		return result;
 	}
+	public List<Organization> getRootOrgList(String userId) {
+		//获取当前用户可见组织机构
+		List<Organization> orgIdByuserId = orgSerivce.getOrgIdByuserId(userId);
+		List<Organization> getRootOrgId = orgSerivce.getRootOrgId(orgIdByuserId.get(0).getOrgId());
+		return getRootOrgId;
+	}
 	/**
 	 * 党员性别统计
 	 * @param gender
@@ -535,6 +541,7 @@ public class OrgBiz extends BaseBiz {
 		}
 		
 	}
+	
 	
 	
 }

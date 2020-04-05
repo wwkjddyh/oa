@@ -1354,6 +1354,7 @@ new Vue({
         allSysUsers: [],
         allSysUsersMap: {},
         currBrief: {},
+        userRootOrg:[],
         currNotice: {},
         //uploadFileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
         uploadFileList: [],
@@ -4369,6 +4370,7 @@ new Vue({
                   	}else{
                   		that.getUserUpperOrgList();
                   	}
+                      that.getUserRootOrgList();
                   })
                   .catch(function(err){/*异常*/
                       console.log(err);
@@ -4861,6 +4863,21 @@ new Vue({
         			}
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.userUpperOrg = that.getTreeData(response.data.result, parentArr);
+        		}
+        	});
+        },
+        getUserRootOrgList(){
+        	let that = this;
+        	let treeTable =[];
+        	axios.get("/api/org/getRootOrgList",null).then(function(response){
+        		that.handleResponse(response);
+        		if(parseInt(response.status) == 200 ){
+        			for(let i =0 ; i <response.data.result.length;i++){
+        				response.data.result[i].value=response.data.result[i].orgId;
+        				response.data.result[i].label=response.data.result[i].orgName;
+        			}
+        			let parentArr = response.data.result.filter(l => l.upperOrg === null);
+        			that.userRootOrg = that.getTreeData(response.data.result, parentArr);
         		}
         	});
         },
