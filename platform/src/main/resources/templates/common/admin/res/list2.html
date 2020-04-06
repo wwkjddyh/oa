@@ -49,19 +49,19 @@
         </el-col>
     </el-form>
     <div>
-        <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
+        <el-button plain @click="edit('res','','',true)" size="small" icon="el-icon-upload2">新建上传</el-button>
         <template  v-if="userOwnedModuleMaps['viewOrg'] && userOwnedModuleMaps['viewOrg'] != undefined">
         <el-cascader v-model="formSearchRes.orgId"
                      :options="userRootOrg"
                      :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
                      style="width: 300px;margin-left: 5px;margin-right: 5px;"
-                     size="mini"
+                     size="small"
                      filterable
                      collapse-tags
                      clearable
         ></el-cascader>
         </template>
-        <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
+        <el-button size="small" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
     </div>
     		
     <div style="margin-top: 20px">
