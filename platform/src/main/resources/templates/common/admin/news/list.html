@@ -89,13 +89,13 @@
                     -->
                     <label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi" style="font-size: 16px;color: #4f4f4f;"></label>
                     <label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi" style="font-size: 16px;color: #4f4f4f;"></label>
-                    <a style="color: #4f4f4f; cursor: pointer;font-size: 16px;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
+                    <a class="list-row-base-style" style="cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
                 </div>
                 <div style="width: 70%; height: auto" v-if="formSearchNews.isViewed != ''">
-                    <a style="color: #4f4f4f; cursor: pointer;font-size: 16px;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
+                    <a class="list-row-base-style" style="cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
                 </div>
-                <div style="width: 30%; font-size: 16px; color: #4f4f4f;">
-                    {{item.sendTime.substr(0, 10)}}
+                <div class="list-row-base-style" style="width: 30%; justify-content: flex-end;display: flex;">
+                    <span class="list-row-base-style">{{item.sendTime.substr(0, 10)}}</span>
                 </div>
             </div>
         </div>

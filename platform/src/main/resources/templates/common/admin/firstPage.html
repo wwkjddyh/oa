@@ -33,8 +33,8 @@
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
 					<div v-for="item in currUserReceiverNewsRecordsfirstPage" class="firstPage-briefs-item" style="margin-top:30px">
 						<div class="firstPage-briefs-item_title">
-							<label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi" style="color:#4f4f4f;font-size: 16px;">【已读】</label>
-							<label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi" style="color:#4f4f4f;font-size: 16px;">【未读】</label>
+							<label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi list-row-base-style">【已读】</label>
+							<label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi list-row-base-style">【未读】</label>
 							<a class="firstPage-briefs_item_title-a" @click="handleNoticeView(item.recordId)">{{item.newsTitle || ''}}</a>
 						</div>
 						<div class="firstPage-briefs-item_time">
