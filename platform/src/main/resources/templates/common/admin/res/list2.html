@@ -17,7 +17,7 @@
 								    ></el-cascader> 
             </el-form-item>
             -->
-            <el-form-item label="文件分类" v-if="uploadData.type === 'res2-fzdy'">
+            <el-form-item label="文件分类" v-if="uploadData.type === 'res2-fzdy'" style="margin-top: -3px">
                 <!--
                 <el-select v-model="formSearchRes.assTypeId" style="width: 300px; font-size: 12px" placeholder="请选择分类" size="small">
                     <el-option label="全部" value="">全部</el-option>
@@ -50,8 +50,8 @@
     </el-form>
     <div>
         <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
-        <el-cascader v-if="userOwnedModuleMaps['viewOrg'] && userOwnedModuleMaps['viewOrg'] != undefined"
-                     v-model="formSearchRes.orgId"
+        <template  v-if="userOwnedModuleMaps['viewOrg'] && userOwnedModuleMaps['viewOrg'] != undefined">
+        <el-cascader v-model="formSearchRes.orgId"
                      :options="userRootOrg"
                      :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
                      style="width: 300px;margin-left: 5px;margin-right: 5px;"
@@ -60,6 +60,7 @@
                      collapse-tags
                      clearable
         ></el-cascader>
+        </template>
         <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
     </div>
     		
