@@ -2652,6 +2652,8 @@ new Vue({
                         that.dialogShow.news = false;
                         that.pager.news.currentPage = 1;
                         that.loadNews('',1, that.pager.news.pageSize);
+                        // 再次加载首页通知消息(如果消息发给自己)
+                        that.loadCurrUserNewsOfFirstPage();
                     });
                     that.fullscreenLoading=false;
                 }).catch(function(err){
@@ -4175,9 +4177,9 @@ new Vue({
         },
 
         /**
-         * 获得(当前)用户获得最新的消息通告
+         * 首页加载通知消息
          */
-        getCurrUserReceivedNewestNews() {
+        loadCurrUserNewsOfFirstPage() {
             let that = this;
             that.scrollBoxContent = '';
             axios.get("/api/news/getCurrUserNews", {params:{
@@ -4185,7 +4187,7 @@ new Vue({
                     pageSize: 6
                 }})
                 .then(function(response){
-                	that.handleResponse(response);
+                    that.handleResponse(response);
                     let data = response.data;
                     //console.log('getCurrUserReceivedNewestNews.data ', data.data.list)
                     if(parseInt(data.code) === 200) {
@@ -4207,41 +4209,16 @@ new Vue({
                 .catch(function(err){/*异常*/
                     console.log(err);
                 });
-            var timer = setInterval(function () {
-                that.scrollBoxContent = '';
-                axios.get("/api/news/getCurrUserNews", {params:{
-                        pageNum: 1,
-                        pageSize: 6
-                    }})
-                    .then(function(response){
-                    	that.handleResponse(response);
-                        let data = response.data;
-                        //console.log('getCurrUserReceivedNewestNews.data ', data.data.list)
-                        if(parseInt(data.code) === 200) {
-                            let _newsArr = data.data.list || [];
-                            that.currUserReceiverNewsRecordsfirstPage = _newsArr;
-                            let _content = '';
-                            for (let i = 0; i < _newsArr.length; i ++) {
-                                let _news = _newsArr[i];
-                                if (_content == '') {
-                                    _content = _news.content;
-                                }
-                                else {
-                                    _content += '      ' + _news.content;
-                                }
-                            }
-                            that.scrollBoxContent = _content;
-                        }
-                    })
-                    .catch(function(err){/*异常*/
-                        console.log(err);
-                    });
+        },
 
-
-                // if(num == 10){
-                //     clearInterval(timer);
-                // }
-
+        /**
+         * 获得(当前)用户获得最新的消息通告
+         */
+        getCurrUserReceivedNewestNews() {
+            let that = this;
+            that.loadCurrUserNewsOfFirstPage();
+            let timer = setInterval(function () {
+                that.loadCurrUserNewsOfFirstPage();
             },300000);
 
             // that.scrollBoxContent = '';
@@ -5438,6 +5415,7 @@ new Vue({
                             	if(parseInt(response.data.code) === 200){
                                     //that.searchForm('formSearchNews');
                                     console.log('查看成功。。。', _recordId);
+                                    that.loadCurrUserNewsOfFirstPage();
                                 }
                             }).catch(function(err){
                             console.warn(err);
