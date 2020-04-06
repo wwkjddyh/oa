@@ -35,7 +35,7 @@ public class PlatformWebSocketInterceptor implements HandshakeInterceptor {
             ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) request;
             HttpServletRequest httpRequest = servletRequest.getServletRequest();
         }
-        System.err.println("连接到我了");
+//        System.err.println("连接到我了");
         return true;
     }
 }

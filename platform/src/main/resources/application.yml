@@ -7,7 +7,7 @@ mybatis:
 
 logging:
   level:
-    web: DEBUG
+#    web: DEBUG
     com:
       oa:
         platform:

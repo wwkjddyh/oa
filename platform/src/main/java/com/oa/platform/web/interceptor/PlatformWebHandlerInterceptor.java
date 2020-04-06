@@ -33,14 +33,14 @@ public class PlatformWebHandlerInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        logger.info("---------------------开始进入请求地址拦截----------------------------");
+//        logger.info("---------------------开始进入请求地址拦截----------------------------");
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=utf-8");
 //        System.err.println("accept:"+request.getHeader("accept"));
 
         Map<String,Object> unLogon = StringUtil.getResultVo(StatusCode.UNAUTHORIZED,"UNAUTHORIZED","");
         String unLogonMsg = JSONObject.toJSONString(unLogon);
-        logger.info("sessionId=>" + request.getSession().getId());
+//        logger.info("sessionId=>" + request.getSession().getId());
         SecurityContextImpl securityContext = (SecurityContextImpl)request.getSession().getAttribute(Constants.SPRING_SECURITY_SESSION_KEY);
         boolean isLogon = false;
         if(securityContext != null) {
@@ -61,7 +61,7 @@ public class PlatformWebHandlerInterceptor implements HandlerInterceptor {
 //        }
 
         String requestUri = request.getRequestURI();
-        logger.info("PlatformWebHandlerInterceptor.preHandle()>>>requestUri:"+requestUri+"\n");
+//        logger.info("PlatformWebHandlerInterceptor.preHandle()>>>requestUri:"+requestUri+"\n");
         //Rest请求验证
         if(requestUri.contains("/api/")) {
             if(!isLogon) {
@@ -106,11 +106,11 @@ public class PlatformWebHandlerInterceptor implements HandlerInterceptor {
 //        }
         //验证IP地址访问是否超过次数
         String ip = StringUtil.trim(getIpAddr(request));
-        logger.info("---------------------IP地址为："+ip);
+//        logger.info("---------------------IP地址为："+ip);
         if(!"".equals(ip)) {
 
             if(securityContext == null) {
-                logger.info("---------------------securityContext信息为空");
+//                logger.info("---------------------securityContext信息为空");
 //                print(response,unLogonMsg);
 //                return false;
             }
@@ -118,7 +118,7 @@ public class PlatformWebHandlerInterceptor implements HandlerInterceptor {
                 Authentication authentication = securityContext.getAuthentication();
                 if(authentication != null) {
                     String username = StringUtil.trim(authentication.getName());
-                    logger.info("---------------------username:"+username);
+//                    logger.info("---------------------username:"+username);
 
                     /**
                      * 请登录
@@ -130,14 +130,14 @@ public class PlatformWebHandlerInterceptor implements HandlerInterceptor {
 
                     if(authentication.getCredentials() != null) {
                         //未加密密码
-                       logger.info("---------------------未加密密码:"+authentication.getCredentials());
+//                       logger.info("---------------------未加密密码:"+authentication.getCredentials());
                     }
 
 
                     if(authentication.getDetails() != null) {
                         WebAuthenticationDetails details = (WebAuthenticationDetails) authentication.getDetails();
-                        logger.info("---------------------访问地址："+details.getRemoteAddress());
-                        logger.info("---------------------SessionId："+details.getSessionId());
+//                        logger.info("---------------------访问地址："+details.getRemoteAddress());
+//                        logger.info("---------------------SessionId："+details.getSessionId());
                     }
 
                     // 获得当前用户所拥有的权限
@@ -147,7 +147,7 @@ public class PlatformWebHandlerInterceptor implements HandlerInterceptor {
                     Object principal = authentication.getPrincipal();
                     if(principal != null) {
                         User user = (User) principal;
-                        logger.info("---------------------用户信息为username:'"+ JSONObject.toJSONString(user) +"'");
+//                        logger.info("---------------------用户信息为username:'"+ JSONObject.toJSONString(user) +"'");
                     }
                 }
             }
@@ -183,20 +183,20 @@ public class PlatformWebHandlerInterceptor implements HandlerInterceptor {
             out.flush();
         }
         catch(Exception e) {
-            logger.error(".....打印json信息异常",e);
+//            logger.error(".....打印json信息异常",e);
         }
     }
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
                            ModelAndView modelAndView) throws Exception {
-        logger.info("--------------处理请求完成后视图渲染之前的处理操作---------------");
+//        logger.info("--------------处理请求完成后视图渲染之前的处理操作---------------");
     }
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response,
                                 Object handler, Exception ex) throws Exception {
-        logger.info("---------------视图渲染之后的操作-------------------------0");
+//        logger.info("---------------视图渲染之后的操作-------------------------0");
     }
 
     /**
