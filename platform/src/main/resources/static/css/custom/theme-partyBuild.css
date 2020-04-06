@@ -280,6 +280,7 @@
     width: 100%;
     font-size: 12px;
     color: #4f4f4f;
+    font-weight: normal;
 }
 #dwjbxxSubTable2 th>.cell {
     display: inline-block;
@@ -292,6 +293,7 @@
     width: 100%;
     font-size: 12px;
     color: #4f4f4f;
+    font-weight: normal;
 }
 #dwjbxxSubTable3 th>.cell {
     display: inline-block;
@@ -304,6 +306,7 @@
     width: 100%;
     font-size: 12px;
     color: #4f4f4f;
+    font-weight: normal;
 }
 
 
