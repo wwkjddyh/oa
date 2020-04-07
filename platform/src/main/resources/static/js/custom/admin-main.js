@@ -951,6 +951,7 @@ new Vue({
         dwjbxxLoading: false,
         fullscreenLoading:false,
         sysUserLoading:false,
+        newsLoading:false,
         currentUserOrgId:'',
         partyImg:{
         	width:'190px',
@@ -1200,6 +1201,9 @@ new Vue({
         ],
         firstPageZlxz:'dygl',
         articles: [],
+        newsOperate: false,
+        operateName: '操作',
+        operateIcon: 'el-icon-setting',
         articleTypes: [],
         isSuperAdmin: false,
         currUserReceiverBriefRecords: [],
@@ -1879,6 +1883,42 @@ new Vue({
         	if(list && list.length > 0){
         		return list[0].label;
         	}
+        },
+        operateNews(){
+        	let that = this;
+        	that.newsOperate = !that.newsOperate;
+        	if(that.newsOperate){
+        		that.operateName = '完成';
+        		that.operateIcon = 'el-icon-check';
+        	}else{
+        		that.operateName = '操作';
+        		that.operateIcon = 'el-icon-setting';
+        	}
+        },
+        deleteNews(recordId){
+        	let that = this;
+        	let params = new URLSearchParams();
+            params.append('id', recordId || '');
+            that.newsLoading = true;
+        	axios.post("/api/news/deleteById", params)
+            .then(function(response){
+            	that.handleResponse(response);
+                let responseCode = parseInt(response.data.code);
+                if(responseCode === 200){
+                	that.$message({
+                        message: '删除成功',
+                        type: 'success'
+                    });
+                	that.searchForm('formSearchNews');
+                	that.newsLoading = false;
+                }else{
+                	that.$message.error('删除失败');
+                	that.newsLoading = false;
+                }
+            }).catch(function(err){
+            	that.$message.error('删除失败');
+            	that.newsLoading = false;
+            });
         },
         getNationValue(nationId){
         	let list = this.nation.filter(x=>x.dictId == nationId);

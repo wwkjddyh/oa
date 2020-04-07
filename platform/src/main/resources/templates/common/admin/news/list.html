@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
     <el-button plain @click="edit('news','','',true)" size="mini" icon="el-icon-plus">新增</el-button>
+    <el-button plain @click="operateNews()" size="mini" :icon="operateIcon">{{operateName}}</el-button>
     <el-button round @click="handleNewsSearchByViewed('')" size="mini" :type="formSearchNews.allBtnType">全部</el-button>
     <el-button round @click="handleNewsSearchByViewed('1')" size="mini" :type="formSearchNews.viewedBtnType">已读</el-button>
     <el-button round @click="handleNewsSearchByViewed('0')" size="mini" :type="formSearchNews.unViewedBtnType">未读</el-button>
@@ -58,7 +59,7 @@
             </el-table-column>
         </el-table>
         -->
-        <div style="margin-top: 20px; width: 100%">
+        <div style="margin-top: 20px; width: 100%" v-loading="newsLoading">
             <!--
             <div v-for="item in newsArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
                 <div style="width: 70%; height: auto">
@@ -87,11 +88,13 @@
                         <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" slot="reference" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
                     </el-popover>
                     -->
+                    <label v-if="newsOperate == true" @click="deleteNews(item.recordId)" class="el-icon-close" style="font-size: 16px;color: red;font-weight:bold;cursor: pointer;"></label>
                     <label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi" style="font-size: 16px;color: #4f4f4f;"></label>
                     <label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi" style="font-size: 16px;color: #4f4f4f;"></label>
                     <a class="list-row-base-style" style="cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
                 </div>
                 <div style="width: 70%; height: auto" v-if="formSearchNews.isViewed != ''">
+                	<label v-if="newsOperate == true" @click="deleteNews(item.recordId)" class="el-icon-close" style="font-size: 16px;color: red;font-weight:bold;cursor: pointer;"></label>
                     <a class="list-row-base-style" style="cursor: pointer;" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
                 </div>
                 <div class="list-row-base-style" style="width: 30%; justify-content: flex-end;display: flex;">

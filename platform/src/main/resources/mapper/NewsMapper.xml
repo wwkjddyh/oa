@@ -200,7 +200,7 @@
   </select>
 
   <delete id="delete" parameterType="news">
-    DELETE FROM t_news
+    DELETE FROM t_news_send_record
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="recordId != null and recordId != ''">
         AND record_id = #{recordId}
