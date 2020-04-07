@@ -124,14 +124,14 @@ public class AuthApiController extends BaseController {
 	    				return getErroResultVo(5000,"无效的手机号码 "+userPhone.get(0),null);
 	    			}
 	    		}else {
-	    			return getErroResultVo(500,"当前用户无手机号码",null);
+	    			return getErroResultVo(500,"当前用户无手机号码或用户不存在",null);
 	    		}
     		}
 		
     		return getErroResultVo(500,"当前用户一天内已进行短信登录，请勿重复获取",null);
     }
     /**
-     * 手机号格式校验
+     	* 手机号格式校验
      * @param phone
      * @return
      */
@@ -142,7 +142,7 @@ public class AuthApiController extends BaseController {
         return phone.matches(PHONE_REGEX);
     }
     /**
-     * 是否短信验证
+     	* 是否短信验证
      * @param userId
      * @return
      */
