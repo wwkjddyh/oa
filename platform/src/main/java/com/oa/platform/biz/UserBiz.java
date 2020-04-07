@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
@@ -48,6 +49,17 @@ public class UserBiz extends BaseBiz {
     
     @Value("${userDefaultPwd}")
 	private String userDefaultPwd;
+    
+    
+    /**
+ 	* 手机号格式校验正则
+	 */
+	public static final String PHONE_REGEX = "^1(3[0-9]|4[57]|5[0-35-9]|7[0135678]|8[0-9])\\d{8}$";
+	/**
+	 * 邮箱校验正则
+	 */
+	public static final String MAIL_REGEX = "^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$";
+
     /**
      * 保存用户信息
      * @param userType
@@ -292,7 +304,17 @@ public class UserBiz extends BaseBiz {
         }
         return isRepeat;
     }
-
+    /**
+	 	* 手机号/邮箱格式校验
+	 * @param phone
+	 * @return
+	 */
+	private static final boolean checkPhone(String phoneOrMail,String regex) {
+	    if (StringUtils.isEmpty(phoneOrMail)) {
+	        return false;
+	    }
+	    return phoneOrMail.matches(regex);
+	}
     /**
      * 保存用户基本信息
      * @param userType 用户类型
@@ -335,6 +357,14 @@ public class UserBiz extends BaseBiz {
                     ret = this.getParamRepeatErrorVo("登录名");
                 }
                 else {
+                	boolean checkPhone = checkPhone(phone,PHONE_REGEX);
+                	if(!checkPhone) {
+                		return this.getParamErrorVoMsg("手机号码不符合规则(无效的手机号码)");
+                	}
+                	boolean checkPhone2 = checkPhone(mail,MAIL_REGEX);
+                	if(!checkPhone2) {
+                		return this.getParamErrorVoMsg("邮箱不符合规则(无效的邮箱)");
+                	}
                     User user = new User();
                     user.setUserName(userName);
                     user.setUserNickname(StringUtil.trim(userNickname));
@@ -346,7 +376,7 @@ public class UserBiz extends BaseBiz {
                         user.setUserId(StringUtil.getRandomUUID());
                         user.setRecordFlag(Constants.INT_NORMAL);
                         userService.save(user);
-                      //保存用户部门关系
+                        //保存用户部门关系
                         UserDtl dtl = new UserDtl();
                         dtl.setUserId(user.getUserId());
                         dtl.setLeader("0");

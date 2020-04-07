@@ -9,6 +9,7 @@ import com.oa.platform.entity.User;
 import com.oa.platform.web.controller.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,9 +39,11 @@ public class UserApiController extends BaseController {
 
     @Autowired
     private HttpServletRequest request;
-
+    
+    
+  
     /**
-     * 根据userId获得用户信息(包括详细信息)
+     	* 根据userId获得用户信息(包括详细信息)
      * @param userId 用户id
      * @return Map&lt;String,Object&gt;
      */
@@ -437,7 +440,7 @@ public class UserApiController extends BaseController {
         return userBiz.saveUserBaseInfo(userId, userType, userName, userNickname,
                 userPwd, langConfId, recordFlag, oldPassword, passwordOrgi,orgId,mail,phone);
     }
-
+    
     /**
      * 根据userId删除用户(逻辑)
      * @param userId 用户ID

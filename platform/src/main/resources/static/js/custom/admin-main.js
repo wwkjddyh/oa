@@ -2069,6 +2069,7 @@ new Vue({
                 params.append('orgId', that.formSysUser.orgId || '');
                 params.append('mail',that.formSysUser.mail || '');
                 params.append('phone',that.formSysUser.phone || '');
+               
             }
             else {
                 userId = that.formUser.id || '';
@@ -2115,6 +2116,8 @@ new Vue({
                         else {
                             that.$message.error( response.data.msg);
                         }
+                    }else{
+                    	that.$message.error(response.data.msg);
                     }
                     that.fullscreenLoading = false;
                 }).catch(function(err){

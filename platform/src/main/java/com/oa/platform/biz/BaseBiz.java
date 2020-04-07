@@ -128,7 +128,13 @@ public abstract class BaseBiz {
     public Map<String,Object> getParamErrorVo() {
         return StringUtil.getResultVo(StatusCode.REQUEST_PARAM_ERROR,"REQUEST_PARAM_ERROR","");
     }
-
+    /**
+     * 返回请求参数异常信息
+     * @return
+     */
+    public Map<String,Object> getParamErrorVoMsg(String msg) {
+        return StringUtil.getResultVo(StatusCode.INTERNAL_SERVER_ERROR,msg,"");
+    }
     /**
      * 返回请求参数重复信息
      * @param paramName 参数名
