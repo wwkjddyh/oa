@@ -16,7 +16,7 @@
                             prop="orgName"
                             label="组织简称"
                             align="left"
-                            width="250">
+                            width="300">
 						<template slot-scope="scope">
 							<span class="list-row-base-style">{{scope.row.orgName}}</span>
 						</template>
@@ -25,7 +25,7 @@
                             prop="orgType"
                             label="党组织类型"
                             align="center"
-                            width="200">
+                            width="120">
 						<template slot-scope="scope">
 							<span class="list-row-base-style">{{ getOrgTypeValue(scope.row.orgType)}}</span>
 						</template>
@@ -33,6 +33,7 @@
                     <el-table-column
                             prop="foundTime"
                             align="center"
+                            width="120"
                             label="成立时间">
 						<template slot-scope="scope">
 							<span class="list-row-base-style">{{scope.row.foundTime}}</span>
@@ -41,6 +42,7 @@
                     <el-table-column
                             prop="leader"
                             align="center"
+                            width="300"
                             label="书记">
 						<template slot-scope="scope">
 							<span class="list-row-base-style">{{scope.row.leader}}</span>
@@ -49,6 +51,7 @@
                     <el-table-column
                             prop="concatPersion"
                             align="center"
+                            width="120"
                             label="联系人">
 						<template slot-scope="scope">
 							<span class="list-row-base-style">{{scope.row.concatPersion}}</span>
