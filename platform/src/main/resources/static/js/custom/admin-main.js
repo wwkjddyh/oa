@@ -1921,6 +1921,38 @@ new Vue({
             	that.newsLoading = false;
             });
         },
+        deleteArtcle(recordId){
+        	let that = this;
+        	let params = new URLSearchParams();
+            params.append('recordId', recordId || '');
+            that.newsLoading = true;
+        	axios.post("/api/article/deleteArticleById", params)
+            .then(function(response){
+            	that.handleResponse(response);
+                let responseCode = parseInt(response.data.code);
+                if(parseInt(responseCode) === 200){
+                	that.$message({
+                        message: '删除成功',
+                        type: 'success'
+                    });
+                	that.currentArticleFormTitle = '简报';
+                    that.formSearchArticle.isBrief = true;
+                    that.formSearchArticle.sendType = '1';
+                    that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                    //that.loadArticles('',1, that.pager.article.pageSize);
+                    that.currAction = 'append';
+                    that.def_menu_id = 'articles';
+                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, that.pager.briefSendRecord.pageSize);
+                	that.newsLoading = false;
+                }else{
+                	that.$message.error('删除失败');
+                	that.newsLoading = false;
+                }
+            }).catch(function(err){
+            	that.$message.error('删除失败');
+            	that.newsLoading = false;
+            });
+        },
         getNationValue(nationId){
         	let list = this.nation.filter(x=>x.dictId == nationId);
         	if(list && list.length > 0){

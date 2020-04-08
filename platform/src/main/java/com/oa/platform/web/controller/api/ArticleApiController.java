@@ -2,6 +2,7 @@ package com.oa.platform.web.controller.api;
 
 import com.oa.platform.biz.ArticleBiz;
 import com.oa.platform.common.Constants;
+import com.oa.platform.common.ResultVo;
 import com.oa.platform.common.StatusCode;
 import com.oa.platform.util.StringUtil;
 import com.oa.platform.web.controller.BaseController;
@@ -172,5 +173,15 @@ public class ArticleApiController extends BaseController {
     @GetMapping("get")
     public Map<String, Object> getArticleById(@RequestParam String id) {
         return articleBiz.getArticleById(id);
+    }
+    /**
+     * 用户删除接收到的简报
+     * @param recordId
+     * @return
+     */
+    @PostMapping("deleteArticleById")
+    public ResultVo deleteArticleById(String recordId) {
+    	articleBiz.deleteArticleById(recordId);
+    	return getSuccessResultVo(null);
     }
 }

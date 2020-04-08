@@ -388,4 +388,7 @@
   <select id="findReceiverIdByBriefId" parameterType="java.lang.String" resultType="java.lang.String">
     SELECT receiver_id FROM t_brief_send_record WHERE record_flag = 1 and brief_id = #{briefId}
   </select>
+  <update id="deleteArticleById">
+  	update t_brief_send_record set record_flag=0 where record_id=#{recordId}
+  </update>
 </mapper>

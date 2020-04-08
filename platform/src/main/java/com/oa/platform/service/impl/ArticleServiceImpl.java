@@ -78,4 +78,10 @@ public class ArticleServiceImpl extends AbstractBaseService<Article,String> impl
         List<BriefSendRecord> records = articleRepository.findBriefSendRecord(record == null ? new BriefSendRecord() : record);
         return new PageInfo<>(records);
     }
+
+	@Override
+	public void deleteArticleById(String recordId) {
+		articleRepository.deleteArticleById(recordId);
+		
+	}
 }

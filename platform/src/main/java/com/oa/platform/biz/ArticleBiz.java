@@ -338,4 +338,9 @@ public class ArticleBiz extends BaseBiz {
         }
         return ret;
     }
+
+	public void deleteArticleById(String recordId) {
+		articleService.deleteArticleById(recordId);
+		
+	}
 }

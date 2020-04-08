@@ -1,10 +1,12 @@
 package com.oa.platform.repository;
 
-import com.oa.platform.entity.Article;
-import com.oa.platform.entity.BriefSendRecord;
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.oa.platform.entity.Article;
+import com.oa.platform.entity.BriefSendRecord;
 
 /**
  * 文章信息
@@ -63,4 +65,6 @@ public interface ArticleRepository extends BaseRepository<Article, String> {
      * @return
      */
     List<String> findReceiverIdByBriefId(String briefId);
+
+	void deleteArticleById(@Param("recordId") String recordId);
 }
