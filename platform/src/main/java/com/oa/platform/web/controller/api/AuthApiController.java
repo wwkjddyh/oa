@@ -149,11 +149,11 @@ public class AuthApiController extends BaseController {
     @GetMapping("needSms")
     public ResultVo needSms(String userId) {
     	List<String> userSms = roleBiz.getUserSMSData(userId);
-		if(userSms == null || userSms.size() == 0) {
-			return getSuccessResultVo(true);
-		}else {
-			return getSuccessResultVo(false);
-		}
+		/*
+		 * if(userSms == null || userSms.size() == 0) { return getSuccessResultVo(true);
+		 * }else { return getSuccessResultVo(false); }
+		 */
+    	return getSuccessResultVo(false);
     }
     /**
      * 短信验证码校验

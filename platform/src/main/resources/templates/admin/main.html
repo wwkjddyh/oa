@@ -128,7 +128,8 @@
 
 
                 <keep-alive :max="30">
-                    <div style="margin-top: 20px;margin-bottom: -20px; margin-left: 10px;margin-right: 10px;">
+                <el-collapse-transition>
+                    <div   style="margin-top: 20px;margin-bottom: -20px; margin-left: 10px;margin-right: 10px;">
                         <el-card shadow="never" v-if="showContent == 'modules'" key="modules">
                             <div th:replace="/common/admin/user/modules :: content"/>
                         </el-card>
@@ -246,6 +247,7 @@
                             <div th:replace="/common/admin/article/articleManagement :: content"/>
                         </el-card>
                     </div>
+                </el-collapse-transition>
                 </keep-alive>
             </el-main>
             <!--
@@ -256,7 +258,7 @@
             <el-footer>
                 <div class="footer-div">
                     <p style="font-size: 10px;">技术支持：奥维云创(天津)网络科技有限公司 </p>
-                    <p style="margin-left: 20px;font-size: 10px;">E-mail：63840130@qq.com</p>
+                    <p style="margin-left: 20px;font-size: 10px;">E-mail：aoweiyunchuang@163.com</p>
                     <!-- <p style="margin-left: 80px;font-size: 10px;">津ICP备：110241538166</p> -->
                 </div>
             </el-footer>
@@ -294,4 +296,5 @@
 <script src="/js/data/struct-admin-main.js" charset="utf-8" th:src="@{~/js/data/struct-admin-main.js}"></script>
 <script src="/js/custom/admin-main.js" charset="utf-8" th:src="@{~/js/custom/admin-main.js}"></script>
 <script src="/js/jquery-3.3.1.js" charset="utf-8" th:src="@{~/js/jquery-3.3.1.js}"></script>
+<script src="/js/element-ui/transitions/collapse-transition.js" charset="utf-8" th:src="@{~/js/element-ui/transitions/collapse-transition.js}"></script>
 </html>

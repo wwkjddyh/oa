@@ -80,8 +80,15 @@ public class ArticleServiceImpl extends AbstractBaseService<Article,String> impl
     }
 
 	@Override
-	public void deleteArticleById(String recordId) {
-		articleRepository.deleteArticleById(recordId);
+	public void deleteArticleById(String recordId,String userId) {
+		articleRepository.deleteArticleById(recordId,userId);
 		
+	}
+
+	@Override
+	public PageInfo<BriefSendRecord> searchBriefSendRecordBySendId(BriefSendRecord record, int pageNum, int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+        List<BriefSendRecord> records = articleRepository.searchBriefSendRecordBySendId(record == null ? new BriefSendRecord() : record);
+        return new PageInfo<>(records);
 	}
 }

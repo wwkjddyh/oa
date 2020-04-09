@@ -77,6 +77,8 @@ new Vue({
                     //that.loadArticles('',1, that.pager.article.pageSize);
                     that.currAction = 'append';
                     that.def_menu_id = 'articles';
+                    that.receiveArtcleType='info';
+                    that.sendArtcleType='';
                     that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize);
                     break;
                 case 'articleManagement':   // 文章管理
@@ -987,6 +989,13 @@ new Vue({
                 imgUrl:'/images/icon/dues.png',
                 modelName:'年度党费收支情况公示'
             },
+            {
+                index:3,
+                name:'换届管理',
+                url:'hjgztz',
+                imgUrl:'/images/icon/huanjie.png',
+                modelName:'换届工作台账'
+            }
             /*
             {
                 index:0,
@@ -1027,18 +1036,26 @@ new Vue({
             },
             {
                 index:1,
+                name:'即时通讯',
+                url:'chat',
+                imgUrl:'/images/icon/chat.png',
+                modelName:'即时通讯'
+            },
+            {
+                index:2,
                 name:'大数据',
                 url:'bigData',
                 imgUrl:'/images/icon/bigdata.png',
                 modelName:'大数据'
             },
             {
-                index:2,
+                index:3,
                 name:'用户管理',
                 url:'sysUsers',
                 imgUrl:'/images/icon/user.png',
                 modelName:'系统用户'
-            },
+            }
+            
             /*
             {
                 index:0,
@@ -1070,12 +1087,12 @@ new Vue({
             }*/
         ],
         firstPage2:[
-            {
+        	{
                 index:0,
-                name:'换届管理',
-                url:'hjgztz',
-                imgUrl:'/images/icon/huanjie.png',
-                modelName:'换届工作台账'
+                name:'通知公告',
+                url:'announce',
+                imgUrl:'/images/icon/news.png',
+                modelName:'通知公告'
             },
             {
                 index:1,
@@ -1086,11 +1103,19 @@ new Vue({
             },
             {
                 index:2,
-                name:'通知公告',
-                url:'announce',
-                imgUrl:'/images/icon/news.png',
-                modelName:'通知公告'
+                name:'正式文件',
+                url:'pFile',
+                imgUrl:'/images/icon/zswj.png',
+                modelName:'正式文件'
+            },
+            {
+                index:3,
+                name:'资料库',
+                url:'reposity',
+                imgUrl:'/images/icon/zlk.png',
+                modelName:'资料库'
             }
+            
         ],
         firstPageFuncModules: [ /*首页功能模块区域*/
             /*
@@ -1133,6 +1158,8 @@ new Vue({
         nddyxxcjYear:false,
         nddyxxSearchCondition:'',
         formnddyxxcjyear:{},
+        sendArtcleType:'',
+        receiveArtcleType:'info',
         formPartInfo:{},
         gender:[
         	{
@@ -1935,14 +1962,17 @@ new Vue({
                         message: '删除成功',
                         type: 'success'
                     });
-                	that.currentArticleFormTitle = '简报';
+                	that.receiveArtcleType='';
+            		that.sendArtcleType='info';
+            		that.currentArticleFormTitle = '简报';
                     that.formSearchArticle.isBrief = true;
                     that.formSearchArticle.sendType = '1';
                     that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                    that.formSearchArticle.flag='0';
                     //that.loadArticles('',1, that.pager.article.pageSize);
                     that.currAction = 'append';
                     that.def_menu_id = 'articles';
-                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, that.pager.briefSendRecord.pageSize);
+                    that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, that.pager.briefSendRecord.pageSize);
                 	that.newsLoading = false;
                 }else{
                 	that.$message.error('删除失败');
@@ -2357,7 +2387,12 @@ new Vue({
                             that.$refs['menuRef'].activeIndex = 'articles';
                             that.briefReceiveUserIds = [];
                             that.pager.briefSendRecord.currentPage = 1;
-                            that.loadCurrUserReceiverBriefRecord('', 1, that.pager.briefSendRecord.pageSize);
+                            if(that.sendArtcleType =='info'){
+                            	that.loadCurrUserSendBriefRecord('', 1, that.pager.briefSendRecord.pageSize);
+                            }else{
+                            	that.loadCurrUserReceiverBriefRecord('', 1, that.pager.briefSendRecord.pageSize);
+                            }
+                            
                             that.$forceUpdate();
                             that.$message({
                                 message: articleType + operName + '成功!',
@@ -5607,7 +5642,7 @@ new Vue({
                     briefId: that.formSearchBriefSendRecord.briefId,
                     senderId: that.formSearchBriefSendRecord.senderId,
                     sendTime: that.formSearchBriefSendRecord.sendTime,
-                    viewTime: that.formSearchBriefSendRecord.viewTime,
+                    viewTime: that.formSearchBriefSendRecord.viewTime
                 }})
                 .then(function(response){/*成功*/
                 	that.handleResponse(response);
@@ -5616,6 +5651,40 @@ new Vue({
                         if(pageSize == 5){
                         	that.currUserReceiverBriefRecordsfirstPage =response.data.data.list;
                         }
+                        that.pager.briefSendRecord.totalCount = response.data.data.total;
+                    }
+                })
+                .catch(function(err){/*异常*/
+                    console.log(err);
+                });
+        },
+        /**
+         * 加载当前用户接收到的简报信息
+         */
+        loadCurrUserSendBriefRecord(criteria, pageNum, pageSize) {
+            let that = this;
+            let sendflag = that.formSearchArticle.flag;
+            if(sendflag == null){
+            	sendflag = '';
+            }
+            axios.get("/api/article/getCurrUserReceiverBriefRecord", {params:{
+                    key: criteria,
+                    pageNum: pageNum,
+                    pageSize: pageSize,
+                    briefId: that.formSearchBriefSendRecord.briefId,
+                    senderId: that.formSearchBriefSendRecord.senderId,
+                    sendTime: that.formSearchBriefSendRecord.sendTime,
+                    viewTime: that.formSearchBriefSendRecord.viewTime,
+                    flag:sendflag
+                }})
+                .then(function(response){/*成功*/
+                	that.handleResponse(response);
+                	if(parseInt(response.status) == 200 ) {
+                        that.currUserReceiverBriefRecords = response.data.data.list;
+                        if(pageSize == 5){
+                        	that.currUserReceiverBriefRecordsfirstPage =response.data.data.list;
+                        }
+                        
                         that.pager.briefSendRecord.totalCount = response.data.data.total;
                     }
                 })
@@ -5742,7 +5811,36 @@ new Vue({
             this.pager.res.currentPage = val;
             this.loadResList(this.pager.res.criteria, this.pager.res.currentPage, this.pager.res.pageSize);
         },
-
+        handleArtcleSearchByViewed(type){
+        	let that = this;
+        	if(type == '1'){
+        		that.receiveArtcleType='info';
+        		that.sendArtcleType='';
+        		that.newsOperate=false;
+        		that.operateName = '操作';
+        		that.operateIcon = 'el-icon-setting';
+        		that.currentArticleFormTitle = '简报';
+                that.formSearchArticle.isBrief = true;
+                that.formSearchArticle.sendType = '1';
+                that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                //that.loadArticles('',1, that.pager.article.pageSize);
+                that.currAction = 'append';
+                that.def_menu_id = 'articles';
+                that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize);
+        	}else if(type == '0'){
+        		that.receiveArtcleType='';
+        		that.sendArtcleType='info';
+        		that.currentArticleFormTitle = '简报';
+                that.formSearchArticle.isBrief = true;
+                that.formSearchArticle.sendType = '1';
+                that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                that.formSearchArticle.flag='0';
+                //that.loadArticles('',1, that.pager.article.pageSize);
+                that.currAction = 'append';
+                that.def_menu_id = 'articles';
+                that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize);
+        	}
+        },
         /**
          * 加载资源下载信息
          */
@@ -5864,13 +5962,37 @@ new Vue({
         },
         goToMenu(item){
         	let that = this;
-        	that.showContent  = item.url;
-        	that.def_menu_id = item.url;
-        	let model = {};
-        	model.moduleCode = item.url;
-        	model.moduleName = item.modelName;
-        	that.handleAddTab2(model);
-            that.$forceUpdate();
+        	
+        	
+        	if(item.url == 'chat' ){
+        		that.$message({
+                    message: '功能建设中',
+                    center:true,
+                    type: 'info'
+                });
+        	}else if(item.url == 'pFile' ){
+        		that.$message({
+                    message: '功能建设中',
+                    center:true,
+                    type: 'info'
+                });
+        	}else if(item.url == 'reposity' ){
+        		that.$message({
+                    message: '功能建设中',
+                    center:true,
+                    type: 'info'
+                });
+        	}
+        	else{
+        		that.showContent  = item.url;
+            	that.def_menu_id = item.url;
+	        	let model = {};
+	        	model.moduleCode = item.url;
+	        	
+	        	model.moduleName = item.modelName;
+	        	that.handleAddTab2(model);
+	            that.$forceUpdate();
+        	}
         },
         /**
          * 上传移除操作

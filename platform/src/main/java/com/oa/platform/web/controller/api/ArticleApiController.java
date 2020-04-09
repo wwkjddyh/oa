@@ -155,13 +155,20 @@ public class ArticleApiController extends BaseController {
             @RequestParam(defaultValue = "", required = false) String viewTime,
             @RequestParam(defaultValue = "", required = false) String key,
             @RequestParam(defaultValue = PAGE_NUM_STR, required = false) int pageNum,
-            @RequestParam(defaultValue = PAGE_SIZE_STR, required = false)  int pageSize) {
+            @RequestParam(defaultValue = PAGE_SIZE_STR, required = false)  int pageSize,
+            @RequestParam(defaultValue = "", required = false) String flag) {
         String userId = this.getUserIdOfSecurity();
         if ("".equals(userId)) {
             return StringUtil.getResultVo(StatusCode.UNAUTHORIZED, "请登录", "");
         }
-        return articleBiz.searchBriefSendRecord(id, briefId, senderId, userId,
-                status, Constants.INT_NORMAL, sendTime, viewTime, key, pageNum, pageSize);
+        if(flag != null && !"".equals(flag)) {
+        	return articleBiz.searchBriefSendRecord(id, briefId, userId, null,
+                    status, Constants.INT_NORMAL, sendTime, viewTime, key, pageNum, pageSize);
+        }else {
+        	return articleBiz.searchBriefSendRecord(id, briefId, senderId, userId,
+                    status, Constants.INT_NORMAL, sendTime, viewTime, key, pageNum, pageSize);
+        }
+        
     }
 
 
@@ -175,13 +182,14 @@ public class ArticleApiController extends BaseController {
         return articleBiz.getArticleById(id);
     }
     /**
-     * 用户删除接收到的简报
+     * 用户删除已发简报
      * @param recordId
      * @return
      */
     @PostMapping("deleteArticleById")
     public ResultVo deleteArticleById(String recordId) {
-    	articleBiz.deleteArticleById(recordId);
+    	String userId = this.getUserIdOfSecurity();
+    	articleBiz.deleteArticleById(recordId,userId);
     	return getSuccessResultVo(null);
     }
 }

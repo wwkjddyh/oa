@@ -298,8 +298,14 @@ public class ArticleBiz extends BaseBiz {
             record.setSendTime(StringUtil.trim(sendTime));
             record.setViewTime(StringUtil.trim(viewTime));
             record.setKey(StringUtil.trim(key));
-            PageInfo<BriefSendRecord> pageInfo = articleService.searchBriefSendRecord(record, pageNum, pageSize);
-            ret = this.getPageInfo(pageInfo);
+            if(senderId != null && !"".equals(senderId)) {
+            	PageInfo<BriefSendRecord> pageInfo = articleService.searchBriefSendRecordBySendId(record, pageNum, pageSize);
+            	ret = this.getPageInfo(pageInfo);
+            }else {
+            	PageInfo<BriefSendRecord> pageInfo = articleService.searchBriefSendRecord(record, pageNum, pageSize);
+            	ret = this.getPageInfo(pageInfo);
+            }
+            
         }
         else {
             List<BriefSendRecord> records = articleService.findBriefSendRecord(record);
@@ -339,8 +345,8 @@ public class ArticleBiz extends BaseBiz {
         return ret;
     }
 
-	public void deleteArticleById(String recordId) {
-		articleService.deleteArticleById(recordId);
+	public void deleteArticleById(String recordId,String userId) {
+		articleService.deleteArticleById(recordId,userId);
 		
 	}
 }

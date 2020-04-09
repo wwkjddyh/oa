@@ -72,5 +72,7 @@ public interface ArticleService extends BaseService<Article,String> {
      */
     PageInfo<BriefSendRecord> searchBriefSendRecord(BriefSendRecord record, int pageNum, int pageSize);
 
-	void deleteArticleById(String recordId);
+	void deleteArticleById(String recordId,String userId);
+
+	PageInfo<BriefSendRecord> searchBriefSendRecordBySendId(BriefSendRecord record, int pageNum, int pageSize);
 }
