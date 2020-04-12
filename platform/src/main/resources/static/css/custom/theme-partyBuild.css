@@ -771,5 +771,19 @@
     font-weight: bolder;
 }
 
+.party-member-dropdown {
+    cursor:pointer;
+}
+
+.party-member-dropdown-icon {
+    font-size: 14px;
+    color: #B2453F
+}
+
+.party-member-dropdown-item {
+    font-size: 14px;
+    font-weight: bolder;
+    color: #B2453F
+}
 
 

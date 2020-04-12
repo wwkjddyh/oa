@@ -1434,23 +1434,23 @@ new Vue({
         ],
         fzdySteps: [
             {
-                id: 0,
+                id: 1,
                 title: '申请入党',
             },
             {
-                id: 1,
+                id: 2,
                 title: '入党积极分子的确定和培养',
             },
             {
-                id: 2,
+                id: 3,
                 title: '发展对象的确定和考察',
             },
             {
-                id: 3,
+                id: 4,
                 title: '预备党员的接收',
             },
             {
-                id: 4,
+                id: 5,
                 title: '预备党员的教育考察和转正',
             }
         ],
@@ -7608,6 +7608,23 @@ new Vue({
             //         console.log('handleBigDataChange做汇总处理');
             //     }
             // }
+        },
+
+        /**
+         * 发展党员下拉(修改党员当前被发展状态)
+         * @param command 命令
+         */
+        handleFzdyDropdown(command) {
+            let that = this;
+            command = command || '';
+            console.log('handleFzdyDropdown.command', command);
+            if (command !== '') {
+                let arr = command.split(",");
+                console.log("发展状态等级：" + arr[0] +", 用户ID：" + arr[1]);
+                // 修改该党员状态
+
+                // 修改成功之后，刷新 重新加载：fzdyPartyMembers
+            }
         },
     },
     props: {

@@ -6,9 +6,6 @@
         <el-main>
             <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item v-for="(item, index) in fzdyBreadcrumbs">{{item.title}}</el-breadcrumb-item>
-                <!--<el-breadcrumb-item>第一分公司党委</el-breadcrumb-item>
-                <el-breadcrumb-item>工程一部党总支部</el-breadcrumb-item>
-                <el-breadcrumb-item>工程一部一支部</el-breadcrumb-item>-->
             </el-breadcrumb>
             <div style="margin-top: 10px">
                 <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
@@ -29,26 +26,6 @@
                             <div class="arrow-right1"></div>
                         </div>
                     </template>
-                    <!--<div class="step step2">
-                        <div class="arrow-right"></div>
-                        <span class="step-title">入党积极分子的确定和培养</span>
-                        <div class="arrow-right1"></div>
-                    </div>
-                    <div class="step step2">
-                        <div class="arrow-right"></div>
-                        <span class="step-title">发展对象的确定和考察</span>
-                        <div class="arrow-right1"></div>
-                    </div>
-                    <div class="step step2">
-                        <div class="arrow-right"></div>
-                        <span class="step-title">预备党员的接收</span>
-                        <div class="arrow-right1"></div>
-                    </div>
-                    <div class="step step2">
-                        <div class="arrow-right"></div>
-                        <span class="step-title">预备党员的教育考察和转正</span>
-                        <div class="arrow-right1"></div>
-                    </div>-->
                 </div>
                 <div class="list-content">
                     <div class="steps2">
@@ -62,28 +39,26 @@
                         <template v-for="(item, index) in fzdyPartyMembers">
                             <div class="row">
                                 <template v-if="item.stage < 5">
-                                    <div :class="'horizontal-line' + (item.stage-1)"></div><span class="party-member-name">{{item.name}}</span>
+                                    <div :class="'horizontal-line' + (item.stage-1)"></div>
+                                    <span class="party-member-name">{{item.name}}</span>
+                                    <el-dropdown size="mini" class="party-member-dropdown"  @command="handleFzdyDropdown">
+                                        <i class="el-icon-caret-bottom party-member-dropdown-icon"></i>
+                                        <el-dropdown-menu slot="dropdown">
+                                            <el-dropdown-item :command="item2.id + ',' + item.id" v-for="(item2, index2) in fzdySteps" v-if="item.stage !== item2.id" class="party-member-dropdown-item">{{item2.title}}</el-dropdown-item>
+                                        </el-dropdown-menu>
+                                    </el-dropdown>
                                 </template>
                                 <template v-if="item.stage >= 5">
                                     <div class="horizontal-line4"></div><span class="party-member-name"><el-button style="color: #B2453F;border-radius: 15px;padding: 2px 12px;border-color: #DEDCDD;font-weight: bolder" disabled size="mini" round>{{item.name}}</el-button></span>
+                                    <el-dropdown size="mini" class="party-member-dropdown"  @command="handleFzdyDropdown">
+                                        <i class="el-icon-caret-bottom party-member-dropdown-icon"></i>
+                                        <el-dropdown-menu slot="dropdown">
+                                            <el-dropdown-item :command="item2.id + ',' + item.id" v-for="(item2, index2) in fzdySteps" v-if="item.stage !== item2.id" class="party-member-dropdown-item">{{item2.title}}</el-dropdown-item>
+                                        </el-dropdown-menu>
+                                    </el-dropdown>
                                 </template>
                             </div>
                         </template>
-                        <!--<div class="row">
-                            <div class="horizontal-line0"></div><span class="party-member-name">张荆楚</span>
-                        </div>
-                        <div class="row">
-                            <div class="horizontal-line1"></div><span class="party-member-name">张荆楚</span>
-                        </div>
-                        <div class="row">
-                            <div class="horizontal-line2"></div><span class="party-member-name">张荆楚</span>
-                        </div>
-                        <div class="row">
-                            <div class="horizontal-line3"></div><span class="party-member-name">张荆楚</span>
-                        </div>
-                        <div class="row">
-                            <div class="horizontal-line4"></div><span class="party-member-name"><el-button style="color: #B2453F;border-radius: 15px;padding: 2px 12px;border-color: #DEDCDD;font-weight: bolder" disabled size="mini" round>张荆楚</el-button></span>
-                        </div>-->
                     </div>
                 </div>
             </div>
