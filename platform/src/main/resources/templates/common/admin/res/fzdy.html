@@ -5,10 +5,10 @@
         <el-aside width="200px" class="fzdy_el-container-el-aside">组织机构树</el-aside>
         <el-main>
             <el-breadcrumb separator-class="el-icon-arrow-right">
-                <el-breadcrumb-item>中国市政工程华北设计研究总院有限公司党委</el-breadcrumb-item>
-                <el-breadcrumb-item>第一分公司党委</el-breadcrumb-item>
+                <el-breadcrumb-item v-for="(item, index) in fzdyBreadcrumbs">{{item.title}}</el-breadcrumb-item>
+                <!--<el-breadcrumb-item>第一分公司党委</el-breadcrumb-item>
                 <el-breadcrumb-item>工程一部党总支部</el-breadcrumb-item>
-                <el-breadcrumb-item>工程一部一支部</el-breadcrumb-item>
+                <el-breadcrumb-item>工程一部一支部</el-breadcrumb-item>-->
             </el-breadcrumb>
             <div style="margin-top: 10px">
                 <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>

@@ -1414,6 +1414,24 @@ new Vue({
             'application/vnd.ms-excel.addin.macroEnabled.12,' +
             'application/vnd.ms-excel.sheet.binary.macroEnabled.12',
         /*发展党员*/
+        fzdyBreadcrumbs: [
+            {
+                id: '1',
+                title: '中国市政工程华北设计研究总院有限公司党委'
+            },
+            {
+                id: '2',
+                title: '第一分公司党委'
+            },
+            {
+                id: '3',
+                title: '工程一部党总支部'
+            },
+            {
+                id: '4',
+                title: '工程一部一支部'
+            },
+        ],
         fzdySteps: [
             {
                 id: 0,
