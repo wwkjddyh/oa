@@ -1413,6 +1413,58 @@ new Vue({
             'application/vnd.openxmlformats-officedocument.wordprocessingml.template,' +
             'application/vnd.ms-excel.addin.macroEnabled.12,' +
             'application/vnd.ms-excel.sheet.binary.macroEnabled.12',
+        /*发展党员*/
+        fzdySteps: [
+            {
+                id: 0,
+                title: '申请入党',
+            },
+            {
+                id: 1,
+                title: '入党积极分子的确定和培养',
+            },
+            {
+                id: 2,
+                title: '发展对象的确定和考察',
+            },
+            {
+                id: 3,
+                title: '预备党员的接收',
+            },
+            {
+                id: 4,
+                title: '预备党员的教育考察和转正',
+            }
+        ],
+
+        fzdyPartyMembers: [
+            {
+                id: '0',
+                name: '张荆楚',
+                stage: 1,
+            },
+            {
+                id: '1',
+                name: '张荆楚',
+                stage: 2,
+            },
+            {
+                id: '2',
+                name: '张荆楚',
+                stage: 3,
+            },
+            {
+                id: '3',
+                name: '张荆楚',
+                stage: 4,
+            },
+            {
+                id: '4',
+                name: '张荆楚',
+                stage: 5,
+            }
+        ],
+
         editableTabsOptions: {
 
             editableTabsValue: 'firstPage',
