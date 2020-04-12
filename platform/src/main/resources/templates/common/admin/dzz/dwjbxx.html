@@ -375,7 +375,7 @@
                     </el-row>
                     <el-row>
                     	<el-col :span="24">
-							<div id="dwjbxxSubTable1">
+							<div pType="elTable">
 								<el-table :data="leaderList" border>
 									<el-table-column property="userName" label="姓名" width="150" align="center" ></el-table-column>
 									<el-table-column property="positonName" label="职务名称" width="200" align="center" >
@@ -407,7 +407,7 @@
                     </el-row>
                     <el-row>
                     	<el-col :span="24">
-							<div id="dwjbxxSubTable2">
+							<div pType="elTable">
 								<el-table :data="rewardList" border style="color: #4f4f4f;font-size: 16px;">
 									<el-table-column property="reward" label="奖惩名称" width="150" align="center" >
 										<template v-slot="scope">
@@ -438,7 +438,7 @@
                     </el-row>
                     <el-row>
                     	<el-col :span="24">
-		                    <div id="dwjbxxSubTable3">
+		                    <div pType="elTable">
 								<el-table :data="deptInfoList" border>
 									<el-table-column property="deptName" label="单位名称" width="150" align="center"></el-table-column>
 									<el-table-column property="deptNatureType" label="单位性质类别" width="200" align="center" ></el-table-column>
