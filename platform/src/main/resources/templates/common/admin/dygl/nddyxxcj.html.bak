@@ -1,30 +1,21 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-<div th:fragment="content" style="display: flex;" >
-            
-			  
-			  
-			    <el-aside style="display: flex;width:20%;height:500px" v-loading ="dwjbxxLoading">
-				    <el-tree :data="userUpperOrg" default-expand-all :props="dwjbxxProps" @node-click="nddyxxcjHandleNodeClick">
-				    	
-				    </el-tree>
-			    </el-aside>
-			    <el-main style="padding:0px;height:100%;width:80%" v-if="dwjbxxMain == true" v-loading ="fullscreenLoading">
-			    	<div style="display:flex">
-				            <el-button plain @click="edit('nddyxxcj','','',true)" type="primary" size="small"><i class="el-icon-plus"></i>新增</el-button>
-				            <!-- <el-button plain type="danger" size="mini"><i class="el-icon-close" size=""></i>删除</el-button> -->
-		<!-- 		            <el-button plain size="mini"  @click="loadNddyxxcj()" ><i class="el-icon-refresh"></i>刷新</el-button>
-		 -->		            <el-input placeholder="按姓名搜索"  class="input-with-select" size="small" style="width: 30%;margin-left:10px" v-model="nddyxxSearchCondition">
-							    <el-button slot="append" icon="el-icon-search" @click="searchForm('nddyxxcj')" size="small"></el-button>
-							 </el-input>
-							 <el-radio-group  size="small" v-model="dyxxyear.year" style="margin-left:10px;margin-top:0px">
-						      <el-radio-button :label="yearIndex" v-for="yearIndex in yearList"></el-radio-button>
-						      
-						    </el-radio-group>
-						    <el-button plain @click="dialogShow.nddyxxcjYear = !dialogShow.nddyxxcjYear" type="primary" size="small" style="margin-left:10px;"><i class="el-icon-plus"><span style="font-family:微软雅黑;">添加年份</span></i></el-button>
-		            </div>
-				                <div style="margin-top: 20px">
+<div th:fragment="content">
+					<div style="display:flex">
+		            <el-button plain @click="edit('nddyxxcj','','',true)" type="primary" size="small"><i class="el-icon-plus"></i>新增</el-button>
+		            <!-- <el-button plain type="danger" size="mini"><i class="el-icon-close" size=""></i>删除</el-button> -->
+<!-- 		            <el-button plain size="mini"  @click="loadNddyxxcj()" ><i class="el-icon-refresh"></i>刷新</el-button>
+ -->		            <el-input placeholder="按姓名搜索"  class="input-with-select" size="small" style="width: 30%;margin-left:10px" v-model="nddyxxSearchCondition">
+					    <el-button slot="append" icon="el-icon-search" @click="loadNddyxxcj()" size="small"></el-button>
+					 </el-input>
+					 <el-radio-group  size="small" v-model="dyxxyear.year" style="margin-left:10px;margin-top:0px">
+				      <el-radio-button :label="yearIndex" v-for="yearIndex in yearList"></el-radio-button>
+				      
+				    </el-radio-group>
+				    <el-button plain @click="dialogShow.nddyxxcjYear = !dialogShow.nddyxxcjYear" type="primary" size="small" style="margin-left:10px;"><i class="el-icon-plus"><span style="font-family:微软雅黑;">添加年份</span></i></el-button>
+            </div>
+            <div style="margin-top: 20px">
                 <el-table
                         :data="nddyxxcjTableData"
                         border
@@ -35,8 +26,8 @@
                     <el-table-column
                             prop="orgName"
                             label="组织简称"
-                            align="center"
-                            width="220">
+                            align="left"
+                            width="300">
 						<template slot-scope="scope">
 							<span class="list-row-base-style">{{scope.row.orgName}}</span>
 						</template>
@@ -62,7 +53,6 @@
                     <el-table-column
                             prop="phone"
                             align="center"
-                            width="150"
                             label="联系方式">
 						<template slot-scope="scope">
 							<span class="list-row-base-style">{{scope.row.phone}}</span>
@@ -71,7 +61,6 @@
                     <el-table-column
                             prop="birthTime"
                             align="center"
-                            width="140"
                             label="出生日期">
 						<template slot-scope="scope">
 							<span class="list-row-base-style">{{scope.row.birthTime}}</span>
@@ -102,24 +91,14 @@
                             label="操作">
                         <template slot-scope="scope" >
                             <div style="display: flex;width:100%;justify-content: flex-end;" align="right">
-                            	<el-button size="mini"   @click="viewDetail(scope.$index,scope.row)">查看</el-button>
-                                <el-button size="mini"  @click="edit('nddyxxcj',scope.$index,scope.row,false)" >修改</el-button>
-                                <el-button size="mini"  type="danger" @click="dwjbxxDel(scope.row,'nddyxxcj')" >删除</el-button>
+                            	<el-button size="mini"  v-if="scope.row.isOperate == 1" @click="viewDetail(scope.$index,scope.row)">查看</el-button>
+                                <el-button size="mini" v-if="scope.row.isOperate == 1" @click="edit('nddyxxcj',scope.$index,scope.row,false)" >修改</el-button>
+                                <el-button size="mini" v-if="scope.row.isOperate == 1" type="danger" @click="dwjbxxDel(scope.row,'nddyxxcj')" >删除</el-button>
                             </div>
                         </template>
                     </el-table-column>
                 </el-table>
-                <div align="center" style="margin-top:20px">
-		            <el-pagination size="small"
-		                    @size-change="handleOrgUserSizeChange"
-		                    @current-change="handleOrgUserCurrentChange"
-		                    :current-page="pager.orgUser.currentPage"
-		                    :page-sizes="[2,10, 20, 30, 40]"
-		                    :page-size="pager.orgUser.pageSize"
-		                    layout="total, sizes, prev, pager, next, jumper"
-		                    :total="pager.orgUser.totalCount">
-		            </el-pagination>
-		        </div>
+                
             </div>
             <el-dialog :visible.sync="dialogShow.nddyxxcj" foot-center lock-scroll="true" width="1000px" title="党员信息"  v-loading ="fullscreenLoading">
             	 <el-card shadow="always" style="width: 100%;" type="card" >
@@ -556,7 +535,6 @@
 						</div>
                  </el-card>
              </el-dialog>
-			    </el-main>
-			  
 </div>
+
 </html>

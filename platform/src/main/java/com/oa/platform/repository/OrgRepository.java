@@ -126,5 +126,7 @@ public interface OrgRepository extends BaseRepository<Organization, String> {
 	 * @return
 	 */
 	List<Organization> getRootOrgId(@Param("orgId") String orgId);
-	
+	List<String> getBottomOrgByOrgId(@Param("orgId") String orgId);
+
+	List<OrgUser> getOrgUserListByOrg(@Param("userName") String userName, @Param("year") String year,@Param("orgList") List<String> orgList);
 }

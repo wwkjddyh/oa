@@ -3,6 +3,7 @@ package com.oa.platform.service;
 import java.util.List;
 import java.util.Map;
 
+import com.github.pagehelper.PageInfo;
 import com.oa.platform.entity.OrgDeptDetail;
 import com.oa.platform.entity.OrgLeaderDetail;
 import com.oa.platform.entity.OrgRewardDetail;
@@ -93,4 +94,7 @@ public interface OrgService extends BaseService<Organization, String> {
 	List<Map> getEducationEchartBarData(List<String> rootOrgs);
 	List<Map> getPartyAgeEchartBarData(List<String> rootOrgs);
 	List<Organization> getRootOrgList(String userId);
+	List<String> getBottomOrgByOrgId(String orgId);
+	PageInfo<OrgUser> getOrgUserListByOrg(String userName, String year, List<String> orgList, int pageNum,
+			int pageSize);
 }

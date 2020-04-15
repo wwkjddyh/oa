@@ -1,6 +1,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
+	
     <div class="bigData-container">
         <el-select v-model="currUserLegendChange" style="width: 300px;margin-bottom: 10px" placeholder="请选择组织" size="small" @change="handleBigDataChange">
             <el-option v-for="item in currUserLegendArr" :key="item" :label="item" :value="item"></el-option>

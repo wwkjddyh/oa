@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 
 import com.alibaba.fastjson.JSONArray;
+import com.github.pagehelper.PageInfo;
 import com.oa.platform.biz.OrgBiz;
 import com.oa.platform.common.ResultVo;
 import com.oa.platform.entity.OrgDeptDetail;
@@ -54,6 +55,22 @@ public class OrgApiController extends BaseController{
 			boolean isSuperAdmin) {
 		User user = getUserOfSecurity();
 		List<OrgUser> result = orgBiz.getOrgUserList(user.getUserId(),userName,year,isSuperAdmin);
+		return getSuccessResultVo(result);
+	}
+	/**
+	 * 获取组织下党员信息
+	 * @param year
+	 * @param userName
+	 * @param isSuperAdmin
+	 * @param orgId
+	 * @return
+	 */
+	@GetMapping("getOrgUserListByOrg")
+	public ResultVo getOrgUserListByOrg(@RequestParam(defaultValue = "",required = false) String year,
+			@RequestParam(defaultValue = "",required = false) String userName,String orgId,
+			@RequestParam(defaultValue = PAGE_NUM_STR,required = false) int pageNum,
+            @RequestParam(defaultValue = PAGE_SIZE_STR,required = false) int pageSize) {
+		PageInfo<OrgUser>result = orgBiz.getOrgUserListByOrg(userName,year,orgId,pageNum,pageSize);
 		return getSuccessResultVo(result);
 	}
 	/**
@@ -137,14 +154,14 @@ public class OrgApiController extends BaseController{
 			 List<OrgDeptDetail> deptDetail = JSONArray.parseArray(deptDetails,OrgDeptDetail.class);
 			 List<OrgRewardDetail> rewardDetail = JSONArray.parseArray(rewardDetails,OrgRewardDetail.class);
 			 List<OrgLeaderDetail> leaderDetail = JSONArray.parseArray(leaderDetails,OrgLeaderDetail.class);
-			orgBiz.orgAdd(organization,deptDetail,rewardDetail,leaderDetail);
-			resultVo = getSuccessResultVo(null);
+			String orgId = orgBiz.orgAdd(organization,deptDetail,rewardDetail,leaderDetail);
+			resultVo = getSuccessResultVo(orgId);
 		}else {
 			 List<OrgDeptDetail> deptDetail = JSONArray.parseArray(deptDetails,OrgDeptDetail.class);
 			 List<OrgRewardDetail> rewardDetail = JSONArray.parseArray(rewardDetails,OrgRewardDetail.class);
 			 List<OrgLeaderDetail> leaderDetail = JSONArray.parseArray(leaderDetails,OrgLeaderDetail.class);
 			orgBiz.orgEdit(organization,deptDetail,rewardDetail,leaderDetail);
-			resultVo = getSuccessResultVo(null);
+			resultVo = getSuccessResultVo(organization.getOrgId());
 		}
 		return resultVo;
 	}
