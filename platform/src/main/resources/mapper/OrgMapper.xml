@@ -1008,5 +1008,55 @@
 		select org_id,org_nm,upper_org from t_sys_org where status='1' and org_id in 
 		(select distinct root_org from t_sys_org where instr(#{orgId},org_id)>0)
 	</select>
-
+	<select id="getBottomOrgByOrgId" resultType="java.lang.String">
+		WITH recursive org_cte AS (
+			SELECT
+				org_id 
+			FROM
+				t_sys_org 
+			WHERE
+				org_id = #{orgId}
+				AND STATUS = '1' UNION ALL
+			SELECT
+				org.org_id 
+			FROM
+				t_sys_org org
+				INNER JOIN org_cte sysorg ON sysorg.org_id = org.upper_org 
+				AND org.STATUS = '1' 
+				) SELECT
+				* 
+			FROM
+				org_cte 
+	</select>
+	<select id="getOrgUserListByOrg" parameterType="java.util.List" resultMap="orgUserMap">
+		select
+			usrdtl.user_id org_id,
+			orguser.org_id upper_org,
+			usr.user_id,
+			usr.user_name,
+			usrdtl.gender,
+			usrdtl.phone,
+			usrdtl.birth_time,
+			usrdtl.nation,
+			usrdtl.education,
+			usrdtl.is_leader,
+			orguser.org_id act_org,
+			sysorg.org_nm
+		from 
+			t_user usr
+		left join t_user_dtl usrdtl on usr.user_id = usrdtl.user_id and usr.record_flag='1'
+		left join t_org_user orguser on usr.user_id=orguser.user_id and orguser.status='1'
+		left join t_sys_org sysorg on orguser.org_id=sysorg.org_id
+		where usrdtl.is_party='1'
+		<if test="userName != null and userName != ''">
+		and instr(usr.user_name,#{userName})>0
+		</if>
+		<if test="year != null and year != ''">
+		and left(usrdtl.join_party_time,4) = #{year}
+		</if>
+		AND orguser.org_id in
+		<foreach collection="orgList" index="index" item="itemId" open="(" separator="," close=")">
+	      #{itemId}
+	    </foreach> 
+	</select>
 </mapper>

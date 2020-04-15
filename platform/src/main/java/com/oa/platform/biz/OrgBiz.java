@@ -76,7 +76,7 @@ public class OrgBiz extends BaseBiz {
 	 * @param organization
 	 */
 	@Transactional
-	public void orgAdd(Organization organization,List<OrgDeptDetail> deptDetails,List<OrgRewardDetail> rewardDetails,List<OrgLeaderDetail> leaderDetails) {
+	public String orgAdd(Organization organization,List<OrgDeptDetail> deptDetails,List<OrgRewardDetail> rewardDetails,List<OrgLeaderDetail> leaderDetails) {
 		organization.setOrgId(StringUtil.getRandomUUID());
 		if(organization.getUpperOrg() == null || "".equals(organization.getUpperOrg())) {
 			organization.setRootOrg(organization.getOrgId());
@@ -85,6 +85,7 @@ public class OrgBiz extends BaseBiz {
 		orgSerivce.orgAddDetail(organization);
 		//领导班子，单位信息，奖惩信息操作
 		orgDetailsOperate(organization,deptDetails,rewardDetails,leaderDetails);
+		return organization.getOrgId();
 	}
 	/**
 	 * 党组织修改
@@ -240,14 +241,14 @@ public class OrgBiz extends BaseBiz {
 		user.setUserPwdOrigi("123456");
 		user.setRecordFlag(1);
 		user.setUserType(3);
-		List<String> leaders = orgSerivce.getLeaderByOrgId(userDtl.getOrgId());
-		if(leaders == null || leaders.size() == 0) {
-			userDtl.setLeader("1");
-		}
-		if("1".equals(userDtl.getLeader())) {
-			//将原来的部门负责人换下
-			orgSerivce.downOrgUserById(userDtl.getOrgId());
-		}
+//		List<String> leaders = orgSerivce.getLeaderByOrgId(userDtl.getOrgId());
+//		if(leaders == null || leaders.size() == 0) {
+//			userDtl.setLeader("1");
+//		}
+//		if("1".equals(userDtl.getLeader())) {
+//			//将原来的部门负责人换下
+//			orgSerivce.downOrgUserById(userDtl.getOrgId());
+//		}
 		userService.save(user);
 		//保存详情
 		userDtl.setParty("1");
@@ -261,22 +262,22 @@ public class OrgBiz extends BaseBiz {
 		user.setUserId(userDtl.getUserId());
 		user.setUserName(userDtl.getUserName());
 		//查询用户信息
-		UserDtl findDetailByUserId = userService.findDetailByUserId(userDtl.getUserId());
+		//UserDtl findDetailByUserId = userService.findDetailByUserId(userDtl.getUserId());
 		//判断此次修改是否修改组织
 		List<Organization> orgIdByuserId = orgSerivce.getOrgIdByuserId(userDtl.getUserId());
 		//该用户为某组织负责人
-		if(findDetailByUserId != null && "1".equals(findDetailByUserId.getLeader())) {
-			
-			if(orgIdByuserId != null && orgIdByuserId.size() != 0) {
-				if(!userDtl.getOrgId().equals(orgIdByuserId.get(0).getOrgId())) {
-					//已修改组织，先返回，不做编辑
-					return getErroResultVo(2000, "该党员为组织部门负责人,更换组织部门时请先更换部门负责人", null);
-				}
-				if("1".equals(findDetailByUserId.getLeader()) && !"1".equals(userDtl.getLeader())) {
-					return getErroResultVo(2000, "该党员为组织部门负责人,请先认定其他党员为负责人", null);
-				}
-			}
-		}
+//		if(findDetailByUserId != null && "1".equals(findDetailByUserId.getLeader())) {
+//			
+//			if(orgIdByuserId != null && orgIdByuserId.size() != 0) {
+//				if(!userDtl.getOrgId().equals(orgIdByuserId.get(0).getOrgId())) {
+//					//已修改组织，先返回，不做编辑
+//					return getErroResultVo(2000, "该党员为组织部门负责人,更换组织部门时请先更换部门负责人", null);
+//				}
+//				if("1".equals(findDetailByUserId.getLeader()) && !"1".equals(userDtl.getLeader())) {
+//					return getErroResultVo(2000, "该党员为组织部门负责人,请先认定其他党员为负责人", null);
+//				}
+//			}
+//		}
 		if(orgIdByuserId != null && orgIdByuserId.size() != 0) {
 			if(userDtl.getOrgId() != null && !"".equals(userDtl.getOrgId()) && !userDtl.getOrgId().equals(orgIdByuserId.get(0).getOrgId())) {
 				//组织修改
@@ -284,10 +285,10 @@ public class OrgBiz extends BaseBiz {
 			}
 		}
 			
-		if("1".equals(userDtl.getLeader()) && !"1".equals(findDetailByUserId.getLeader())) {
-			//将原来的部门负责人换下
-			orgSerivce.downOrgUserById(userDtl.getOrgId());
-		}
+//		if("1".equals(userDtl.getLeader()) && !"1".equals(findDetailByUserId.getLeader())) {
+//			//将原来的部门负责人换下
+//			orgSerivce.downOrgUserById(userDtl.getOrgId());
+//		}
 		userService.update(user);
 		userService.updateUserDtl(userDtl);
 		return getSuccessResultVo(null);
@@ -299,10 +300,10 @@ public class OrgBiz extends BaseBiz {
 	@Transactional
 	public ResultVo delOrgUser(String userId) {
 		//查询用户信息
-		UserDtl findDetailByUserId = userService.findDetailByUserId(userId);
-		if(findDetailByUserId != null && "1".equals(findDetailByUserId.getLeader())) {
-			return getErroResultVo(2000, "该党员为组织部门负责人,删除前请先更换部门负责人", null);
-		}
+//		UserDtl findDetailByUserId = userService.findDetailByUserId(userId);
+//		if(findDetailByUserId != null && "1".equals(findDetailByUserId.getLeader())) {
+//			return getErroResultVo(2000, "该党员为组织部门负责人,删除前请先更换部门负责人", null);
+//		}
 		//删除党员用户
 		orgSerivce.delUser(userId);
 		//删除党员用户详情
@@ -323,6 +324,12 @@ public class OrgBiz extends BaseBiz {
 		}
 		List<Organization> result = orgSerivce.getUserUpperOrgList(orgIdByuserId.get(0).getOrgId());
 		return result;
+	}
+	public PageInfo<OrgUser> getOrgUserListByOrg(String userName, String year, String orgId,int pageNum,int pageSize) {
+		//获取该组织及其下属组织
+		List<String> orgList = orgSerivce.getBottomOrgByOrgId(orgId);
+		PageInfo<OrgUser> pageInfo = orgSerivce.getOrgUserListByOrg(userName,year,orgList,pageNum,pageSize);
+		return pageInfo;
 	}
 	public String getOrgIdByUserId(String userId) {
 		List<String> result = orgSerivce.getOrgIdByUserId(userId);
@@ -541,6 +548,7 @@ public class OrgBiz extends BaseBiz {
 		}
 		
 	}
+	
 	
 	
 	

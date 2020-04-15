@@ -62,6 +62,7 @@ new Vue({
                 	that.getTreeDict();
                 	that.getRewardTreeDict();
                 	that.getOptionDict();
+                	that.dwjbxxMain = false;
                 	that.loadDwjbxx();
                 	break;
                 case 'announce':
@@ -137,10 +138,11 @@ new Vue({
                     break;
                 case 'nddyxxcj':
                 	that.setDyxxYear();
+                	that.dwjbxxMain = false;
                 	//that.getUpperOrg();
-                	
+                	that.loadDwjbxx();
                 	that.getNddyxxOptions();
-                	that.loadNddyxxcj();
+                	//that.loadNddyxxcj();
                 	break;
 
                 /*
@@ -1204,6 +1206,22 @@ new Vue({
         formSearchResDl: {},
         formSearchBriefSendRecord: {},
         formdwjbxx:{},
+        dwjbxxMain: false,
+        adminOrgAdd:{
+            label: '',
+            isAdmin:true
+            },
+        nddyxxcjSelectOrg:'',
+        dwjbxxBaseInfoType:'danger',
+        dwjbxxPhoneType:'',
+        dwjbxxLeaderType:'',
+        dwjbxxViewType:'baseInfo',
+        dwjbxxTreeData:[],
+          dwjbxxProps: {
+              children: 'children',
+              label: 'orgName'
+            },
+        formdwjbxx2:{},
         formLeader:{},
         formDept:{},
         dialogShow: {},
@@ -1524,6 +1542,25 @@ new Vue({
         },
 
         pager: {
+        	orgUser: {
+                //搜索条件
+                criteria: '',
+
+                //默认每页数据量
+                pageSize: 10,
+
+                //默认高亮行数据id
+                highlightId: -1,
+
+                //当前页码
+                currentPage: 1,
+
+                //查询的页码
+                start: 1,
+
+                //默认数据总数
+                totalCount: 0,
+            },
             authModule: {
                 //搜索条件
                 criteria: '',
@@ -1941,7 +1978,14 @@ new Vue({
 
                                         case 'formLangConf': that.submitLangConf(); break;
                                         case 'formdwjbxx':
-                                            that.submitDwjbxx();
+                                        	that.$refs['formdwjbxx2'].validate((valid) => {
+                                        		if(valid){
+                                        			that.submitDwjbxx();
+                                        		}else {
+                                                    this.$message.error('提交失败,请按要求填写表单内容');
+                                                    return false;
+                                                }
+                                        	});
 
                                             break;
                                         case 'formNews': that.submitNews(); break;
@@ -2128,7 +2172,8 @@ new Vue({
                 	that.loadDwjbxx();
                 	break;
                 case 'nddyxxcj':
-                	that.loadNddyxxcj();
+                	that.pager.orgUser.currentPage = 1;
+                	that.loadNddyxxcj(1, that.pager.orgUser.pageSize);
                 	break;
                 case 'formSearchNews':
                     that.loadNews(that.formSearchNews.title, 1, that.pager.news.pageSize);
@@ -2598,7 +2643,7 @@ new Vue({
     			that.handleResponse(response);
     			if(parseInt(response.data.code) === 200){
     				that.dialogShow.nddyxxcj =false;
-        			that.loadNddyxxcj();
+    				that.loadNddyxxcj(that.pager.orgUser.currentPage,that.pager.orgUser.pageSize);
                     that.$message({
                         message: '操作成功',
                         type: 'success'
@@ -2628,8 +2673,8 @@ new Vue({
         	if(that.formdwjbxx.orgName != null){
         		params.append('orgName',that.formdwjbxx.orgName);
         	}
-        	if(that.formdwjbxx.phone != null){
-        		params.append('phone',that.formdwjbxx.phone);
+        	if(that.formdwjbxx2.phone != null){
+        		params.append('phone',that.formdwjbxx2.phone);
         	}
         	if(that.formdwjbxx.upperOrg != null){
         		params.append('upperOrg',that.formdwjbxx.upperOrg);
@@ -2637,14 +2682,14 @@ new Vue({
         	if(that.formdwjbxx.foundTime != null){
         		params.append('foundTime',that.formdwjbxx.foundTime);
         	}
-        	if(that.formdwjbxx.transCode != null){
-        		params.append('transCode',that.formdwjbxx.transCode);
+        	if(that.formdwjbxx2.transCode != null){
+        		params.append('transCode',that.formdwjbxx2.transCode);
         	}
-        	if(that.formdwjbxx.fixPhone != null){
-        		params.append('fixPhone',that.formdwjbxx.fixPhone);
+        	if(that.formdwjbxx2.fixPhone != null){
+        		params.append('fixPhone',that.formdwjbxx2.fixPhone);
         	}
-        	if(that.formdwjbxx.address != null){
-        		params.append('address',that.formdwjbxx.address);
+        	if(that.formdwjbxx2.address != null){
+        		params.append('address',that.formdwjbxx2.address);
         	}
         	if(that.formdwjbxx.orgType != null){
         		params.append('orgType',that.formdwjbxx.orgType);
@@ -2685,14 +2730,14 @@ new Vue({
         	if(that.formdwjbxx.isDelPartPersonAuth != null){
         		params.append('isDelPartPersonAuth',that.formdwjbxx.isDelPartPersonAuth);
         	}
-        	if(that.formdwjbxx.concatPersion != null){
-        		params.append('concatPersion',that.formdwjbxx.concatPersion);
+        	if(that.formdwjbxx2.concatPersion != null){
+        		params.append('concatPersion',that.formdwjbxx2.concatPersion);
         	}
-        	if(that.formdwjbxx.orgJobPhone != null){
-        		params.append('orgJobPhone',that.formdwjbxx.orgJobPhone);
+        	if(that.formdwjbxx2.orgJobPhone != null){
+        		params.append('orgJobPhone',that.formdwjbxx2.orgJobPhone);
         	}
-        	if(that.formdwjbxx.belongArea != null){
-        		params.append('belongArea',that.formdwjbxx.belongArea);
+        	if(that.formdwjbxx2.belongArea != null){
+        		params.append('belongArea',that.formdwjbxx2.belongArea);
         	}
         	if(that.formdwjbxx.rootOrg != null){
         		params.append('rootOrg',that.formdwjbxx.rootOrg);
@@ -2706,8 +2751,39 @@ new Vue({
         			that.handleResponse(response);
         			if(parseInt(response.data.code) === 200){
         				that.dialogShow.dwjbxx =false;
-            			that.formdwjbxx={};
             			//that.getUpperOrg();
+        				axios.get("/api/org/getOrgDetailById",{params:{
+			    			orgId: response.data.result
+			            }})
+			            .then(function(response){/*成功*/
+			            	that.handleResponse(response);
+			                let data = response.data;
+			                if(parseInt(data.code) === 200) {
+			                	that.formdwjbxx = response.data.result;
+			                	that.formdwjbxx2 = response.data.result;
+			                	
+			                	that.dwjbxxDialog.title = that.formdwjbxx.orgName;
+			                	
+			                }
+			                that.fullscreenLoading = false;
+			            })
+			            .catch(function(err){/*异常*/
+			                console.log(err);
+			                that.fullscreenLoading = false;
+			            });
+			    		//领导班子
+			    		axios.get("/api/org/getOrgLeaderList",{params:{
+			    			orgId: response.data.result
+			            }})
+			            .then(function(response){/*成功*/
+			            	that.handleResponse(response);
+			                let data = response.data;
+			                if(parseInt(data.code) === 200) {
+			                	that.leaderList = response.data.result
+			                }
+			            })
+			            .catch(function(err){/*异常*/
+			            });
             			that.loadDwjbxx();
                         that.$message({
                             message: '操作成功',
@@ -3128,11 +3204,13 @@ new Vue({
         },
         edit(type,scopeIndex, scopeRow, isAdd) {
         	if(isAdd == null && type == 'dwjbxx'){
-        		let that = this
+        		let that = this;
+        		that.dwjbxxMain = true;
         		that.formdwjbxx={
         				upperOrg: scopeRow.orgId,
         				rootOrg: scopeRow.rootOrg
         		};
+        		that.formdwjbxx2={};
         		that.dwjbxxDialog={
         				title:scopeRow.orgName + '下级组织添加'
         		};
@@ -3326,6 +3404,7 @@ new Vue({
 	                	
 	                	if(isAdd){
 	                		that.formdwjbxx={};
+	                		that.dwjbxxMain = true;
 	                		that.dwjbxxDialog={
 	                				title: '党委基本信息新增(根层党委)'
 	                		};
@@ -3608,6 +3687,25 @@ new Vue({
                 that.loadResList('', 1, 5);
         	}
         },
+        dwjbxxView(type){
+        	let that = this;
+        	that.dwjbxxViewType=type;
+        	if(type == 'baseInfo'){
+        		that.dwjbxxBaseInfoType = 'danger';
+        		that.dwjbxxPhoneType = '';
+        		that.dwjbxxLeaderType = '';
+        	}
+        	if(type == 'phone'){
+        		that.dwjbxxBaseInfoType = '';
+        		that.dwjbxxPhoneType = 'danger';
+        		that.dwjbxxLeaderType = '';
+        	}
+        	if(type == 'leader'){
+        		that.dwjbxxBaseInfoType = '';
+        		that.dwjbxxPhoneType = '';
+        		that.dwjbxxLeaderType = 'danger';
+        	}
+        },
         handleRemove(file, fileList) {
         	let that = this;
         	that.formnddyxxcj.imageUrl=null;
@@ -3702,7 +3800,7 @@ new Vue({
                                     .then(function(response){
                                     	that.handleResponse(response);
                                         if(parseInt(response.data.code) === 200){
-                                        	that.loadNddyxxcj();
+                                        	that.loadNddyxxcj(that.pager.orgUser.currentPage,that.pager.orgUser.pageSize);
                                             that.$message({
                                                 message: '删除成功',
                                                 type: 'success'
@@ -4745,6 +4843,16 @@ new Vue({
                     console.log(err);
                 });
         },
+      //每页显示数据量变更
+        handleOrgUserSizeChange: function(val) {
+            this.pager.orgUser.pageSize = val;
+            this.loadNddyxxcj( this.pager.orgUser.currentPage, this.pager.orgUser.pageSize);
+        },
+        //页码变更
+        handleOrgUserCurrentChange: function(val) {
+            this.pager.orgUser.currentPage = val;
+            this.loadNddyxxcj(this.pager.orgUser.currentPage, this.pager.orgUser.pageSize);
+        },
         //每页显示数据量变更
         handleAuthRoleSizeChange: function(val) {
             this.pager.authRole.pageSize = val;
@@ -4932,8 +5040,12 @@ new Vue({
             	if(parseInt(response.data.code) == 200 ){
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.dwjbxxTreeLevel.level = 0;
-        			that.dwjbxxTableData = that.getTreeData(response.data.result, parentArr);
-        			console.log(that.dwjbxxTableData);
+        			that.dwjbxxTreeData = that.getTreeData(response.data.result, parentArr);
+        			
+        			if(that.isSuperAdmin){
+        				that.dwjbxxTreeData.push(that.adminOrgAdd);
+        			}
+        			console.log(that.dwjbxxTreeData);
         			that.dwjbxxLoading = false;
         		}else{
         			that.$message.error('数据加载失败');
@@ -4944,38 +5056,139 @@ new Vue({
         		that.dwjbxxLoading = false;
                 });
         },
-        loadNddyxxcj(){
+        getDwjbxxTreeData(list, dataArr) {
+            dataArr.map((pNode, i) => {
+            	if(pNode.level == null){
+            		pNode.level = 0 ;
+            	}
+              let childObj = []
+              list.map((cNode, j) => {
+                if (pNode.orgId === cNode.upperOrg) {
+                	
+                	cNode.level = pNode.level+1;
+                  childObj.push(cNode)
+                }
+              })
+              pNode.children = childObj
+              if(pNode.children.length ==0){
+            	  pNode.children = null;
+              }
+              if (childObj.length > 0) {
+                this.getTreeData(list, childObj)
+              }
+            })
+            return dataArr
+          },
+        nddyxxcjHandleNodeClick(data){
+        	
         	let that = this;
-        	that.nddyxxcjLoading = true;
+        	that.dwjbxxMain = true;
+        	that.fullscreenLoading = true;
+        	let searchName = '';
+        	that.nddyxxcjSelectOrg=data.orgId;
+        	console.log(data.orgId)
+        	if(that.nddyxxSearchCondition == null || that.nddyxxSearchCondition == ''){
+        		searchName = null;
+        	}else{
+        		searchName = that.nddyxxSearchCondition;
+        	}
+        	axios.get("/api/org/getOrgUserListByOrg",{params:{
+                userName: searchName,
+                year: that.dyxxyear.year,
+                orgId: data.orgId
+            }})
+            .then(function(response){/*成功*/
+            	that.handleResponse(response);
+            	
+            	if(parseInt(response.data.code) == 200 ){
+            		
+        			that.nddyxxcjTableData = response.data.result.list;
+        			console.log(response.data.result)
+        			that.fullscreenLoading = false;
+        			that.pager.orgUser.totalCount = response.data.result.total;
+        		}else{
+        			that.$message.error('数据加载失败');
+        			that.fullscreenLoading = false;
+        		}
+                that.fullscreenLoading = false;
+            })
+            .catch(function(err){/*异常*/
+            	that.fullscreenLoading = false;
+            });
+        	
+        	
+        },
+        dwjbxxHandleNodeClick(data){
+        	let that = this;
+        	that.dwjbxxMain = true;
+        	that.fullscreenLoading = true;
+    		axios.get("/api/org/getOrgDetailById",{params:{
+    			orgId: data.orgId
+            }})
+            .then(function(response){/*成功*/
+            	that.handleResponse(response);
+                let data = response.data;
+                if(parseInt(data.code) === 200) {
+                	that.formdwjbxx = response.data.result;
+                	that.formdwjbxx2 = response.data.result;
+                	
+                	that.dwjbxxDialog.title = that.formdwjbxx.orgName;
+                	
+                }
+                that.fullscreenLoading = false;
+            })
+            .catch(function(err){/*异常*/
+                console.log(err);
+                that.fullscreenLoading = false;
+            });
+    		//领导班子
+    		axios.get("/api/org/getOrgLeaderList",{params:{
+    			orgId: data.orgId
+            }})
+            .then(function(response){/*成功*/
+            	that.handleResponse(response);
+                let data = response.data;
+                if(parseInt(data.code) === 200) {
+                	that.leaderList = response.data.result
+                }
+            })
+            .catch(function(err){/*异常*/
+            });
+        },
+        loadNddyxxcj(pagenum,pagesize){
+        	let that = this;
+        	that.fullscreenLoading = true;
         	let searchName = '';
         	if(that.nddyxxSearchCondition == null || that.nddyxxSearchCondition == ''){
         		searchName = null;
         	}else{
         		searchName = that.nddyxxSearchCondition;
         	}
-        	axios.get("/api/org/getOrgUserList",{params:{
+        	axios.get("/api/org/getOrgUserListByOrg",{params:{
                 userName: searchName,
                 year: that.dyxxyear.year,
-                isSuperAdmin:that.isSuperAdmin
-            }}).then(function(response){
+                orgId: that.nddyxxcjSelectOrg,
+                pageNum: pagenum,
+                pageSize: pagesize
+            }})
+            .then(function(response){/*成功*/
             	that.handleResponse(response);
+            	
             	if(parseInt(response.data.code) == 200 ){
-        			let parentArr = response.data.result.filter(l => l.upperOrg === null);
-        			if(parentArr == null){
-        				that.nddyxxcjTableData = response.data.result;
-        			}else{
-        				that.nddyxxcjTableData = that.getNddyxxTreeData(response.data.result, parentArr,that);
-        			}
-        			that.nddyxxcjLoading = false;
+            		that.dwjbxxMain = true;
+        			that.nddyxxcjTableData = response.data.result.list;
+        			console.log(that.nddyxxcjTableData)
+        			that.fullscreenLoading = false;
+        			that.pager.orgUser.totalCount = response.data.result.total;
         		}else{
         			that.$message.error('数据加载失败');
-        			that.nddyxxcjLoading = false;
+        			that.fullscreenLoading = false;
         		}
-        	})
-        	.catch(function(err){/*异常*/
-        		that.$message.error('请求失败');
-        		that.nddyxxcjLoading = false;
-                });
+                that.fullscreenLoading = false;
+            })
+            .catch(function(err){/*异常*/
+            	that.fullscreenLoading = false;
+            });
         },
         getUpperOrg(){
         	let that = this;

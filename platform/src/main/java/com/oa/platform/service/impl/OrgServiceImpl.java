@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.oa.platform.entity.OrgDeptDetail;
 import com.oa.platform.entity.OrgLeaderDetail;
 import com.oa.platform.entity.OrgRewardDetail;
@@ -208,6 +210,16 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 	@Override
 	public List<Organization> getRootOrgList(String userId) {
 		return null;
+	}
+	@Override
+	public List<String> getBottomOrgByOrgId(String orgId) {
+		return orgRepository.getBottomOrgByOrgId(orgId);
+	}
+	@Override
+	public PageInfo<OrgUser> getOrgUserListByOrg(String userName, String year, List<String> orgList, int pageNum,
+			int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		return new PageInfo(orgRepository.getOrgUserListByOrg(userName,year,orgList));
 	}
 
 }

@@ -1,36 +1,90 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-<div th:fragment="content" style="display: flex;" >
-            
-			  
-			  
-			    <el-aside style="display: flex;width:30%;height:500px" v-loading ="dwjbxxLoading">
-				    
-				    <el-tree :data="dwjbxxTreeData" default-expand-all :props="dwjbxxProps" :expand-on-click-node="false" >
-				    	<span style="align-items: center;justify-content: space-between;font-size: 14px;padding-left: 20px;" slot-scope="{ node, data }">
-					        <span @click="dwjbxxHandleNodeClick(node.data)">{{ node.label }}</span>
-					        <span>
-					          <el-button type="text" @click="edit('dwjbxx',11,null,true)" v-if="typeof node.data.isAdmin !='undefined'" style="display: flex;width:30%;">根组织新增</el-button>
-					        
-					          <el-button size="mini" v-if="node.level <= 3 && typeof node.data.isAdmin == 'undefined'" type="text" @click="edit('dwjbxx',11,node.data,null)" >添加下级组织</el-button>
-                            
-                              <el-button size="mini" v-if="typeof node.data.isAdmin == 'undefined'" type="text" @click="dwjbxxDel(node.data,'dwjbxx')"  style="color:red">删除</el-button>
-					        </span>
-					      </span>
-				    </el-tree>
-				    
-				    
-			    </el-aside>
-			    <el-main style="padding:0px;height:100%;width:70%" v-if="dwjbxxMain == true" v-loading ="fullscreenLoading">
-			    	<el-button  @click="dwjbxxView('baseInfo')" size="mini" :type="dwjbxxBaseInfoType">基本信息</el-button>
-				    <el-button  @click="dwjbxxView('phone')" size="mini" :type="dwjbxxPhoneType">联系方式</el-button>
-				    <el-button  @click="dwjbxxView('leader')" size="mini" :type="dwjbxxLeaderType">班子成员</el-button>
-				    <div style="margin-top: 20px;">
-						<span style="font-family:微软雅黑;font-size:25px;">{{dwjbxxDialog.title}}</span>
-					</div>
-				    <el-form ref="formdwjbxx"  :rules="rules" :model="formdwjbxx" style="width: 100%;margin-top:30px" label-position="top">
-                    <el-row v-if="dwjbxxViewType == 'baseInfo'">
+<div th:fragment="content">
+            <el-button plain @click="edit('dwjbxx','','',true)" type="primary" size="mini" v-if="isSuperAdmin"><i class="el-icon-plus"></i>新增</el-button>
+            <el-button plain size="mini"  @click="searchForm('searchDwjbxx')" ><i class="el-icon-refresh"></i>刷新</el-button>
+            <div style="margin-top: 20px">
+                <el-table
+                        :data="dwjbxxTableData"
+                        border
+                        v-loading="dwjbxxLoading"
+                        style="width: 100%"
+                        row-key="orgId"
+                        :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+                    <el-table-column
+                            prop="orgName"
+                            label="组织简称"
+                            align="left"
+                            width="300">
+						<template slot-scope="scope">
+							<span class="list-row-base-style">{{scope.row.orgName}}</span>
+						</template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="orgType"
+                            label="党组织类型"
+                            align="center"
+                            width="120">
+						<template slot-scope="scope">
+							<span class="list-row-base-style">{{ getOrgTypeValue(scope.row.orgType)}}</span>
+						</template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="foundTime"
+                            align="center"
+                            width="120"
+                            label="成立时间">
+						<template slot-scope="scope">
+							<span class="list-row-base-style">{{scope.row.foundTime}}</span>
+						</template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="leader"
+                            align="center"
+                            width="300"
+                            label="书记">
+						<template slot-scope="scope">
+							<span class="list-row-base-style">{{scope.row.leader}}</span>
+						</template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="concatPersion"
+                            align="center"
+                            width="120"
+                            label="联系人">
+						<template slot-scope="scope">
+							<span class="list-row-base-style">{{scope.row.concatPersion}}</span>
+						</template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="phone"
+                            align="center"
+                            label="联系电话">
+						<template slot-scope="scope">
+							<span class="list-row-base-style">{{scope.row.phone}}</span>
+						</template>
+                    </el-table-column>
+                    <el-table-column
+                            align="center"
+                            width="260"
+                            label="操作">
+                        <template slot-scope="scope" >
+                            <div style="display: flex;width:100%;justify-content: flex-end" align="right">
+                            	<el-button size="mini" v-if="scope.row.level < 2" @click="edit('dwjbxx',scope.$index,scope.row,null)" >添加下级组织</el-button>
+                                <el-button size="mini" @click="edit('dwjbxx',scope.$index,scope.row,false)" >修改</el-button>
+                                <el-button size="mini" type="danger" @click="dwjbxxDel(scope.row,'dwjbxx')" >删除</el-button>
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                
+            </div>
+            <el-dialog :visible.sync="dialogShow.dwjbxx" foot-center lock-scroll="true" width="1000px" :title.sync="dwjbxxDialog.title" v-loading ="fullscreenLoading">
+            	 <el-card shadow="always" style="width: 100%;" type="card">
+                    <el-form ref="formdwjbxx"  :rules="rules" :model="formdwjbxx" style="width: 100%;" label-position="top">
+                    <el-divider content-position="left">基本信息</el-divider>
+                    <el-row>
                     	<el-col :span="24">
                         <!-- <el-form-item label="党组织代码" prop="orgCode"  size="mini">                       
                             <el-input v-model="formdwjbxx.orgCode"  id="orgCode"   size="medium"                         		
@@ -39,7 +93,7 @@
                             </el-input>               
                         </el-form-item> -->                    
                     </el-row>
-                    <el-row v-if="dwjbxxViewType == 'baseInfo'">
+                    <el-row>
                     	<el-col :span="11">
                         <el-form-item label="党组织名称" prop="orgName"  size="mini" style="width: 100%;">
                             <el-input v-model="formdwjbxx.orgName"  size="medium"
@@ -64,8 +118,7 @@
                         </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-row v-if="dwjbxxViewType == 'baseInfo'
-                    ">
+                    <el-row>
                     	<el-col :span="11">
 	                        <el-form-item label="党组织类型" prop="orgType"  size="mini" style="width: 100%;">
 	                            
@@ -100,7 +153,7 @@
 	                        </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-row v-if="dwjbxxViewType == 'baseInfo'">
+                    <el-row>
                     	<el-col :span="11">
 	                        <el-form-item label="选举方式" prop="elctType"  size="mini" style="width: 100%;">
 	                           
@@ -137,7 +190,7 @@
 	                        </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-row v-if="dwjbxxViewType == 'baseInfo'">
+                    <el-row>
                     	<el-col :span="11">
 	                        <el-form-item label="本届班子当选日期" prop="currentLeaderTime" size="mini" >
                             <el-date-picker
@@ -168,7 +221,7 @@
 	                        </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-row v-if="dwjbxxViewType == 'baseInfo'">
+                    <el-row>
                     	<el-col :span="11">
                         <el-form-item label="选举应到人数" prop="elctShoudPeopleCount"  size="mini" style="width: 100%;">
                             <el-input v-model="formdwjbxx.elctShoudPeopleCount"  size="medium" type="number"
@@ -187,7 +240,7 @@
                         </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-row v-if="dwjbxxViewType == 'baseInfo'">
+                    <el-row>
                     	<el-col :span="11">
                         <el-form-item label="上级核定委员会名额" prop="upperSureOrgCount"  size="mini" style="width: 100%;">
                             <el-input v-model="formdwjbxx.upperSureOrgCount"  size="medium"  type="number"
@@ -206,7 +259,7 @@
                         </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-row v-if="dwjbxxViewType == 'baseInfo'"> 
+                    <el-row>
                     	<el-col :span="11">
 	                        <el-form-item label="转接组织关系权限" prop="changeOrgRelationAuth"  size="mini" style="width: 100%;">
 	                            
@@ -241,13 +294,11 @@
 	                        </el-form-item>
                         </el-col>
                     </el-row>
-                    </el-form>
-                    <el-form ref="formdwjbxx2"  :rules="rules" :model="formdwjbxx2" style="width: 100%;margin-top:30px" label-position="top">
-                    
-                    <el-row v-if="dwjbxxViewType == 'phone'">
+                    <el-divider content-position="left">联系方式</el-divider>
+                    <el-row>
                     	<el-col :span="11">
 	                        <el-form-item label="党组织联系人" prop="concatPersion"  size="mini" style="width: 100%;">
-	                            <el-input v-model="formdwjbxx2.concatPersion"  size="medium" clearable 
+	                            <el-input v-model="formdwjbxx.concatPersion"  size="medium" clearable 
                             	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="党组织联系人"  ></el-input>
 	                        </el-form-item>
                         </el-col>
@@ -258,15 +309,15 @@
                         </el-col>                        
                         <el-col :span="11">
 	                        <el-form-item label="党组织联系人手机号" prop="phone"  size="mini" style="width: 100%;">
-	                             <el-input v-model="formdwjbxx2.phone"  size="medium" clearable 
+	                             <el-input v-model="formdwjbxx.phone"  size="medium" clearable 
                             	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="党组织联系人手机号"  ></el-input>
 	                        </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-row v-if="dwjbxxViewType == 'phone'">
+                    <el-row>
                     	<el-col :span="11">
 	                        <el-form-item label="党组织办公电话" prop="orgJobPhone"  size="mini" style="width: 100%;">
-	                            <el-input v-model="formdwjbxx2.orgJobPhone"  size="medium" clearable 
+	                            <el-input v-model="formdwjbxx.orgJobPhone"  size="medium" clearable 
                             	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="党组织办公电话"  ></el-input>
 	                        </el-form-item>
                         </el-col>
@@ -277,16 +328,16 @@
                         </el-col>                        
                         <el-col :span="11">
 	                        <el-form-item label="传真" prop="fixPhone"  size="mini" style="width: 100%;">
-	                             <el-input v-model="formdwjbxx2.fixPhone"  size="medium" clearable
+	                             <el-input v-model="formdwjbxx.fixPhone"  size="medium" clearable
                             	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="传真"  ></el-input>
 	                        </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-row v-if="dwjbxxViewType == 'phone'">
+                    <el-row>
                     	<el-col :span="11">
 	                        <el-form-item label="所属地区" prop="belongArea"  size="mini" style="width: 100%;">
 	                            <el-cascader
-								    v-model="formdwjbxx2.belongArea"
+								    v-model="formdwjbxx.belongArea"
 								    :options="belongArea"
 								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
 								    style="width: 421.66px;"
@@ -303,25 +354,26 @@
                         </el-col>                      
                         <el-col :span="11">
 	                        <el-form-item label="邮政编码" prop="transCode"  size="mini" style="width: 100%;">
-	                             <el-input v-model="formdwjbxx2.transCode"  size="medium" clearable
+	                             <el-input v-model="formdwjbxx.transCode"  size="medium" clearable
                             	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="邮政编码"  ></el-input>
 	                        </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-row v-if="dwjbxxViewType == 'phone'">
+                    <el-row>
                     	<el-col :span="24">
 	                        <el-form-item label="详细地址" prop="address"  size="mini" style="width: 100%;">
-	                            <el-input v-model="formdwjbxx2.address" size="medium" clearable
-                            	auto-complete="off" style="width: 940px;" maxlength="1024" placeholder="详细地址"  ></el-input>
+	                            <el-input v-model="formdwjbxx.address" size="medium" clearable
+                            	auto-complete="off" style="width: 100%;" maxlength="1024" placeholder="详细地址"  ></el-input>
 	                        </el-form-item>
                         </el-col>                   
                     </el-row>
-                    <el-row v-if="dwjbxxViewType == 'leader'">
-                    	<el-col align="left">
-                    		<el-button size="mini" @click="addLine('leader')" align="left" type="danger">新增</el-button>
+                    <el-divider content-position="left" style="width: 80%;">班子成员</el-divider>
+                    <el-row>
+                    	<el-col align="right">
+                    		<el-button size="mini" @click="addLine('leader')" align="right" type="danger">新增</el-button>
                     	</el-col >                         
                     </el-row>
-                    <el-row v-if="dwjbxxViewType == 'leader'" style="margin-top:10px">
+                    <el-row>
                     	<el-col :span="24">
 							<div id="dwjbxxSubTable1">
 								<el-table :data="leaderList" border>
@@ -347,15 +399,73 @@
 							</div>
 						</el-col>
 					</el-row>
-                    
-                    
-                    
-                    
+					<el-divider content-position="left" style="width: 80%;">奖惩情况</el-divider>
+                    <el-row>
+                    	<el-col align="right">
+                    		<el-button size="mini" @click="addLine('reward')" align="right" type="danger">新增</el-button>
+                    	</el-col >                         
+                    </el-row>
+                    <el-row>
+                    	<el-col :span="24">
+							<div id="dwjbxxSubTable2">
+								<el-table :data="rewardList" border style="color: #4f4f4f;font-size: 16px;">
+									<el-table-column property="reward" label="奖惩名称" width="150" align="center" >
+										<template v-slot="scope">
+											{{ getRewardNameValue(scope.row.rewardName)}}
+										</template>
+									</el-table-column>
+									<el-table-column property="allowOrg" label="批准组织" width="200" align="center" ></el-table-column>
+									<el-table-column property="allowTime" label="批准时间" align="center" ></el-table-column>
+									<el-table-column
+											align="center"
+											width="260"
+											label="操作">
+
+										<template slot-scope="scope" >
+											<el-button size="mini"  @click="dwjgxxEdit('reward',scope.$index,scope.row)" align="center">编辑</el-button>
+											<el-button size="mini" type="danger" @click="deleteLine('reward',scope.$index)" align="center">删除</el-button>
+										</template>
+									</el-table-column>
+								</el-table>
+							</div>
+						</el-col>
+					</el-row>
+					<el-divider content-position="left" style="width: 80%;">单位信息</el-divider>
+                    <el-row>
+                    	<el-col align="right">
+                    		<el-button size="mini" @click="addLine('dept')" align="right" type="danger">新增</el-button>
+                    	</el-col >                         
+                    </el-row>
+                    <el-row>
+                    	<el-col :span="24">
+		                    <div id="dwjbxxSubTable3">
+								<el-table :data="deptInfoList" border>
+									<el-table-column property="deptName" label="单位名称" width="150" align="center"></el-table-column>
+									<el-table-column property="deptNatureType" label="单位性质类别" width="200" align="center" ></el-table-column>
+									<el-table-column property="deptType" label="单位(机构)类型" align="center" ></el-table-column>
+									<el-table-column
+											align="center"
+											width="260"
+											label="操作" >
+										<template slot-scope="scope" >
+											<el-button size="mini"  @click="dwjgxxEdit('dept',scope.$index,scope.row)" align="center">编辑</el-button>
+											<el-button size="mini" type="danger" @click="deleteLine('dept',scope.$index)" align="center">删除</el-button>
+										</template>
+									</el-table-column>
+								</el-table>
+							</div>
+						</el-col>
+					</el-row>
                     </el-form>
-			    	<div align="center" style="margin-top:20px">
-					    <el-button @click="submitForm('formdwjbxx')"  type="primary" plain align="center" >确定</el-button>
-					 </div>
-					 <el-dialog
+                 </el-card>
+                 
+                 <span slot="footer" class="dialog-footer" align="center">
+                 <div align="center">
+				    <el-button @click="submitForm('formdwjbxx')"  type="primary" plain align="center" >确定</el-button>
+                    <el-button @click="dialogShow.dwjbxx = false" type="cancel" plain align="center">取消</el-button>
+				 </div> 
+				 </span>
+			<el-dialog
 		      width="50%"
 		      title="班子成员"
 		      :visible.sync="dialogShow.leader"
@@ -417,7 +527,102 @@
 				 </div> 
 				 </span>
 		    </el-dialog>
-			    </el-main>
-			  
+		    <el-dialog
+		      width="50%"
+		      title="奖惩情况"
+		      :visible.sync="dialogShow.reward"
+		      append-to-body>
+		      <el-card shadow="always" style="width: 100%;" type="card">
+	              <el-form ref="formReward" :rules="rules" :model="formReward"  style="width: 100%;" label-position="top">
+	              	<el-form-item label="奖惩名称" prop="rewardName"  size="mini" style="width: 100%;">
+                            
+								  <el-cascader
+								    v-model="formReward.rewardName"
+								    :options="rewardName"
+								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
+								    style="width: 100%;"
+								    size="medium"
+								    filterable
+								    clearable
+								    ></el-cascader>                          
+                    </el-form-item>
+                    <el-form-item label="批准组织" prop="allowOrg"  size="mini" style="width: 100%;">
+                            <el-input v-model="formReward.allowOrg"  size="medium" 
+                            	auto-complete="off"  maxlength="255" placeholder="批准组织" ></el-input>                           
+                    </el-form-item>
+                    <el-form-item label="批准组织级别" prop="allowOrgLevel"  size="mini" style="width: 100%;">
+                            <el-select v-model="formReward.allowOrgLevel" placeholder="请选择" style="width: 100%;"
+								    	size="medium">
+								    <el-option
+								      v-for="item in allowOrgLevel"
+								      :key="item.dictId"
+								      :label="item.dictName"
+								      :value="item.dictId">
+								    </el-option>
+								  </el-select>                             
+                    </el-form-item>
+                    <el-form-item label="批准时间" prop="allowTime"  size="mini" style="width: 100%;">
+                            <el-date-picker
+							      v-model="formReward.allowTime"
+							      size="medium"
+							      format="yyyy-MM-dd"
+							      value-format="yyyy-MM-dd"
+							      type="date"
+							      style="width: 100%;"
+							      placeholder="选择日期" >
+							    </el-date-picker>                          
+                    </el-form-item>
+                    <el-form-item label="奖惩说明" prop="rewardDesc"  size="mini" style="width: 100%;">
+                            <el-input v-model="formReward.rewardDesc"  size="medium" type="textarea"
+  								:rows="4"
+                            	auto-complete="off"  maxlength="1024" placeholder="奖惩说明" ></el-input>                           
+                    </el-form-item>
+	              </el-form>
+              </el-card>
+              <span slot="footer" class="dialog-footer" align="center">
+                 <div align="center">
+				    <el-button @click="formTaleConfirm('formReward')" type="primary" plain align="center">确定</el-button>
+                    <el-button @click="dialogShow.reward = false" type="cancel" plain align="center">取消</el-button>
+				 </div> 
+				 </span>
+		    </el-dialog>
+		    <el-dialog
+		      width="50%"
+		      title="单位信息"
+		      :visible.sync="dialogShow.dept"
+		      append-to-body>
+		      <el-card shadow="always" style="width: 100%;" type="card">
+	              <el-form ref="formDept" :rules="rules" :model="formDept"  style="width: 100%;" label-position="top">
+	              	<el-form-item label="单位名称" prop="deptName"  size="mini" style="width: 100%;">
+                            <el-input v-model="formDept.deptName"  size="medium" 
+                            	auto-complete="off"  maxlength="255" placeholder="单位名称" ></el-input>                           
+                    </el-form-item>
+                    <el-form-item label="单位性质类别" prop="deptNatureType"  size="mini" style="width: 100%;">
+                            <el-input v-model="formDept.deptNatureType"  size="medium" 
+                            	auto-complete="off"  maxlength="255" placeholder="单位性质类别" ></el-input>                           
+                    </el-form-item>
+                    <el-form-item label="单位(机构)类型" prop="deptType"  size="mini" style="width: 100%;">                          
+							    <!-- <el-cascader
+								    v-model="formDept.deptType"
+								    :options="deptOrgType"
+								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
+								    style="width: 100%;"
+								    size="medium"
+								    filterable
+								    clearable
+								    ></el-cascader> -->  
+								    <el-input v-model="formDept.deptType"  size="medium" 
+                            	auto-complete="off"  maxlength="255" placeholder="单位(机构)类型" ></el-input>                       
+                    </el-form-item>
+	              </el-form>
+              </el-card>
+              <span slot="footer" class="dialog-footer" align="center">
+                 <div align="center">
+				    <el-button @click="formTaleConfirm('formDept')" type="primary" plain align="center">确定</el-button>
+                    <el-button @click="dialogShow.dept = false" type="cancel" plain align="center">取消</el-button>
+				 </div> 
+				 </span>
+		    </el-dialog>
+            </el-dialog>
 </div>
 </html>
