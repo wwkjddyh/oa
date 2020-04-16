@@ -22,7 +22,7 @@ public class UserMessageStat implements Serializable {
     /**
      * 最新一条聊天记录ID
      */
-    private String lastestMessgeId;
+    private String lastestMessageId;
 
     /**
      * 用户消息统计(默认0l)
@@ -54,6 +54,11 @@ public class UserMessageStat implements Serializable {
      */
     private String roomId;
 
+
+    /**
+     * (最新)消息类型ID
+     */
+    private String categoryId;
 
     /**
      * (最新消息)分类名称
@@ -96,12 +101,12 @@ public class UserMessageStat implements Serializable {
         this.userId = userId;
     }
 
-    public String getLastestMessgeId() {
-        return lastestMessgeId;
+    public String getLastestMessageId() {
+        return lastestMessageId;
     }
 
-    public void setLastestMessgeId(String lastestMessgeId) {
-        this.lastestMessgeId = lastestMessgeId;
+    public void setLastestMessageId(String lastestMessageId) {
+        this.lastestMessageId = lastestMessageId;
     }
 
     public Long getMessageTotal() {
@@ -152,6 +157,14 @@ public class UserMessageStat implements Serializable {
         this.roomId = roomId;
     }
 
+    public String getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }
@@ -195,10 +208,10 @@ public class UserMessageStat implements Serializable {
     public UserMessageStat() {
     }
 
-    public UserMessageStat(String recordId, String userId, String lastestMessgeId, Long messageTotal) {
+    public UserMessageStat(String recordId, String userId, String lastestMessageId, Long messageTotal) {
         this.recordId = recordId;
         this.userId = userId;
-        this.lastestMessgeId = lastestMessgeId;
+        this.lastestMessageId = lastestMessageId;
         this.messageTotal = messageTotal;
     }
 
@@ -207,13 +220,14 @@ public class UserMessageStat implements Serializable {
         return "UserMessageStat{" +
                 "recordId='" + recordId + '\'' +
                 ", userId='" + userId + '\'' +
-                ", lastestMessgeId='" + lastestMessgeId + '\'' +
+                ", lastestMessageId='" + lastestMessageId + '\'' +
                 ", messageTotal=" + messageTotal +
                 ", senderId='" + senderId + '\'' +
                 ", receiverId='" + receiverId + '\'' +
                 ", content='" + content + '\'' +
                 ", recordTime='" + recordTime + '\'' +
                 ", roomId='" + roomId + '\'' +
+                ", categoryId='" + categoryId + '\'' +
                 ", categoryName='" + categoryName + '\'' +
                 ", senderName='" + senderName + '\'' +
                 ", receiverName='" + receiverName + '\'' +

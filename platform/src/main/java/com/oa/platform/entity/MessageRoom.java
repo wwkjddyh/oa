@@ -54,6 +54,11 @@ public class MessageRoom implements Serializable {
      */
     private String updateTime;
 
+    /**
+     * 信息存储状态(0,删除;1,正常)
+     */
+    private Integer recordFlag;
+
 
     /**
      * 分类名称
@@ -147,6 +152,14 @@ public class MessageRoom implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Integer getRecordFlag() {
+        return recordFlag;
+    }
+
+    public void setRecordFlag(Integer recordFlag) {
+        this.recordFlag = recordFlag;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }
@@ -171,6 +184,7 @@ public class MessageRoom implements Serializable {
         this.updaterName = updaterName;
     }
 
+
     public String getKey() {
         return key;
     }
@@ -183,7 +197,7 @@ public class MessageRoom implements Serializable {
     }
 
     public MessageRoom(String roomId, String categoryId, String roomTitle, String roomIntro, String roomBulletin,
-                       String recorderId, String recordTime, String updaterId, String updateTime) {
+                       String recorderId, String recordTime, String updaterId, String updateTime, Integer recordFlag) {
         this.roomId = roomId;
         this.categoryId = categoryId;
         this.roomTitle = roomTitle;
@@ -193,6 +207,7 @@ public class MessageRoom implements Serializable {
         this.recordTime = recordTime;
         this.updaterId = updaterId;
         this.updateTime = updateTime;
+        this.recordFlag = recordFlag;
     }
 
     @Override
@@ -207,6 +222,7 @@ public class MessageRoom implements Serializable {
                 ", recordTime='" + recordTime + '\'' +
                 ", updaterId='" + updaterId + '\'' +
                 ", updateTime='" + updateTime + '\'' +
+                ", recordFlag=" + recordFlag +
                 ", categoryName='" + categoryName + '\'' +
                 ", recorderName='" + recorderName + '\'' +
                 ", updaterName='" + updaterName + '\'' +
