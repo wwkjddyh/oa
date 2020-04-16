@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.oa.platform.repository.MessageRepository" >
 
-  <!--<resultMap id="message" type="com.oa.platform.entity.Message">
+  <resultMap id="message" type="com.oa.platform.entity.Message">
     <result column="record_id" property="recordId" jdbcType="VARCHAR"/>
     <result column="category_id" property="categoryId" jdbcType="VARCHAR"/>
     <result column="sender_id" property="senderId" jdbcType="VARCHAR"/>
@@ -12,10 +12,10 @@
     <result column="record_time" property="recordTime" jdbcType="VARCHAR"/>
     <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
 
-    <result column="category_name" property="categoryName" javaType="VARCHAR"/>
-    <result column="sender_name" property="senderName" javaType="VARCHAR"/>
-    <result column="receiver_name" property="receiverName" javaType="VARCHAR"/>
-    <result column="room_title" property="roomTitle" javaType="VARCHAR"/>
+    <result column="category_name" property="categoryName" jdbcType="VARCHAR"/>
+    <result column="sender_name" property="senderName" jdbcType="VARCHAR"/>
+    <result column="receiver_name" property="receiverName" jdbcType="VARCHAR"/>
+    <result column="room_title" property="roomTitle" jdbcType="VARCHAR"/>
 
   </resultMap>
 
@@ -31,9 +31,9 @@
     <result column="category_id" property="categoryId" jdbcType="VARCHAR"/>
     <result column="update_time" property="updateTime" jdbcType="VARCHAR"/>
 
-    <result column="category_name" property="categoryName" javaType="VARCHAR"/>
-    <result column="recorder_name" property="recorderName" javaType="VARCHAR"/>
-    <result column="updater_name" property="updaterName" javaType="VARCHAR"/>
+    <result column="category_name" property="categoryName" jdbcType="VARCHAR"/>
+    <result column="recorder_name" property="recorderName" jdbcType="VARCHAR"/>
+    <result column="updater_name" property="updaterName" jdbcType="VARCHAR"/>
   </resultMap>
 
   <resultMap id="userMessageStat" type="com.oa.platform.entity.UserMessageStat">
@@ -55,303 +55,303 @@
 
   </resultMap>
 
-  <insert id="insert" parameterType="message">
-    INSERT INTO t_message (record_id,category_id,sender_id,receiver_id,content,room_id,record_time,record_flag)
-    VALUES (#{recordId},#{categoryId},#{senderId},#{receiverId},#{content},#{roomId},NOW(),#{recordFlag})
-  </insert>
+    <insert id="insert" parameterType="message">
+      INSERT INTO t_message (record_id,category_id,sender_id,receiver_id,content,room_id,record_time,record_flag)
+      VALUES (#{recordId},#{categoryId},#{senderId},#{receiverId},#{content},#{roomId},NOW(),#{recordFlag})
+    </insert>
 
-  <insert id="insertMessageRoom" parameterType="messageRoom">
-    INSERT INTO t_message_room (room_id,room_title,room_intro,room_bulletin,recorder_id,category_id,record_time,record_flag)
-    VALUES (#{roomId},#{roomTitle},#{roomIntro},#{roomBulletin},#{recorderId},#{categoryId},NOW(),#{recordFlag})
-  </insert>
+    <insert id="insertMessageRoom" parameterType="messageRoom">
+      INSERT INTO t_message_room (room_id,room_title,room_intro,room_bulletin,recorder_id,category_id,record_time,record_flag)
+      VALUES (#{roomId},#{roomTitle},#{roomIntro},#{roomBulletin},#{recorderId},#{categoryId},NOW(),#{recordFlag})
+    </insert>
 
-  <insert id="insertUserMessageStat" parameterType="userMessageStat">
-    INSERT INTO t_user_message_stat (user_id,record_id,lastest_message_id,message_total)
-    VALUES (#{userId},#{recordId},#{lastestMessageId},#{messageTotal})
-  </insert>
+    <insert id="insertUserMessageStat" parameterType="userMessageStat">
+      INSERT INTO t_user_message_stat (user_id,record_id,lastest_message_id,message_total)
+      VALUES (#{userId},#{recordId},#{lastestMessageId},#{messageTotal})
+    </insert>
 
-  <update id="update" parameterType="message">
-    UPDATE t_message
-    <trim prefix="SET" suffixOverrides="," suffix=" WHERE record_id = #{recordId}">
-      <if test="categoryId != null and categoryId != ''">
-        category_id = #{categoryId},
-      </if>
-      <if test="recordFlag != null">
-        record_flag = #{recordFlag},
-      </if>
-    </trim>
-  </update>
+    <update id="update" parameterType="message">
+      UPDATE t_message
+      <trim prefix="SET" suffixOverrides="," suffix=" WHERE record_id = #{recordId}">
+        <if test="categoryId != null and categoryId != ''">
+          category_id = #{categoryId},
+        </if>
+        <if test="recordFlag != null">
+          record_flag = #{recordFlag},
+        </if>
+      </trim>
+    </update>
 
-  <update id="updateMessageRoom" parameterType="messageRoom">
-    UPDATE t_message_room
-    <trim prefix="SET" suffixOverrides="," suffix=" WHERE room_id = #{roomId}">
-      <if test="roomTitle != null and roomTitle != ''">
-        room_title = #{roomTitle},
-      </if>
-      <if test="roomIntro != null and roomIntro != ''">
-        room_intro = #{roomIntro},
-      </if>
-      <if test="roomBulletin != null and roomBulletin != ''">
-        room_bulletin = #{roomBulletin},
-      </if>
-      <if test="categoryId != null and categoryId != ''">
-        category_id = #{categoryId},
-      </if>
-      <if test="updaterId != null and updaterId != ''">
-        updater_id = #{updaterId},
-      </if>
-      <if test="updateTime != null and updateTime != ''">
-        `update_time` = STR_TO_DATE(#{updateTime},'%Y-%m-%d %H:%i:%s'),
-      </if>
-      <if test="recordFlag != null">
-        record_flag = #{recordFlag},
-      </if>
-    </trim>
-  </update>
+    <update id="updateMessageRoom" parameterType="messageRoom">
+      UPDATE t_message_room
+      <trim prefix="SET" suffixOverrides="," suffix=" WHERE room_id = #{roomId}">
+        <if test="roomTitle != null and roomTitle != ''">
+          room_title = #{roomTitle},
+        </if>
+        <if test="roomIntro != null and roomIntro != ''">
+          room_intro = #{roomIntro},
+        </if>
+        <if test="roomBulletin != null and roomBulletin != ''">
+          room_bulletin = #{roomBulletin},
+        </if>
+        <if test="categoryId != null and categoryId != ''">
+          category_id = #{categoryId},
+        </if>
+        <if test="updaterId != null and updaterId != ''">
+          updater_id = #{updaterId},
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+          `update_time` = STR_TO_DATE(#{updateTime},'%Y-%m-%d %H:%i:%s'),
+        </if>
+        <if test="recordFlag != null">
+          record_flag = #{recordFlag},
+        </if>
+      </trim>
+    </update>
 
-  <update id="updateUserMessageStat" parameterType="userMessageStat">
-    UPDATE t_user_message_stat
-    <trim prefix="SET" suffixOverrides="," suffix=" WHERE record_id = #{recordId}">
-      <if test="userId != null and userId != ''">
-        user_id = #{userId},
-      </if>
-      <if test="messageTotal != null">
-        message_total = #{messageTotal},
-      </if>
-    </trim>
-  </update>
+    <update id="updateUserMessageStat" parameterType="userMessageStat">
+      UPDATE t_user_message_stat
+      <trim prefix="SET" suffixOverrides="," suffix=" WHERE record_id = #{recordId}">
+        <if test="userId != null and userId != ''">
+          user_id = #{userId},
+        </if>
+        <if test="messageTotal != null">
+          message_total = #{messageTotal},
+        </if>
+      </trim>
+    </update>
 
-  <delete id="delete" parameterType="message">
-    DELETE FROM t_message
-    <trim prefix="WHERE" prefixOverrides="AND | OR">
-      <if test="recordId != null and recordId != ''">
-        AND record_id = #{recordId}
-      </if>
-      <if test="categoryId != null and categoryId != ''">
-        AND category_id = #{categoryId}
-      </if>
-      <if test="senderId != null and senderId != ''">
-        AND sender_id = #{senderId}
-      </if>
-      <if test="receiverId != null and receiverId != ''">
-        AND receiver_id = #{receiverId}
-      </if>
-      <if test="roomId != null and roomId != ''">
-        AND room_id = #{roomId}
-      </if>
-      <if test="recordFlag != null">
-        AND record_flag = #{recordFlag}
-      </if>
-    </trim>
-  </delete>
+    <delete id="delete" parameterType="message">
+      DELETE FROM t_message
+      <trim prefix="WHERE" prefixOverrides="AND | OR">
+        <if test="recordId != null and recordId != ''">
+          AND record_id = #{recordId}
+        </if>
+        <if test="categoryId != null and categoryId != ''">
+          AND category_id = #{categoryId}
+        </if>
+        <if test="senderId != null and senderId != ''">
+          AND sender_id = #{senderId}
+        </if>
+        <if test="receiverId != null and receiverId != ''">
+          AND receiver_id = #{receiverId}
+        </if>
+        <if test="roomId != null and roomId != ''">
+          AND room_id = #{roomId}
+        </if>
+        <if test="recordFlag != null">
+          AND record_flag = #{recordFlag}
+        </if>
+      </trim>
+    </delete>
 
-  <delete id="deleteMessageRoom" parameterType="messageRoom">
-    DELETE FROM t_message_room
-    <trim prefix="WHERE" prefixOverrides="AND | OR">
-      <if test="roomId != null and roomId != ''">
-        AND room_id = #{roomId}
-      </if>
-      <if test="roomTitle != null and roomTitle != ''">
-        AND room_title = #{roomTitle}
-      </if>
-      <if test="recorderId != null and recorderId != ''">
-        AND recorder_id = #{recorderId}
-      </if>
-      <if test="updaterId != null and updaterId != ''">
-        AND updater_id = #{updaterId}
-      </if>
-      <if test="categoryId != null and categoryId != ''">
-        AND category_id = #{categoryId}
-      </if>
-      <if test="recordFlag != null">
-        AND record_flag = #{recordFlag}
-      </if>
-    </trim>
-  </delete>
+    <delete id="deleteMessageRoom" parameterType="messageRoom">
+      DELETE FROM t_message_room
+      <trim prefix="WHERE" prefixOverrides="AND | OR">
+        <if test="roomId != null and roomId != ''">
+          AND room_id = #{roomId}
+        </if>
+        <if test="roomTitle != null and roomTitle != ''">
+          AND room_title = #{roomTitle}
+        </if>
+        <if test="recorderId != null and recorderId != ''">
+          AND recorder_id = #{recorderId}
+        </if>
+        <if test="updaterId != null and updaterId != ''">
+          AND updater_id = #{updaterId}
+        </if>
+        <if test="categoryId != null and categoryId != ''">
+          AND category_id = #{categoryId}
+        </if>
+        <if test="recordFlag != null">
+          AND record_flag = #{recordFlag}
+        </if>
+      </trim>
+    </delete>
 
-  <delete id="deleteUserMessageStat" parameterType="userMessageStat">
-    DELETE FROM t_user_message_stat
-    <trim prefix="WHERE" prefixOverrides="AND | OR">
-      <if test="userId != null and userId != ''">
-        AND user_id = #{userId}
-      </if>
-      <if test="recordId != null and recordId != ''">
-        AND record_id = #{recordId}
-      </if>
-      <if test="lastestMessageId != null and lastestMessageId != ''">
-        AND lastest_message_id = #{lastestMessageId}
-      </if>
-      <if test="messageTotal != null">
-        AND message_total = #{messageTotal}
-      </if>
-    </trim>
-  </delete>
+    <delete id="deleteUserMessageStat" parameterType="userMessageStat">
+      DELETE FROM t_user_message_stat
+      <trim prefix="WHERE" prefixOverrides="AND | OR">
+        <if test="userId != null and userId != ''">
+          AND user_id = #{userId}
+        </if>
+        <if test="recordId != null and recordId != ''">
+          AND record_id = #{recordId}
+        </if>
+        <if test="lastestMessageId != null and lastestMessageId != ''">
+          AND lastest_message_id = #{lastestMessageId}
+        </if>
+        <if test="messageTotal != null">
+          AND message_total = #{messageTotal}
+        </if>
+      </trim>
+    </delete>
 
-  <select id="findById" resultMap="message" parameterType="java.lang.String">
-    SELECT record_id,category_id,sender_id,receiver_id,room_id,content,
-      DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,record_flag
-    FROM t_message WHERE record_id = #{recordId} AND record_flag = 1
-  </select>
+    <select id="findById" resultMap="message" parameterType="java.lang.String">
+      SELECT record_id,category_id,sender_id,receiver_id,room_id,content,
+        DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,record_flag
+      FROM t_message WHERE record_id = #{recordId} AND record_flag = 1
+    </select>
 
-  <select id="findMessageRoomById" resultMap="message" parameterType="java.lang.String">
-    SELECT room_id,room_title,room_intro,room_bulletin,recorder_id,updater_id,category_id,
+    <select id="findMessageRoomById" resultMap="message" parameterType="java.lang.String">
+      SELECT room_id,room_title,room_intro,room_bulletin,recorder_id,updater_id,category_id,
+        DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+        DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,record_flag
+      FROM t_message_room WHERE room_id = #{roomId} AND record_flag = 1
+    </select>
+
+    <select id="findUserMessageStatById" resultMap="message" parameterType="java.lang.String">
+      SELECT record_id,user_id,lastest_message_id,message_total
+      FROM t_user_message_stat WHERE record_id = #{recordId} AND record_flag = 1
+    </select>
+
+    <select id="find" parameterType="message" resultMap="message">
+      SELECT
+      record_id,category_id,sender_id,receiver_id,room_id,content,
       DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
-      DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,record_flag
-    FROM t_message_room WHERE room_id = #{roomId} AND record_flag = 1
-  </select>
+      record_flag,category_name,sender_name,receiver_name,room_title
+      FROM (
+      SELECT t1.*, t2.`name` category_name, t3.user_name sender_name,
+      t4.user_name receiver_name, t5.room_title
+      FROM t_message t1
+      LEFT JOIN t_category t2 ON t1.category_id = t2.record_id
+      LEFT JOIN t_user t3 ON t1.sender_id = t3.user_id
+      LEFT JOIN t_user t4 ON t1.receiver_id = t4.user_id
+      LEFT JOIN t_message_room t5 ON t1.room_id = t5.room_id
+      ) t
+      <trim prefix="WHERE" prefixOverrides="AND | OR">
+        <if test="recordId != null and recordId != ''">
+          AND record_id = #{recordId}
+        </if>
+        <if test="categoryId != null and categoryId != ''">
+          AND category_id = #{categoryId}
+        </if>
+        <if test="senderId != null and senderId != ''">
+          AND sender_id = #{senderId}
+        </if>
+        <if test="receiverId != null and receiverId != ''">
+          AND receiver_id = #{receiverId}
+        </if>
+        <if test="roomId != null and roomId != ''">
+          AND room_id = #{roomId}
+        </if>
+        <if test="recordFlag != null">
+          AND record_flag = #{recordFlag}
+        </if>
+        <if test="key != null and key != ''">
+          AND (UPPER(content) LIKE CONCAT('%',UPPER(#{key}),'%')
+          OR UPPER(room_title) LIKE CONCAT('%',UPPER(#{key}),'%')
+          OR UPPER(receiver_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+          OR UPPER(sender_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+          )
+        </if>
+      </trim>
+    </select>
 
-  <select id="findUserMessageStatById" resultMap="message" parameterType="java.lang.String">
-    SELECT record_id,user_id,lastest_message_id,message_total
-    FROM t_user_message_stat WHERE record_id = #{recordId} AND record_flag = 1
-  </select>
+    <select id="findMessageRoom" parameterType="messageRoom" resultMap="messageRoom">
+      SELECT
+      room_id,room_title,room_intro,room_bulletin,recorder_id,updater_id,category_id,
+      DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+      DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,record_flag,
+      category_name,recorder_name,updater_name
+      FROM (
+      SELECT t1.*, t2.`name` category_name, t3.user_name recorder_name,
+      t4.user_name updater_name
+      FROM t_message_room t1
+      LEFT JOIN t_category t2 ON t1.category_id = t2.record_id
+      LEFT JOIN t_user t3 ON t1.recorder_id = t3.user_id
+      LEFT JOIN t_user t4 ON t1.updater_id = t4.user_id
+      )t
+      <trim prefix="WHERE" prefixOverrides="AND | OR">
+        <if test="roomId != null and roomId != ''">
+          AND room_id = #{roomId}
+        </if>
+        <if test="roomTitle != null and roomTitle != ''">
+          AND room_title = #{roomTitle}
+        </if>
+        <if test="recorderId != null and recorderId != ''">
+          AND recorder_id = #{recorderId}
+        </if>
+        <if test="updaterId != null and updaterId != ''">
+          AND updater_id = #{updaterId}
+        </if>
+        <if test="categoryId != null and categoryId != ''">
+          AND category_id = #{categoryId}
+        </if>
+        <if test="updateTime != null and updateTime != ''">
+          AND DATE_FORMAT(update_time,'%Y-%m-%d') = #{updateTime},
+        </if>
+        <if test="recordTime != null and recordTime != ''">
+          AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
+        </if>
+        <if test="recordFlag != null">
+          AND record_flag = #{recordFlag}
+        </if>
+        <if test="key != null and key != ''">
+          AND (UPPER(room_title) LIKE CONCAT('%',UPPER(#{key}),'%')
+          OR UPPER(room_intro) LIKE CONCAT('%',UPPER(#{key}),'%')
+          OR UPPER(room_bulletin) LIKE CONCAT('%',UPPER(#{key}),'%')
+          )
+        </if>
+      </trim>
+    </select>
 
-  <select id="find" parameterType="message" resultMap="message">
-    SELECT
-    record_id,category_id,sender_id,receiver_id,room_id,content,
-    DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
-    record_flag,category_name,sender_name,receiver_name,room_title
-    FROM (
-    SELECT t1.*, t2.`name` category_name, t3.user_name sender_name,
-    t4.user_name receiver_name, t5.room_title
-    FROM t_message t1
-    LEFT JOIN t_category t2 ON t1.category_id = t2.record_id
-    LEFT JOIN t_user t3 ON t1.sender_id = t3.user_id
-    LEFT JOIN t_user t4 ON t1.receiver_id = t4.user_id
-    LEFT JOIN t_message_room t5 ON t1.room_id = t5.room_id
-    ) t
-    <trim prefix="WHERE" prefixOverrides="AND | OR">
-      <if test="recordId != null and recordId != ''">
-        AND record_id = #{recordId}
-      </if>
-      <if test="categoryId != null and categoryId != ''">
-        AND category_id = #{categoryId}
-      </if>
-      <if test="senderId != null and senderId != ''">
-        AND sender_id = #{senderId}
-      </if>
-      <if test="receiverId != null and receiverId != ''">
-        AND receiver_id = #{receiverId}
-      </if>
-      <if test="roomId != null and roomId != ''">
-        AND room_id = #{roomId}
-      </if>
-      <if test="recordFlag != null">
-        AND record_flag = #{recordFlag}
-      </if>
-      <if test="key != null and key != ''">
-        AND (UPPER(content) LIKE CONCAT('%',UPPER(#{key}),'%')
-        OR UPPER(room_title) LIKE CONCAT('%',UPPER(#{key}),'%')
-        OR UPPER(receiver_name) LIKE CONCAT('%',UPPER(#{key}),'%')
-        OR UPPER(sender_name) LIKE CONCAT('%',UPPER(#{key}),'%')
-        )
-      </if>
-    </trim>
-  </select>
+    <select id="findUserMessageStat" parameterType="userMessageStat" resultMap="userMessageStat">
+      SELECT record_id,user_id,lastest_message_id,message_total,
+      sender_id, receiver_id, content,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+      room_id,category_id,category_name,sender_name,receiver_name,room_title
+      FROM (
+      SELECT t1.*,
+      t11.sender_id, t11.receiver_id, t11.content,t11.record_time,t11.room_id,
+      t11.category_id,t11.category_name,t11.sender_name,t11.receiver_name,t11.room_title
+      FROM t_user_message_stat t1
+      LEFT JOIN (
+      SELECT t1.*, t2.`name` category_name, t3.user_name sender_name,
+      t4.user_name receiver_name, t5.room_title
+      FROM (SELECT * FROM t_message WHERE record_flag = 1) t1
+      LEFT JOIN t_category t2 ON t1.category_id = t2.record_id
+      LEFT JOIN t_user t3 ON t1.sender_id = t3.user_id
+      LEFT JOIN t_user t4 ON t1.receiver_id = t4.user_id
+      LEFT JOIN t_message_room t5 ON t1.room_id = t5.room_id
+      ) t11 ON t1.lastest_message_id = t11.record_id
+      )t
+      <trim prefix="WHERE" prefixOverrides="AND | OR">
+        <if test="userId != null and userId != ''">
+          AND user_id = #{userId}
+        </if>
+        <if test="recordId != null and recordId != ''">
+          AND record_id = #{recordId}
+        </if>
+        <if test="lastestMessageId != null and lastestMessageId != ''">
+          AND lastest_message_id = #{lastestMessageId}
+        </if>
+        <if test="messageTotal != null">
+          AND message_total = #{messageTotal}
+        </if>
 
-  <select id="findMessageRoom" parameterType="messageRoom" resultMap="messageRoom">
-    SELECT
-    room_id,room_title,room_intro,room_bulletin,recorder_id,updater_id,category_id,
-    DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
-    DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') update_time,record_flag,
-    category_name,recorder_name,updater_name
-    FROM (
-    SELECT t1.*, t2.`name` category_name, t3.user_name recorder_name,
-    t4.user_name updater_name
-    FROM t_message_room t1
-    LEFT JOIN t_category t2 ON t1.category_id = t2.record_id
-    LEFT JOIN t_user t3 ON t1.recorder_id = t3.user_id
-    LEFT JOIN t_user t4 ON t1.updater_id = t4.user_id
-    )t
-    <trim prefix="WHERE" prefixOverrides="AND | OR">
-      <if test="roomId != null and roomId != ''">
-        AND room_id = #{roomId}
-      </if>
-      <if test="roomTitle != null and roomTitle != ''">
-        AND room_title = #{roomTitle}
-      </if>
-      <if test="recorderId != null and recorderId != ''">
-        AND recorder_id = #{recorderId}
-      </if>
-      <if test="updaterId != null and updaterId != ''">
-        AND updater_id = #{updaterId}
-      </if>
-      <if test="categoryId != null and categoryId != ''">
-        AND category_id = #{categoryId}
-      </if>
-      <if test="updateTime != null and updateTime != ''">
-        AND DATE_FORMAT(update_time,'%Y-%m-%d') = #{updateTime},
-      </if>
-      <if test="recordTime != null and recordTime != ''">
-        AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
-      </if>
-      <if test="recordFlag != null">
-        AND record_flag = #{recordFlag}
-      </if>
-      <if test="key != null and key != ''">
-        AND (UPPER(room_title) LIKE CONCAT('%',UPPER(#{key}),'%')
-        OR UPPER(room_intro) LIKE CONCAT('%',UPPER(#{key}),'%')
-        OR UPPER(room_bulletin) LIKE CONCAT('%',UPPER(#{key}),'%')
-        )
-      </if>
-    </trim>
-  </select>
-
-  <select id="findUserMessageStat" parameterType="userMessageStat" resultMap="userMessageStat">
-    SELECT record_id,user_id,lastest_message_id,message_total,
-    sender_id, receiver_id, content,DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
-    room_id,category_id,category_name,sender_name,receiver_name,room_title
-    FROM (
-    SELECT t1.*,
-    t11.sender_id, t11.receiver_id, t11.content,t11.record_time,t11.room_id,
-    t11.category_id,t11.category_name,t11.sender_name,t11.receiver_name,t11.room_title
-    FROM t_user_message_stat t1
-    LEFT JOIN (
-    SELECT t1.*, t2.`name` category_name, t3.user_name sender_name,
-    t4.user_name receiver_name, t5.room_title
-    FROM (SELECT * FROM t_message WHERE record_flag = 1) t1
-    LEFT JOIN t_category t2 ON t1.category_id = t2.record_id
-    LEFT JOIN t_user t3 ON t1.sender_id = t3.user_id
-    LEFT JOIN t_user t4 ON t1.receiver_id = t4.user_id
-    LEFT JOIN t_message_room t5 ON t1.room_id = t5.room_id
-    ) t11 ON t1.lastest_message_id = t11.record_id
-    )t
-    <trim prefix="WHERE" prefixOverrides="AND | OR">
-      <if test="userId != null and userId != ''">
-        AND user_id = #{userId}
-      </if>
-      <if test="recordId != null and recordId != ''">
-        AND record_id = #{recordId}
-      </if>
-      <if test="lastestMessageId != null and lastestMessageId != ''">
-        AND lastest_message_id = #{lastestMessageId}
-      </if>
-      <if test="messageTotal != null">
-        AND message_total = #{messageTotal}
-      </if>
-
-      <if test="categoryId != null and categoryId != ''">
-        AND category_id = #{categoryId}
-      </if>
-      <if test="senderId != null and senderId != ''">
-        AND sender_id = #{senderId},
-      </if>
-      <if test="receiverId != null and receiverId != ''">
-        AND receiver_id = #{receiverId},
-      </if>
-      <if test="roomId != null and roomId != ''">
-        AND room_id = #{roomId},
-      </if>
-      <if test="recordTime != null and recordTime != ''">
-        AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
-      </if>
-      <if test="key != null and key != ''">
-        AND (UPPER(room_title) LIKE CONCAT('%',UPPER(#{key}),'%')
-        OR UPPER(sender_name) LIKE CONCAT('%',UPPER(#{key}),'%')
-        OR UPPER(receiver_name) LIKE CONCAT('%',UPPER(#{key}),'%')
-        OR UPPER(content) LIKE CONCAT('%',UPPER(#{key}),'%')
-        )
-      </if>
-    </trim>
-  </select>-->
+        <if test="categoryId != null and categoryId != ''">
+          AND category_id = #{categoryId}
+        </if>
+        <if test="senderId != null and senderId != ''">
+          AND sender_id = #{senderId},
+        </if>
+        <if test="receiverId != null and receiverId != ''">
+          AND receiver_id = #{receiverId},
+        </if>
+        <if test="roomId != null and roomId != ''">
+          AND room_id = #{roomId},
+        </if>
+        <if test="recordTime != null and recordTime != ''">
+          AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
+        </if>
+        <if test="key != null and key != ''">
+          AND (UPPER(room_title) LIKE CONCAT('%',UPPER(#{key}),'%')
+          OR UPPER(sender_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+          OR UPPER(receiver_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+          OR UPPER(content) LIKE CONCAT('%',UPPER(#{key}),'%')
+          )
+        </if>
+      </trim>
+    </select>
 
 </mapper>
