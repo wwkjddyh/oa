@@ -60,6 +60,14 @@
       VALUES (#{recordId},#{categoryId},#{senderId},#{receiverId},#{content},#{roomId},NOW(),#{recordFlag})
     </insert>
 
+  <insert id="batchInsert" parameterType="java.util.List">
+    INSERT INTO t_message (record_id,category_id,sender_id,receiver_id,content,room_id,record_time,record_flag)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.recordId},#{item.categoryId},#{item.senderId},#{item.receiverId},#{item.content},#{item.roomId},NOW(),#{item.recordFlag})
+    </foreach>
+  </insert>
+
     <insert id="insertMessageRoom" parameterType="messageRoom">
       INSERT INTO t_message_room (room_id,room_title,room_intro,room_bulletin,recorder_id,category_id,record_time,record_flag)
       VALUES (#{roomId},#{roomTitle},#{roomIntro},#{roomBulletin},#{recorderId},#{categoryId},NOW(),#{recordFlag})
@@ -69,6 +77,14 @@
       INSERT INTO t_user_message_stat (user_id,record_id,lastest_message_id,message_total)
       VALUES (#{userId},#{recordId},#{lastestMessageId},#{messageTotal})
     </insert>
+
+  <insert id="batchInsertUserMessageStat" parameterType="java.util.List">
+    INSERT INTO t_user_message_stat (user_id,record_id,lastest_message_id,message_total)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.userId},#{item.recordId},#{item.lastestMessageId},#{item.messageTotal})
+    </foreach>
+  </insert>
 
     <update id="update" parameterType="message">
       UPDATE t_message
@@ -119,6 +135,24 @@
           message_total = #{messageTotal},
         </if>
       </trim>
+    </update>
+
+    <update id="updateBatchUserMessageStat" parameterType="java.util.List" >
+      <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+        update t_user_message_stat
+        <set >
+          <if test="item.lastestMessageId != null and item.lastestMessageId != ''">
+            lastest_message_id = #{item.lastestMessageId},
+          </if>
+          <if test="item.messageTotal != null">
+            message_total = #{item.messageTotal},
+          </if>
+        </set>
+        where user_id = #{item.userId}
+        <if test="item.recordId != null and item.recordId != ''">
+          record_id = #{item.recordId}
+        </if>
+      </foreach>
     </update>
 
     <delete id="delete" parameterType="message">
@@ -183,6 +217,12 @@
         </if>
         <if test="messageTotal != null">
           AND message_total = #{messageTotal}
+        </if>
+        <if test="userIds != null and userIds.size() > 0">
+          AND user_id IN
+          <foreach collection="userIds" index="index" item="itemId" open="(" separator="," close=")">
+            #{itemId}
+          </foreach>
         </if>
       </trim>
     </delete>
@@ -343,6 +383,12 @@
         </if>
         <if test="recordTime != null and recordTime != ''">
           AND DATE_FORMAT(record_time,'%Y-%m-%d') = #{recordTime}
+        </if>
+        <if test="userIds != null and userIds.size() > 0">
+          AND user_id IN
+          <foreach collection="userIds" index="index" item="itemId" open="(" separator="," close=")">
+            #{itemId}
+          </foreach>
         </if>
         <if test="key != null and key != ''">
           AND (UPPER(room_title) LIKE CONCAT('%',UPPER(#{key}),'%')

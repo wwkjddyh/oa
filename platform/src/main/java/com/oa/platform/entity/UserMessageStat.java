@@ -1,6 +1,7 @@
 package com.oa.platform.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 用户消息统计
@@ -84,6 +85,11 @@ public class UserMessageStat implements Serializable {
      * 关键字
      */
     private String key;
+
+    /**
+     * 用户ID列表
+     */
+    private List<String> userIds;
 
     public String getRecordId() {
         return recordId;
@@ -203,6 +209,14 @@ public class UserMessageStat implements Serializable {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public List<String> getUserIds() {
+        return userIds;
+    }
+
+    public void setUserIds(List<String> userIds) {
+        this.userIds = userIds;
     }
 
     public UserMessageStat() {

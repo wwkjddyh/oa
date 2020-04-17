@@ -34,4 +34,22 @@ public interface MessageRepository extends BaseRepository<Message, String> {
     List<MessageRoom> findMessageRoom(MessageRoom messageRoom);
 
     List<UserMessageStat> findUserMessageStat(UserMessageStat userMessageStat);
+
+    /**
+     * 批量更新用户消息统计信息
+     * @param userMessageStats 用户消息统计信息列表
+     */
+    void updateBatchUserMessageStat(List<UserMessageStat> userMessageStats);
+
+    /**
+     * 批量插入用户消息统计信息
+     * @param userMessageStats 用户消息统计信息列表
+     */
+    void batchInsertUserMessageStat(List<UserMessageStat> userMessageStats);
+
+    /**
+     * 批量插入消息
+     * @param messages 消息列表
+     */
+    void batchInsert(List<Message> messages);
 }

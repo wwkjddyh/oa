@@ -22,12 +22,12 @@ public class MessageServiceImpl extends AbstractBaseService<Message, String> imp
     private MessageRepository messageRepository;
 
     @Override
-    public void insertMessageRoom(MessageRoom messageRoom) {
+    public void saveMessageRoom(MessageRoom messageRoom) {
         messageRepository.insertMessageRoom(messageRoom);
     }
 
     @Override
-    public void insertUserMessageStat(UserMessageStat userMessageStat) {
+    public void saveUserMessageStat(UserMessageStat userMessageStat) {
         messageRepository.insertUserMessageStat(userMessageStat);
     }
 
@@ -83,5 +83,20 @@ public class MessageServiceImpl extends AbstractBaseService<Message, String> imp
         PageHelper.startPage(pageNum, pageSize);
         List<UserMessageStat> records = messageRepository.findUserMessageStat(userMessageStat == null ? new UserMessageStat() : userMessageStat);
         return new PageInfo<>(records);
+    }
+
+    @Override
+    public void updateBatchUserMessageStat(List<UserMessageStat> userMessageStats) {
+        messageRepository.updateBatchUserMessageStat(userMessageStats);
+    }
+
+    @Override
+    public void batchSaveUserMessageStat(List<UserMessageStat> userMessageStats) {
+        messageRepository.batchInsertUserMessageStat(userMessageStats);
+    }
+
+    @Override
+    public void batchSave(List<Message> messages) {
+        messageRepository.batchInsert(messages);
     }
 }
