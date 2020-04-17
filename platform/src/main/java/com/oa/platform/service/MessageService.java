@@ -6,6 +6,7 @@ import com.oa.platform.entity.MessageRoom;
 import com.oa.platform.entity.UserMessageStat;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 消息
@@ -14,9 +15,9 @@ import java.util.List;
  */
 public interface MessageService extends BaseService<Message, String> {
 
-    void insertMessageRoom(MessageRoom messageRoom);
+    void saveMessageRoom(MessageRoom messageRoom);
 
-    void insertUserMessageStat(UserMessageStat userMessageStat);
+    void saveUserMessageStat(UserMessageStat userMessageStat);
 
     void updateMessageRoom(MessageRoom messageRoom);
 
@@ -37,4 +38,40 @@ public interface MessageService extends BaseService<Message, String> {
     PageInfo<MessageRoom> searchMessageRoom(MessageRoom messageRoom, int pageNum, int pageSize);
 
     PageInfo<UserMessageStat> searchUserMessageStat(UserMessageStat userMessageStat, int pageNum, int pageSize);
+
+    /**
+     * 批量更新用户消息统计信息
+     * @param userMessageStats 用户消息统计信息列表
+     */
+    void updateBatchUserMessageStat(List<UserMessageStat> userMessageStats);
+
+    /**
+     * 批量保存用户消息统计信息
+     * @param userMessageStats 用户消息统计信息列表
+     */
+    void batchSaveUserMessageStat(List<UserMessageStat> userMessageStats);
+
+    /**
+     * 批量保存消息
+     * @param messages 消息列表
+     */
+    void batchSave(List<Message> messages);
+
+    /**
+     * 根据用户ID（统计查询消息后）保存用户消息统计信息
+     * @param userId 用户ID
+     */
+    void saveUserMessageStatByUserId(String userId);
+
+    /**
+     * 根据用户ID组（统计查询消息后）保存用户消息统计信息
+     * @param userIds 用户ID列表
+     */
+    void saveUserMessageStatByUserIds(List<String> userIds);
+
+    /**
+     * 根据用户ID组（统计查询消息后）保存用户消息统计信息
+     * @param userIds 用户ID列表
+     */
+    void saveOrUpdateUserMessageStatByUserIds(Set<String> userIds);
 }
