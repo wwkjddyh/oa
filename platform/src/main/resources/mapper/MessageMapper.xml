@@ -86,6 +86,24 @@
     </foreach>
   </insert>
 
+  <insert id="insertUserMessageStatByUserId" parameterType="java.lang.String">
+    INSERT INTO t_user_message_stat(user_id,record_id,lastest_message_id,message_total)
+    SELECT #{userId} as user_id, substring(MD5(RAND()),1,20) as record_id,t1.record_id lastest_message_id,t2.meesage_total
+    FROM t_message t1, (SELECT count(*) meesage_total, max(record_time) record_time
+        FROM t_message WHERE record_flag = 1 AND (receiver_id = #{userId} OR sender_id = #{userId})) t2
+    WHERE t1.record_time = t2.record_time and (t1.receiver_id = #{userId} OR t1.sender_id = #{userId})
+  </insert>
+
+  <insert id="insertUserMessageStatByUserIds" parameterType="java.util.List">
+    <foreach collection="list" item="userId" index="index" open="" close="" separator=";">
+      INSERT INTO t_user_message_stat(user_id,record_id,lastest_message_id,message_total)
+      SELECT #{userId} as user_id, substring(MD5(RAND()),1,20) as record_id,t1.record_id lastest_message_id,t2.meesage_total
+      FROM t_message t1, (SELECT count(*) meesage_total, max(record_time) record_time
+      FROM t_message WHERE record_flag = 1 AND (receiver_id = #{userId} OR sender_id = #{userId})) t2
+      WHERE t1.record_time = t2.record_time and (t1.receiver_id = #{userId} OR t1.sender_id = #{userId})
+    </foreach>
+  </insert>
+
     <update id="update" parameterType="message">
       UPDATE t_message
       <trim prefix="SET" suffixOverrides="," suffix=" WHERE record_id = #{recordId}">
@@ -104,10 +122,10 @@
         <if test="roomTitle != null and roomTitle != ''">
           room_title = #{roomTitle},
         </if>
-        <if test="roomIntro != null and roomIntro != ''">
+        <if test="roomIntro != null">
           room_intro = #{roomIntro},
         </if>
-        <if test="roomBulletin != null and roomBulletin != ''">
+        <if test="roomBulletin != null">
           room_bulletin = #{roomBulletin},
         </if>
         <if test="categoryId != null and categoryId != ''">
@@ -143,6 +161,9 @@
         <set >
           <if test="item.lastestMessageId != null and item.lastestMessageId != ''">
             lastest_message_id = #{item.lastestMessageId},
+          </if>
+          <if test="item.messageTotal == null">
+            message_total = message_total + 1,
           </if>
           <if test="item.messageTotal != null">
             message_total = #{item.messageTotal},

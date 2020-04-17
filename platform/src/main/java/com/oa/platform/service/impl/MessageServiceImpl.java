@@ -1,5 +1,6 @@
 package com.oa.platform.service.impl;
 
+import com.beust.jcommander.internal.Lists;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.oa.platform.entity.Message;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class MessageServiceImpl extends AbstractBaseService<Message, String> implements MessageService {
@@ -98,5 +100,24 @@ public class MessageServiceImpl extends AbstractBaseService<Message, String> imp
     @Override
     public void batchSave(List<Message> messages) {
         messageRepository.batchInsert(messages);
+    }
+
+    @Override
+    public void saveUserMessageStatByUserId(String userId) {
+        messageRepository.insertUserMessageStatByUserId(userId);
+    }
+
+    @Override
+    public void saveUserMessageStatByUserIds(List<String> userIds) {
+        messageRepository.insertUserMessageStatByUserIds(userIds);
+    }
+
+    @Override
+    public void saveOrUpdateUserMessageStatByUserIds(Set<String> userIds) {
+        UserMessageStat userMessageStat = new UserMessageStat();
+        List<String> ids = Lists.newArrayList(userIds);
+        userMessageStat.setUserIds(ids);
+        messageRepository.deleteUserMessageStat(userMessageStat);
+        messageRepository.insertUserMessageStatByUserIds(ids);
     }
 }

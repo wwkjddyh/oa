@@ -52,4 +52,16 @@ public interface MessageRepository extends BaseRepository<Message, String> {
      * @param messages 消息列表
      */
     void batchInsert(List<Message> messages);
+
+    /**
+     * 根据用户ID（统计查询消息后）插入用户消息统计信息
+     * @param userId 用户ID
+     */
+    void insertUserMessageStatByUserId(String userId);
+
+    /**
+     * 根据用户ID（统计查询消息后）插入用户消息统计信息
+     * @param userIds 用户ID列表
+     */
+    void insertUserMessageStatByUserIds(List<String> userIds);
 }

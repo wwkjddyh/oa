@@ -6,6 +6,7 @@ import com.oa.platform.entity.MessageRoom;
 import com.oa.platform.entity.UserMessageStat;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * 消息
@@ -55,4 +56,22 @@ public interface MessageService extends BaseService<Message, String> {
      * @param messages 消息列表
      */
     void batchSave(List<Message> messages);
+
+    /**
+     * 根据用户ID（统计查询消息后）保存用户消息统计信息
+     * @param userId 用户ID
+     */
+    void saveUserMessageStatByUserId(String userId);
+
+    /**
+     * 根据用户ID组（统计查询消息后）保存用户消息统计信息
+     * @param userIds 用户ID列表
+     */
+    void saveUserMessageStatByUserIds(List<String> userIds);
+
+    /**
+     * 根据用户ID组（统计查询消息后）保存用户消息统计信息
+     * @param userIds 用户ID列表
+     */
+    void saveOrUpdateUserMessageStatByUserIds(Set<String> userIds);
 }
