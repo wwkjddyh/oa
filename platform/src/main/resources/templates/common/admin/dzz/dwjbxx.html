@@ -1,15 +1,21 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-<div th:fragment="content" style="display: flex;" >
+<div th:fragment="content"  >
             
 			  
 			  
-			    <el-aside style="display: flex;width:30%;height:500px" v-loading ="dwjbxxLoading">
-				    
-				    <el-tree :data="dwjbxxTreeData" default-expand-all :props="dwjbxxProps" :expand-on-click-node="false" >
-				    	<span style="align-items: center;justify-content: space-between;font-size: 14px;padding-left: 20px;" slot-scope="{ node, data }">
-					        <span @click="dwjbxxHandleNodeClick(node.data)">{{ node.label }}</span>
+			    <!-- <el-aside style="display: flex;width:30%;height:500px;border: 1px solid red;" v-loading ="dwjbxxLoading"> -->
+				    <el-row :gutter="50" >
+					  <el-col :span="10"  v-loading ="dwjbxxLoading">
+					  <div style="width:100%;height:100%;">
+					  	 <el-tree :data="dwjbxxTreeData" default-expand-all :props="dwjbxxProps" :expand-on-click-node="false" >
+				    	<span style="align-items: center;justify-content: space-between;font-size: 14px;" slot-scope="{ node, data }">
+				    		<img v-if="data.orgType && data.orgType != `orgType1`" src="/images/icon/partyIcon.png" style="width: 12px;height: 12px;"/>
+				    		<img v-if="data.orgType && data.orgType == `orgType1`" src="/images/icon/partyIcon_red.png" style="width: 12px;height: 12px;"/>
+				    		
+				    		<!-- style="display: inline-block; maxWidth: 190px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;word-break: break-all;" -->
+					        <span @click="dwjbxxHandleNodeClick(node.data)" >{{ node.label }}</span>
 					        <span>
 					          <el-button type="text" @click="edit('dwjbxx',11,null,true)" v-if="typeof node.data.isAdmin !='undefined'" style="display: flex;width:30%;">根组织新增</el-button>
 					        
@@ -19,15 +25,20 @@
 					        </span>
 					      </span>
 				    </el-tree>
+				    </div>
 				    
 				    
-			    </el-aside>
-			    <el-main style="padding:0px;height:100%;width:70%" v-if="dwjbxxMain == true" v-loading ="fullscreenLoading">
+					  </el-col>
+					  <el-col :span="14">
+					  
+				   
+			    <!-- </el-aside> -->
+			    <div  v-if="dwjbxxMain == true" v-loading ="fullscreenLoading">
 			    	<el-button  @click="dwjbxxView('baseInfo')" size="mini" :type="dwjbxxBaseInfoType">基本信息</el-button>
 				    <el-button  @click="dwjbxxView('phone')" size="mini" :type="dwjbxxPhoneType">联系方式</el-button>
 				    <el-button  @click="dwjbxxView('leader')" size="mini" :type="dwjbxxLeaderType">班子成员</el-button>
 				    <div style="margin-top: 20px;">
-						<span style="font-family:微软雅黑;font-size:25px;">{{dwjbxxDialog.title}}</span>
+						<span style="font-family:微软雅黑;font-size:14px;">{{dwjbxxDialog.title}}</span>
 					</div>
 				    <el-form ref="formdwjbxx"  :rules="rules" :model="formdwjbxx" style="width: 100%;margin-top:30px" label-position="top">
                     <el-row v-if="dwjbxxViewType == 'baseInfo'">
@@ -43,7 +54,7 @@
                     	<el-col :span="11">
                         <el-form-item label="党组织名称" prop="orgName"  size="mini" style="width: 100%;">
                             <el-input v-model="formdwjbxx.orgName"  size="medium"
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="党组织名称" ></el-input>                           
+                            	auto-complete="off"  maxlength="255" placeholder="党组织名称" ></el-input>                           
                         </el-form-item>
                         </el-col>
                         <el-col :span="2">
@@ -59,7 +70,8 @@
 							      format="yyyy-MM-dd"
 							      value-format="yyyy-MM-dd"
 							      type="date"
-							      placeholder="选择日期" style="width: 421.66px;">
+							      style="width: 95%;"
+							      placeholder="选择日期" >
 							    </el-date-picker>
                         </el-form-item>
                         </el-col>
@@ -69,7 +81,7 @@
                     	<el-col :span="11">
 	                        <el-form-item label="党组织类型" prop="orgType"  size="mini" style="width: 100%;">
 	                            
-								  <el-select v-model="formdwjbxx.orgType" placeholder="请选择" style="width: 421.66px;"
+								  <el-select v-model="formdwjbxx.orgType" placeholder="请选择" 
 								    	size="medium">
 								    <el-option
 								      v-for="item in orgType"
@@ -92,7 +104,7 @@
 								    v-model="formdwjbxx.orgAddressRelation"
 								    :options="orgAddressRelation"
 								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
-								    style="width: 421.66px;"
+								    
 								    size="medium"
 								    filterable
 								    clearable
@@ -104,7 +116,7 @@
                     	<el-col :span="11">
 	                        <el-form-item label="选举方式" prop="elctType"  size="mini" style="width: 100%;">
 	                           
-								    <el-select v-model="formdwjbxx.elctType" placeholder="请选择" style="width: 421.66px;"
+								    <el-select v-model="formdwjbxx.elctType" placeholder="请选择" 
 								    	size="medium">
 								    <el-option
 								      v-for="item in elctType"
@@ -124,7 +136,7 @@
                         <el-col :span="11">
 	                        <el-form-item label="任期年限" prop="leadTime"  size="mini" style="width: 100%;">
 	                            
-								    <el-select v-model="formdwjbxx.leadTime" placeholder="请选择" style="width: 421.66px;"
+								    <el-select v-model="formdwjbxx.leadTime" placeholder="请选择" 
 								    	size="medium">
 								    <el-option
 								      v-for="item in leadTime"
@@ -146,7 +158,7 @@
 							      format="yyyy-MM-dd"
 							      value-format="yyyy-MM-dd"
 							      type="date"
-							      placeholder="选择日期" style="width: 421.66px;">
+							      placeholder="选择日期" >
 							    </el-date-picker>
                         </el-form-item>
                         </el-col>
@@ -163,7 +175,8 @@
 							      format="yyyy-MM-dd"
 							      value-format="yyyy-MM-dd"
 							      type="date"
-							      placeholder="选择日期" style="width: 421.66px;">
+							      style="width: 95%;"
+							      placeholder="选择日期" >
 							    </el-date-picker>
 	                        </el-form-item>
                         </el-col>
@@ -172,7 +185,7 @@
                     	<el-col :span="11">
                         <el-form-item label="选举应到人数" prop="elctShoudPeopleCount"  size="mini" style="width: 100%;">
                             <el-input v-model="formdwjbxx.elctShoudPeopleCount"  size="medium" type="number"
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="选举应到人数" ></el-input>                           
+                            	auto-complete="off"  maxlength="255" placeholder="选举应到人数" ></el-input>                           
                         </el-form-item>
                         </el-col>
                         <el-col :span="2">
@@ -183,7 +196,7 @@
                         <el-col :span="11">
                         <el-form-item label="选举实到人数" prop="elctActPeopleCount" size="mini" >
                             <el-input v-model="formdwjbxx.elctActPeopleCount"  size="medium" type="number"
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="选举实到人数" ></el-input>
+                            	auto-complete="off"  maxlength="255" placeholder="选举实到人数" ></el-input>
                         </el-form-item>
                         </el-col>
                     </el-row>
@@ -191,7 +204,7 @@
                     	<el-col :span="11">
                         <el-form-item label="上级核定委员会名额" prop="upperSureOrgCount"  size="mini" style="width: 100%;">
                             <el-input v-model="formdwjbxx.upperSureOrgCount"  size="medium"  type="number"
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="上级核定委员会名额" ></el-input>                           
+                            	auto-complete="off"  maxlength="255" placeholder="上级核定委员会名额" ></el-input>                           
                         </el-form-item>
                         </el-col>
                         <el-col :span="2">
@@ -202,7 +215,7 @@
                         <el-col :span="11">
                         <el-form-item label="实有委员数" prop="actUpperOrgPerCount" size="mini" >
                             <el-input v-model="formdwjbxx.actUpperOrgPerCount"  size="medium" type="number"
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="实有委员数"  ></el-input>
+                            	auto-complete="off"  maxlength="255" placeholder="实有委员数"  ></el-input>
                         </el-form-item>
                         </el-col>
                     </el-row>
@@ -210,7 +223,7 @@
                     	<el-col :span="11">
 	                        <el-form-item label="转接组织关系权限" prop="changeOrgRelationAuth"  size="mini" style="width: 100%;">
 	                            
-								    <el-select v-model="formdwjbxx.changeOrgRelationAuth" placeholder="请选择" style="width: 421.66px;"
+								    <el-select v-model="formdwjbxx.changeOrgRelationAuth" placeholder="请选择" 
 								    	size="medium">
 								    <el-option
 								      v-for="item in isDelPartPersonAuth"
@@ -229,7 +242,7 @@
                         </el-col>                        
                         <el-col :span="11">
 	                        <el-form-item label="是否拥有党员删除权限" prop="isDelPartPersonAuth"  size="mini" style="width: 100%;">
-	                            <el-select v-model="formdwjbxx.isDelPartPersonAuth" placeholder="请选择" style="width: 421.66px;"
+	                            <el-select v-model="formdwjbxx.isDelPartPersonAuth" placeholder="请选择" 
 								    	size="medium">
 								    <el-option
 								      v-for="item in isDelPartPersonAuth"
@@ -248,7 +261,7 @@
                     	<el-col :span="11">
 	                        <el-form-item label="党组织联系人" prop="concatPersion"  size="mini" style="width: 100%;">
 	                            <el-input v-model="formdwjbxx2.concatPersion"  size="medium" clearable 
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="党组织联系人"  ></el-input>
+                            	auto-complete="off"  maxlength="255" placeholder="党组织联系人"  ></el-input>
 	                        </el-form-item>
                         </el-col>
                         <el-col :span="2">
@@ -259,7 +272,7 @@
                         <el-col :span="11">
 	                        <el-form-item label="党组织联系人手机号" prop="phone"  size="mini" style="width: 100%;">
 	                             <el-input v-model="formdwjbxx2.phone"  size="medium" clearable 
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="党组织联系人手机号"  ></el-input>
+                            	auto-complete="off"  maxlength="255" placeholder="党组织联系人手机号"  ></el-input>
 	                        </el-form-item>
                         </el-col>
                     </el-row>
@@ -267,7 +280,7 @@
                     	<el-col :span="11">
 	                        <el-form-item label="党组织办公电话" prop="orgJobPhone"  size="mini" style="width: 100%;">
 	                            <el-input v-model="formdwjbxx2.orgJobPhone"  size="medium" clearable 
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="党组织办公电话"  ></el-input>
+                            	auto-complete="off"  maxlength="255" placeholder="党组织办公电话"  ></el-input>
 	                        </el-form-item>
                         </el-col>
                         <el-col :span="2">
@@ -278,7 +291,7 @@
                         <el-col :span="11">
 	                        <el-form-item label="传真" prop="fixPhone"  size="mini" style="width: 100%;">
 	                             <el-input v-model="formdwjbxx2.fixPhone"  size="medium" clearable
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="传真"  ></el-input>
+                            	auto-complete="off"  maxlength="255" placeholder="传真"  ></el-input>
 	                        </el-form-item>
                         </el-col>
                     </el-row>
@@ -289,7 +302,7 @@
 								    v-model="formdwjbxx2.belongArea"
 								    :options="belongArea"
 								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
-								    style="width: 421.66px;"
+								    
 								    size="medium"
 								    filterable
 								    clearable
@@ -304,7 +317,7 @@
                         <el-col :span="11">
 	                        <el-form-item label="邮政编码" prop="transCode"  size="mini" style="width: 100%;">
 	                             <el-input v-model="formdwjbxx2.transCode"  size="medium" clearable
-                            	auto-complete="off" style="width: 421.66px;" maxlength="255" placeholder="邮政编码"  ></el-input>
+                            	auto-complete="off"  maxlength="255" placeholder="邮政编码"  ></el-input>
 	                        </el-form-item>
                         </el-col>
                     </el-row>
@@ -312,7 +325,7 @@
                     	<el-col :span="24">
 	                        <el-form-item label="详细地址" prop="address"  size="mini" style="width: 100%;">
 	                            <el-input v-model="formdwjbxx2.address" size="medium" clearable
-                            	auto-complete="off" style="width: 940px;" maxlength="1024" placeholder="详细地址"  ></el-input>
+                            	auto-complete="off"  maxlength="1024" placeholder="详细地址"  ></el-input>
 	                        </el-form-item>
                         </el-col>                   
                     </el-row>
@@ -417,7 +430,9 @@
 				 </div> 
 				 </span>
 		    </el-dialog>
-			    </el-main>
+			    </div>
+			    </el-col>
+					</el-row>
 			  
 </div>
 </html>
