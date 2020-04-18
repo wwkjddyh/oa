@@ -783,6 +783,13 @@ div[pType="elTable"] th>.cell {
     border-bottom-color: #DEDCDD;
     border-bottom-style: solid;
 }
+.steps-content .steps3 .row .horizontal-line-default {
+    width: 20%;
+    height: 0;
+    border-bottom-width: 1px;
+    border-bottom-color: #DEDCDD;
+    border-bottom-style: solid;
+}
 .steps-content .steps3 .row .party-member-name {
     margin-left: 2px;
 }

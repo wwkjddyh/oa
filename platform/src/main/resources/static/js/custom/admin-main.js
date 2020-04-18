@@ -416,6 +416,7 @@ new Vue({
                         parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
+                    that.resetPrePartyMembersStyle();
                     break;
                 case 'bigData':     // 大数据
                     //that.getCurrUserEchartsData();
@@ -8297,6 +8298,42 @@ new Vue({
         removePrePartyMemeberSubmitHandle: function(prePartyMemeberId) {
             prePartyMemeberId = prePartyMemeberId || '';
             console.log('删除预备党员：', prePartyMemeberId)
+        },
+
+        /**
+         * 获得字符串宽度
+         * @param fontSize 字体大小
+         * @param fontFamily 字体
+         * @param text 文本或字符串
+         * @returns {number}
+         */
+        getTextWidth: function(fontSize, fontFamily, text){
+            var span = document.createElement("span");
+            var result = {};
+            result.width = span.offsetWidth;
+            result.height = span.offsetHeight;
+            span.style.visibility = "hidden";
+            span.style.fontSize = fontSize;
+            span.style.fontFamily = fontFamily;
+            span.style.display = "inline-block";
+            document.body.appendChild(span);
+            if(typeof span.textContent != "undefined"){
+                span.textContent = text;
+            }else{
+                span.innerText = text;
+            }
+            result.width = parseFloat(window.getComputedStyle(span).width) - result.width;
+            result.height = parseFloat(window.getComputedStyle(span).height) - result.height;
+            return result.width;
+        },
+
+        /**
+         * 重置(发展党员)预备党员列表部分样式
+         */
+        resetPrePartyMembersStyle: function() {
+            let prePartyMembers = document.getElementById("prePartyMembersDiv");
+            let members = prePartyMembers;
+            console.log('members', members);
         },
     },
     props: {
