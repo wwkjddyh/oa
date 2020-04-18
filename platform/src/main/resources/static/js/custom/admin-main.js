@@ -8261,26 +8261,25 @@ new Vue({
             }
         },
 
-        getCommitteeData() {
-            let that = this;
-            that.orgCommitteeLoading = true;
-            axios.get("/api/org/getOrgList",{params:{
-                    isSuperAdmin:that.isSuperAdmin
-                }}).then(function(response){
-                that.handleResponse(response);
-                if(parseInt(response.data.code) == 200 ){
-                    let parentArr = response.data.result.filter(l => l.upperOrg === null);
-                    that.committeeOrg = that.getTreeData(response.data.result, parentArr,true);
-                    that.orgCommitteeLoading = false;
-                }else{
-                    that.$message.error('数据加载失败');
-                    that.orgCommitteeLoading = false;
-                }
-            }).catch(function(err){/*异常*/
-                that.$message.error('请求失败');
-                that.orgCommitteeLoading = false;
-            });
-        },
+        getCommitteeData(){
+        	let that = this;
+        	that.orgCommitteeLoading = true;
+        	axios.get("/api/org/getOrgList",{params:{
+        		isSuperAdmin:that.isSuperAdmin
+            }}).then(function(response){
+            	that.handleResponse(response);
+            	if(parseInt(response.data.code) == 200 ){
+        			let parentArr = response.data.result.filter(l => l.upperOrg === null);
+        			that.committeeOrg = that.getTreeData(response.data.result, parentArr,true);
+        			that.orgCommitteeLoading = false;
+        		}else{
+        			that.$message.error('数据加载失败');
+        			that.orgCommitteeLoading = false;
+        		}
+        	}).catch(function(err){/*异常*/
+        		that.$message.error('请求失败');
+        		that.orgCommitteeLoading = false;
+                });
 
         /**
          * websocket重连
