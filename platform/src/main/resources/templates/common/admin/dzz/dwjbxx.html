@@ -7,7 +7,7 @@
 			  
 			    <!-- <el-aside style="display: flex;width:30%;height:500px;border: 1px solid red;" v-loading ="dwjbxxLoading"> -->
 				    <el-row :gutter="50" >
-					  <el-col :span="10"  v-loading ="dwjbxxLoading">
+					  <el-col :span="8"  v-loading ="dwjbxxLoading">
 						  <div th:replace="/common/admin/dzz/dzzTree :: content"/>
 						  <!--
 						  <div style="width:100%;height:100%;">
@@ -71,7 +71,7 @@
 							      format="yyyy-MM-dd"
 							      value-format="yyyy-MM-dd"
 							      type="date"
-							      style="width: 95%;"
+							      style="width: 100%;"
 							      placeholder="选择日期" >
 							    </el-date-picker>
                         </el-form-item>
@@ -82,7 +82,7 @@
                     	<el-col :span="11">
 	                        <el-form-item label="党组织类型" prop="orgType"  size="mini" style="width: 100%;">
 	                            
-								  <el-select v-model="formdwjbxx.orgType" placeholder="请选择" 
+								  <el-select v-model="formdwjbxx.orgType" placeholder="请选择"  style="width: 100%;"
 								    	size="medium">
 								    <el-option
 								      v-for="item in orgType"
@@ -105,7 +105,7 @@
 								    v-model="formdwjbxx.orgAddressRelation"
 								    :options="orgAddressRelation"
 								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
-								    
+								    style="width: 100%;"
 								    size="medium"
 								    filterable
 								    clearable
@@ -117,7 +117,7 @@
                     	<el-col :span="11">
 	                        <el-form-item label="选举方式" prop="elctType"  size="mini" style="width: 100%;">
 	                           
-								    <el-select v-model="formdwjbxx.elctType" placeholder="请选择" 
+								    <el-select v-model="formdwjbxx.elctType" placeholder="请选择" style="width: 100%;"
 								    	size="medium">
 								    <el-option
 								      v-for="item in elctType"
@@ -137,7 +137,7 @@
                         <el-col :span="11">
 	                        <el-form-item label="任期年限" prop="leadTime"  size="mini" style="width: 100%;">
 	                            
-								    <el-select v-model="formdwjbxx.leadTime" placeholder="请选择" 
+								    <el-select v-model="formdwjbxx.leadTime" placeholder="请选择" style="width: 100%;"
 								    	size="medium">
 								    <el-option
 								      v-for="item in leadTime"
@@ -158,6 +158,7 @@
 							      size="medium"
 							      format="yyyy-MM-dd"
 							      value-format="yyyy-MM-dd"
+							      style="width: 100%;"
 							      type="date"
 							      placeholder="选择日期" >
 							    </el-date-picker>
@@ -176,7 +177,7 @@
 							      format="yyyy-MM-dd"
 							      value-format="yyyy-MM-dd"
 							      type="date"
-							      style="width: 95%;"
+							      style="width: 100%;"
 							      placeholder="选择日期" >
 							    </el-date-picker>
 	                        </el-form-item>
@@ -224,7 +225,7 @@
                     	<el-col :span="11">
 	                        <el-form-item label="转接组织关系权限" prop="changeOrgRelationAuth"  size="mini" style="width: 100%;">
 	                            
-								    <el-select v-model="formdwjbxx.changeOrgRelationAuth" placeholder="请选择" 
+								    <el-select v-model="formdwjbxx.changeOrgRelationAuth" placeholder="请选择" style="width: 100%;"
 								    	size="medium">
 								    <el-option
 								      v-for="item in isDelPartPersonAuth"
@@ -243,7 +244,7 @@
                         </el-col>                        
                         <el-col :span="11">
 	                        <el-form-item label="是否拥有党员删除权限" prop="isDelPartPersonAuth"  size="mini" style="width: 100%;">
-	                            <el-select v-model="formdwjbxx.isDelPartPersonAuth" placeholder="请选择" 
+	                            <el-select v-model="formdwjbxx.isDelPartPersonAuth" placeholder="请选择" style="width: 100%;"
 								    	size="medium">
 								    <el-option
 								      v-for="item in isDelPartPersonAuth"
@@ -303,7 +304,7 @@
 								    v-model="formdwjbxx2.belongArea"
 								    :options="belongArea"
 								    :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
-								    
+								    style="width: 100%;"
 								    size="medium"
 								    filterable
 								    clearable

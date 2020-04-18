@@ -2059,7 +2059,11 @@ new Vue({
                                         case 'formdwjbxx':
                                         	that.$refs['formdwjbxx2'].validate((valid) => {
                                         		if(valid){
-                                        			that.submitDwjbxx();
+                                        			if(that.dwjbxxFormValidate()){
+                                        				that.submitDwjbxx();
+                                        			}else{
+                                        				return false;
+                                        			}
                                         		}else {
                                                     this.$message.error('提交失败,请按要求填写表单内容');
                                                     return false;
@@ -2092,6 +2096,55 @@ new Vue({
             
             //勿删，特意写下此句
             console.log('submitForm-formName,',formName,new Date().getTime());
+        },
+        dwjbxxFormValidate(){
+        	let that = this;
+        	if(that.formdwjbxx.orgName == null || that.formdwjbxx.orgName == ''){
+        		this.$message.error('提交失败,请填写 基本信息-->党组织名称');
+        		return false;
+        	}
+        	if(that.formdwjbxx.foundTime == null || that.formdwjbxx.foundTime == ''){
+        		this.$message.error('提交失败,请选择 基本信息-->批准建立党组织日期');
+        		return false;
+        	}
+        	if(that.formdwjbxx.orgType == null || that.formdwjbxx.orgType == ''){
+        		this.$message.error('提交失败,请选择 基本信息-->党组织类型');
+        		return false;
+        	}
+        	if(that.formdwjbxx.orgAddressRelation == null || that.formdwjbxx.orgAddressRelation == ''){
+        		this.$message.error('提交失败,请选择 基本信息-->党组织属地关系');
+        		return false;
+        	}
+        	if(that.formdwjbxx.elctType == null || that.formdwjbxx.elctType == ''){
+        		this.$message.error('提交失败,请选择 基本信息-->选举方式');
+        		return false;
+        	}
+        	if(that.formdwjbxx.elctType == null || that.formdwjbxx.elctType == ''){
+        		this.$message.error('提交失败,请选择 基本信息-->选举方式');
+        		return false;
+        	}
+        	if(that.formdwjbxx.currentLeaderTime == null || that.formdwjbxx.currentLeaderTime == ''){
+        		this.$message.error('提交失败,请选择 基本信息-->本届班子当选日期');
+        		return false;
+        	}
+        	if(that.formdwjbxx.changeOrgRelationAuth == null || that.formdwjbxx.changeOrgRelationAuth == ''){
+        		this.$message.error('提交失败,请选择 基本信息-->转接组织关系权限');
+        		return false;
+        	}
+        	if(that.formdwjbxx2.concatPersion == null || that.formdwjbxx2.concatPersion == ''){
+        		this.$message.error('提交失败,请填写 联系方式-->党组织联系人');
+        		return false;
+        	}
+        	if(that.formdwjbxx2.phone == null || that.formdwjbxx2.phone == ''){
+        		this.$message.error('提交失败,请填写 联系方式-->党组织联系人手机号');
+        		return false;
+        	}
+        	if(that.formdwjbxx2.orgJobPhone == null || that.formdwjbxx2.orgJobPhone == ''){
+        		this.$message.error('提交失败,请填写 联系方式-->党组织办公电话');
+        		return false;
+        	}
+        	
+        	return true;
         },
         getOrgTypeValue(orgType1){
         	let list = this.orgType.filter(x=>x.dictId == orgType1);
