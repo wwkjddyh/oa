@@ -52,14 +52,14 @@
                                     <i class="el-icon-delete pre-party-member-remove" @click="removePrePartyMemeberSubmitHandle(item.userId)"></i>
                                 </template>
                                 <template v-if="item.stage >= 5">
-                                    <div class="horizontal-line4"></div><span class="party-member-name"><el-button style="color: #B2453F;border-radius: 15px;padding: 2px 12px;border-color: #DEDCDD;font-weight: bolder" disabled size="mini" round>{{item.name}}</el-button></span>
+                                    <div class="horizontal-line4"></div><span class="party-member-name"><el-button style="color: #B2453F;border-radius: 15px;padding: 2px 12px;border-color: #DEDCDD;font-weight: bolder" disabled size="mini" round>{{item.userName}}</el-button></span>
                                     <el-dropdown size="mini" class="party-member-dropdown"  @command="handleFzdyDropdown">
                                         <i class="el-icon-caret-bottom party-member-dropdown-icon"></i>
                                         <el-dropdown-menu slot="dropdown">
-                                            <el-dropdown-item :command="item2.id + ',' + item.id" v-for="(item2, index2) in fzdySteps" v-if="item.stage !== item2.id" class="party-member-dropdown-item">{{item2.title}}</el-dropdown-item>
+                                            <el-dropdown-item :command="item2.id + ',' + item.userId" v-for="(item2, index2) in fzdySteps" v-if="item.stage !== item2.id" class="party-member-dropdown-item">{{item2.title}}</el-dropdown-item>
                                         </el-dropdown-menu>
                                     </el-dropdown>
-                                    <i class="el-icon-delete pre-party-member-remove" @click="removePrePartyMemeberSubmitHandle(item.id)"></i>
+                                    <i class="el-icon-delete pre-party-member-remove" @click="removePrePartyMemeberSubmitHandle(item.userId)"></i>
                                 </template>
                             </div>
                         </template>
