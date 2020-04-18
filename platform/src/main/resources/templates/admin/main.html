@@ -203,6 +203,12 @@
                         <el-card shadow="never" v-if="showContent == 'articles'" key="bulletin">
                             <div th:replace="/common/admin/article/articles :: content"/>
                         </el-card>
+                        <el-card shadow="never" v-if="showContent == 'zlk'" key="zlk">
+                            <div th:replace="/common/admin/res/list :: content"/>
+                        </el-card>
+                        <el-card shadow="never" v-if="showContent == 'xxjl'" key="xxjl">
+                            <div th:replace="/common/admin/xxjl/xxjl :: content"/>
+                        </el-card>
                         <el-card shadow="never" v-show="showContent == 'formArticle'" key="formArticle">
                             <div th:replace="/common/admin/article/add :: form"/>
                         </el-card>
@@ -262,7 +268,7 @@
                 <div class="footer-div">
                     <p style="font-size: 10px;">技术支持：奥维云创(天津)网络科技有限公司 </p>
                     <p style="margin-left: 20px;font-size: 10px;">E-mail：aoweiyunchuang@163.com</p>
-                    <!-- <p style="margin-left: 80px;font-size: 10px;">津ICP备：110241538166</p> -->
+                    <p style="margin-left: 80px;font-size: 10px;">津ICP备20002390号</p>
                 </div>
             </el-footer>
         </el-container>
