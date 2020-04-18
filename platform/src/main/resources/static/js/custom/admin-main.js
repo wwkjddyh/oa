@@ -1006,6 +1006,7 @@ new Vue({
         formResDl: {},
         formModifyPwd: {},
         formBriefSendRecord: {},
+        formPrePartyMemeber: {},
         loading:{},
         nddyxxcjLoading:false,
         dwjbxxLoading: false,
@@ -1260,6 +1261,7 @@ new Vue({
         formSearchRes: {},
         formSearchResDl: {},
         formSearchBriefSendRecord: {},
+        formSearchPrePartyMemeber: {},
         formdwjbxx:{},
         dwjbxxMain: false,
         adminOrgAdd:{
@@ -8247,6 +8249,45 @@ new Vue({
             let that = this;
             that.wsObj.webChatMainClass == 'webchat-main-default'
         },
+
+        /**
+         * 添加预备党员
+         * @param e
+         */
+        addPrePartyMemeberSubmitHandle: function(e) {
+            let that = this;
+            let _userName = that.formPrePartyMemeber.userName.replace(/(^\s*)|(\s*$)/g, "");
+            if (_userName == '') {
+                that.$message({
+                    message: data.msg,
+                    center:true,
+                    type: 'error'
+                });
+                return false;
+            }
+            else {
+                // 提交预备党员信息
+                console.log('addPrePartyMemeberSubmitHandle', _userName);
+                // axios.post("/api/news/save", _data, {
+                //     headers: {
+                //         "Content-type": "application/json;charset=utf-8"
+                //     }
+                // }).then(function(response){
+                //         that.handleResponse(response);
+                //         that.responseMessageHandler(response, '预备党员', '添加', function() {
+                //             that.dialogShow.prePartyMemeber = false;
+                //             // 重新获取改组织的预备党员信息
+                //             // 重载数据：fzdyPartyMembers
+
+
+                //         });
+                //         that.fullscreenLoading=false;
+                //     }).catch(function(err){
+                //     that.fullscreenLoading=false;
+                //     console.warn(err);
+                // });
+            }
+        },
     },
     props: {
 
@@ -8279,6 +8320,7 @@ new Vue({
                 that.formResDl = config.formResDl;
                 that.formModifyPwd = config.formModifyPwd;
                 that.formBriefSendRecord = config.formBriefSendRecord;
+                that.formPrePartyMemeber = config.formPrePartyMemeber;
 
                 that.dialogShow = config.dialogShow;
                 that.rules = config.rules;
@@ -8297,6 +8339,7 @@ new Vue({
                 that.formSearchRes = searchForm.res;
                 that.formSearchResDl = searchForm.resDl;
                 that.formSearchBriefSendRecord = searchForm.briefSendRecord;
+                that.formSearchPrePartyMemeber = searchForm.prePartyMemeber;
 
             })
             .catch(function(err){/*异常*/

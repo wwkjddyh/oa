@@ -10,8 +10,8 @@
                 <el-breadcrumb-item v-for="(item, index) in fzdyBreadcrumbs">{{item.title}}</el-breadcrumb-item>
             </el-breadcrumb>
             <div style="margin-top: 10px" v-if="fzdyBreadcrumbs.length != 0">
-                <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-plus">添加</el-button>
-                <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
+                <el-button plain @click="dialogShow.prePartyMemeber = !dialogShow.prePartyMemeber" size="mini" icon="el-icon-plus">添加</el-button>
+                <!--<el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>-->
             </div>
             <!--步进区域-->
             <div class="steps-content" v-if="fzdyBreadcrumbs.length != 0">
@@ -235,6 +235,19 @@
             <el-button @click="closeUpload2" plain size="mini" icon="el-icon-close">取消</el-button>
             <el-button @click="submitUpload2" type="primary" plain size="mini" icon="el-icon-check">保存</el-button>
         </div>
+    </el-dialog>
+    <el-dialog title="添加预备党员" :visible.sync="dialogShow.prePartyMemeber" lock-scroll="true" width="30%">
+        <el-form ref="formPrePartyMemeber" :rules="rules" :model="formPrePartyMemeber" label-width="100px" :validate-on-rule-change="false" size="small">
+            <el-form-item label="姓名" prop="userName">
+                <el-input v-model="formPrePartyMemeber.userName" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="姓名"></el-input>
+                <el-tooltip class="item" effect="dark" placement="top">
+                    <div slot="content">姓名</div><i class="el-icon-question"></i></el-tooltip>
+            </el-form-item>
+            <el-form-item>
+                <el-button @click="formPrePartyMemeber.userName = '';dialogShow.prePartyMemeber = !dialogShow.prePartyMemeber;" plain size="mini" icon="el-icon-close">取消</el-button>
+                <el-button @click="addPrePartyMemeberSubmitHandle" type="primary" plain size="mini" icon="el-icon-check">确定</el-button>
+            </el-form-item>
+        </el-form>
     </el-dialog>
 </div>
 </html>

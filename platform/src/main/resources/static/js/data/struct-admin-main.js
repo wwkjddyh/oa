@@ -287,6 +287,15 @@ const formStructConfig = {
         key: '',
     },
 
+    formPrePartyMemeber: {
+        userId: '',
+        userName: '',
+        userNickname: '',
+        orgId: '',
+        stage: '',
+        key: '',
+    },
+
     searchForm: {
         sysUser: {
             id: '',
@@ -514,6 +523,15 @@ const formStructConfig = {
             viewTime: '',
             key: '',
         },
+
+        prePartyMemeber: {
+            userId: '',
+            userName: '',
+            userNickname: '',
+            orgId: '',
+            stage: '',
+            key: '',
+        },
     },
     dialogShow: {
         authModule: false,
@@ -548,6 +566,7 @@ const formStructConfig = {
         viewNotice: false,
         receiverIds: false,
         briefReceivers: false,
+        prePartyMemeber: false,
     },
     rules: {
         name: [
