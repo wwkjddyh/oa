@@ -749,35 +749,35 @@ div[pType="elTable"] th>.cell {
     align-items: center;
 }
 .steps-content .steps3 .row .horizontal-line0 {
-    width: 9%;
+    width: calc(9% - 18px);
     height: 0;
     border-bottom-width: 1px;
     border-bottom-color: #DEDCDD;
     border-bottom-style: solid;
 }
 .steps-content .steps3 .row .horizontal-line1 {
-    width: 29%;
+    width: calc(29% - 18px);
     height: 0;
     border-bottom-width: 1px;
     border-bottom-color: #DEDCDD;
     border-bottom-style: solid;
 }
 .steps-content .steps3 .row .horizontal-line2 {
-    width: 49%;
+    width: calc(49% - 18px);
     height: 0;
     border-bottom-width: 1px;
     border-bottom-color: #DEDCDD;
     border-bottom-style: solid;
 }
 .steps-content .steps3 .row .horizontal-line3 {
-    width: 69%;
+    width: calc(69% - 18px);
     height: 0;
     border-bottom-width: 1px;
     border-bottom-color: #DEDCDD;
     border-bottom-style: solid;
 }
 .steps-content .steps3 .row .horizontal-line4 {
-    width: 89%;
+    width: calc(89% - 18px);
     height: 0;
     border-bottom-width: 1px;
     border-bottom-color: #DEDCDD;
