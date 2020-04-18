@@ -75,12 +75,31 @@ new Vue({
                     that.formSearchArticle.isBrief = true;
                     that.formSearchArticle.sendType = '1';
                     that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                    that.newsOperate=false;
+            		that.operateName = '操作';
+            		that.operateIcon = 'el-icon-setting';
                     //that.loadArticles('',1, that.pager.article.pageSize);
                     that.currAction = 'append';
                     that.def_menu_id = 'articles';
                     that.receiveArtcleType='info';
                     that.sendArtcleType='';
-                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize);
+                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,null);
+                    break;
+                case 'xxjl':
+                	//that.getArticleCategories();
+                    that.currentArticleFormTitle = '学习交流';
+                    that.formSearchArticle.isBrief = true;
+                    that.formSearchArticle.sendType = '2';
+                    that.formSearchArticle.categoryId = '63c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                    that.newsOperate=false;
+            		that.operateName = '操作';
+            		that.operateIcon = 'el-icon-setting';
+                    //that.loadArticles('',1, that.pager.article.pageSize);
+                    that.currAction = 'append';
+                    that.def_menu_id = 'xxjl';
+                    that.receiveArtcleType='info';
+                    that.sendArtcleType='';
+                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
                     break;
                 case 'articleManagement':   // 文章管理
                     that.getArticleCategories();
@@ -93,9 +112,9 @@ new Vue({
                     that.def_menu_id = 'articleManagement';
                     break;
                 case 'formArticle': // 简报或文章
-                    that.getArticleCategories();
-                    that.formArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
-                    that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                	//that.getArticleCategories();
+                    that.formArticle.categoryId = that.formSearchArticle.categoryId
+                    that.formSearchArticle.categoryId = that.formSearchArticle.categoryId;
                     if(that.currAction == 'edit') {
                         setTimeout(function() {
                             that.ueditors.article.setContent(that.formArticle.content, false);
@@ -109,7 +128,7 @@ new Vue({
                         that.formArticle = {
                             isEdit : false,
                             recordId: '',
-                            categoryId: '53c34dec-7447-4bbc-9ff3-af0f0686b07f', //简报
+                            categoryId: that.formSearchArticle.categoryId, //简报
                             categoryName: '',
                             title: '',
                             intro: '',
@@ -140,7 +159,7 @@ new Vue({
                 	that.setDyxxYear();
                 	that.dwjbxxMain = false;
                 	//that.getUpperOrg();
-                	that.loadDwjbxx();
+                	//that.loadDwjbxx();
                 	that.getNddyxxOptions();
                 	//that.loadNddyxxcj();
                 	break;
@@ -160,6 +179,21 @@ new Vue({
                     that.uploadData = {
                         name: '',
                         type: 'res-dfgl',
+                        parse: '1',
+                    };
+                    that.loadResList('', 1, that.pager.res.pageSize);
+                    break;
+                case 'zlk':    // 资料库
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = '2e9941a0-2a6f-4c2f-b74c-970d0351469f';
+                    that.formSearchRes.typeId = '2e9941a0-2a6f-4c2f-b74c-970d0351469f';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '资料库';
+                    that.uploadData = {
+                        name: '',
+                        type: 'res-dygl',
                         parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
@@ -693,7 +727,7 @@ new Vue({
                     //that.loadArticles('',1, that.pager.article.pageSize);
                     that.currAction = 'append';
                     that.def_menu_id = 'articles';
-                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, 5);
+                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, 5,null);
                     break;
             }
         },
@@ -1754,7 +1788,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
 
             partyDues: {
@@ -1923,7 +1957,7 @@ new Vue({
                 let __title = that.formArticle.title.replace(/(^\s*)|(\s*$)/g, "");
                 let __content = that.formArticle.content.replace(/(^\s*)|(\s*$)/g, "");
                 let __receiverIds = that.formArticle.receiverIds || [];
-                if (that.currentArticleFormTitle === '简报') {
+                if (that.currentArticleFormTitle === '简报' || that.currentArticleFormTitle === '学习交流') {
                     if (__receiverIds.length === 0) {
                         that.$message.error('请选择接收人');
                         return false;
@@ -2079,15 +2113,20 @@ new Vue({
                     });
                 	that.receiveArtcleType='';
             		that.sendArtcleType='info';
-            		that.currentArticleFormTitle = '简报';
+            		//that.currentArticleFormTitle = '简报';
                     that.formSearchArticle.isBrief = true;
                     that.formSearchArticle.sendType = '1';
-                    that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                    //that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
                     that.formSearchArticle.flag='0';
                     //that.loadArticles('',1, that.pager.article.pageSize);
                     that.currAction = 'append';
-                    that.def_menu_id = 'articles';
-                    that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, that.pager.briefSendRecord.pageSize);
+                    //that.def_menu_id = 'articles';
+                    if(that.currentArticleFormTitle == '简报'){
+                    	that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, that.pager.briefSendRecord.pageSize,null);
+                    }
+                    if(that.currentArticleFormTitle == '学习交流'){
+                    	that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, that.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+                    }
                 	that.newsLoading = false;
                 }else{
                 	that.$message.error('删除失败');
@@ -2471,7 +2510,7 @@ new Vue({
             params.append('authorName',that.formArticle.authorName || '');
             params.append('source',that.formArticle.source || '');
             params.append('sourceSite',that.formArticle.sourceSite || '');
-            if (that.currentArticleFormTitle === '简报') {
+            if (that.currentArticleFormTitle === '简报' || that.currentArticleFormTitle === '学习交流') {
                 params.append('sendType', sendType);
                 params.append('receiverIds', receiverIds);
 
@@ -2507,6 +2546,24 @@ new Vue({
                             	that.loadCurrUserSendBriefRecord('', 1, that.pager.briefSendRecord.pageSize);
                             }else{
                             	that.loadCurrUserReceiverBriefRecord('', 1, that.pager.briefSendRecord.pageSize);
+                            }
+                            
+                            that.$forceUpdate();
+                            that.$message({
+                                message: articleType + operName + '成功!',
+                                type: 'success'
+                            });
+                        }else if(that.currentArticleFormTitle === '学习交流'){
+                        	that.editableTabsOptions.editableTabsValue = 'articles';
+                            that.def_menu_id = 'xxjl';
+                            that.showContent = 'xxjl';
+                            that.$refs['menuRef'].activeIndex = 'xxjl';
+                            that.briefReceiveUserIds = [];
+                            that.pager.briefSendRecord.currentPage = 1;
+                            if(that.sendArtcleType =='info'){
+                            	that.loadCurrUserSendBriefRecord('', 1, that.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+                            }else{
+                            	that.loadCurrUserReceiverBriefRecord('', 1, that.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
                             }
                             
                             that.$forceUpdate();
@@ -3508,6 +3565,52 @@ new Vue({
                         that.dialogShow.news = !that.dialogShow.news;
                         break;
                     case 'article':
+                        if(isAdd) {
+                            //that.def_menu_id = 'formArticle';
+                            setTimeout(function() {
+                                that.ueditors.article.setContent('', false);
+                            }, 500);
+                            that.showContent = 'formArticle';
+                        }
+                        else {
+                            //that.def_menu_id = 'formArticle';
+                            entry = that.articles[scopeIndex];
+                            console.log('article.edit=>content', entry.content);
+                            that.formArticle = {
+                                isEdit: true,
+                                recordId: entry.recordId,
+                                categoryId: entry.categoryId,
+                                categoryName: entry.categoryName,
+                                title: entry.title,
+                                intro: entry.intro,
+                                content: entry.content,
+                                tags: entry.tags,
+                                source: entry.source,
+                                authorName: entry.authorName,
+                                sourceSite: entry.sourceSite,
+                                creatorId: entry.creatorId,
+                                creatorName: entry.creatorName,
+                                updatorId: entry.updatorId,
+                                updatorName: entry.updatorName,
+                                updateTime: entry.updateTime,
+                                recordTime: entry.recordTime,
+                                commentsCount: entry.commentsCount,
+                                viewCount: entry.viewCount,
+                                likeCount: entry.likeCount,
+                                stinkyEgg: entry.stinkyEgg,
+                                sendType: '',
+                                receiverIds: [],
+                                receiveUsers: [],
+                                receiverIdArrStr: '',
+                            };
+                            setTimeout(function() {
+                                that.ueditors.article.setContent(entry.content, false);
+                            }, 500);
+                            that.showContent = 'formArticle';
+                        }
+                        //that.dialogShow.article = !that.dialogShow.article;
+                        break;
+                    case 'xxjl':
                         if(isAdd) {
                             //that.def_menu_id = 'formArticle';
                             setTimeout(function() {
@@ -6004,7 +6107,7 @@ new Vue({
         /**
          * 加载当前用户接收到的简报信息
          */
-        loadCurrUserReceiverBriefRecord(criteria, pageNum, pageSize) {
+        loadCurrUserReceiverBriefRecord(criteria, pageNum, pageSize,categoryid) {
             let that = this;
             axios.get("/api/article/getCurrUserReceiverBriefRecord", {params:{
                     key: criteria,
@@ -6013,7 +6116,8 @@ new Vue({
                     briefId: that.formSearchBriefSendRecord.briefId,
                     senderId: that.formSearchBriefSendRecord.senderId,
                     sendTime: that.formSearchBriefSendRecord.sendTime,
-                    viewTime: that.formSearchBriefSendRecord.viewTime
+                    viewTime: that.formSearchBriefSendRecord.viewTime,
+                    categoryId: categoryid
                 }})
                 .then(function(response){/*成功*/
                 	that.handleResponse(response);
@@ -6032,7 +6136,7 @@ new Vue({
         /**
          * 加载当前用户接收到的简报信息
          */
-        loadCurrUserSendBriefRecord(criteria, pageNum, pageSize) {
+        loadCurrUserSendBriefRecord(criteria, pageNum, pageSize,categoryid) {
             let that = this;
             let sendflag = that.formSearchArticle.flag;
             if(sendflag == null){
@@ -6046,7 +6150,8 @@ new Vue({
                     senderId: that.formSearchBriefSendRecord.senderId,
                     sendTime: that.formSearchBriefSendRecord.sendTime,
                     viewTime: that.formSearchBriefSendRecord.viewTime,
-                    flag:sendflag
+                    flag:sendflag,
+                    categoryId: categoryid 
                 }})
                 .then(function(response){/*成功*/
                 	that.handleResponse(response);
@@ -6063,16 +6168,44 @@ new Vue({
                     console.log(err);
                 });
         },
-        //每页显示数据量变更
+      //每页显示数据量变更
         handleCurrUserReceiverBriefRecordSizeChange: function(val) {
             this.pager.briefSendRecord.pageSize = val;
-            this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize);
+            if(this.currentArticleFormTitle === '学习交流'){
+            	if(this.sendArtcleType =='info'){
+                    this.loadCurrUserSendBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+            	}else{
+            		this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+            	}
+            }else{
+            	if(this.sendArtcleType =='info'){
+                    this.loadCurrUserSendBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,null);
+
+            	}else{
+                	this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,null);
+
+            	}
+            }
         },
 
         //页码变更
         handleCurrUserReceiverBriefRecordCurrentChange: function(val) {
             this.pager.briefSendRecord.currentPage = val;
-            this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize);
+            if(this.currentArticleFormTitle === '学习交流'){
+            	if(this.sendArtcleType =='info'){
+                    this.loadCurrUserSendBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+            	}else{
+            		this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+            	}
+            }else{
+            	if(this.sendArtcleType =='info'){
+                    this.loadCurrUserSendBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,null);
+
+            	}else{
+                	this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,null);
+
+            	}
+            }
         },
         /**
          * index:0,
@@ -6197,7 +6330,7 @@ new Vue({
                 //that.loadArticles('',1, that.pager.article.pageSize);
                 that.currAction = 'append';
                 that.def_menu_id = 'articles';
-                that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize);
+                that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,null);
         	}else if(type == '0'){
         		that.receiveArtcleType='';
         		that.sendArtcleType='info';
@@ -6209,7 +6342,37 @@ new Vue({
                 //that.loadArticles('',1, that.pager.article.pageSize);
                 that.currAction = 'append';
                 that.def_menu_id = 'articles';
-                that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize);
+                that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,null);
+        	}
+        },
+        handlexxjlSearchByViewed(type){
+        	let that = this;
+        	if(type == '1'){
+        		that.receiveArtcleType='info';
+        		that.sendArtcleType='';
+        		that.newsOperate=false;
+        		that.operateName = '操作';
+        		that.operateIcon = 'el-icon-setting';
+        		that.currentArticleFormTitle = '学习交流';
+                that.formSearchArticle.isBrief = true;
+                that.formSearchArticle.sendType = '1';
+                that.formSearchArticle.categoryId = '63c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                //that.loadArticles('',1, that.pager.article.pageSize);
+                that.currAction = 'append';
+                that.def_menu_id = 'xxjl';
+                that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+        	}else if(type == '0'){
+        		that.receiveArtcleType='';
+        		that.sendArtcleType='info';
+        		that.currentArticleFormTitle = '学习交流';
+                that.formSearchArticle.isBrief = true;
+                that.formSearchArticle.sendType = '1';
+                that.formSearchArticle.categoryId = '63c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                that.formSearchArticle.flag='0';
+                //that.loadArticles('',1, that.pager.article.pageSize);
+                that.currAction = 'append';
+                that.def_menu_id = 'xxjl';
+                that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
         	}
         },
         /**
@@ -7993,7 +8156,7 @@ new Vue({
         //that.loadArticles('',1, that.pager.article.pageSize);
         this.currAction = 'append';
         //this.def_menu_id = 'articles';
-        this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 5);
+        this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 5,null);
         this.getOrgIdByUserId();
         this.getAreaTreeDict();
         this.getCurrUserEchartsData();
