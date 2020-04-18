@@ -346,6 +346,7 @@ new Vue({
                     break;
                 case 'fzdy':    // 发展党员
                     that.getResOtherTypes();
+                    that.loadDwjbxx();
                     that.formSearchRes.key = '';
                     that.formRes.typeId = 'ed535138-6ec2-468c-8083-d967a24c2f33';
                     that.formRes.typeName = '发展党员';
