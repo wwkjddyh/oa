@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.oa.platform.repository.PrePartyRepository" >
+
+	<resultMap id="preParty" type="com.oa.platform.entity.PrePartyMemeber">
+		<result column="user_id" property="userId" jdbcType="VARCHAR"/>
+		<result column="user_name" property="userName" jdbcType="VARCHAR"/>
+		<result column="user_nickname" property="userNickname" jdbcType="VARCHAR"/>
+		<result column="org_id" property="orgId" jdbcType="VARCHAR"/>
+		<result column="stage" property="stage" jdbcType="INTEGER"/>
+		<result column="record_flag" property="recordFlag" jdbcType="VARCHAR"/>
+		<result column="recorder_id" property="recorderId" jdbcType="VARCHAR"/>
+		<result column="updater_id" property="updaterId" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<insert id="insert" parameterType="com.oa.platform.entity.PrePartyMemeber">
+		insert into t_pre_party_memeber (user_id,user_name,user_nickname,org_id,record_time,update_time,record_flag,recorder_id,updater_id,stage)
+		values (#{userId},#{userName},#{userNickname},#{orgId},now(),now(),'1',#{recorderId},#{updaterId},#{stage})
+	</insert>
+	<!-- 发展党员阶段变更 -->
+	<update id="changeStageByUserId">
+		update t_pre_party_memeber set stage=#{stage} where user_id=#{userId} and record_flag='1'
+	</update>
+	<!-- 发展党员删除 -->
+	<update id="deletePrePartyById">
+		update t_pre_party_memeber set record_flag='0' where user_id=#{userId}
+	</update>
+	<!-- 查询发展党员(组织下) -->
+	<select id="getPrePartyList" resultMap="preParty">
+		SELECT
+			user_id,
+			user_name,
+			user_nickname,
+			org_id,
+			record_time,
+			update_time,
+			record_flag,
+			recorder_id,
+			updater_id,
+			stage 
+		FROM
+			t_pre_party_memeber 
+		WHERE
+			org_id = #{orgId}
+			and record_flag='1'
+		<if test="userName != null and userName != ''">
+	        AND user_name = #{userName}
+	    </if>
+	    <if test="stage != null">
+	        AND stage = #{stage}
+	    </if>
+	    order by record_time desc
+	</select>
+</mapper>

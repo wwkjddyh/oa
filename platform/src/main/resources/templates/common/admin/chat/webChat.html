@@ -1,0 +1,272 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+<div th:fragment="content"  >
+    <div class="webchat-main-default" id="webchat-main">
+        <div class="webchat-container" id="webchat-container">
+            <div class="webchat-container-left">
+                <div class="webchat-container-left_item" @click="closeWebchatHandle">
+                    <div class="webchat-container-left_item-area">
+                        <div class="webchat-container-left_item-area-avatar">
+                            🌋
+                        </div>
+                        <div class="webchat-container-left_item-area-message">
+                            <div class="webchat-container-left_item-area-message-top">
+                                <div class="webchat-container-left_item-area-message-name">路人甲</div>
+                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                            </div>
+                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
+                    <div class="webchat-container-left_item-area">
+                        <div class="webchat-container-left_item-area-avatar">
+                            🌋
+                        </div>
+                        <div class="webchat-container-left_item-area-message">
+                            <div class="webchat-container-left_item-area-message-top">
+                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
+                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                            </div>
+                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="webchat-container-left_item item-active-bgcolor" onclick="changeFriendsBgColor(this)">
+                    <div class="webchat-container-left_item-area">
+                        <div class="webchat-container-left_item-area-avatar">
+                            🌋
+                        </div>
+                        <div class="webchat-container-left_item-area-message">
+                            <div class="webchat-container-left_item-area-message-top">
+                                <div class="webchat-container-left_item-area-message-name">路人丙</div>
+                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                            </div>
+                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
+                    <div class="webchat-container-left_item-area">
+                        <div class="webchat-container-left_item-area-avatar">
+                            🌋
+                        </div>
+                        <div class="webchat-container-left_item-area-message">
+                            <div class="webchat-container-left_item-area-message-top">
+                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
+                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                            </div>
+                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
+                    <div class="webchat-container-left_item-area">
+                        <div class="webchat-container-left_item-area-avatar">
+                            🌋
+                        </div>
+                        <div class="webchat-container-left_item-area-message">
+                            <div class="webchat-container-left_item-area-message-top">
+                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
+                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                            </div>
+                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
+                    <div class="webchat-container-left_item-area">
+                        <div class="webchat-container-left_item-area-avatar">
+                            🌋
+                        </div>
+                        <div class="webchat-container-left_item-area-message">
+                            <div class="webchat-container-left_item-area-message-top">
+                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
+                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                            </div>
+                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
+                    <div class="webchat-container-left_item-area">
+                        <div class="webchat-container-left_item-area-avatar">
+                            🌋
+                        </div>
+                        <div class="webchat-container-left_item-area-message">
+                            <div class="webchat-container-left_item-area-message-top">
+                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
+                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                            </div>
+                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
+                    <div class="webchat-container-left_item-area">
+                        <div class="webchat-container-left_item-area-avatar">
+                            🌋
+                        </div>
+                        <div class="webchat-container-left_item-area-message">
+                            <div class="webchat-container-left_item-area-message-top">
+                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
+                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                            </div>
+                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
+                    <div class="webchat-container-left_item-area">
+                        <div class="webchat-container-left_item-area-avatar">
+                            🌋
+                        </div>
+                        <div class="webchat-container-left_item-area-message">
+                            <div class="webchat-container-left_item-area-message-top">
+                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
+                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                            </div>
+                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
+                    <div class="webchat-container-left_item-area">
+                        <div class="webchat-container-left_item-area-avatar">
+                            🌋
+                        </div>
+                        <div class="webchat-container-left_item-area-message">
+                            <div class="webchat-container-left_item-area-message-top">
+                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
+                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                            </div>
+                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
+                    <div class="webchat-container-left_item-area">
+                        <div class="webchat-container-left_item-area-avatar">
+                            🌋
+                        </div>
+                        <div class="webchat-container-left_item-area-message">
+                            <div class="webchat-container-left_item-area-message-top">
+                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
+                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                            </div>
+                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
+                    <div class="webchat-container-left_item-area">
+                        <div class="webchat-container-left_item-area-avatar">
+                            🌋
+                        </div>
+                        <div class="webchat-container-left_item-area-message">
+                            <div class="webchat-container-left_item-area-message-top">
+                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
+                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                            </div>
+                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
+                    <div class="webchat-container-left_item-area">
+                        <div class="webchat-container-left_item-area-avatar">
+                            🌋
+                        </div>
+                        <div class="webchat-container-left_item-area-message">
+                            <div class="webchat-container-left_item-area-message-top">
+                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
+                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                            </div>
+                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
+                    <div class="webchat-container-left_item-area">
+                        <div class="webchat-container-left_item-area-avatar">
+                            🌋
+                        </div>
+                        <div class="webchat-container-left_item-area-message">
+                            <div class="webchat-container-left_item-area-message-top">
+                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
+                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                            </div>
+                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="webchat" class="webchat">
+                <div class="webchat-right-top">
+                    <div class="webchat-right-top-area">
+                        <div class="webchat-right-top-area-top">
+                            <!--
+                            <a href="#" title="最小化" style="margin-left: 20px;">-</a>
+                            <a href="#" title="全屏" style="margin-left: 20px;">口</a>
+                            -->
+                            <a title="close" onclick="closeWebchat()" style="margin-left: 20px;cursor: pointer;">X</a>
+                        </div>
+                        <div class="webchat-right-top-area-body">
+                            <div class="webchat-right-top-area-body-name">
+                                <span id="currentFriendName">路人丙</span>
+                            </div>
+                            <div></div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="webchat-right-messages">
+                    <div class="messages" id="messageList">
+                        <div class="message-left">
+                            <div class="message-left-avatar">
+                                <div>🌋</div>
+                                <div class="avatar-triangle-left"></div>
+                            </div>
+                            <div class="message-left-message">
+                                <div class="message-left-message_title"><span>张三</span></div>
+                                <div class="message-left-message_content">
+                                    sadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadf
+                                    sadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadf
+                                </div>
+                            </div>
+                        </div>
+                        <div class="message-right">
+                            <div class="message-right-message">
+                                <div class="message-right-message_title"><span>张三</span></div>
+                                <div class="message-right-message_content">sadfasdfsadfasdfasdfsadf</div>
+                            </div>
+                            <div class="message-right-avatar">
+                                <div class="avatar-triangle-right"></div>
+                                <div>🌋</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="webchat-right-sendArea-container">
+                    <div class="webchat-right-sendArea">
+                        <div class="actions">
+                            <a >😀</a> <a >插入图片</a> <a >上传文件</a>
+                        </div>
+                        <div class="sendArea">
+                            <div id="messageBox" contenteditable="true">
+                                🌋🗻🏠🏡🏢🏣🏤🏥🏦🏨🏩🏪🏫🏬🏭🏯🏰💒🗼🗽⛪⛲🌁🌃🌆🌇🌉🌌🎠🎡🎢🚂🚃🚄🚅🚆🚇🚈🚉
+                                🚊🚝🚞🚋🚌🚍🚎🚏🚐🚑🚒🚓🚔🚕🚖🚗🚘🚚🚛🚜🚲⛽🚨🚥🚦🚧⚓⛵🚤🚢✈💺🚁🚟🚠🚡🚀🎑🗿🛂🛃🛄🛅
+                                <img src="1.jpg" style="width: 50px; height: 25x;">
+                            </div>
+                            <button @click="webChatSendHandle">发送</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+</html>

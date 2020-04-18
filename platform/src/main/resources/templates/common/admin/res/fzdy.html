@@ -1,20 +1,20 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <div th:fragment="content">
-    <el-container class="fzdy_el-container">
+    <el-container class="fzdy_el-container" v-loading ="fzdyLoading">
         <el-aside width="null" class="fzdy_el-container-el-aside">
             <div th:replace="/common/admin/dzz/dzzTree :: content"/>
         </el-aside>
         <el-main>
-            <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb separator-class="el-icon-arrow-right" v-if="fzdyBreadcrumbs.length != 0">
                 <el-breadcrumb-item v-for="(item, index) in fzdyBreadcrumbs">{{item.title}}</el-breadcrumb-item>
             </el-breadcrumb>
-            <div style="margin-top: 10px">
-                <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
-                <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
+            <div style="margin-top: 10px" v-if="fzdyBreadcrumbs.length != 0">
+                <el-button plain @click="dialogShow.prePartyMemeber = !dialogShow.prePartyMemeber" size="mini" icon="el-icon-plus">添加</el-button>
+                <!--<el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>-->
             </div>
             <!--步进区域-->
-            <div class="steps-content">
+            <div class="steps-content" v-if="fzdyBreadcrumbs.length != 0">
                 <div class="steps">
                     <template v-for="(step, index) in fzdySteps">
                         <div class="step" v-if="index === 0">
@@ -37,27 +37,29 @@
                         <div class="vertical-line"></div>
                         <div class="vertical-line1"></div>
                     </div>
-                    <div class="steps3">
+                    <div class="steps3" id="prePartyMembersDiv">
                         <template v-for="(item, index) in fzdyPartyMembers">
                             <div class="row">
                                 <template v-if="item.stage < 5">
                                     <div :class="'horizontal-line' + (item.stage-1)"></div>
-                                    <span class="party-member-name">{{item.name}}</span>
+                                    <span class="party-member-name">{{item.userName}}</span>
                                     <el-dropdown size="mini" class="party-member-dropdown"  @command="handleFzdyDropdown">
                                         <i class="el-icon-caret-bottom party-member-dropdown-icon"></i>
                                         <el-dropdown-menu slot="dropdown">
-                                            <el-dropdown-item :command="item2.id + ',' + item.id" v-for="(item2, index2) in fzdySteps" v-if="item.stage !== item2.id" class="party-member-dropdown-item">{{item2.title}}</el-dropdown-item>
+                                            <el-dropdown-item :command="item2.id + ',' + item.userId" v-for="(item2, index2) in fzdySteps" v-if="item.stage !== item2.id" class="party-member-dropdown-item">{{item2.title}}</el-dropdown-item>
                                         </el-dropdown-menu>
                                     </el-dropdown>
+                                    <i class="el-icon-delete pre-party-member-remove" @click="removePrePartyMemeberSubmitHandle(item.userId)"></i>
                                 </template>
                                 <template v-if="item.stage >= 5">
-                                    <div class="horizontal-line4"></div><span class="party-member-name"><el-button style="color: #B2453F;border-radius: 15px;padding: 2px 12px;border-color: #DEDCDD;font-weight: bolder" disabled size="mini" round>{{item.name}}</el-button></span>
+                                    <div class="horizontal-line4"></div><span class="party-member-name"><el-button style="color: #B2453F;border-radius: 15px;padding: 2px 12px;border-color: #DEDCDD;font-weight: bolder" disabled size="mini" round>{{item.userName}}</el-button></span>
                                     <el-dropdown size="mini" class="party-member-dropdown"  @command="handleFzdyDropdown">
                                         <i class="el-icon-caret-bottom party-member-dropdown-icon"></i>
                                         <el-dropdown-menu slot="dropdown">
-                                            <el-dropdown-item :command="item2.id + ',' + item.id" v-for="(item2, index2) in fzdySteps" v-if="item.stage !== item2.id" class="party-member-dropdown-item">{{item2.title}}</el-dropdown-item>
+                                            <el-dropdown-item :command="item2.id + ',' + item.userId" v-for="(item2, index2) in fzdySteps" v-if="item.stage !== item2.id" class="party-member-dropdown-item">{{item2.title}}</el-dropdown-item>
                                         </el-dropdown-menu>
                                     </el-dropdown>
+                                    <i class="el-icon-delete pre-party-member-remove" @click="removePrePartyMemeberSubmitHandle(item.userId)"></i>
                                 </template>
                             </div>
                         </template>
@@ -65,7 +67,7 @@
                 </div>
             </div>
             <!--步进区域-->
-            <div style="margin-top: 50px">
+            <div v-bind:class="fzdyBreadcrumbs.length === 0 ? 'fzdy_actions2_2' : 'fzdy_actions2'">
                 <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
                 <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
             </div>
@@ -235,6 +237,19 @@
             <el-button @click="closeUpload2" plain size="mini" icon="el-icon-close">取消</el-button>
             <el-button @click="submitUpload2" type="primary" plain size="mini" icon="el-icon-check">保存</el-button>
         </div>
+    </el-dialog>
+    <el-dialog title="添加预备党员" :visible.sync="dialogShow.prePartyMemeber" lock-scroll="true" width="460px">
+        <el-form ref="formPrePartyMemeber" :rules="rules" :model="formPrePartyMemeber" label-width="100px" :validate-on-rule-change="false" size="small">
+            <el-form-item label="姓名" prop="userName">
+                <el-input v-model="formPrePartyMemeber.userName" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="姓名"></el-input>
+                <el-tooltip class="item" effect="dark" placement="top">
+                    <div slot="content">姓名</div><i class="el-icon-question"></i></el-tooltip>
+            </el-form-item>
+            <el-form-item>
+                <el-button @click="formPrePartyMemeber.userName = '';dialogShow.prePartyMemeber = !dialogShow.prePartyMemeber;" plain size="mini" icon="el-icon-close">取消</el-button>
+                <el-button @click="addPrePartyMemeberSubmitHandle" type="primary" plain size="mini" icon="el-icon-check">确定</el-button>
+            </el-form-item>
+        </el-form>
     </el-dialog>
 </div>
 </html>

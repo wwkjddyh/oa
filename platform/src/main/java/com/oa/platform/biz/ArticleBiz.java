@@ -281,7 +281,7 @@ public class ArticleBiz extends BaseBiz {
      */
     public Map<String, Object> searchBriefSendRecord(String id, String briefId, String senderId, String receiverId,
                                                      Integer status, Integer recordFlag, String sendTime,
-                                                     String viewTime, String key, int pageNum, int pageSize) {
+                                                     String viewTime, String key, int pageNum, int pageSize,String categoryId) {
         id = StringUtil.trim(id);
         BriefSendRecord record = new BriefSendRecord();
         record.setRecordId(id);
@@ -296,6 +296,7 @@ public class ArticleBiz extends BaseBiz {
                 record.setRecordFlag(recordFlag);
             }
             record.setSendTime(StringUtil.trim(sendTime));
+            record.setCategoryId(categoryId);
             record.setViewTime(StringUtil.trim(viewTime));
             record.setKey(StringUtil.trim(key));
             if(senderId != null && !"".equals(senderId)) {

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
-      xmlns:v-bind="http://www.w3.org/1999/xhtml">
+      xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>奥维云创基层党建信息化系统</title>
@@ -25,10 +25,52 @@
             overflow: hidden;
         }
     </style>
+    <script type="text/javascript">
+        function changeFriendsBgColor(_this) {
+            // 获取所有兄弟节点
+            var siblings  = [];
+            var items = _this.parentNode.children;
+            for (var i = 0; i < items.length; i ++) {
+                var _item = items[i];
+                if (_item !== _this) {
+                    siblings.push(_item);
+                }
+            }
+            _this.className = 'webchat-container-left_item item-active-bgcolor';
+            //document.getElementById("currentFriendName").innerHTML = '';
+            for (var i = 0; i < siblings.length; i ++) {
+                siblings[i].className = 'webchat-container-left_item';
+            }
+        }
+        function openOrCloseWebChat() {
+            var webChatMain = document.getElementById('#webchat-main');
+            console.log('webChatMain', webChatMain);
+            // if (webChatMain.className == 'webchat-main-show') {
+            //     webChatMain.className = 'webchat-main-default'
+            // }
+            // else {
+            //     webChatMain.className = 'webchat-main-show'
+            // }
+            var webchat = document.getElementById("webchat-main");
+            console.log('webChatMain', webchat);
+            if (webchat.style.visibility == 'hidden') {
+                webchat.style.visibility = 'visible';
+                //_this.innerHTML = '打开聊天框';
+            }
+            else {
+                webchat.style.visibility = 'hidden';
+                //_this.innerHTML = '关闭聊天框';
+            }
+        }
+
+        function closeWebchat() {
+            document.getElementById("webchat-main").style.visibility = 'hidden';
+        }
+    </script>
 </head>
 <body>
 <div id="admin-main" v-cloak>
-    <div class="chat-div">
+    <div class="chat-div" style="cursor: pointer" onclick="openOrCloseWebChat()">
         <i class="iconfont icon-weixin1"></i>
         <div> 即时通信功能建设中</div>
     </div>
@@ -203,6 +245,12 @@
                         <el-card shadow="never" v-if="showContent == 'articles'" key="bulletin">
                             <div th:replace="/common/admin/article/articles :: content"/>
                         </el-card>
+                        <el-card shadow="never" v-if="showContent == 'zlk'" key="zlk">
+                            <div th:replace="/common/admin/res/list :: content"/>
+                        </el-card>
+                        <el-card shadow="never" v-if="showContent == 'xxjl'" key="xxjl">
+                            <div th:replace="/common/admin/xxjl/xxjl :: content"/>
+                        </el-card>
                         <el-card shadow="never" v-show="showContent == 'formArticle'" key="formArticle">
                             <div th:replace="/common/admin/article/add :: form"/>
                         </el-card>
@@ -262,7 +310,7 @@
                 <div class="footer-div">
                     <p style="font-size: 10px;">技术支持：奥维云创(天津)网络科技有限公司 </p>
                     <p style="margin-left: 20px;font-size: 10px;">E-mail：aoweiyunchuang@163.com</p>
-                    <!-- <p style="margin-left: 80px;font-size: 10px;">津ICP备：110241538166</p> -->
+                    <p style="margin-left: 80px;font-size: 10px;">津ICP备20002390号</p>
                 </div>
             </el-footer>
         </el-container>
@@ -277,6 +325,7 @@
         </div>
     </el-footer>
     -->
+    <div th:replace="/common/admin/chat/webChat :: content"/>
 </div>
 <!-- <style>
 	.footerImg{

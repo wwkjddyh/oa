@@ -1,4 +1,24 @@
 const CurrentChartId = 'bigDataChartId';
+let ws = null;
+let heartCheck = {
+    timeout: 60000,//60ms
+    timeoutObj: null,
+    serverTimeoutObj: null,
+    reset: function(){
+        clearTimeout(this.timeoutObj);
+        clearTimeout(this.serverTimeoutObj);
+        this.start();
+    },
+    start: function(){
+        let self = this;
+        self.timeoutObj = setTimeout(function(){
+            ws.send("HeartBeat");
+            self.serverTimeoutObj = setTimeout(function(){
+                ws.close();//如果onclose会执行reconnect，我们执行ws.close()就行了.如果直接执行reconnect 会触发onclose导致重连两次
+            }, self.timeout)
+        }, self.timeout)
+    },
+}
 new Vue({
     el: '#admin-main',
     watch: {
@@ -75,12 +95,31 @@ new Vue({
                     that.formSearchArticle.isBrief = true;
                     that.formSearchArticle.sendType = '1';
                     that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                    that.newsOperate=false;
+            		that.operateName = '操作';
+            		that.operateIcon = 'el-icon-setting';
                     //that.loadArticles('',1, that.pager.article.pageSize);
                     that.currAction = 'append';
                     that.def_menu_id = 'articles';
                     that.receiveArtcleType='info';
                     that.sendArtcleType='';
-                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize);
+                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,null);
+                    break;
+                case 'xxjl':
+                	//that.getArticleCategories();
+                    that.currentArticleFormTitle = '学习交流';
+                    that.formSearchArticle.isBrief = true;
+                    that.formSearchArticle.sendType = '2';
+                    that.formSearchArticle.categoryId = '63c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                    that.newsOperate=false;
+            		that.operateName = '操作';
+            		that.operateIcon = 'el-icon-setting';
+                    //that.loadArticles('',1, that.pager.article.pageSize);
+                    that.currAction = 'append';
+                    that.def_menu_id = 'xxjl';
+                    that.receiveArtcleType='info';
+                    that.sendArtcleType='';
+                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
                     break;
                 case 'articleManagement':   // 文章管理
                     that.getArticleCategories();
@@ -93,9 +132,9 @@ new Vue({
                     that.def_menu_id = 'articleManagement';
                     break;
                 case 'formArticle': // 简报或文章
-                    that.getArticleCategories();
-                    that.formArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
-                    that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                	//that.getArticleCategories();
+                    that.formArticle.categoryId = that.formSearchArticle.categoryId
+                    that.formSearchArticle.categoryId = that.formSearchArticle.categoryId;
                     if(that.currAction == 'edit') {
                         setTimeout(function() {
                             that.ueditors.article.setContent(that.formArticle.content, false);
@@ -109,7 +148,7 @@ new Vue({
                         that.formArticle = {
                             isEdit : false,
                             recordId: '',
-                            categoryId: '53c34dec-7447-4bbc-9ff3-af0f0686b07f', //简报
+                            categoryId: that.formSearchArticle.categoryId, //简报
                             categoryName: '',
                             title: '',
                             intro: '',
@@ -140,7 +179,7 @@ new Vue({
                 	that.setDyxxYear();
                 	that.dwjbxxMain = false;
                 	//that.getUpperOrg();
-                	that.loadDwjbxx();
+                	//that.loadDwjbxx();
                 	that.getNddyxxOptions();
                 	//that.loadNddyxxcj();
                 	break;
@@ -160,6 +199,21 @@ new Vue({
                     that.uploadData = {
                         name: '',
                         type: 'res-dfgl',
+                        parse: '1',
+                    };
+                    that.loadResList('', 1, that.pager.res.pageSize);
+                    break;
+                case 'zlk':    // 资料库
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = '2e9941a0-2a6f-4c2f-b74c-970d0351469f';
+                    that.formSearchRes.typeId = '2e9941a0-2a6f-4c2f-b74c-970d0351469f';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '资料库';
+                    that.uploadData = {
+                        name: '',
+                        type: 'res-dygl',
                         parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
@@ -351,6 +405,7 @@ new Vue({
                     break;
                 case 'fzdy':    // 发展党员
                     that.getResOtherTypes();
+                    that.fzdyLoading = false;
                     that.loadDwjbxx();
                     that.formSearchRes.key = '';
                     that.formRes.typeId = 'ed535138-6ec2-468c-8083-d967a24c2f33';
@@ -367,6 +422,7 @@ new Vue({
                         parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
+                    that.resetPrePartyMembersStyle();
                     break;
                 case 'bigData':     // 大数据
                     //that.getCurrUserEchartsData();
@@ -698,7 +754,7 @@ new Vue({
                     //that.loadArticles('',1, that.pager.article.pageSize);
                     that.currAction = 'append';
                     that.def_menu_id = 'articles';
-                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, 5);
+                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, 5,null);
                     break;
             }
         },
@@ -957,10 +1013,13 @@ new Vue({
         formResDl: {},
         formModifyPwd: {},
         formBriefSendRecord: {},
+        formPrePartyMemeber: {},
         loading:{},
         nddyxxcjLoading:false,
         dwjbxxLoading: false,
         fullscreenLoading:false,
+        fzdyLoading:false,
+        fzdyCurrentOrg:'',
         sysUserLoading:false,
         newsLoading:false,
         currentUserOrgId:'',
@@ -1211,6 +1270,7 @@ new Vue({
         formSearchRes: {},
         formSearchResDl: {},
         formSearchBriefSendRecord: {},
+        formSearchPrePartyMemeber: {},
         formdwjbxx:{},
         dwjbxxMain: false,
         adminOrgAdd:{
@@ -1408,6 +1468,14 @@ new Vue({
                 }]
             }
         ],
+        /* WebSocket对象 */
+        wsObj : {
+            lockReconnect: false,
+            webChatShow: false,
+            webChatMainClass: 'webchat-main-default',
+            url: "ws://" + window.location.hostname + ":" + window.location.port + "/api/socket/server",
+            url2: "http://" + window.location.hostname + ":" + window.location.port + "/api/socket/sockjs/server"
+        },
         allSysUsers: [],
         allSysUsersMap: {},
         currBrief: {},
@@ -1440,7 +1508,7 @@ new Vue({
             'application/vnd.ms-excel.sheet.binary.macroEnabled.12',
         /*发展党员*/
         fzdyBreadcrumbs: [
-            {
+            /*{
                 id: '1',
                 title: '中国市政工程华北设计研究总院有限公司党委'
             },
@@ -1455,7 +1523,7 @@ new Vue({
             {
                 id: '4',
                 title: '工程一部一支部'
-            },
+            },*/
         ],
         fzdySteps: [
             {
@@ -1760,7 +1828,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
 
             partyDues: {
@@ -1933,7 +2001,7 @@ new Vue({
                 let __title = that.formArticle.title.replace(/(^\s*)|(\s*$)/g, "");
                 let __content = that.formArticle.content.replace(/(^\s*)|(\s*$)/g, "");
                 let __receiverIds = that.formArticle.receiverIds || [];
-                if (that.currentArticleFormTitle === '简报') {
+                if (that.currentArticleFormTitle === '简报' || that.currentArticleFormTitle === '学习交流') {
                     if (__receiverIds.length === 0) {
                         that.$message.error('请选择接收人');
                         return false;
@@ -2089,15 +2157,20 @@ new Vue({
                     });
                 	that.receiveArtcleType='';
             		that.sendArtcleType='info';
-            		that.currentArticleFormTitle = '简报';
+            		//that.currentArticleFormTitle = '简报';
                     that.formSearchArticle.isBrief = true;
                     that.formSearchArticle.sendType = '1';
-                    that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                    //that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
                     that.formSearchArticle.flag='0';
                     //that.loadArticles('',1, that.pager.article.pageSize);
                     that.currAction = 'append';
-                    that.def_menu_id = 'articles';
-                    that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, that.pager.briefSendRecord.pageSize);
+                    //that.def_menu_id = 'articles';
+                    if(that.currentArticleFormTitle == '简报'){
+                    	that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, that.pager.briefSendRecord.pageSize,null);
+                    }
+                    if(that.currentArticleFormTitle == '学习交流'){
+                    	that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, that.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+                    }
                 	that.newsLoading = false;
                 }else{
                 	that.$message.error('删除失败');
@@ -2481,7 +2554,7 @@ new Vue({
             params.append('authorName',that.formArticle.authorName || '');
             params.append('source',that.formArticle.source || '');
             params.append('sourceSite',that.formArticle.sourceSite || '');
-            if (that.currentArticleFormTitle === '简报') {
+            if (that.currentArticleFormTitle === '简报' || that.currentArticleFormTitle === '学习交流') {
                 params.append('sendType', sendType);
                 params.append('receiverIds', receiverIds);
 
@@ -2517,6 +2590,24 @@ new Vue({
                             	that.loadCurrUserSendBriefRecord('', 1, that.pager.briefSendRecord.pageSize);
                             }else{
                             	that.loadCurrUserReceiverBriefRecord('', 1, that.pager.briefSendRecord.pageSize);
+                            }
+                            
+                            that.$forceUpdate();
+                            that.$message({
+                                message: articleType + operName + '成功!',
+                                type: 'success'
+                            });
+                        }else if(that.currentArticleFormTitle === '学习交流'){
+                        	that.editableTabsOptions.editableTabsValue = 'articles';
+                            that.def_menu_id = 'xxjl';
+                            that.showContent = 'xxjl';
+                            that.$refs['menuRef'].activeIndex = 'xxjl';
+                            that.briefReceiveUserIds = [];
+                            that.pager.briefSendRecord.currentPage = 1;
+                            if(that.sendArtcleType =='info'){
+                            	that.loadCurrUserSendBriefRecord('', 1, that.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+                            }else{
+                            	that.loadCurrUserReceiverBriefRecord('', 1, that.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
                             }
                             
                             that.$forceUpdate();
@@ -3518,6 +3609,52 @@ new Vue({
                         that.dialogShow.news = !that.dialogShow.news;
                         break;
                     case 'article':
+                        if(isAdd) {
+                            //that.def_menu_id = 'formArticle';
+                            setTimeout(function() {
+                                that.ueditors.article.setContent('', false);
+                            }, 500);
+                            that.showContent = 'formArticle';
+                        }
+                        else {
+                            //that.def_menu_id = 'formArticle';
+                            entry = that.articles[scopeIndex];
+                            console.log('article.edit=>content', entry.content);
+                            that.formArticle = {
+                                isEdit: true,
+                                recordId: entry.recordId,
+                                categoryId: entry.categoryId,
+                                categoryName: entry.categoryName,
+                                title: entry.title,
+                                intro: entry.intro,
+                                content: entry.content,
+                                tags: entry.tags,
+                                source: entry.source,
+                                authorName: entry.authorName,
+                                sourceSite: entry.sourceSite,
+                                creatorId: entry.creatorId,
+                                creatorName: entry.creatorName,
+                                updatorId: entry.updatorId,
+                                updatorName: entry.updatorName,
+                                updateTime: entry.updateTime,
+                                recordTime: entry.recordTime,
+                                commentsCount: entry.commentsCount,
+                                viewCount: entry.viewCount,
+                                likeCount: entry.likeCount,
+                                stinkyEgg: entry.stinkyEgg,
+                                sendType: '',
+                                receiverIds: [],
+                                receiveUsers: [],
+                                receiverIdArrStr: '',
+                            };
+                            setTimeout(function() {
+                                that.ueditors.article.setContent(entry.content, false);
+                            }, 500);
+                            that.showContent = 'formArticle';
+                        }
+                        //that.dialogShow.article = !that.dialogShow.article;
+                        break;
+                    case 'xxjl':
                         if(isAdd) {
                             //that.def_menu_id = 'formArticle';
                             setTimeout(function() {
@@ -5044,6 +5181,7 @@ new Vue({
         	let that = this;
         	let treeTable =[];
         	that.dwjbxxLoading = true;
+        	that.fzdyLoading = true;
         	axios.get("/api/org/getOrgList",{params:{
         		isSuperAdmin:that.isSuperAdmin
             }}).then(function(response){
@@ -5062,9 +5200,30 @@ new Vue({
         			that.$message.error('数据加载失败');
         			that.dwjbxxLoading = false;
         		}
+            	that.fzdyLoading = false;
         	}).catch(function(err){/*异常*/
         		that.$message.error('请求失败');
         		that.dwjbxxLoading = false;
+        		that.fzdyLoading = false;
+                });
+        },
+        loadfzdy(orgid){
+        	let that = this;
+        	that.fzdyLoading = true;
+            axios.get("/api/preParty/getPrePartyList",{params:{
+                    orgId: orgid
+                }})
+                .then(function(response){/*成功*/
+                    that.handleResponse(response);
+                    let data = response.data;
+                    if(parseInt(data.code) === 200) {
+                        that.fzdyPartyMembers = response.data.result
+                        console.log(that.fzdyPartyMembers)
+                    }
+                    that.fzdyLoading = false;
+                })
+                .catch(function(err){/*异常*/
+                	that.fzdyLoading = false;
                 });
         },
         getDwjbxxTreeData(list, dataArr) {
@@ -5129,6 +5288,95 @@ new Vue({
         	
         	
         },
+
+        /**
+         * 获得上级节点列表
+         * @param node 当前节点
+         * @param parentNodeList 上级节点列表
+         */
+        getParentOrgs(node, parentNodeList = []) {
+            let that = this;
+            if (!node || !node.data || !node.data.upperOrg || node.data.upperOrg == null || node.data.upperOrg == '') {
+                return parentNodeList;
+            }
+
+            let upperOrg = node.data.upperOrg || '';
+            if (upperOrg !== '') {
+                parentNodeList.push(node.parent);
+                return that.getParentOrgs(node.parent, parentNodeList)
+            }
+            else {
+                return parentNodeList;
+            }
+        },
+
+        /**
+         * 当组织树节点点击事件处理
+         * @param node 节点
+         */
+        dzzTreeNodeClickHandle(node) {
+            let that = this;
+            let data = node.data;
+            if (that.showContent == 'fzdy') {   // 发展党员特殊处理
+                console.log('dzzTreeNodeClickHandle-node', node)
+                if (node.childNodes.length === 0 && node.data.orgType === 'orgType3') {
+                    let upperOrgs = that.getParentOrgs(node).reverse();
+                    that.fzdyCurrentOrg = node.data.orgId;
+                    that.loadfzdy(node.data.orgId);
+                    let _fzdyBreadcrumbs = [];
+                    let _upperOrgsLen = upperOrgs.length;
+                    for (let i = 0; i < _upperOrgsLen; i ++) {
+                        let _upperOrg = upperOrgs[i];
+                        _fzdyBreadcrumbs.push({
+                            id: i + 1,
+                            title: _upperOrg.label || '',
+                        })
+                    }
+                    _fzdyBreadcrumbs.push({
+                        id: _upperOrgsLen + 1,
+                        title: node.label || ''
+                    })
+                    that.fzdyBreadcrumbs = _fzdyBreadcrumbs;
+                }
+            }else{
+
+	            that.dwjbxxMain = true;
+	            that.fullscreenLoading = true;
+	            axios.get("/api/org/getOrgDetailById",{params:{
+	                    orgId: data.orgId
+	                }})
+	                .then(function(response){/*成功*/
+	                    that.handleResponse(response);
+	                    let data = response.data;
+	                    if(parseInt(data.code) === 200) {
+	                        that.formdwjbxx = response.data.result;
+	                        that.formdwjbxx2 = response.data.result;
+	
+	                        that.dwjbxxDialog.title = that.formdwjbxx.orgName;
+	
+	                    }
+	                    that.fullscreenLoading = false;
+	                })
+	                .catch(function(err){/*异常*/
+	                    console.log(err);
+	                    that.fullscreenLoading = false;
+	                });
+	            //领导班子
+	            axios.get("/api/org/getOrgLeaderList",{params:{
+	                    orgId: data.orgId
+	                }})
+	                .then(function(response){/*成功*/
+	                    that.handleResponse(response);
+	                    let data = response.data;
+	                    if(parseInt(data.code) === 200) {
+	                        that.leaderList = response.data.result
+	                    }
+	                })
+	                .catch(function(err){/*异常*/
+	                });
+            }
+        },
+
         dwjbxxHandleNodeClick(data){
         	let that = this;
         	that.dwjbxxMain = true;
@@ -5165,6 +5413,7 @@ new Vue({
             })
             .catch(function(err){/*异常*/
             });
+            console.log('dwjbxxHandleNodeClick', data, that.dwjbxxTreeData, that.getParentOrgs(data));
         },
         loadNddyxxcj(pagenum,pagesize){
         	let that = this;
@@ -5937,7 +6186,7 @@ new Vue({
         /**
          * 加载当前用户接收到的简报信息
          */
-        loadCurrUserReceiverBriefRecord(criteria, pageNum, pageSize) {
+        loadCurrUserReceiverBriefRecord(criteria, pageNum, pageSize,categoryid) {
             let that = this;
             axios.get("/api/article/getCurrUserReceiverBriefRecord", {params:{
                     key: criteria,
@@ -5946,7 +6195,8 @@ new Vue({
                     briefId: that.formSearchBriefSendRecord.briefId,
                     senderId: that.formSearchBriefSendRecord.senderId,
                     sendTime: that.formSearchBriefSendRecord.sendTime,
-                    viewTime: that.formSearchBriefSendRecord.viewTime
+                    viewTime: that.formSearchBriefSendRecord.viewTime,
+                    categoryId: categoryid
                 }})
                 .then(function(response){/*成功*/
                 	that.handleResponse(response);
@@ -5965,7 +6215,7 @@ new Vue({
         /**
          * 加载当前用户接收到的简报信息
          */
-        loadCurrUserSendBriefRecord(criteria, pageNum, pageSize) {
+        loadCurrUserSendBriefRecord(criteria, pageNum, pageSize,categoryid) {
             let that = this;
             let sendflag = that.formSearchArticle.flag;
             if(sendflag == null){
@@ -5979,7 +6229,8 @@ new Vue({
                     senderId: that.formSearchBriefSendRecord.senderId,
                     sendTime: that.formSearchBriefSendRecord.sendTime,
                     viewTime: that.formSearchBriefSendRecord.viewTime,
-                    flag:sendflag
+                    flag:sendflag,
+                    categoryId: categoryid 
                 }})
                 .then(function(response){/*成功*/
                 	that.handleResponse(response);
@@ -5996,16 +6247,44 @@ new Vue({
                     console.log(err);
                 });
         },
-        //每页显示数据量变更
+      //每页显示数据量变更
         handleCurrUserReceiverBriefRecordSizeChange: function(val) {
             this.pager.briefSendRecord.pageSize = val;
-            this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize);
+            if(this.currentArticleFormTitle === '学习交流'){
+            	if(this.sendArtcleType =='info'){
+                    this.loadCurrUserSendBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+            	}else{
+            		this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+            	}
+            }else{
+            	if(this.sendArtcleType =='info'){
+                    this.loadCurrUserSendBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,null);
+
+            	}else{
+                	this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,null);
+
+            	}
+            }
         },
 
         //页码变更
         handleCurrUserReceiverBriefRecordCurrentChange: function(val) {
             this.pager.briefSendRecord.currentPage = val;
-            this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize);
+            if(this.currentArticleFormTitle === '学习交流'){
+            	if(this.sendArtcleType =='info'){
+                    this.loadCurrUserSendBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+            	}else{
+            		this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+            	}
+            }else{
+            	if(this.sendArtcleType =='info'){
+                    this.loadCurrUserSendBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,null);
+
+            	}else{
+                	this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,null);
+
+            	}
+            }
         },
         /**
          * index:0,
@@ -6130,7 +6409,7 @@ new Vue({
                 //that.loadArticles('',1, that.pager.article.pageSize);
                 that.currAction = 'append';
                 that.def_menu_id = 'articles';
-                that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize);
+                that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,null);
         	}else if(type == '0'){
         		that.receiveArtcleType='';
         		that.sendArtcleType='info';
@@ -6142,7 +6421,37 @@ new Vue({
                 //that.loadArticles('',1, that.pager.article.pageSize);
                 that.currAction = 'append';
                 that.def_menu_id = 'articles';
-                that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize);
+                that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,null);
+        	}
+        },
+        handlexxjlSearchByViewed(type){
+        	let that = this;
+        	if(type == '1'){
+        		that.receiveArtcleType='info';
+        		that.sendArtcleType='';
+        		that.newsOperate=false;
+        		that.operateName = '操作';
+        		that.operateIcon = 'el-icon-setting';
+        		that.currentArticleFormTitle = '学习交流';
+                that.formSearchArticle.isBrief = true;
+                that.formSearchArticle.sendType = '1';
+                that.formSearchArticle.categoryId = '63c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                //that.loadArticles('',1, that.pager.article.pageSize);
+                that.currAction = 'append';
+                that.def_menu_id = 'xxjl';
+                that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+        	}else if(type == '0'){
+        		that.receiveArtcleType='';
+        		that.sendArtcleType='info';
+        		that.currentArticleFormTitle = '学习交流';
+                that.formSearchArticle.isBrief = true;
+                that.formSearchArticle.sendType = '1';
+                that.formSearchArticle.categoryId = '63c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                that.formSearchArticle.flag='0';
+                //that.loadArticles('',1, that.pager.article.pageSize);
+                that.currAction = 'append';
+                that.def_menu_id = 'xxjl';
+                that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
         	}
         },
         /**
@@ -7854,12 +8163,104 @@ new Vue({
             console.log('handleFzdyDropdown.command', command);
             if (command !== '') {
                 let arr = command.split(",");
+                let step = arr[0];
                 console.log("发展状态等级：" + arr[0] +", 用户ID：" + arr[1]);
-                // 修改该党员状态
 
-                // 修改成功之后，刷新 重新加载：fzdyPartyMembers
+            	that.fzdyLoading = true;
+                axios.get("/api/preParty/changeStageByUserId",{params:{
+                        userId: arr[1],
+                        stage: arr[0]
+                    }})
+                    .then(function(response){/*成功*/
+                        that.handleResponse(response);
+                        let data = response.data;
+                        if(parseInt(data.code) === 200) {
+                        	that.loadfzdy(that.fzdyCurrentOrg);
+                        }
+                        that.fzdyLoading = false;
+                    })
+                    .catch(function(err){/*异常*/
+                    	that.fzdyLoading = false;
+                    });
+            
             }
         },
+
+        /**
+         * 初始化WebSocket
+         */
+        initWebSocket: function() {
+            let that = this;
+            if ('WebSocket' in window) {
+                ws = new WebSocket(that.wsObj.url);
+            } else if ('MozWebSocket' in window) {
+                ws = new MozWebSocket(that.wsObj.url);
+            } else {
+                ws = new SockJS(that.wsObj.url2);
+            }
+            ws.onopen = function(evnt) {
+                heartCheck.start();
+            };
+            ws.onmessage = function(evnt) {
+                heartCheck.reset();
+                //$("#msgcount").prepend("<p>"+evnt.data+"</p>");
+                /**
+                 * 可以通过event.data(即返回结果为json，通过解析JSON)，来达到目的
+                 */
+                console.log('evnt.data', evnt.data);
+                let msg = eval("("+evnt.data+")");
+
+                let toName = msg["toName"],fromName = msg["fromName"],isJoin = msg["isJoin"],
+                    whoStr = "", isHeart = msg['isHeart'] || false;
+                if (isHeart) {
+                    console.log('健康检查 => ', msg);
+                }
+                else {
+                    if(isJoin == "1") { //加入房间
+                        //....
+                    }
+                    else {
+                        if(toName == fromName) {	//接收者就是发送者
+                            whoStr = "<b style='color:red'>我</b>：";
+                        }
+                        else {
+                            whoStr = "<b style='color:blue'>"+fromName+"</b>：";
+                        }
+                    }
+                    // $("#userCount").val(msg["userCount"]);
+                    // $("#msgcount").prepend("<p>"+whoStr+msg["msg"]+"</p>"+msg["date"]);
+                    console.log('接收到的信息', whoStr);
+                }
+
+            };
+            ws.onerror = function(evnt) {
+                that.wsWebSocketReconnect();
+            };
+            ws.onclose = function(evnt) {
+                that.wsWebSocketReconnect();
+            }
+        },
+
+        /**
+         * ws发送消息
+         */
+        wsSendMessage: function(e) {
+
+        },
+
+        /**
+         * 创建webSocket
+         * @param url 链接
+         */
+        wsCreateWebSocket: function(url) {
+            let that = this;
+            try {
+                ws = new WebSocket(url);
+            } catch (e) {
+                that.reconnect(url);
+            }
+        },
+
         getCommitteeData(){
         	let that = this;
         	that.orgCommitteeLoading = true;
@@ -7877,8 +8278,188 @@ new Vue({
         		}
         	}).catch(function(err){/*异常*/
         		that.$message.error('请求失败');
-        		that.dwjbxxLoading = false;
+        		that.orgCommitteeLoading = false;
                 });
+
+        /**
+         * websocket重连
+         * @param url 链接
+         */
+        wsWebSocketReconnect: function(url) {
+            let that = this;
+            if(that.wsObj.lockReconnect) return;
+            that.wsObj.lockReconnect = true;
+            //没连接上会一直重连，设置延迟避免请求过多
+            setTimeout(function () {
+                that.createWebSocket(url);
+                that.wsObj.lockReconnect = false;
+            }, 2000);
+        },
+
+        webChatSendHandle: function() {
+            let messageList = document.getElementById("messageList");
+            let messageBox = document.getElementById("messageBox");
+            //messageList.innerHTML = messageList.innerHTML + "<br/>" + messageBox.innerHTML;
+            console.log('messageBox.content', messageBox.innerHTML);
+        },
+
+        changeFriendsBgColor: function(_this) {
+            // 获取所有兄弟节点
+            let siblings  = [];
+            let items = _this.parentNode.children;
+            for (let i = 0; i < items.length; i ++) {
+                let _item = items[i];
+                if (_item !== _this) {
+                    siblings.push(_item);
+                }
+            }
+            _this.className = 'webchat-container-left_item item-active-bgcolor';
+            //document.getElementById("currentFriendName").innerHTML = '';
+            for (let i = 0; i < siblings.length; i ++) {
+                siblings[i].className = 'webchat-container-left_item';
+            }
+        },
+
+        openAndCloseChatHandle: function(e) {
+            let that = this;
+            if (that.wsObj.webChatMainClass == 'webchat-main-default') {
+                that.wsObj.webChatMainClass == 'webchat-main-show'
+            }
+            else {
+                that.wsObj.webChatMainClass == 'webchat-main-default'
+            }
+        },
+
+        closeWebchatHandle: function(e) {
+            let that = this;
+            that.wsObj.webChatMainClass == 'webchat-main-default'
+        },
+
+        /**
+         * 添加预备党员
+         * @param e
+         */
+        addPrePartyMemeberSubmitHandle: function(e) {
+            let that = this;
+            
+            let _userName = that.formPrePartyMemeber.userName.replace(/(^\s*)|(\s*$)/g, "");
+            if (_userName == '') {
+                that.$message({
+                    message: data.msg,
+                    center:true,
+                    type: 'error'
+                });
+                return false;
+            }
+            else {
+            	that.fzdyLoading = true;
+            	that.dialogShow.prePartyMemeber = false;
+            	let params = new URLSearchParams();
+                params.append('orgId',that.fzdyCurrentOrg);
+                params.append('userName',that.formPrePartyMemeber.userName);
+            	axios.post("/api/preParty/save",params)
+        		.then(function(response){
+        			that.handleResponse(response);
+        			if(parseInt(response.data.code) === 200){
+        				
+        				that.loadfzdy(that.fzdyCurrentOrg);
+                        that.$message({
+                            message: '添加成功',
+                            type: 'success'
+                        });
+                        
+                    }else if(parseInt(response.data.code) === 2000){
+                    	that.$message.error(response.data.msg);
+                    	that.dialogShow.prePartyMemeber = true;
+                    }
+        			else{
+                    	that.$message.error("添加失败");
+                    	that.dialogShow.prePartyMemeber = true;
+                    }
+        			that.fzdyLoading = false;
+        		}).catch(function(err){
+        			that.fzdyLoading = false;
+        			that.$message.error("添加失败,请联系管理员");
+        			that.dialogShow.prePartyMemeber = true;
+                });
+            }
+        },
+
+        /**
+         * 删除预备党员
+         * @param e
+         */
+        removePrePartyMemeberSubmitHandle: function(prePartyMemeberId) {
+            prePartyMemeberId = prePartyMemeberId || '';
+            if(prePartyMemeberId != ''){
+            	let that = this;
+            	that.$confirm('是否确认删除？', '警告', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                    callback: action => {
+                        if(action === "cancel"){
+                            that.$message({
+                                type: 'info',
+                                message: "取消删除"
+                            });
+                        }else{
+                        	that.fzdyLoading = true;
+                            axios.get("/api/preParty/deletePrePartyById",{params:{
+                                    userId: prePartyMemeberId
+                                }})
+                                .then(function(response){/*成功*/
+                                    that.handleResponse(response);
+                                    let data = response.data;
+                                    if(parseInt(data.code) === 200) {
+                                    	that.loadfzdy(that.fzdyCurrentOrg);
+                                    }
+                                    that.fzdyLoading = false;
+                                })
+                                .catch(function(err){/*异常*/
+                                	that.fzdyLoading = false;
+                                });
+                        }
+                    }
+            	});
+            
+            }
+        },
+
+        /**
+         * 获得字符串宽度
+         * @param fontSize 字体大小
+         * @param fontFamily 字体
+         * @param text 文本或字符串
+         * @returns {number}
+         */
+        getTextWidth: function(fontSize, fontFamily, text){
+            var span = document.createElement("span");
+            var result = {};
+            result.width = span.offsetWidth;
+            result.height = span.offsetHeight;
+            span.style.visibility = "hidden";
+            span.style.fontSize = fontSize;
+            span.style.fontFamily = fontFamily;
+            span.style.display = "inline-block";
+            document.body.appendChild(span);
+            if(typeof span.textContent != "undefined"){
+                span.textContent = text;
+            }else{
+                span.innerText = text;
+            }
+            result.width = parseFloat(window.getComputedStyle(span).width) - result.width;
+            result.height = parseFloat(window.getComputedStyle(span).height) - result.height;
+            return result.width;
+        },
+
+        /**
+         * 重置(发展党员)预备党员列表部分样式
+         */
+        resetPrePartyMembersStyle: function() {
+            let prePartyMembers = document.getElementById("prePartyMembersDiv");
+            let members = prePartyMembers;
+            console.log('members', members);
         },
     },
     props: {
@@ -7912,6 +8493,7 @@ new Vue({
                 that.formResDl = config.formResDl;
                 that.formModifyPwd = config.formModifyPwd;
                 that.formBriefSendRecord = config.formBriefSendRecord;
+                that.formPrePartyMemeber = config.formPrePartyMemeber;
 
                 that.dialogShow = config.dialogShow;
                 that.rules = config.rules;
@@ -7930,6 +8512,7 @@ new Vue({
                 that.formSearchRes = searchForm.res;
                 that.formSearchResDl = searchForm.resDl;
                 that.formSearchBriefSendRecord = searchForm.briefSendRecord;
+                that.formSearchPrePartyMemeber = searchForm.prePartyMemeber;
 
             })
             .catch(function(err){/*异常*/
@@ -7946,7 +8529,7 @@ new Vue({
         //that.loadArticles('',1, that.pager.article.pageSize);
         this.currAction = 'append';
         //this.def_menu_id = 'articles';
-        this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 5);
+        this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 5,null);
         this.getOrgIdByUserId();
         this.getAreaTreeDict();
         this.getCurrUserEchartsData();
