@@ -2,7 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
     <el-container class="fzdy_el-container">
-        <el-aside width="200px" class="fzdy_el-container-el-aside">组织机构树</el-aside>
+        <el-aside width="null" class="fzdy_el-container-el-aside">
+            <div th:replace="/common/admin/dzz/dzzTree :: content"/>
+        </el-aside>
         <el-main>
             <el-breadcrumb separator-class="el-icon-arrow-right">
                 <el-breadcrumb-item v-for="(item, index) in fzdyBreadcrumbs">{{item.title}}</el-breadcrumb-item>

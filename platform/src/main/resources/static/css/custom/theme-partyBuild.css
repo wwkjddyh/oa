@@ -573,7 +573,7 @@ div[pType="elTable"] th>.cell {
 }
 
 .fzdy_el-container-el-aside {
-
+    /*min-width: 200px;*/
 }
 
 /**
