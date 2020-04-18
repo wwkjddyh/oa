@@ -127,9 +127,10 @@ public class ArticleApiController extends BaseController {
             @RequestParam(defaultValue = "", required = false) String viewTime,
             @RequestParam(defaultValue = "", required = false) String key,
             @RequestParam(defaultValue = PAGE_NUM_STR, required = false) int pageNum,
-            @RequestParam(defaultValue = PAGE_SIZE_STR, required = false)  int pageSize) {
+            @RequestParam(defaultValue = PAGE_SIZE_STR, required = false)  int pageSize,
+            @RequestParam(defaultValue = "53c34dec-7447-4bbc-9ff3-af0f0686b07f", required = false) String categoryId) {
         return articleBiz.searchBriefSendRecord(id, briefId, senderId, receiverId,
-                status, recordFlag, sendTime, viewTime, key, pageNum, pageSize);
+                status, recordFlag, sendTime, viewTime, key, pageNum, pageSize,categoryId);
     }
 
     /**
@@ -156,17 +157,18 @@ public class ArticleApiController extends BaseController {
             @RequestParam(defaultValue = "", required = false) String key,
             @RequestParam(defaultValue = PAGE_NUM_STR, required = false) int pageNum,
             @RequestParam(defaultValue = PAGE_SIZE_STR, required = false)  int pageSize,
-            @RequestParam(defaultValue = "", required = false) String flag) {
+            @RequestParam(defaultValue = "", required = false) String flag,
+            @RequestParam(defaultValue = "53c34dec-7447-4bbc-9ff3-af0f0686b07f", required = false) String categoryId) {
         String userId = this.getUserIdOfSecurity();
         if ("".equals(userId)) {
             return StringUtil.getResultVo(StatusCode.UNAUTHORIZED, "请登录", "");
         }
         if(flag != null && !"".equals(flag)) {
         	return articleBiz.searchBriefSendRecord(id, briefId, userId, null,
-                    status, Constants.INT_NORMAL, sendTime, viewTime, key, pageNum, pageSize);
+                    status, Constants.INT_NORMAL, sendTime, viewTime, key, pageNum, pageSize,categoryId);
         }else {
         	return articleBiz.searchBriefSendRecord(id, briefId, senderId, userId,
-                    status, Constants.INT_NORMAL, sendTime, viewTime, key, pageNum, pageSize);
+                    status, Constants.INT_NORMAL, sendTime, viewTime, key, pageNum, pageSize,categoryId);
         }
         
     }

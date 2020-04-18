@@ -83,8 +83,17 @@ public class BriefSendRecord implements Serializable {
      * 文档信息
      */
     private Article article;
+    private String categoryId;
+    
+    public String getCategoryId() {
+		return categoryId;
+	}
 
-    public String getRecordId() {
+	public void setCategoryId(String categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getRecordId() {
         return recordId;
     }
 

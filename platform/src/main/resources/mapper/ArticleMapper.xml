@@ -43,7 +43,8 @@
     <result column="view_time" property="viewTime" jdbcType="VARCHAR"/>
     <result column="status" property="status" jdbcType="INTEGER"/>
     <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
-
+    <result column="category_id" property="categoryId" jdbcType="VARCHAR"/>
+	
     <result column="brief_title" property="briefTitle" jdbcType="VARCHAR"/>
     <result column="sender_name" property="senderName" jdbcType="VARCHAR"/>
     <result column="receiver_name" property="receiverName" jdbcType="VARCHAR"/>
@@ -333,12 +334,12 @@
     SELECT
       t.record_id, DATE_FORMAT(t.send_time,'%Y-%m-%d %H:%i:%s') send_time, t.record_flag,
       DATE_FORMAT(t.view_time,'%Y-%m-%d %H:%i:%s') view_time, t.brief_id, t.sender_id, t.receiver_id, t.`status`,
-      t.brief_title, t.sender_name, t.receiver_name, t.sender_remark, t.receiver_remark
+      t.brief_title, t.sender_name, t.receiver_name, t.sender_remark, t.receiver_remark,t.category_id
     FROM
       (SELECT
         t1.record_id, t1.send_time, t1.record_flag, t1.view_time, t1.brief_id, t1.sender_id, t1.receiver_id, t1.`status`,
         t4.title brief_title, t2.user_name sender_name, t3.user_name receiver_name,
-        t1.sender_remark, t1.receiver_remark
+        t1.sender_remark, t1.receiver_remark,t4.category_id
       FROM
         t_brief_send_record t1
         LEFT JOIN t_article t4 ON t1.brief_id = t4.record_id
@@ -348,6 +349,9 @@
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="recordId != null and recordId != ''">
         AND record_id = #{recordId}
+      </if>
+      <if test="categoryId != null and categoryId != ''">
+        AND category_id = #{categoryId}
       </if>
       <if test="briefId != null and briefId != ''">
         AND brief_id = #{briefId}
@@ -393,7 +397,7 @@
       (SELECT
         t1.record_id, t1.send_time, t1.record_flag, t1.view_time, t1.brief_id, t1.sender_id, t1.receiver_id, t1.`status`,
         t4.title brief_title, t2.user_name sender_name, t3.user_name receiver_name,
-        t1.sender_remark, t1.receiver_remark
+        t1.sender_remark, t1.receiver_remark,t4.category_id
       FROM
         t_brief_send_record t1
         LEFT JOIN t_article t4 ON t1.brief_id = t4.record_id
@@ -404,6 +408,9 @@
     <trim prefix="WHERE" prefixOverrides="AND | OR">
       <if test="recordId != null and recordId != ''">
         AND record_id = #{recordId}
+      </if>
+      <if test="categoryId != null and categoryId != ''">
+        AND category_id = #{categoryId}
       </if>
       <if test="briefId != null and briefId != ''">
         AND brief_id = #{briefId}
