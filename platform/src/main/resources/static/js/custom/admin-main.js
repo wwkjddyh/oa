@@ -400,6 +400,7 @@ new Vue({
                     break;
                 case 'fzdy':    // 发展党员
                     that.getResOtherTypes();
+                    that.fzdyLoading = false;
                     that.loadDwjbxx();
                     that.formSearchRes.key = '';
                     that.formRes.typeId = 'ed535138-6ec2-468c-8083-d967a24c2f33';
@@ -1012,6 +1013,8 @@ new Vue({
         nddyxxcjLoading:false,
         dwjbxxLoading: false,
         fullscreenLoading:false,
+        fzdyLoading:false,
+        fzdyCurrentOrg:'',
         sysUserLoading:false,
         newsLoading:false,
         currentUserOrgId:'',
@@ -5168,6 +5171,7 @@ new Vue({
         	let that = this;
         	let treeTable =[];
         	that.dwjbxxLoading = true;
+        	that.fzdyLoading = true;
         	axios.get("/api/org/getOrgList",{params:{
         		isSuperAdmin:that.isSuperAdmin
             }}).then(function(response){
@@ -5186,9 +5190,30 @@ new Vue({
         			that.$message.error('数据加载失败');
         			that.dwjbxxLoading = false;
         		}
+            	that.fzdyLoading = false;
         	}).catch(function(err){/*异常*/
         		that.$message.error('请求失败');
         		that.dwjbxxLoading = false;
+        		that.fzdyLoading = false;
+                });
+        },
+        loadfzdy(orgid){
+        	let that = this;
+        	that.fzdyLoading = true;
+            axios.get("/api/preParty/getPrePartyList",{params:{
+                    orgId: orgid
+                }})
+                .then(function(response){/*成功*/
+                    that.handleResponse(response);
+                    let data = response.data;
+                    if(parseInt(data.code) === 200) {
+                        that.fzdyPartyMembers = response.data.result
+                        console.log(that.fzdyPartyMembers)
+                    }
+                    that.fzdyLoading = false;
+                })
+                .catch(function(err){/*异常*/
+                	that.fzdyLoading = false;
                 });
         },
         getDwjbxxTreeData(list, dataArr) {
@@ -5286,6 +5311,8 @@ new Vue({
                 console.log('dzzTreeNodeClickHandle-node', node)
                 if (node.childNodes.length === 0 && node.data.orgType === 'orgType3') {
                     let upperOrgs = that.getParentOrgs(node).reverse();
+                    that.fzdyCurrentOrg = node.data.orgId;
+                    that.loadfzdy(node.data.orgId);
                     let _fzdyBreadcrumbs = [];
                     let _upperOrgsLen = upperOrgs.length;
                     for (let i = 0; i < _upperOrgsLen; i ++) {
@@ -5301,42 +5328,43 @@ new Vue({
                     })
                     that.fzdyBreadcrumbs = _fzdyBreadcrumbs;
                 }
+            }else{
+
+	            that.dwjbxxMain = true;
+	            that.fullscreenLoading = true;
+	            axios.get("/api/org/getOrgDetailById",{params:{
+	                    orgId: data.orgId
+	                }})
+	                .then(function(response){/*成功*/
+	                    that.handleResponse(response);
+	                    let data = response.data;
+	                    if(parseInt(data.code) === 200) {
+	                        that.formdwjbxx = response.data.result;
+	                        that.formdwjbxx2 = response.data.result;
+	
+	                        that.dwjbxxDialog.title = that.formdwjbxx.orgName;
+	
+	                    }
+	                    that.fullscreenLoading = false;
+	                })
+	                .catch(function(err){/*异常*/
+	                    console.log(err);
+	                    that.fullscreenLoading = false;
+	                });
+	            //领导班子
+	            axios.get("/api/org/getOrgLeaderList",{params:{
+	                    orgId: data.orgId
+	                }})
+	                .then(function(response){/*成功*/
+	                    that.handleResponse(response);
+	                    let data = response.data;
+	                    if(parseInt(data.code) === 200) {
+	                        that.leaderList = response.data.result
+	                    }
+	                })
+	                .catch(function(err){/*异常*/
+	                });
             }
-
-            that.dwjbxxMain = true;
-            that.fullscreenLoading = true;
-            axios.get("/api/org/getOrgDetailById",{params:{
-                    orgId: data.orgId
-                }})
-                .then(function(response){/*成功*/
-                    that.handleResponse(response);
-                    let data = response.data;
-                    if(parseInt(data.code) === 200) {
-                        that.formdwjbxx = response.data.result;
-                        that.formdwjbxx2 = response.data.result;
-
-                        that.dwjbxxDialog.title = that.formdwjbxx.orgName;
-
-                    }
-                    that.fullscreenLoading = false;
-                })
-                .catch(function(err){/*异常*/
-                    console.log(err);
-                    that.fullscreenLoading = false;
-                });
-            //领导班子
-            axios.get("/api/org/getOrgLeaderList",{params:{
-                    orgId: data.orgId
-                }})
-                .then(function(response){/*成功*/
-                    that.handleResponse(response);
-                    let data = response.data;
-                    if(parseInt(data.code) === 200) {
-                        that.leaderList = response.data.result
-                    }
-                })
-                .catch(function(err){/*异常*/
-                });
         },
 
         dwjbxxHandleNodeClick(data){
@@ -8117,9 +8145,24 @@ new Vue({
                 let arr = command.split(",");
                 let step = arr[0];
                 console.log("发展状态等级：" + arr[0] +", 用户ID：" + arr[1]);
-                // 修改该党员状态
 
-                // 修改成功之后，刷新 重新加载：fzdyPartyMembers
+            	that.fzdyLoading = true;
+                axios.get("/api/preParty/changeStageByUserId",{params:{
+                        userId: arr[1],
+                        stage: arr[0]
+                    }})
+                    .then(function(response){/*成功*/
+                        that.handleResponse(response);
+                        let data = response.data;
+                        if(parseInt(data.code) === 200) {
+                        	that.loadfzdy(that.fzdyCurrentOrg);
+                        }
+                        that.fzdyLoading = false;
+                    })
+                    .catch(function(err){/*异常*/
+                    	that.fzdyLoading = false;
+                    });
+            
             }
         },
 
@@ -8258,6 +8301,7 @@ new Vue({
          */
         addPrePartyMemeberSubmitHandle: function(e) {
             let that = this;
+            
             let _userName = that.formPrePartyMemeber.userName.replace(/(^\s*)|(\s*$)/g, "");
             if (_userName == '') {
                 that.$message({
@@ -8268,26 +8312,36 @@ new Vue({
                 return false;
             }
             else {
-                // 提交预备党员信息
-                console.log('addPrePartyMemeberSubmitHandle', _userName);
-                // axios.post("/api/news/save", _data, {
-                //     headers: {
-                //         "Content-type": "application/json;charset=utf-8"
-                //     }
-                // }).then(function(response){
-                //         that.handleResponse(response);
-                //         that.responseMessageHandler(response, '预备党员', '添加', function() {
-                //             that.dialogShow.prePartyMemeber = false;
-                //             // 重新获取改组织的预备党员信息
-                //             // 重载数据：fzdyPartyMembers
-
-
-                //         });
-                //         that.fullscreenLoading=false;
-                //     }).catch(function(err){
-                //     that.fullscreenLoading=false;
-                //     console.warn(err);
-                // });
+            	that.fzdyLoading = true;
+            	that.dialogShow.prePartyMemeber = false;
+            	let params = new URLSearchParams();
+                params.append('orgId',that.fzdyCurrentOrg);
+                params.append('userName',that.formPrePartyMemeber.userName);
+            	axios.post("/api/preParty/save",params)
+        		.then(function(response){
+        			that.handleResponse(response);
+        			if(parseInt(response.data.code) === 200){
+        				
+        				that.loadfzdy(that.fzdyCurrentOrg);
+                        that.$message({
+                            message: '添加成功',
+                            type: 'success'
+                        });
+                        
+                    }else if(parseInt(response.data.code) === 2000){
+                    	that.$message.error(response.data.msg);
+                    	that.dialogShow.prePartyMemeber = true;
+                    }
+        			else{
+                    	that.$message.error("添加失败");
+                    	that.dialogShow.prePartyMemeber = true;
+                    }
+        			that.fzdyLoading = false;
+        		}).catch(function(err){
+        			that.fzdyLoading = false;
+        			that.$message.error("添加失败,请联系管理员");
+        			that.dialogShow.prePartyMemeber = true;
+                });
             }
         },
 
@@ -8297,7 +8351,39 @@ new Vue({
          */
         removePrePartyMemeberSubmitHandle: function(prePartyMemeberId) {
             prePartyMemeberId = prePartyMemeberId || '';
-            console.log('删除预备党员：', prePartyMemeberId)
+            if(prePartyMemeberId != ''){
+            	let that = this;
+            	that.$confirm('是否确认删除？', '警告', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                    callback: action => {
+                        if(action === "cancel"){
+                            that.$message({
+                                type: 'info',
+                                message: "取消删除"
+                            });
+                        }else{
+                        	that.fzdyLoading = true;
+                            axios.get("/api/preParty/deletePrePartyById",{params:{
+                                    userId: prePartyMemeberId
+                                }})
+                                .then(function(response){/*成功*/
+                                    that.handleResponse(response);
+                                    let data = response.data;
+                                    if(parseInt(data.code) === 200) {
+                                    	that.loadfzdy(that.fzdyCurrentOrg);
+                                    }
+                                    that.fzdyLoading = false;
+                                })
+                                .catch(function(err){/*异常*/
+                                	that.fzdyLoading = false;
+                                });
+                        }
+                    }
+            	});
+            
+            }
         },
 
         /**
