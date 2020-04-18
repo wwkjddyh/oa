@@ -808,3 +808,10 @@ div[pType="elTable"] th>.cell {
     font-weight: bolder;
     color: #B2453F
 }
+
+.fzdy_actions2 {
+    margin-top: 50px
+}
+.fzdy_actions2_2 {
+    margin-top: -20px
+}

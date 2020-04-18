@@ -1434,7 +1434,7 @@ new Vue({
             'application/vnd.ms-excel.sheet.binary.macroEnabled.12',
         /*发展党员*/
         fzdyBreadcrumbs: [
-            {
+            /*{
                 id: '1',
                 title: '中国市政工程华北设计研究总院有限公司党委'
             },
@@ -1449,7 +1449,7 @@ new Vue({
             {
                 id: '4',
                 title: '工程一部一支部'
-            },
+            },*/
         ],
         fzdySteps: [
             {
@@ -5150,7 +5150,7 @@ new Vue({
             let data = node.data;
             if (that.showContent == 'fzdy') {   // 发展党员特殊处理
                 console.log('dzzTreeNodeClickHandle-node', node)
-                if (node.childNodes.length === 0) {
+                if (node.childNodes.length === 0 && node.data.orgType === 'orgType3') {
                     let upperOrgs = that.getParentOrgs(node).reverse();
                     let _fzdyBreadcrumbs = [];
                     let _upperOrgsLen = upperOrgs.length;

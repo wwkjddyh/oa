@@ -1,20 +1,20 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <div th:fragment="content">
     <el-container class="fzdy_el-container">
         <el-aside width="null" class="fzdy_el-container-el-aside">
             <div th:replace="/common/admin/dzz/dzzTree :: content"/>
         </el-aside>
         <el-main>
-            <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb separator-class="el-icon-arrow-right" v-if="fzdyBreadcrumbs.length != 0">
                 <el-breadcrumb-item v-for="(item, index) in fzdyBreadcrumbs">{{item.title}}</el-breadcrumb-item>
             </el-breadcrumb>
-            <div style="margin-top: 10px">
+            <div style="margin-top: 10px" v-if="fzdyBreadcrumbs.length != 0">
                 <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
                 <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
             </div>
             <!--步进区域-->
-            <div class="steps-content">
+            <div class="steps-content" v-if="fzdyBreadcrumbs.length != 0">
                 <div class="steps">
                     <template v-for="(step, index) in fzdySteps">
                         <div class="step" v-if="index === 0">
@@ -65,7 +65,7 @@
                 </div>
             </div>
             <!--步进区域-->
-            <div style="margin-top: 50px">
+            <div v-bind:class="fzdyBreadcrumbs.length === 0 ? 'fzdy_actions2_2' : 'fzdy_actions2'">
                 <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
                 <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
             </div>
