@@ -271,6 +271,7 @@ new Vue({
                         parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
+                    that.getCommitteeData();
                     break;
                 case 'nddfszjcqk':    // 年度党费收支结存情况
                     that.getResOtherTypes();
@@ -289,6 +290,7 @@ new Vue({
                         parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
+                    that.getCommitteeData();
                     break;
                 case 'ndhjgzjh':    // 年度换届工作计划
                     that.getResOtherTypes();
@@ -307,6 +309,7 @@ new Vue({
                         parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
+                    that.getCommitteeData();
                     break;
                 case 'hjgztz':    // 换届工作台账
                     that.getResOtherTypes();
@@ -325,6 +328,7 @@ new Vue({
                         parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
+                    that.getCommitteeData();
                     break;
                 case 'ndsjdfqk':    // 年度党费上缴情况
                     that.getResOtherTypes();
@@ -343,6 +347,7 @@ new Vue({
                         parse: '1',
                     };
                     that.loadResList('', 1, that.pager.res.pageSize);
+                    that.getCommitteeData();
                     break;
                 case 'fzdy':    // 发展党员
                     that.getResOtherTypes();
@@ -1336,6 +1341,7 @@ new Vue({
         partyDuesArray: [],
         resArray: [],
         userUpperOrg:[],
+        committeeOrg:[], //委员会架构
         resDlArray: [],
         orignUpperOrg:[],
         newsReceiveUsers: {
@@ -1821,7 +1827,11 @@ new Vue({
             children: 'children',
             label: 'label'
         },
+        orgCommitteeLoading: false,
 
+    },
+    computed:{
+    	
     },
     methods: {
         handleOpen(key, keyPath) {
@@ -3020,7 +3030,7 @@ new Vue({
         },
         goToFaceMeet(){
         	if(this.faceMeetCode != '' && this.faceMeetCode != null){
-        		let url = "https://www.527meeting.com/go?code=" + this.faceMeetCode;
+        		let url = "https://www.awycjcdj.com:8443/" + this.faceMeetCode;
         		window.open(url);
         	}
         	this.faceMeetCode = '';
@@ -5042,11 +5052,11 @@ new Vue({
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.dwjbxxTreeLevel.level = 0;
         			that.dwjbxxTreeData = that.getTreeData(response.data.result, parentArr);
+        			that.committeeOrg = that.getTreeData(response.data.result, parentArr,true);
         			
         			if(that.isSuperAdmin){
         				that.dwjbxxTreeData.push(that.adminOrgAdd);
         			}
-        			console.log(that.dwjbxxTreeData);
         			that.dwjbxxLoading = false;
         		}else{
         			that.$message.error('数据加载失败');
@@ -5219,6 +5229,7 @@ new Vue({
         			}
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.userUpperOrg = that.getTreeData(response.data.result, parentArr);
+        			
         			that.orignUpperOrg = response.data.result;
         		}
         	});
@@ -5471,18 +5482,27 @@ new Vue({
         /**
          * 处理没有children结构的数据
          */
-        getTreeData(list, dataArr) {
+        getTreeData(list, dataArr,committeeFlag) {
+        	console.log('list ==== ',list,'dataArr',dataArr);
             dataArr.map((pNode, i) => {
             	if(pNode.level == null){
             		pNode.level = 0 ;
             	}
               let childObj = []
               list.map((cNode, j) => {
-                if (pNode.orgId === cNode.upperOrg) {
-                	
-                	cNode.level = pNode.level+1;
-                  childObj.push(cNode)
-                }
+            	  if (committeeFlag){
+            		  if (pNode.orgId === cNode.upperOrg && cNode.orgType == `orgType1`) {
+                    	cNode.level = pNode.level+1;
+                    	childObj.push(cNode)
+	                   }
+            		  
+            	  } else {
+            		  if (pNode.orgId === cNode.upperOrg) {
+                      	cNode.level = pNode.level+1;
+                        childObj.push(cNode)
+                      }
+            	  }
+                
               })
               pNode.children = childObj
               if(pNode.children.length ==0){
@@ -7839,6 +7859,26 @@ new Vue({
 
                 // 修改成功之后，刷新 重新加载：fzdyPartyMembers
             }
+        },
+        getCommitteeData(){
+        	let that = this;
+        	that.orgCommitteeLoading = true;
+        	axios.get("/api/org/getOrgList",{params:{
+        		isSuperAdmin:that.isSuperAdmin
+            }}).then(function(response){
+            	that.handleResponse(response);
+            	if(parseInt(response.data.code) == 200 ){
+        			let parentArr = response.data.result.filter(l => l.upperOrg === null);
+        			that.committeeOrg = that.getTreeData(response.data.result, parentArr,true);
+        			that.orgCommitteeLoading = false;
+        		}else{
+        			that.$message.error('数据加载失败');
+        			that.orgCommitteeLoading = false;
+        		}
+        	}).catch(function(err){/*异常*/
+        		that.$message.error('请求失败');
+        		that.dwjbxxLoading = false;
+                });
         },
     },
     props: {

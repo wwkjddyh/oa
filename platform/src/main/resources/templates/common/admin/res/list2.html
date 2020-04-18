@@ -48,79 +48,91 @@
             -->
         </el-col>
     </el-form>
-    <div>
-        <el-button plain @click="edit('res','','',true)" size="small" icon="el-icon-upload2">新建上传</el-button>
-        <template  v-if="userOwnedModuleMaps['viewOrg'] && userOwnedModuleMaps['viewOrg'] != undefined">
-        <el-cascader v-model="formSearchRes.orgId"
-                     :options="userRootOrg"
-                     :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
-                     style="width: 300px;margin-left: 5px;margin-right: 5px;"
-                     size="small"
-                     filterable
-                     collapse-tags
-                     clearable
-        ></el-cascader>
-        </template>
-        <el-button size="small" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
-    </div>
-    		
-    <div style="margin-top: 20px">
-        <el-table size="small"
-                :data="resArray"
-                border
-                style="width: 100%;color: #4f4f4f;font-size: 16px;">
-            <!--
-            <el-table-column
-                    align="center"
-                    width="50"
-                    label="序号">
-                <template slot-scope="scope">
-                    {{scope.$index+1}}
-                </template>
-            </el-table-column>
-            -->
-            <el-table-column
-                    prop="publishTime"
-                    label="发布日期"
-                    width="150">
-                <template slot-scope="scope">
-                    <span class="list-row-base-style">{{scope.row.publishTime}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                    prop="resName"
-                    label="名称">
-                <template slot-scope="scope">
-                    <span class="list-row-base-style">{{scope.row.resName}}</span>
-                </template>
-            </el-table-column>
-            <el-table-column
-                    align="center"
-                    width="343"
-                    label="操作">
-                <template slot-scope="scope">
-                    <div style="display: flex;width:100%;justify-content: flex-end;">
-                        <el-button size="mini" :disabled="scope.row.originalName === ''" type="" icon="el-icon-view" @click="handleViewRes(scope.row)">预览</el-button>
-                        <el-button size="mini" :disabled="scope.row.originalName === ''" type="" icon="el-icon-download" @click="handleDownloadRes(scope.row)">下载</el-button>
-                        <el-button size="mini" @click="edit('res', scope.$index,scope.row, false)" icon="el-icon-edit">修改</el-button>
-<!--                        <el-button size="mini" :disabled="scope.row.originalName !== ''" @click="handleUpload2(scope.row)" icon="el-icon-upload2">上传</el-button>-->
-                        <el-button size="mini" type="danger" @click="handleDel(scope.$index, 'res')" icon="el-icon-delete">删除</el-button>
-                    </div>
-                </template>
-            </el-table-column>
-        </el-table>
-        <div align="center" style="margin-top: 20px">
-            <el-pagination size="small"
-                    @size-change="handleResSizeChange"
-                    @current-change="handleResCurrentChange"
-                    :current-page="pager.res.currentPage"
-                    :page-sizes="[10, 20, 30, 40]"
-                    :page-size="pager.res.pageSize"
-                    layout="total, sizes, prev, pager, next, jumper"
-                    :total="pager.res.totalCount">
-            </el-pagination>
-        </div>
-    </div>
+    <el-row :gutter="20" >
+	    <el-col :span="8" v-loading="orgCommitteeLoading">
+	    	<el-tree :data="committeeOrg" default-expand-all :props="dwjbxxProps" :expand-on-click-node="false" @node-click="nddyxxcjHandleNodeClick">
+		    	<span style="align-items: center;justify-content: space-between;font-size: 14px;" slot-scope="{ node, data }">
+		    		<img v-if="data.orgType && data.orgType != `orgType1`" src="/images/icon/partyIcon.png" style="width: 12px;height: 12px;"/>
+		    		<img v-if="data.orgType && data.orgType == `orgType1`" src="/images/icon/partyIcon_red.png" style="width: 12px;height: 12px;"/>
+			      <span >{{ node.label}}</span>
+			      </span>
+		    </el-tree>
+	    </el-col>
+	    <el-col :span="16">
+	        <el-button plain @click="edit('res','','',true)" size="small" icon="el-icon-upload2">新建上传</el-button>
+	        <template  v-if="userOwnedModuleMaps['viewOrg'] && userOwnedModuleMaps['viewOrg'] != undefined">
+	        <el-cascader v-model="formSearchRes.orgId"
+	                     :options="userRootOrg"
+	                     :props="{ expandTrigger: 'hover' ,emitPath: false,checkStrictly: true}"
+	                     style="width: 300px;margin-left: 5px;margin-right: 5px;"
+	                     size="small"
+	                     filterable
+	                     collapse-tags
+	                     clearable
+	        ></el-cascader>
+	        </template>
+	        <el-button size="small" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
+	    
+	    		
+		    <div style="marginTop: 20px;">
+		        <el-table size="small"
+		                :data="resArray"
+		                border
+		                style="width: 100%;color: #4f4f4f;font-size: 16px;">
+		            <!--
+		            <el-table-column
+		                    align="center"
+		                    width="50"
+		                    label="序号">
+		                <template slot-scope="scope">
+		                    {{scope.$index+1}}
+		                </template>
+		            </el-table-column>
+		            -->
+		            <el-table-column
+		                    prop="publishTime"
+		                    label="发布日期"
+		                    width="150">
+		                <template slot-scope="scope">
+		                    <span class="list-row-base-style">{{scope.row.publishTime}}</span>
+		                </template>
+		            </el-table-column>
+		            <el-table-column
+		                    prop="resName"
+		                    label="名称">
+		                <template slot-scope="scope">
+		                    <span class="list-row-base-style">{{scope.row.resName}}</span>
+		                </template>
+		            </el-table-column>
+		            <el-table-column
+		                    align="center"
+		                    width="343"
+		                    label="操作">
+		                <template slot-scope="scope">
+		                    <div style="display: flex;width:100%;justify-content: flex-end;">
+		                        <el-button size="mini" :disabled="scope.row.originalName === ''" type="" icon="el-icon-view" @click="handleViewRes(scope.row)">预览</el-button>
+		                        <el-button size="mini" :disabled="scope.row.originalName === ''" type="" icon="el-icon-download" @click="handleDownloadRes(scope.row)">下载</el-button>
+		                        <el-button size="mini" @click="edit('res', scope.$index,scope.row, false)" icon="el-icon-edit">修改</el-button>
+		<!--                        <el-button size="mini" :disabled="scope.row.originalName !== ''" @click="handleUpload2(scope.row)" icon="el-icon-upload2">上传</el-button>-->
+		                        <el-button size="mini" type="danger" @click="handleDel(scope.$index, 'res')" icon="el-icon-delete">删除</el-button>
+		                    </div>
+		                </template>
+		            </el-table-column>
+		        </el-table>
+		        <div align="center" style="margin-top: 20px">
+		            <el-pagination size="small"
+		                    @size-change="handleResSizeChange"
+		                    @current-change="handleResCurrentChange"
+		                    :current-page="pager.res.currentPage"
+		                    :page-sizes="[10, 20, 30, 40]"
+		                    :page-size="pager.res.pageSize"
+		                    layout="total, sizes, prev, pager, next, jumper"
+		                    :total="pager.res.totalCount">
+		            </el-pagination>
+		        </div>
+		    </div>
+	   </el-col>
+   </el-row>
     <el-dialog title="新增/编辑" :visible.sync="dialogShow.res" lock-scroll="true" width="800px">
         <el-card shadow="never" style="width: 100%;" type="card">
             <el-form ref="formRes" :rules="rules" :model="formRes" label-width="100px" :validate-on-rule-change="false" size="small">
