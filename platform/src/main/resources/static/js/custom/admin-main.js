@@ -5119,6 +5119,92 @@ new Vue({
         	
         	
         },
+
+        /**
+         * 获得上级节点列表
+         * @param node 当前节点
+         * @param parentNodeList 上级节点列表
+         */
+        getParentOrgs(node, parentNodeList = []) {
+            let that = this;
+            if (!node || !node.data || !node.data.upperOrg || node.data.upperOrg == null || node.data.upperOrg == '') {
+                return parentNodeList;
+            }
+
+            let upperOrg = node.data.upperOrg || '';
+            if (upperOrg !== '') {
+                parentNodeList.push(node.parent);
+                return that.getParentOrgs(node.parent, parentNodeList)
+            }
+            else {
+                return parentNodeList;
+            }
+        },
+
+        /**
+         * 当组织树节点点击事件处理
+         * @param node 节点
+         */
+        dzzTreeNodeClickHandle(node) {
+            let that = this;
+            let data = node.data;
+            if (that.showContent == 'fzdy') {   // 发展党员特殊处理
+                console.log('dzzTreeNodeClickHandle-node', node)
+                if (node.childNodes.length === 0) {
+                    let upperOrgs = that.getParentOrgs(node).reverse();
+                    let _fzdyBreadcrumbs = [];
+                    let _upperOrgsLen = upperOrgs.length;
+                    for (let i = 0; i < _upperOrgsLen; i ++) {
+                        let _upperOrg = upperOrgs[i];
+                        _fzdyBreadcrumbs.push({
+                            id: i + 1,
+                            title: _upperOrg.label || '',
+                        })
+                    }
+                    _fzdyBreadcrumbs.push({
+                        id: _upperOrgsLen + 1,
+                        title: node.label || ''
+                    })
+                    that.fzdyBreadcrumbs = _fzdyBreadcrumbs;
+                }
+            }
+
+            that.dwjbxxMain = true;
+            that.fullscreenLoading = true;
+            axios.get("/api/org/getOrgDetailById",{params:{
+                    orgId: data.orgId
+                }})
+                .then(function(response){/*成功*/
+                    that.handleResponse(response);
+                    let data = response.data;
+                    if(parseInt(data.code) === 200) {
+                        that.formdwjbxx = response.data.result;
+                        that.formdwjbxx2 = response.data.result;
+
+                        that.dwjbxxDialog.title = that.formdwjbxx.orgName;
+
+                    }
+                    that.fullscreenLoading = false;
+                })
+                .catch(function(err){/*异常*/
+                    console.log(err);
+                    that.fullscreenLoading = false;
+                });
+            //领导班子
+            axios.get("/api/org/getOrgLeaderList",{params:{
+                    orgId: data.orgId
+                }})
+                .then(function(response){/*成功*/
+                    that.handleResponse(response);
+                    let data = response.data;
+                    if(parseInt(data.code) === 200) {
+                        that.leaderList = response.data.result
+                    }
+                })
+                .catch(function(err){/*异常*/
+                });
+        },
+
         dwjbxxHandleNodeClick(data){
         	let that = this;
         	that.dwjbxxMain = true;
@@ -5155,6 +5241,7 @@ new Vue({
             })
             .catch(function(err){/*异常*/
             });
+            console.log('dwjbxxHandleNodeClick', data, that.dwjbxxTreeData, that.getParentOrgs(data));
         },
         loadNddyxxcj(pagenum,pagesize){
         	let that = this;
