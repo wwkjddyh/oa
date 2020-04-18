@@ -817,6 +817,11 @@ div[pType="elTable"] th>.cell {
     /*margin-top: -20px*/
 }
 
+.pre-party-member-remove {
+    color: #f56c6c;
+    cursor: pointer;
+}
+
 .webchat-main-default {
     display: flex;
     width: auto;

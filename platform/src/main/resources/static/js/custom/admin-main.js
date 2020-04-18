@@ -8114,6 +8114,7 @@ new Vue({
             console.log('handleFzdyDropdown.command', command);
             if (command !== '') {
                 let arr = command.split(",");
+                let step = arr[0];
                 console.log("发展状态等级：" + arr[0] +", 用户ID：" + arr[1]);
                 // 修改该党员状态
 
@@ -8287,6 +8288,15 @@ new Vue({
                 //     console.warn(err);
                 // });
             }
+        },
+
+        /**
+         * 删除预备党员
+         * @param e
+         */
+        removePrePartyMemeberSubmitHandle: function(prePartyMemeberId) {
+            prePartyMemeberId = prePartyMemeberId || '';
+            console.log('删除预备党员：', prePartyMemeberId)
         },
     },
     props: {

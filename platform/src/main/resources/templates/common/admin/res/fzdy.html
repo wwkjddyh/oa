@@ -49,6 +49,7 @@
                                             <el-dropdown-item :command="item2.id + ',' + item.id" v-for="(item2, index2) in fzdySteps" v-if="item.stage !== item2.id" class="party-member-dropdown-item">{{item2.title}}</el-dropdown-item>
                                         </el-dropdown-menu>
                                     </el-dropdown>
+                                    <i class="el-icon-delete pre-party-member-remove" @click="removePrePartyMemeberSubmitHandle(item.id)"></i>
                                 </template>
                                 <template v-if="item.stage >= 5">
                                     <div class="horizontal-line4"></div><span class="party-member-name"><el-button style="color: #B2453F;border-radius: 15px;padding: 2px 12px;border-color: #DEDCDD;font-weight: bolder" disabled size="mini" round>{{item.name}}</el-button></span>
@@ -58,6 +59,7 @@
                                             <el-dropdown-item :command="item2.id + ',' + item.id" v-for="(item2, index2) in fzdySteps" v-if="item.stage !== item2.id" class="party-member-dropdown-item">{{item2.title}}</el-dropdown-item>
                                         </el-dropdown-menu>
                                     </el-dropdown>
+                                    <i class="el-icon-delete pre-party-member-remove" @click="removePrePartyMemeberSubmitHandle(item.id)"></i>
                                 </template>
                             </div>
                         </template>
@@ -236,7 +238,7 @@
             <el-button @click="submitUpload2" type="primary" plain size="mini" icon="el-icon-check">保存</el-button>
         </div>
     </el-dialog>
-    <el-dialog title="添加预备党员" :visible.sync="dialogShow.prePartyMemeber" lock-scroll="true" width="30%">
+    <el-dialog title="添加预备党员" :visible.sync="dialogShow.prePartyMemeber" lock-scroll="true" width="460px">
         <el-form ref="formPrePartyMemeber" :rules="rules" :model="formPrePartyMemeber" label-width="100px" :validate-on-rule-change="false" size="small">
             <el-form-item label="姓名" prop="userName">
                 <el-input v-model="formPrePartyMemeber.userName" size="small" auto-complete="off" style="width: 300px;" maxlength="512" placeholder="姓名"></el-input>
