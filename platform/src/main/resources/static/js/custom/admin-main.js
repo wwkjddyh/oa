@@ -318,13 +318,13 @@ new Vue({
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
                     that.formSearchRes.currTypeName = '年度党费收支情况公示';
-                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
+//                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
                     that.uploadData = {
                         name: '',
                         type: 'res2-nddfszqkgs',
                         parse: '1',
                     };
-                    that.loadResList('', 1, that.pager.res.pageSize);
+//                    that.loadResList('', 1, that.pager.res.pageSize);
                     that.getCommitteeData();
                     break;
                 case 'nddfszjcqk':    // 年度党费收支结存情况
@@ -337,13 +337,12 @@ new Vue({
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
                     that.formSearchRes.currTypeName = '年度党费收支结存情况';
-                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
+//                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
                     that.uploadData = {
                         name: '',
                         type: 'res2-nddfszjcqk',
                         parse: '1',
                     };
-                    that.loadResList('', 1, that.pager.res.pageSize);
                     that.getCommitteeData();
                     break;
                 case 'ndhjgzjh':    // 年度换届工作计划
@@ -356,13 +355,13 @@ new Vue({
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
                     that.formSearchRes.currTypeName = '年度换届工作计划';
-                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
+//                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
                     that.uploadData = {
                         name: '',
                         type: 'res2-ndhjgzjh',
                         parse: '1',
                     };
-                    that.loadResList('', 1, that.pager.res.pageSize);
+//                    that.loadResList('', 1, that.pager.res.pageSize);
                     that.getCommitteeData();
                     break;
                 case 'hjgztz':    // 换届工作台账
@@ -375,32 +374,32 @@ new Vue({
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
                     that.formSearchRes.currTypeName = '换届工作台账';
-                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
+//                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
                     that.uploadData = {
                         name: '',
                         type: 'res2-hjgztz',
                         parse: '1',
                     };
-                    that.loadResList('', 1, that.pager.res.pageSize);
+//                    that.loadResList('', 1, that.pager.res.pageSize);
                     that.getCommitteeData();
                     break;
                 case 'ndsjdfqk':    // 年度党费上缴情况
                     that.getResOtherTypes();
                     that.formSearchRes.key = '';
-                    that.formRes.typeId = '0737d01e-b6f9-4567-8892-63fa9071903f';
+                    that.formRes.typeId = 'e5e6bc19-d214-49fd-9cfe-0317b8e1a6c5';
                     that.formRes.typeName = '年度党费上缴情况';
-                    that.formSearchRes.typeId = '0737d01e-b6f9-4567-8892-63fa9071903f';
+                    that.formSearchRes.typeId = 'e5e6bc19-d214-49fd-9cfe-0317b8e1a6c5';
                     that.formSearchRes.assId = '';
                     that.formSearchRes.assTypeId = '';
                     that.formSearchRes.announcerId = '';
                     that.formSearchRes.currTypeName = '年度党费上缴情况';
-                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
+//                    that.formSearchRes.yearMonth = that.getCurrYearMonth();
                     that.uploadData = {
                         name: '',
                         type: 'res2-ndsjdfqk',
                         parse: '1',
                     };
-                    that.loadResList('', 1, that.pager.res.pageSize);
+//                    that.loadResList('', 1, that.pager.res.pageSize);
                     that.getCommitteeData();
                     break;
                 case 'fzdy':    // 发展党员
@@ -5190,8 +5189,6 @@ new Vue({
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.dwjbxxTreeLevel.level = 0;
         			that.dwjbxxTreeData = that.getTreeData(response.data.result, parentArr);
-        			that.committeeOrg = that.getTreeData(response.data.result, parentArr,true);
-        			
         			if(that.isSuperAdmin){
         				that.dwjbxxTreeData.push(that.adminOrgAdd);
         			}
@@ -5250,7 +5247,6 @@ new Vue({
             return dataArr
           },
         nddyxxcjHandleNodeClick(data){
-        	
         	let that = this;
         	that.dwjbxxMain = true;
         	that.fullscreenLoading = true;
@@ -6358,9 +6354,8 @@ new Vue({
         /**
          * 加载资源信息
          */
-        loadResList(criteria, pageNum, pageSize) {
+        loadResList(criteria, pageNum, pageSize,orgId) {
             let that = this;
-            //console.log('loadResList->that.formSearchRes', that.formSearchRes)
             axios.get("/api/res/search", {params:{
                     key: that.formSearchRes.key,
                     typeId: that.formSearchRes.typeId,
@@ -6368,9 +6363,10 @@ new Vue({
                     assTypeId: that.formSearchRes.assTypeId,
                     announcerId: that.formSearchRes.announcerId,
                     publishTime: that.formSearchRes.publishTime,
-                    yearMonth: that.formSearchRes.yearMonth,
+                    yearMonth: orgId ? '': that.formSearchRes.yearMonth,
                     pageNum: pageNum,
                     pageSize: pageSize,
+                    orgId: orgId ? orgId : ""
                 }})
                 .then(function(response){/*成功*/
                 	that.handleResponse(response);
@@ -8462,6 +8458,15 @@ new Vue({
             let members = prePartyMembers;
             console.log('members', members);
         },
+        /**
+         * 获取当前组织机构数据
+         */
+        
+        getCurrentData(data){
+        	console.log('点击 === ',data.orgId);
+        	let orgId = data.orgId;
+        	this.loadResList('', 1, this.pager.res.pageSize,orgId);
+        }
     },
     props: {
 

@@ -50,7 +50,7 @@
     </el-form>
     <el-row :gutter="20" >
 	    <el-col :span="8" v-loading="orgCommitteeLoading">
-	    	<el-tree :data="committeeOrg" default-expand-all :props="dwjbxxProps" :expand-on-click-node="false" @node-click="nddyxxcjHandleNodeClick">
+	    	<el-tree :data="committeeOrg" default-expand-all :props="dwjbxxProps" :expand-on-click-node="false" @node-click="getCurrentData">
 		    	<span style="align-items: center;justify-content: space-between;font-size: 14px;" slot-scope="{ node, data }">
 		    		<img v-if="data.orgType && data.orgType != `orgType1`" src="/images/icon/partyIcon.png" style="width: 12px;height: 12px;"/>
 		    		<img v-if="data.orgType && data.orgType == `orgType1`" src="/images/icon/partyIcon_red.png" style="width: 12px;height: 12px;"/>
