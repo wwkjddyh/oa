@@ -10,7 +10,7 @@
                 <el-breadcrumb-item v-for="(item, index) in fzdyBreadcrumbs">{{item.title}}</el-breadcrumb-item>
             </el-breadcrumb>
             <div style="margin-top: 10px" v-if="fzdyBreadcrumbs.length != 0">
-                <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
+                <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-plus">添加</el-button>
                 <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
             </div>
             <!--步进区域-->
