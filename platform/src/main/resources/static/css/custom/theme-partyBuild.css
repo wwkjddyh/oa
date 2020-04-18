@@ -817,6 +817,26 @@ div[pType="elTable"] th>.cell {
     /*margin-top: -20px*/
 }
 
+.webchat-main-default {
+    display: flex;
+    width: auto;
+    justify-content: center;
+    position: fixed;
+    top: calc(50% - 347px);
+    left: calc(50% - 350px);
+    visibility: hidden;
+}
+
+.webchat-main-show {
+    display: flex;
+    width: auto;
+    justify-content: center;
+    position: fixed;
+    top: calc(50% - 347px);
+    left: calc(50% - 350px);
+    visibility: visible;
+}
+
 .webchat {
     width: 500px;
     height: auto;
