@@ -6100,13 +6100,13 @@ new Vue({
                 modelName:'工作简报'
             }
          */
-        moreArticle(){
+        moreArticle(tab,name){
         	let that = this;
-        	that.showContent  = 'articles';
-        	that.def_menu_id = 'articles';
+        	that.showContent  = tab;
+        	that.def_menu_id = tab;
         	let model = {};
-        	model.moduleCode = 'articles';
-        	model.moduleName = '工作简报';
+        	model.moduleCode = tab;
+        	model.moduleName = name;
         	that.handleAddTab2(model);
             that.$forceUpdate();
         },
