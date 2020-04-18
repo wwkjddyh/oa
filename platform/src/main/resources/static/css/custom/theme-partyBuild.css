@@ -825,6 +825,8 @@ div[pType="elTable"] th>.cell {
     top: calc(50% - 347px);
     left: calc(50% - 350px);
     visibility: hidden;
+    background-color: #DEDCDD;
+    opacity: 100%;
 }
 
 .webchat-main-show {
@@ -835,6 +837,8 @@ div[pType="elTable"] th>.cell {
     top: calc(50% - 347px);
     left: calc(50% - 350px);
     visibility: visible;
+    background-color: #DEDCDD;
+    opacity: 100%;
 }
 
 .webchat {

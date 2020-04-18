@@ -1,4 +1,24 @@
 const CurrentChartId = 'bigDataChartId';
+let ws = null;
+let heartCheck = {
+    timeout: 60000,//60ms
+    timeoutObj: null,
+    serverTimeoutObj: null,
+    reset: function(){
+        clearTimeout(this.timeoutObj);
+        clearTimeout(this.serverTimeoutObj);
+        this.start();
+    },
+    start: function(){
+        let self = this;
+        self.timeoutObj = setTimeout(function(){
+            ws.send("HeartBeat");
+            self.serverTimeoutObj = setTimeout(function(){
+                ws.close();//如果onclose会执行reconnect，我们执行ws.close()就行了.如果直接执行reconnect 会触发onclose导致重连两次
+            }, self.timeout)
+        }, self.timeout)
+    },
+}
 new Vue({
     el: '#admin-main',
     watch: {
@@ -1436,6 +1456,14 @@ new Vue({
                 }]
             }
         ],
+        /* WebSocket对象 */
+        wsObj : {
+            lockReconnect: false,
+            webChatShow: false,
+            webChatMainClass: 'webchat-main-default',
+            url: "ws://" + window.location.hostname + ":" + window.location.port + "/api/socket/server",
+            url2: "http://" + window.location.hostname + ":" + window.location.port + "/api/socket/sockjs/server"
+        },
         allSysUsers: [],
         allSysUsersMap: {},
         currBrief: {},
@@ -8089,6 +8117,135 @@ new Vue({
 
                 // 修改成功之后，刷新 重新加载：fzdyPartyMembers
             }
+        },
+
+        /**
+         * 初始化WebSocket
+         */
+        initWebSocket: function() {
+            let that = this;
+            if ('WebSocket' in window) {
+                ws = new WebSocket(that.wsObj.url);
+            } else if ('MozWebSocket' in window) {
+                ws = new MozWebSocket(that.wsObj.url);
+            } else {
+                ws = new SockJS(that.wsObj.url2);
+            }
+            ws.onopen = function(evnt) {
+                heartCheck.start();
+            };
+            ws.onmessage = function(evnt) {
+                heartCheck.reset();
+                //$("#msgcount").prepend("<p>"+evnt.data+"</p>");
+                /**
+                 * 可以通过event.data(即返回结果为json，通过解析JSON)，来达到目的
+                 */
+                console.log('evnt.data', evnt.data);
+                let msg = eval("("+evnt.data+")");
+
+                let toName = msg["toName"],fromName = msg["fromName"],isJoin = msg["isJoin"],
+                    whoStr = "", isHeart = msg['isHeart'] || false;
+                if (isHeart) {
+                    console.log('健康检查 => ', msg);
+                }
+                else {
+                    if(isJoin == "1") { //加入房间
+                        //....
+                    }
+                    else {
+                        if(toName == fromName) {	//接收者就是发送者
+                            whoStr = "<b style='color:red'>我</b>：";
+                        }
+                        else {
+                            whoStr = "<b style='color:blue'>"+fromName+"</b>：";
+                        }
+                    }
+                    // $("#userCount").val(msg["userCount"]);
+                    // $("#msgcount").prepend("<p>"+whoStr+msg["msg"]+"</p>"+msg["date"]);
+                    console.log('接收到的信息', whoStr);
+                }
+
+            };
+            ws.onerror = function(evnt) {
+                that.wsWebSocketReconnect();
+            };
+            ws.onclose = function(evnt) {
+                that.wsWebSocketReconnect();
+            }
+        },
+
+        /**
+         * ws发送消息
+         */
+        wsSendMessage: function(e) {
+
+        },
+
+        /**
+         * 创建webSocket
+         * @param url 链接
+         */
+        wsCreateWebSocket: function(url) {
+            let that = this;
+            try {
+                ws = new WebSocket(url);
+            } catch (e) {
+                that.reconnect(url);
+            }
+        },
+
+        /**
+         * websocket重连
+         * @param url 链接
+         */
+        wsWebSocketReconnect: function(url) {
+            let that = this;
+            if(that.wsObj.lockReconnect) return;
+            that.wsObj.lockReconnect = true;
+            //没连接上会一直重连，设置延迟避免请求过多
+            setTimeout(function () {
+                that.createWebSocket(url);
+                that.wsObj.lockReconnect = false;
+            }, 2000);
+        },
+
+        webChatSendHandle: function() {
+            let messageList = document.getElementById("messageList");
+            let messageBox = document.getElementById("messageBox");
+            //messageList.innerHTML = messageList.innerHTML + "<br/>" + messageBox.innerHTML;
+            console.log('messageBox.content', messageBox.innerHTML);
+        },
+
+        changeFriendsBgColor: function(_this) {
+            // 获取所有兄弟节点
+            let siblings  = [];
+            let items = _this.parentNode.children;
+            for (let i = 0; i < items.length; i ++) {
+                let _item = items[i];
+                if (_item !== _this) {
+                    siblings.push(_item);
+                }
+            }
+            _this.className = 'webchat-container-left_item item-active-bgcolor';
+            //document.getElementById("currentFriendName").innerHTML = '';
+            for (let i = 0; i < siblings.length; i ++) {
+                siblings[i].className = 'webchat-container-left_item';
+            }
+        },
+
+        openAndCloseChatHandle: function(e) {
+            let that = this;
+            if (that.wsObj.webChatMainClass == 'webchat-main-default') {
+                that.wsObj.webChatMainClass == 'webchat-main-show'
+            }
+            else {
+                that.wsObj.webChatMainClass == 'webchat-main-default'
+            }
+        },
+
+        closeWebchatHandle: function(e) {
+            let that = this;
+            that.wsObj.webChatMainClass == 'webchat-main-default'
         },
     },
     props: {
