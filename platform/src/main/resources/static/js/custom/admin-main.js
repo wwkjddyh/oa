@@ -8280,6 +8280,7 @@ new Vue({
         		that.$message.error('请求失败');
         		that.orgCommitteeLoading = false;
                 });
+        },
 
         /**
          * websocket重连
