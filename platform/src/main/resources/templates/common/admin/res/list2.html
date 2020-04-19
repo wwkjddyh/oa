@@ -48,8 +48,8 @@
             -->
         </el-col>
     </el-form>
-    <el-row :gutter="20" >
-	    <el-col :span="8" v-loading="orgCommitteeLoading">
+    <el-row :gutter="20" v-loading="orgCommitteeLoading">
+	    <el-col :span="8" >
 	    	<el-tree :data="committeeOrg" default-expand-all :props="dwjbxxProps" :expand-on-click-node="false" @node-click="getCurrentData">
 		    	<span style="align-items: center;justify-content: space-between;font-size: 14px;" slot-scope="{ node, data }">
 		    		<img v-if="data.orgType && data.orgType != `orgType1`" src="/images/icon/partyIcon.png" style="width: 12px;height: 12px;"/>
@@ -58,7 +58,7 @@
 			      </span>
 		    </el-tree>
 	    </el-col>
-	    <el-col :span="16">
+	    <el-col :span="16" v-if="resTableView">
 	        <el-button plain @click="edit('res','','',true)" size="small" icon="el-icon-upload2">新建上传</el-button>
 	        <template  v-if="userOwnedModuleMaps['viewOrg'] && userOwnedModuleMaps['viewOrg'] != undefined">
 	        <el-cascader v-model="formSearchRes.orgId"
@@ -71,14 +71,14 @@
 	                     clearable
 	        ></el-cascader>
 	        </template>
-	        <el-button size="small" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
-	    
+	        <!-- <el-button size="small" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
+	     -->
 	    		
 		    <div style="marginTop: 20px;">
 		        <el-table size="small"
 		                :data="resArray"
 		                border
-		                style="width: 100%;color: #4f4f4f;font-size: 16px;">
+		                style="width: 100%;color: #4f4f4f;font-size: 16px;" >
 		            <!--
 		            <el-table-column
 		                    align="center"
@@ -133,7 +133,7 @@
 		    </div>
 	   </el-col>
    </el-row>
-    <el-dialog title="新增/编辑" :visible.sync="dialogShow.res" lock-scroll="true" width="800px">
+    <el-dialog title="新增/编辑" :visible.sync="dialogShow.res" lock-scroll="true" width="800px" v-loading="orgCommitteeLoading">
         <el-card shadow="never" style="width: 100%;" type="card">
             <el-form ref="formRes" :rules="rules" :model="formRes" label-width="100px" :validate-on-rule-change="false" size="small">
                 <el-form-item label="发布日期" prop="publishTime">
@@ -202,7 +202,7 @@
                 <el-form-item>
                     <el-button @click="dialogShow.res = false;resetForm('formRes')" plain size="mini" icon="el-icon-close">取消</el-button>
 <!--                    <el-button @click="submitRes" type="primary" plain size="mini" icon="el-icon-check">保存</el-button>-->
-                    <el-button @click="submitUpload(false)" type="primary" plain size="mini" icon="el-icon-check">保存</el-button>
+                    <el-button @click="submitUpload(false)" type="primary" plain size="mini" icon="el-icon-check" >保存</el-button>
                 </el-form-item>
             </el-form>
         </el-card>

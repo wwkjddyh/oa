@@ -10,6 +10,8 @@ import com.oa.platform.entity.OrgRewardDetail;
 import com.oa.platform.entity.OrgUser;
 import com.oa.platform.entity.Organization;
 import com.oa.platform.entity.UserDtl;
+import org.apache.ibatis.annotations.Param;
+
 /**
  * orgservice
  * @author 俞灶森
@@ -97,4 +99,11 @@ public interface OrgService extends BaseService<Organization, String> {
 	List<String> getBottomOrgByOrgId(String orgId);
 	PageInfo<OrgUser> getOrgUserListByOrg(String userName, String year, List<String> orgList, int pageNum,
 			int pageSize);
+
+	/**
+	 * 根据用户ID查询组织ID
+	 * @param userId 用户ID
+	 * @return
+	 */
+	List<String> findOrgIdByUserId(@Param("userId") String userId);
 }

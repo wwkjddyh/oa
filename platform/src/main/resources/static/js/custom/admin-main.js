@@ -92,6 +92,7 @@ new Vue({
                 case 'articles':    // 简报列表
                     //that.getArticleCategories();
                     that.currentArticleFormTitle = '简报';
+                    
                     that.formSearchArticle.isBrief = true;
                     that.formSearchArticle.sendType = '1';
                     that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
@@ -310,6 +311,7 @@ new Vue({
                     break;
                 case 'nddfszqkgs':    // 年度党费收支情况公示
                     that.getResOtherTypes();
+                    that.resTableView = false;
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '4bfeb907-05c0-48a5-9719-70d07eb640a2';
                     that.formRes.typeName = '年度党费收支情况公示';
@@ -329,6 +331,7 @@ new Vue({
                     break;
                 case 'nddfszjcqk':    // 年度党费收支结存情况
                     that.getResOtherTypes();
+                    that.resTableView = false;
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '0737d01e-b6f9-4567-8892-63fa9071903f';
                     that.formRes.typeName = '年度党费收支结存情况';
@@ -347,6 +350,7 @@ new Vue({
                     break;
                 case 'ndhjgzjh':    // 年度换届工作计划
                     that.getResOtherTypes();
+                    that.resTableView = false;
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '3d4565b4-041d-44e0-b411-b441865047c7';
                     that.formRes.typeName = '年度换届工作计划';
@@ -366,6 +370,7 @@ new Vue({
                     break;
                 case 'hjgztz':    // 换届工作台账
                     that.getResOtherTypes();
+                    that.resTableView = false;
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '4a056958-6d34-4dbc-ac12-1385b0745023';
                     that.formRes.typeName = '换届工作台账';
@@ -385,6 +390,7 @@ new Vue({
                     break;
                 case 'ndsjdfqk':    // 年度党费上缴情况
                     that.getResOtherTypes();
+                    that.resTableView = false;
                     that.formSearchRes.key = '';
                     that.formRes.typeId = 'e5e6bc19-d214-49fd-9cfe-0317b8e1a6c5';
                     that.formRes.typeName = '年度党费上缴情况';
@@ -780,16 +786,16 @@ new Vue({
         showContent: 'firstPage',
         receiverUserName: '',
         scrollBoxContent: '',
-        // defaultBriefContent: '<p style="text-align: center; margin-bottom: 20px;">\n' +
-        //     '    <strong><span style="font-size:48px;font-family:宋体;color:red">党 建 工 作 简 报</span></strong>\n' +
-        //     '</p >\n' +
-        //     '<p style="text-align:center">\n' +
-        //     '    <span style="font-size:19px;font-family:宋体;color:red">&nbsp; &nbsp;XXXX</span><span style="font-size:19px;font-family:宋体;color:red">年XX期&nbsp; &nbsp; &nbsp; &nbsp; 中共天津市住房和城乡建设委员会委员会</span>\n' +
-        //     '</p >\n' +
-        //     '<p style="text-align: center;">\n' +
-        //     '    <span style="font-size: 19px; font-family: 宋体; text-decoration: underline; color: rgb(255, 0, 0);">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>\n' +
-        //     '</p >',
-        defaultBriefContent: '',
+        defaultBriefContent: '<p style="text-align: center; margin-bottom: 20px;">\n' +
+            '    <strong><span style="font-size:48px;font-family:宋体;color:red">党 建 工 作 简 报</span></strong>\n' +
+            '</p >\n' +
+            '<p style="text-align:center">\n' +
+            '    <span style="font-size:19px;font-family:宋体;color:red">&nbsp; &nbsp;XXXX</span><span style="font-size:19px;font-family:宋体;color:red">年XX期&nbsp; &nbsp; &nbsp; &nbsp; 中共天津市住房和城乡建设委员会委员会</span>\n' +
+            '</p >\n' +
+            '<p style="text-align: center;">\n' +
+            '    <span style="font-size: 19px; font-family: 宋体; text-decoration: underline; color: rgb(255, 0, 0);">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>\n' +
+            '</p >',
+        // defaultBriefContent: '',
         currentArticleFormTitle: '文章',
         currentChartId : CurrentChartId,
         currUserEchartsData: {   /*当前用户图片数据*/
@@ -1109,10 +1115,10 @@ new Vue({
             },
             {
                 index:2,
-                name:'大数据',
+                name:'统计分析',
                 url:'bigData',
                 imgUrl:'/images/icon/bigdata.png',
-                modelName:'大数据'
+                modelName:'统计分析'
             },
             {
                 index:3,
@@ -1169,10 +1175,10 @@ new Vue({
             },
             {
                 index:2,
-                name:'正式文件',
-                url:'pFile',
+                name:'学习交流',
+                url:'xxjl',
                 imgUrl:'/images/icon/zswj.png',
-                modelName:'正式文件'
+                modelName:'学习交流'
             },
             {
                 index:3,
@@ -1272,6 +1278,7 @@ new Vue({
         formSearchPrePartyMemeber: {},
         formdwjbxx:{},
         dwjbxxMain: false,
+        dwjbxxMainAdd: false,   // 年度党员信息采集：是否呈现新增按钮
         adminOrgAdd:{
             label: '',
             isAdmin:true
@@ -1317,6 +1324,7 @@ new Vue({
         operateIcon: 'el-icon-setting',
         articleTypes: [],
         isSuperAdmin: false,
+        resTableView:false,
         currUserReceiverBriefRecords: [],
         currUserReceiverNewsRecords: [],
         currUserReceiverBriefRecordsfirstPage: [],
@@ -3125,6 +3133,7 @@ new Vue({
         submitRes() {
             let that = this;
             let operName = '添加';
+            that.orgCommitteeLoading = true;
             /*
             let params = new URLSearchParams();
             params.append("assId", that.formRes.assId);
@@ -3161,20 +3170,22 @@ new Vue({
                 // params.append('recordId',that.formRes.recordId || '');
             }
             axios.post("/api/res/save",_data, {
-                    headers: {
-                        "Content-type": "application/json;charset=utf-8"
-                    }
-                })
-                .then(function(response){
-                	that.handleResponse(response);
-                    that.responseMessageHandler(response, '资源信息', operName, function() {
-                        that.dialogShow.res = false;
-                        that.pager.res.currentPage = 1;
-                        that.loadResList('',1,that.pager.res.pageSize);
-                    });
-                }).catch(function(err){
-                console.warn(err);
-            });
+                headers: {
+                    "Content-type": "application/json;charset=utf-8"
+                }
+            })
+            .then(function(response){
+	            	that.handleResponse(response);
+	                that.responseMessageHandler(response, '资源信息', operName, function() {
+	                    that.dialogShow.res = false;
+	                    that.pager.res.currentPage = 1;
+	                    that.loadResList('',that.pager.res.currentPage,that.pager.res.pageSize);
+	                });
+	                that.orgCommitteeLoading = false;
+	            }).catch(function(err){
+	            console.warn(err);
+	            that.orgCommitteeLoading = false;
+	        });
         },
         goToFaceMeet(){
         	if(this.faceMeetCode != '' && this.faceMeetCode != null){
@@ -3797,7 +3808,8 @@ new Vue({
                             console.log('that.formRes.typeId', that.formRes.typeId);
                             let _typeId = that.formRes.typeId + '';
                             that.formRes = {
-                                typeId: _typeId,
+                                    typeId: _typeId,
+                                    orgId: that.formSearchRes.orgId
                             };
                             console.log('add=>that.formRes=>', that.formRes)
                         }
@@ -5309,7 +5321,13 @@ new Vue({
         	that.dwjbxxMain = true;
         	that.fullscreenLoading = true;
         	let searchName = '';
-        	that.nddyxxcjSelectOrg=data.orgId;
+        	that.nddyxxcjSelectOrg = data.orgId;
+        	if (data.orgType === 'orgType3') {
+                that.dwjbxxMainAdd = true;
+            }
+        	else {
+                that.dwjbxxMainAdd = false;
+            }
         	console.log(data.orgId)
         	if(that.nddyxxSearchCondition == null || that.nddyxxSearchCondition == ''){
         		searchName = null;
@@ -6242,6 +6260,7 @@ new Vue({
          */
         loadCurrUserReceiverBriefRecord(criteria, pageNum, pageSize,categoryid) {
             let that = this;
+            that.newsLoading=true;
             axios.get("/api/article/getCurrUserReceiverBriefRecord", {params:{
                     key: criteria,
                     pageNum: pageNum,
@@ -6261,9 +6280,11 @@ new Vue({
                         }
                         that.pager.briefSendRecord.totalCount = response.data.data.total;
                     }
+                	that.newsLoading=false;
                 })
                 .catch(function(err){/*异常*/
                     console.log(err);
+                    that.newsLoading=false;
                 });
         },
         /**
@@ -6275,6 +6296,7 @@ new Vue({
             if(sendflag == null){
             	sendflag = '';
             }
+            that.newsLoading=true;
             axios.get("/api/article/getCurrUserReceiverBriefRecord", {params:{
                     key: criteria,
                     pageNum: pageNum,
@@ -6296,9 +6318,11 @@ new Vue({
                         
                         that.pager.briefSendRecord.totalCount = response.data.data.total;
                     }
+                	that.newsLoading=false;
                 })
                 .catch(function(err){/*异常*/
                     console.log(err);
+                    that.newsLoading=false;
                 });
         },
       //每页显示数据量变更
@@ -6412,8 +6436,9 @@ new Vue({
         /**
          * 加载资源信息
          */
-        loadResList(criteria, pageNum, pageSize,orgId) {
+        loadResList(criteria, pageNum, pageSize) {
             let that = this;
+            that.orgCommitteeLoading = true;
             axios.get("/api/res/search", {params:{
                     key: that.formSearchRes.key,
                     typeId: that.formSearchRes.typeId,
@@ -6421,10 +6446,10 @@ new Vue({
                     assTypeId: that.formSearchRes.assTypeId,
                     announcerId: that.formSearchRes.announcerId,
                     publishTime: that.formSearchRes.publishTime,
-                    yearMonth: orgId ? '': that.formSearchRes.yearMonth,
+                    // yearMonth: orgId ? '': that.formSearchRes.yearMonth,
                     pageNum: pageNum,
                     pageSize: pageSize,
-                    orgId: orgId ? orgId : ""
+                    orgId: that.formSearchRes.orgId,
                 }})
                 .then(function(response){/*成功*/
                 	that.handleResponse(response);
@@ -6432,9 +6457,11 @@ new Vue({
                         that.resArray = response.data.data.list;
                         that.pager.res.totalCount = response.data.data.total;
                     }
+                	that.orgCommitteeLoading = false;
                 })
                 .catch(function(err){/*异常*/
                     console.log(err);
+                    that.orgCommitteeLoading = false;
                 });
         },
         //每页显示数据量变更
@@ -7082,6 +7109,7 @@ new Vue({
             console.log('initEChartsPieChart', chartId);
             let that = this;
             let option = {
+                color: ['#ccaf71', '#B2453F'],
                 animation: 'auto',
                 animationDuration: () => 0,
                 title : {
@@ -7333,6 +7361,7 @@ new Vue({
                 }
             };
             let options = {
+                color: ['#ccaf71', '#B2453F'],
                 title : {
                     text: title || '',
                     subtext: subtext || '',
@@ -8521,9 +8550,11 @@ new Vue({
          */
         
         getCurrentData(data){
-        	console.log('点击 === ',data.orgId);
+        	this.resTableView = true;
         	let orgId = data.orgId;
-        	this.loadResList('', 1, this.pager.res.pageSize,orgId);
+        	this.formSearchRes.orgId = data.orgId;
+        	this.loadResList('', 1, this.pager.res.pageSize);
+        	
         }
     },
     props: {

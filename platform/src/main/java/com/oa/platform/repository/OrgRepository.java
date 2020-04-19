@@ -129,4 +129,11 @@ public interface OrgRepository extends BaseRepository<Organization, String> {
 	List<String> getBottomOrgByOrgId(@Param("orgId") String orgId);
 
 	List<OrgUser> getOrgUserListByOrg(@Param("userName") String userName, @Param("year") String year,@Param("orgList") List<String> orgList);
+
+	/**
+	 * 根据用户ID查询组织ID
+	 * @param userId 用户ID
+	 * @return
+	 */
+	List<String> findOrgIdByUserId(@Param("userId") String userId);
 }

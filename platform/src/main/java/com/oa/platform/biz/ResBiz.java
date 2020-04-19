@@ -3,8 +3,10 @@ package com.oa.platform.biz;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.oa.platform.common.Constants;
+import com.oa.platform.entity.Organization;
 import com.oa.platform.entity.Res;
 import com.oa.platform.entity.ResDl;
+import com.oa.platform.service.OrgService;
 import com.oa.platform.service.ResService;
 import com.oa.platform.service.UserService;
 import com.oa.platform.util.DateUtil;
@@ -13,6 +15,7 @@ import com.oa.platform.util.ThreadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +32,8 @@ public class ResBiz extends BaseBiz {
 
     @Autowired
     private UserService userService;
-
+    @Autowired
+	private OrgService orgSerivce;
     /**
      * 保存或更新资源
      * @param res 资源信息
@@ -42,13 +46,11 @@ public class ResBiz extends BaseBiz {
         else {
             try {
                 String recordId = StringUtil.trim(res.getRecordId());
+                res.setOrgId(StringUtil.trim(res.getOrgId()));
                 if ("".equals(recordId)) {
                     res.setRecordId(StringUtil.getRandomUUID());
                     res.setAnnouncerId(this.getUserIdOfSecurity());
                     res.setRecordFlag(Constants.INT_NORMAL);
-                    // 获取组织ID
-                    String orgId = "";
-                    res.setOrgId(orgId);
                     // 针对法规制度上传，不需要发布时间的问题，做特殊处理
                     String publishTime = StringUtil.trim(res.getPublishTime());
                     if ("".equals(publishTime)) {
@@ -202,26 +204,29 @@ public class ResBiz extends BaseBiz {
             res.setKey(StringUtil.trim(key));
             res.setRecordFlag(Constants.INT_NORMAL);
             orgId = StringUtil.trim(orgId);
-            if (!"".equals(orgId)) {
-                List<String> orgIds = Lists.newArrayList();
-                orgIds.add(orgId);
-                res.setOrgIds(orgIds);
-            }
-            else {
-                //res.setAnnouncerId(StringUtil.trim(announcerId));
-//                List<String> announcerIds = Lists.newArrayList(this.getUserIdOfSecurity());
-                String currUserId = this.getUserIdOfSecurity();
-                List<String> announcerIds = userService.getUsersByCurrentUser(currUserId);
-                if (announcerIds == null || announcerIds.isEmpty()) {
-                    announcerIds = Lists.newArrayList(currUserId);
-                }
-                else {
-                    if (!announcerIds.contains(currUserId)) {
-                        announcerIds.add(currUserId);
-                    }
-                }
-                res.setAnnouncerIds(announcerIds);
-            }
+
+            String currUserId = this.getUserIdOfSecurity();
+			/*
+			 * List<String> announcerIds = Lists.newArrayList(); if ("".equals(orgId)) { //
+			 * 查询全部 announcerIds = userService.getUsersByCurrentUser(currUserId); } else {
+			 * // 匹配传入的组织ID announcerIds = userService.getUsersByCurrentUser(currUserId,
+			 * orgId); }
+			 */
+//            if (announcerIds == null || announcerIds.isEmpty()) {
+//                announcerIds = Lists.newArrayList(currUserId);
+//            }
+//            else {
+//                if (!announcerIds.contains(currUserId)) {
+//                    announcerIds.add(currUserId);
+//                }
+//            }
+            //res.setAnnouncerIds(announcerIds);
+            List<String> orgIds = new ArrayList<String>();
+            List<Organization> result = orgSerivce.getUserUpperOrgList(orgId);
+			for (Organization organization : result) {
+				orgIds.add(organization.getOrgId());
+			}
+			res.setOrgIds(orgIds);
             PageInfo<Res> pageInfo = resService.search(res, pageNum, pageSize);
             ret = this.getPageInfo(pageInfo);
         }

@@ -135,6 +135,8 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
                 }
                 user.setModules(modules);
                 user.setMenus(menus);
+                List<String> orgIds = orgRepository.findOrgIdByUserId(userId);
+                user.setOrgId(String.join("|", orgIds));
             }
         }
         return user;
@@ -270,6 +272,61 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
 		return userRepository.getuserIdByUser(userName);
 	}
 
+    @Override
+    public List<String> getUsersByCurrentUser(String userId, String orgId) {
+        User user = new User();
+        user.setUserType(User.TYPE_ADMIN);
+        user.setRecordFlag(Constants.INT_NORMAL);
+        List<String> orgIds = new ArrayList<String>();
 
-	
+        List<Organization> orgIdByuserId = orgRepository.getOrgIdByuserId(userId);
+        if(orgIdByuserId == null || orgIdByuserId.size() == 0) {
+            return null;
+        }
+
+        orgId = StringUtil.trim(orgId);
+        Map<String, Organization> orgMap = orgListToMap(getSubOrgsByOrgId(orgId));
+
+        /**
+         * 如果参数orgId不为null或空，则匹配该组织及其下属组织
+         * 如果参数orgId为null或空，则不匹配及其下属组织
+         */
+        List<Organization> result = orgRepository.getUserUpperOrgList(orgIdByuserId.get(0).getOrgId());
+        for (Organization organization : result) {
+            String tmpOrgId = organization.getOrgId();
+            if ("".equals(orgId)) {
+                orgIds.add(tmpOrgId);
+            }
+            else {
+                if (!orgMap.isEmpty() && orgMap.containsKey(tmpOrgId)) {
+                    orgIds.add(tmpOrgId);
+                }
+            }
+        }
+
+        List<User> searchUsersByOrgIds = userRepository.searchUsersByOrgIds(user,false, orgIds);
+        List<String> userIds = new ArrayList<String>();
+        for (User user2 : searchUsersByOrgIds) {
+            userIds.add(user2.getUserId());
+        }
+        return userIds;
+    }
+
+    @Override
+    public List<Organization> getSubOrgsByOrgId(String orgId) {
+        orgId = StringUtil.trim(orgId);
+        if ("".equals(orgId)) {
+            return new ArrayList<>(0);
+        }
+        return orgRepository.getUserUpperOrgList(orgId);
+    }
+
+    @Override
+    public Map<String, Organization> orgListToMap(List<Organization> list) {
+        Map<String, Organization> map = Maps.newHashMap();
+        if (list != null && !list.isEmpty()) {
+            list.forEach(o -> map.put(o.getOrgId(), o));
+        }
+        return map;
+    }
 }
