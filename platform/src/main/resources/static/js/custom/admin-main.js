@@ -1622,6 +1622,7 @@ new Vue({
             userRole: '',
             sysUserRole: '',
         },
+        chatEmojis: {},
 
         pager: {
         	orgUser: {
@@ -8592,6 +8593,7 @@ new Vue({
 
                 that.dialogShow = config.dialogShow;
                 that.rules = config.rules;
+                that.chatEmojis = config.chatEmojis;
               //  console.log('rules,',that.rules);
                 let searchForm = config.searchForm;
                 that.formSearchAuthModule = searchForm.authModule;
