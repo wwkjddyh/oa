@@ -135,6 +135,8 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
                 }
                 user.setModules(modules);
                 user.setMenus(menus);
+                List<String> orgIds = orgRepository.findOrgIdByUserId(userId);
+                user.setOrgId(String.join("|", orgIds));
             }
         }
         return user;

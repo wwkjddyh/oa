@@ -180,7 +180,6 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 	}
 	@Override
 	public List<String> getOrgIdByUserId(String userId) {
-		
 		return orgRepository.getOrgIdByUserId(userId);
 	}
 	@Override
@@ -222,4 +221,8 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 		return new PageInfo(orgRepository.getOrgUserListByOrg(userName,year,orgList));
 	}
 
+	@Override
+	public List<String> findOrgIdByUserId(String userId) {
+		return orgRepository.findOrgIdByUserId(userId);
+	}
 }

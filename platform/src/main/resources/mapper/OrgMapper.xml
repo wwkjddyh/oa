@@ -1063,4 +1063,13 @@
 	      #{itemId}
 	    </foreach> 
 	</select>
+
+	<select id="findOrgIdByUserId" resultType="java.lang.String">
+		SELECT
+			org_id
+		FROM
+			t_org_user
+		WHERE
+			user_id = #{userId} and status='1'
+	</select>
 </mapper>
