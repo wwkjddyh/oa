@@ -9,12 +9,12 @@
             <el-breadcrumb separator-class="el-icon-arrow-right" v-if="fzdyBreadcrumbs.length != 0">
                 <el-breadcrumb-item v-for="(item, index) in fzdyBreadcrumbs">{{item.title}}</el-breadcrumb-item>
             </el-breadcrumb>
-            <div style="margin-top: 10px" v-if="fzdyBreadcrumbs.length != 0">
+            <div style="margin-top: 10px" v-if="fzdyPrePartyMemberAdd">
                 <el-button plain @click="dialogShow.prePartyMemeber = !dialogShow.prePartyMemeber" size="mini" icon="el-icon-plus">添加</el-button>
                 <!--<el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>-->
             </div>
             <!--步进区域-->
-            <div class="steps-content" v-if="fzdyBreadcrumbs.length != 0">
+            <div class="steps-content" v-if="fzdyPrePartyMemberSetps">
                 <div class="steps">
                     <template v-for="(step, index) in fzdySteps">
                         <div class="step" v-if="index === 0">
@@ -71,7 +71,7 @@
                 <el-radio-group v-model="formSearchRes.assTypeId" size="mini" class="fzdyListShow-radio-group">
                     <el-radio v-for="item in resOtherTypes" v-if="item.dictId != 'monthDevPlan'" :label="item.dictId" :value="item.dictId" :key="item.dictId">{{item.dictName}}</el-radio>
                 </el-radio-group>
-                <div v-bind:class="fzdyBreadcrumbs.length === 0 ? 'fzdy_actions2_2' : 'fzdy_actions2'">
+                <div class="fzdy_actions2_0">
                     <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
                     <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
                 </div>

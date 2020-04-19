@@ -826,7 +826,11 @@ div[pType="elTable"] th>.cell {
 }
 
 .fzdyListShow-radio-group {
-    margin-bottom: 10px
+    margin-top: 10px;
+}
+
+.fzdy_actions2_0 {
+    margin-top: 10px
 }
 
 .fzdy_actions2 {

@@ -1021,6 +1021,8 @@ new Vue({
         formPrePartyMemeber: {},
         loading:{},
         fzdyListShow: false,
+        fzdyPrePartyMemberAdd: false,
+        fzdyPrePartyMemberSetps: false,
         nddyxxcjLoading:false,
         dwjbxxLoading: false,
         fullscreenLoading:false,
@@ -5394,29 +5396,34 @@ new Vue({
             if (that.showContent == 'fzdy') {   // 发展党员特殊处理
                 console.log('dzzTreeNodeClickHandle-node', node)
                 that.fzdyListShow = false;
+                that.fzdyPrePartyMemberAdd = false;
+                that.fzdyPrePartyMemberSetps = false;
+                let upperOrgs = that.getParentOrgs(node).reverse();
+                let _fzdyBreadcrumbs = [];
+                let _upperOrgsLen = upperOrgs.length;
+                for (let i = 0; i < _upperOrgsLen; i ++) {
+                    let _upperOrg = upperOrgs[i];
+                    _fzdyBreadcrumbs.push({
+                        id: i + 1,
+                        title: _upperOrg.label || '',
+                    })
+                }
+                _fzdyBreadcrumbs.push({
+                    id: _upperOrgsLen + 1,
+                    title: node.label || ''
+                })
+                that.fzdyBreadcrumbs = _fzdyBreadcrumbs;
                 // if (node.childNodes.length === 0 && node.data.orgType === 'orgType3') {
                 if (node.data.orgType === 'orgType2' || node.data.orgType === 'orgType3') {
-                    let upperOrgs = that.getParentOrgs(node).reverse();
+                    that.fzdyPrePartyMemberSetps = true;
+                    if (node.data.orgType === 'orgType3') {
+                        that.fzdyPrePartyMemberAdd = true;
+                    }
                     that.fzdyCurrentOrg = node.data.orgId;
                     that.loadfzdy(node.data.orgId);
-                    let _fzdyBreadcrumbs = [];
-                    let _upperOrgsLen = upperOrgs.length;
-                    for (let i = 0; i < _upperOrgsLen; i ++) {
-                        let _upperOrg = upperOrgs[i];
-                        _fzdyBreadcrumbs.push({
-                            id: i + 1,
-                            title: _upperOrg.label || '',
-                        })
-                    }
-                    _fzdyBreadcrumbs.push({
-                        id: _upperOrgsLen + 1,
-                        title: node.label || ''
-                    })
-                    that.fzdyBreadcrumbs = _fzdyBreadcrumbs;
                 }
                 else if(node.data.orgType === 'orgType1') {
                     that.fzdyListShow = true;
-                    that.fzdyBreadcrumbs = [];
                     //加载发展党员列表
                     // that.getResOtherTypes();
                     that.formSearchRes.key = '';
