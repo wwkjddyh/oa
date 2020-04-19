@@ -42,11 +42,11 @@ public class ResBiz extends BaseBiz {
         else {
             try {
                 String recordId = StringUtil.trim(res.getRecordId());
+                res.setOrgId(StringUtil.trim(res.getOrgId()));
                 if ("".equals(recordId)) {
                     res.setRecordId(StringUtil.getRandomUUID());
                     res.setAnnouncerId(this.getUserIdOfSecurity());
                     res.setRecordFlag(Constants.INT_NORMAL);
-                    res.setOrgId(StringUtil.trim(res.getOrgId()));
                     // 针对法规制度上传，不需要发布时间的问题，做特殊处理
                     String publishTime = StringUtil.trim(res.getPublishTime());
                     if ("".equals(publishTime)) {
