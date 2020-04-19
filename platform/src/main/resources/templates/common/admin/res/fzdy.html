@@ -68,6 +68,9 @@
             </div>
             <!--步进区域-->
             <div v-if="fzdyListShow">
+                <el-radio-group v-model="formSearchRes.assTypeId" size="mini" class="fzdyListShow-radio-group">
+                    <el-radio v-for="item in resOtherTypes" v-if="item.dictId != 'monthDevPlan'" :label="item.dictId" :value="item.dictId" :key="item.dictId">{{item.dictName}}</el-radio>
+                </el-radio-group>
                 <div v-bind:class="fzdyBreadcrumbs.length === 0 ? 'fzdy_actions2_2' : 'fzdy_actions2'">
                     <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
                     <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>

@@ -825,6 +825,10 @@ div[pType="elTable"] th>.cell {
     color: #B2453F
 }
 
+.fzdyListShow-radio-group {
+    margin-bottom: 10px
+}
+
 .fzdy_actions2 {
     margin-top: 50px
 }
