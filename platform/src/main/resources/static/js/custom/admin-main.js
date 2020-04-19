@@ -92,6 +92,7 @@ new Vue({
                 case 'articles':    // 简报列表
                     //that.getArticleCategories();
                     that.currentArticleFormTitle = '简报';
+                    
                     that.formSearchArticle.isBrief = true;
                     that.formSearchArticle.sendType = '1';
                     that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
@@ -6254,6 +6255,7 @@ new Vue({
          */
         loadCurrUserReceiverBriefRecord(criteria, pageNum, pageSize,categoryid) {
             let that = this;
+            that.newsLoading=true;
             axios.get("/api/article/getCurrUserReceiverBriefRecord", {params:{
                     key: criteria,
                     pageNum: pageNum,
@@ -6273,9 +6275,11 @@ new Vue({
                         }
                         that.pager.briefSendRecord.totalCount = response.data.data.total;
                     }
+                	that.newsLoading=false;
                 })
                 .catch(function(err){/*异常*/
                     console.log(err);
+                    that.newsLoading=false;
                 });
         },
         /**
@@ -6287,6 +6291,7 @@ new Vue({
             if(sendflag == null){
             	sendflag = '';
             }
+            that.newsLoading=true;
             axios.get("/api/article/getCurrUserReceiverBriefRecord", {params:{
                     key: criteria,
                     pageNum: pageNum,
@@ -6308,9 +6313,11 @@ new Vue({
                         
                         that.pager.briefSendRecord.totalCount = response.data.data.total;
                     }
+                	that.newsLoading=false;
                 })
                 .catch(function(err){/*异常*/
                     console.log(err);
+                    that.newsLoading=false;
                 });
         },
       //每页显示数据量变更
