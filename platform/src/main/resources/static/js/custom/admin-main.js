@@ -757,9 +757,10 @@ new Vue({
                 	that.formSearchArticle.sendType = '1';
                     that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
                     //that.loadArticles('',1, that.pager.article.pageSize);
-                    that.currAction = 'append';
-                    that.def_menu_id = 'articles';
+                    /*that.currAction = 'append';
+                    that.def_menu_id = 'articles';*/
                     that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, 5,null);
+                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, 3,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
                     break;
             }
         },
@@ -778,7 +779,7 @@ new Vue({
         def_menu_id: 'firstPage',
         currAction: 'append',
         isCollapse: false,
-        headerTitle: '奥维云创基层党建信息化系统',
+        headerTitle: '基层党建工作信息化系统',
         menuCollapseDivClass: 'menu-collapse-div',
         menuCollapseIcon: 'el-icon-s-fold',
         activeTabName: 'first',
@@ -1331,6 +1332,7 @@ new Vue({
         currUserReceiverBriefRecords: [],
         currUserReceiverNewsRecords: [],
         currUserReceiverBriefRecordsfirstPage: [],
+        currUserReceiverXxjlRecordsfirstPage: [],
         currUserReceiverNewsRecordsfirstPage: [],
         faceMeetCode:'',
         ssdzzqk:[
@@ -4684,7 +4686,7 @@ new Vue({
             that.scrollBoxContent = '';
             axios.get("/api/news/getCurrUserNews", {params:{
                     pageNum: 1,
-                    pageSize: 6
+                    pageSize: 3
                 }})
                 .then(function(response){
                     that.handleResponse(response);
@@ -6308,8 +6310,14 @@ new Vue({
                 	that.handleResponse(response);
                 	if(parseInt(response.status) == 200 ) {
                         that.currUserReceiverBriefRecords = response.data.data.list;
-                        if(pageSize == 5){
-                        	that.currUserReceiverBriefRecordsfirstPage =response.data.data.list;
+                        if(categoryid == null){
+                        	if(pageSize == 3){
+                            	that.currUserReceiverBriefRecordsfirstPage =response.data.data.list;
+                            }
+                        }else{
+                        	if(pageSize == 3){
+                            	that.currUserReceiverXxjlRecordsfirstPage =response.data.data.list;
+                            }
                         }
                         that.pager.briefSendRecord.totalCount = response.data.data.total;
                     }
@@ -6345,8 +6353,14 @@ new Vue({
                 	that.handleResponse(response);
                 	if(parseInt(response.status) == 200 ) {
                         that.currUserReceiverBriefRecords = response.data.data.list;
-                        if(pageSize == 5){
-                        	that.currUserReceiverBriefRecordsfirstPage =response.data.data.list;
+                        if(categoryid == null){
+                        	if(pageSize == 3){
+                            	that.currUserReceiverBriefRecordsfirstPage =response.data.data.list;
+                            }
+                        }else{
+                        	if(pageSize == 3){
+                            	that.currUserReceiverXxjlRecordsfirstPage =response.data.data.list;
+                            }
                         }
                         
                         that.pager.briefSendRecord.totalCount = response.data.data.total;
@@ -8653,7 +8667,8 @@ new Vue({
         //that.loadArticles('',1, that.pager.article.pageSize);
         this.currAction = 'append';
         //this.def_menu_id = 'articles';
-        this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 5,null);
+        this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 3,null);
+        this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 3,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
         this.getOrgIdByUserId();
         this.getAreaTreeDict();
         this.getCurrUserEchartsData();

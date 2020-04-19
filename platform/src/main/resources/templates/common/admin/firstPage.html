@@ -5,12 +5,12 @@
 	<div :style="homePageStyle">
 		<el-row style="marginRight: 5px;height: 100%;" type="flex"  justify="space-between">
 		  <el-col :span="14" style="padding:0;">
-			<div style="height: 45%;border: 1px solid #E4E7ED; border-radius: 3px;">
+			<div style="height: 55%;border: 1px solid #E4E7ED; border-radius: 3px;">
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
 					<i class="iconfont icon-kuaijiecaidan" style="font-size: 20px;line-height: 20px;height: 20px;color: #646464"><span style="font-family:微软雅黑;font-size: 20px;line-height: 20px;height: 20px;color:#646464">&nbsp;快捷方式</span></i>
 					<hr style="height:2px;border:none;border-top:3px solid #e5e5e5;margin-top: 10px;color: #4f4f4f"/>
 				</div>
-				<div style="margin: 0 20px;width: calc(100% - 40px);padding: 0;border: 0;display: inline-flex;justify-content: space-between;">
+				<div style="margin: 25px 20px;width: calc(100% - 40px);padding: 0;border: 0;display: inline-flex;justify-content: space-between;">
 					<div class="firstPage-quickEntry-item2" @click="goToMenu(item)" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 4 : 0">
 						<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
 						<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
@@ -23,18 +23,18 @@
 					</div>
 				</div>
 			</div>
-			<div style="height: 45%;border: 1px solid #E4E7ED; border-radius: 3px;margin-top:45px;">
+			<div style="height: 37.5%;border: 1px solid #E4E7ED; border-radius: 3px;margin-top:45px;">
 				<div style="margin: 15px 20px 0px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
 					<i class="iconfont icon-gongneng-" style="font-size: 20px;line-height: 20px;height: 20px;color: #646464"><span style="font-family:微软雅黑;font-size: 20px;line-height: 20px;height: 20px;color:#646464">&nbsp;功能模块</span></i>
 					<hr style="height:2px;border:none;border-top:3px solid #e5e5e5;margin-top: 10px;color: #4f4f4f"/>
 				</div>
-				<div style="margin: 0px 20px;width: calc(100% - 40px);padding: 0;border: 0;display: inline-flex;justify-content: space-between;">
+				<div style="margin: 25px 20px;width: calc(100% - 40px);padding: 0;border: 0;display: inline-flex;justify-content: space-between;">
 					<div class="firstPage-quickEntry-item2" @click="goToMenu(item)" v-for="item in firstPage3" :key="item.url" :offset="item.index > 0 ? 2 : 0">
 						<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
 						<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
 					</div>
 				</div>
-				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;display: inline-flex;justify-content: center;">
+				<div style="margin: 10px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;display: inline-flex;justify-content: center;">
 					<div style="color: #bebebe">
 						更多数据模型即将更新
 					</div>
@@ -46,12 +46,12 @@
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
 					<div style="width: 100%;border: 0; display: flex; justify-content: space-between;">
 						<i class="iconfont icon-tongzhi" style="font-size: 20px;line-height: 20px;height: 20px;color:#646464"><span style="font-family:微软雅黑;font-size: 20px;line-height: 20px;height: 20px;color:#646464">&nbsp;通知公告</span></i>
-						<el-link v-if="currUserReceiverNewsRecordsfirstPage.length ==  6" :underline="false" type="primary" @click="moreAnnounce()">查看更多<i class="el-icon-more"></i></el-link>
+						<el-link v-if="currUserReceiverNewsRecordsfirstPage.length ==  3" :underline="false" type="primary" @click="moreAnnounce()">查看更多<i class="el-icon-more"></i></el-link>
 					</div>
 					<hr style="height:2px;border:none;border-top:3px solid #e5e5e5;margin-top: 10px;color: #cecece"/>
 				</div>
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
-					<div v-for="item in currUserReceiverNewsRecordsfirstPage" class="firstPage-briefs-item" style="margin-top:30px">
+					<div v-for="item in currUserReceiverNewsRecordsfirstPage" class="firstPage-briefs-item" style="margin-top:22px">
 						<div class="firstPage-briefs-item_title">
 							<label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi list-row-base-style"><span style="font-family:微软雅黑;font-size:16px">【已读】</span></label>
 							<label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi list-row-base-style"><span style="font-family:微软雅黑;font-size:16px">【未读】</span></label>
@@ -67,7 +67,7 @@
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
 					<div style="width: 100%;border: 0; display: flex; justify-content: space-between;">
 						<i class="iconfont icon-jianbao" style="font-size: 20px;line-height: 20px;height: 20px;color:#646464"><span style="font-family:微软雅黑;font-size: 20px;line-height: 20px;height: 20px;color:#646464">&nbsp;党建动态</span></i>
-						<el-link v-if="currUserReceiverBriefRecordsfirstPage.length == 5" :underline="false" @click="moreArticle(`articles`,`党建动态`)" type="primary">查看更多<i class="el-icon-more"></i></el-link>
+						<el-link v-if="currUserReceiverBriefRecordsfirstPage.length == 3" :underline="false" @click="moreArticle(`articles`,`党建动态`)" type="primary">查看更多<i class="el-icon-more"></i></el-link>
 					</div>
 					<hr style="height:2px;border:none;border-top:3px solid #e5e5e5;margin-top: 10px;color: #cecece"/>
 				</div>
@@ -86,13 +86,13 @@
 		  	<div style="height:32%;margin-top: 10px;width: 100%;border: 1px solid #E4E7ED ;border-radius: 3px;">
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
 					<div style="width: 100%;border: 0; display: flex; justify-content: space-between;">
-						<i class="iconfont icon-jianbao" style="font-size: 20px;line-height: 20px;height: 20px;color:#646464"><span style="font-family:微软雅黑;font-size: 20px;line-height: 20px;height: 20px;color:#646464">&nbsp;学习交流</span></i>
-						<el-link v-if="currUserReceiverBriefRecordsfirstPage.length == 5" :underline="false" @click="moreArticle(`articles`,`学习交流`)" type="primary">查看更多<i class="el-icon-more"></i></el-link>
+						<i class="el-icon-collection" style="font-size: 20px;line-height: 20px;height: 20px;color:#646464"><span style="font-family:微软雅黑;font-size: 20px;line-height: 20px;height: 20px;color:#646464">&nbsp;学习交流</span></i>
+						<el-link v-if="currUserReceiverXxjlRecordsfirstPage.length == 3" :underline="false" @click="moreArticle(`xxjl`,`学习交流`)" type="primary">查看更多<i class="el-icon-more"></i></el-link>
 					</div>
 					<hr style="height:2px;border:none;border-top:3px solid #e5e5e5;margin-top: 10px;color: #cecece"/>
 				</div>
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);height: 60%;padding: 0;border: 0;overflow: auto;">
-					<div v-for="item in currUserReceiverBriefRecordsfirstPage" class="firstPage-briefs-item">
+					<div v-for="item in currUserReceiverXxjlRecordsfirstPage" class="firstPage-briefs-item">
 						<div class="firstPage-briefs-item_title">
 							<a class="firstPage-briefs_item_title-a" @click="handleBriefView(item.briefId)"><i style="margin-left: 15px;margin-right: 15px">•</i>{{item.briefTitle || ''}}</a>
 						</div>
