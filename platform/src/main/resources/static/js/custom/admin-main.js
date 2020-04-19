@@ -1115,10 +1115,10 @@ new Vue({
             },
             {
                 index:2,
-                name:'大数据',
+                name:'统计分析',
                 url:'bigData',
                 imgUrl:'/images/icon/bigdata.png',
-                modelName:'大数据'
+                modelName:'统计分析'
             },
             {
                 index:3,
