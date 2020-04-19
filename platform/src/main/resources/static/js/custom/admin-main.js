@@ -1162,10 +1162,10 @@ new Vue({
             },
             {
                 index:1,
-                name:'工作简报',
+                name:'党建动态',
                 url:'articles',
                 imgUrl:'/images/icon/brief.png',
-                modelName:'工作简报'
+                modelName:'党建动态'
             },
             {
                 index:2,
@@ -1898,6 +1898,11 @@ new Vue({
 
     },
     computed:{
+    	homePageStyle (){
+    		return {
+    			height: `calc(100% - 10px)`,
+    		}
+    	}
     	
     },
     methods: {
@@ -6355,10 +6360,10 @@ new Vue({
         /**
          * {
                 index:1,
-                name:'工作简报',
+                name:'党建动态',
                 url:'articles',
                 imgUrl:'/images/icon/brief.png',
-                modelName:'工作简报'
+                modelName:'党建动态'
             }
          */
         moreArticle(tab,name){
@@ -8674,6 +8679,9 @@ new Vue({
         that.ueditors.article.addListener('blur', function(editor){
             that.formArticle.content = that.ueditors.article.getContent();
         });
+        let bodyHeight = document.body.offsetHeight;
+        let workHeight = document.getElementById('wokespaceMain').offsetHeight;
+        console.log('body 高度=======',bodyHeight,workHeight);
 
     },
     destroyed: function() {

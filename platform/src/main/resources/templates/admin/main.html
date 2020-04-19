@@ -24,6 +24,11 @@
             padding: 0;
             overflow: hidden;
         }
+        .homePage .el-card__body {
+        	padding: 0px !important;
+        }
+        
+        
     </style>
     <script type="text/javascript">
         function changeFriendsBgColor(_this) {
@@ -84,7 +89,7 @@
         </el-aside>
 
         <el-container>
-            <el-main style="width: 100%;padding-right:80px;padding-top:20px;padding-left:80px">
+            <el-main id="wokespaceMain"  style="width: 100%;height: calc(100% - 103px);padding-right:80px;padding-top:20px;padding-left:80px">
                 <!--
                 <div class="scroll-box">
                     <p class="animate">
@@ -172,7 +177,7 @@
 
                 <keep-alive :max="30">
                 <el-collapse-transition>
-                    <div   style="margin-top: 20px;margin-bottom: -20px; margin-left: 10px;margin-right: 10px;">
+                    <div   style="height: calc(100% - 75px);margin-top: 20px;margin-bottom: -20px; margin-left: 10px;margin-right: 10px;">
                         <el-card shadow="never" v-if="showContent == 'modules'" key="modules">
                             <div th:replace="/common/admin/user/modules :: content"/>
                         </el-card>
@@ -193,10 +198,10 @@
                             <div th:replace="/common/admin/category/categoryTypes :: content"/>
                         </el-card>
                         <!--首页  -->
-                        <el-card shadow="never" v-if="showContent == 'firstPage'" key="firstPage"
-                                 style="border: 0;">
-                            <div th:replace="/common/admin/firstPage :: content" style="height: 100%"/>
-                        </el-card>
+                        <!-- <el-card shadow="never" v-if="showContent == 'firstPage'" key="firstPage" -->
+                                <!--  style="border: 0;padding:0;" class="homePage"> -->
+                            <div  v-if="showContent == 'firstPage'" key="firstPage" th:replace="/common/admin/firstPage :: content" style="height: 100%" class="homePage"/>
+                        <!-- </el-card> -->
                         <!--党员管理法规制度-->
                         <el-card shadow="never" v-if="showContent == 'dyfgzd'" key="dyfgzd">
 <!--                            <div th:replace="/common/admin/dygl/dyfgzd :: content"/>-->

@@ -2,9 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 <div th:fragment="content"  >
-            
-			  
-			  
 			    <!-- <el-aside style="display: flex;width:30%;height:500px;border: 1px solid red;" v-loading ="dwjbxxLoading"> -->
 				    <el-row :gutter="50" >
 					  <el-col :span="8"  v-loading ="dwjbxxLoading">
@@ -28,8 +25,6 @@
 						  </div> -->
 					  </el-col>
 					  <el-col :span="14">
-					  
-				   
 			    <!-- </el-aside> -->
 			    <div  v-if="dwjbxxMain == true" v-loading ="fullscreenLoading">
 			    	<el-button  @click="dwjbxxView('baseInfo')" size="mini" :type="dwjbxxBaseInfoType">基本信息</el-button>

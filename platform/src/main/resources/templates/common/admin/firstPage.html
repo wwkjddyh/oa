@@ -1,16 +1,16 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
 <html xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
 	  xmlns:th="http://www.w3.org/1999/xhtml" xmlns:v-bind="http://www.w3.org/1999/xhtml">
-<div th:fragment="content">
-	<div style="height: auto;margin: -20px;">
-	
-		<div style="width: 100%; height: auto;padding: 0;display: flex;vertical-align: middle;">
-			<div style="width:calc(60% - 15px);margin-right:45px;border-width: 1px;border-radius: 3px;border-color: #E4E7ED;border-style: solid;float: left">
+<div th:fragment="content" style="height: 100%;">
+	<div :style="homePageStyle">
+		<el-row style="marginRight: 5px;height: 100%;" type="flex"  justify="space-between">
+		  <el-col :span="14" style="padding:0;">
+			<div style="height: 46%;border: 1px solid #E4E7ED; border-radius: 3px;">
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
 					<i class="iconfont icon-kuaijiecaidan" style="font-size: 20px;line-height: 20px;height: 20px;color: #646464"><span style="font-family:微软雅黑;font-size: 20px;line-height: 20px;height: 20px;color:#646464">&nbsp;快捷方式</span></i>
 					<hr style="height:2px;border:none;border-top:3px solid #e5e5e5;margin-top: 10px;color: #4f4f4f"/>
 				</div>
-				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;display: inline-flex;justify-content: space-between;">
+				<div style="margin: 0 20px;width: calc(100% - 40px);padding: 0;border: 0;display: inline-flex;justify-content: space-between;">
 					<div class="firstPage-quickEntry-item2" @click="goToMenu(item)" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 4 : 0">
 						<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
 						<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
@@ -23,7 +23,26 @@
 					</div>
 				</div>
 			</div>
-			<div style="width: 100%;border-width: 1px;border-radius: 3px;border-color: #E4E7ED;border-style: solid;">
+			<div style="height: 46%;border: 1px solid #E4E7ED; border-radius: 3px;margin-top:45px;">
+				<div style="margin: 15px 20px 0px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
+					<i class="iconfont icon-gongneng-" style="font-size: 20px;line-height: 20px;height: 20px;color: #646464"><span style="font-family:微软雅黑;font-size: 20px;line-height: 20px;height: 20px;color:#646464">&nbsp;功能模块</span></i>
+					<hr style="height:2px;border:none;border-top:3px solid #e5e5e5;margin-top: 10px;color: #4f4f4f"/>
+				</div>
+				<div style="margin: 0px 20px;width: calc(100% - 40px);padding: 0;border: 0;display: inline-flex;justify-content: space-between;">
+					<div class="firstPage-quickEntry-item2" @click="goToMenu(item)" v-for="item in firstPage3" :key="item.url" :offset="item.index > 0 ? 2 : 0">
+						<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
+						<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
+					</div>
+				</div>
+				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;display: inline-flex;justify-content: center;">
+					<div style="color: #bebebe">
+						更多数据模型即将更新
+					</div>
+				</div>
+			</div>
+		  </el-col>
+		  <el-col :span="9" style="padding:0;">
+		  	<div style="height:32%;width: 100%;border: 1px solid #E4E7ED ;border-radius: 3px;">
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
 					<div style="width: 100%;border: 0; display: flex; justify-content: space-between;">
 						<i class="iconfont icon-tongzhi" style="font-size: 20px;line-height: 20px;height: 20px;color:#646464"><span style="font-family:微软雅黑;font-size: 20px;line-height: 20px;height: 20px;color:#646464">&nbsp;通知公告</span></i>
@@ -42,38 +61,17 @@
 							{{item.sendTime ? item.sendTime.substr(0, 10) : '--'}}
 						</div>
 					</div>
-					
-				</div>
-				
-			</div>
-		</div>
-		<div style="width: 100%; height: auto; margin: 45px 0 0 0;padding: 0;display: flex;vertical-align: middle;">
-			<div style="width: calc(60% - 15px);margin-right:45px;border-width: 1px;border-radius: 3px;border-color: #E4E7ED;border-style: solid;float: left">
-				<div style="margin: 15px 20px 0px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
-					<i class="iconfont icon-gongneng-" style="font-size: 20px;line-height: 20px;height: 20px;color: #646464"><span style="font-family:微软雅黑;font-size: 20px;line-height: 20px;height: 20px;color:#646464">&nbsp;功能模块</span></i>
-					<hr style="height:2px;border:none;border-top:3px solid #e5e5e5;margin-top: 10px;color: #4f4f4f"/>
-				</div>
-				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;display: inline-flex;justify-content: space-between;">
-					<div class="firstPage-quickEntry-item2" @click="goToMenu(item)" v-for="item in firstPage3" :key="item.url" :offset="item.index > 0 ? 2 : 0">
-						<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
-						<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
-					</div>
-				</div>
-				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;display: inline-flex;justify-content: center;">
-					<div style="color: #bebebe">
-						更多数据模型即将更新
-					</div>
 				</div>
 			</div>
-			<div style="width: 100%;border-width: 1px;border-radius: 3px;border-color: #E4E7ED;border-style: solid;">
+			<div style="height:32%;margin-top: 10px;width: 100%;border: 1px solid #E4E7ED ;border-radius: 3px;">
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
 					<div style="width: 100%;border: 0; display: flex; justify-content: space-between;">
-						<i class="iconfont icon-jianbao" style="font-size: 20px;line-height: 20px;height: 20px;color:#646464"><span style="font-family:微软雅黑;font-size: 20px;line-height: 20px;height: 20px;color:#646464">&nbsp;工作简报</span></i>
-						<el-link v-if="currUserReceiverBriefRecordsfirstPage.length == 5" :underline="false" @click="moreArticle(`articles`,`工作简报`)" type="primary">查看更多<i class="el-icon-more"></i></el-link>
+						<i class="iconfont icon-jianbao" style="font-size: 20px;line-height: 20px;height: 20px;color:#646464"><span style="font-family:微软雅黑;font-size: 20px;line-height: 20px;height: 20px;color:#646464">&nbsp;党建动态</span></i>
+						<el-link v-if="currUserReceiverBriefRecordsfirstPage.length == 5" :underline="false" @click="moreArticle(`articles`,`党建动态`)" type="primary">查看更多<i class="el-icon-more"></i></el-link>
 					</div>
 					<hr style="height:2px;border:none;border-top:3px solid #e5e5e5;margin-top: 10px;color: #cecece"/>
 				</div>
-				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
+				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);height: 60%;padding: 0;border: 0;overflow: auto;">
 					<div v-for="item in currUserReceiverBriefRecordsfirstPage" class="firstPage-briefs-item">
 						<div class="firstPage-briefs-item_title">
 							<a class="firstPage-briefs_item_title-a" @click="handleBriefView(item.briefId)"><i style="margin-left: 15px;margin-right: 15px">•</i>{{item.briefTitle || ''}}</a>
@@ -85,10 +83,7 @@
 					
 				</div>
 			</div>
-		</div>
-		<el-row :gutter="20" style="margin-right: -6px;margin-top: 45px">
-		  <el-col :span="9" :offset="15">
-		  	<div style="width: 100%;border: 1px solid #E4E7ED ;border-radius: 3px;minHeight: 438px;">
+		  	<div style="height:32%;margin-top: 10px;width: 100%;border: 1px solid #E4E7ED ;border-radius: 3px;">
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
 					<div style="width: 100%;border: 0; display: flex; justify-content: space-between;">
 						<i class="iconfont icon-jianbao" style="font-size: 20px;line-height: 20px;height: 20px;color:#646464"><span style="font-family:微软雅黑;font-size: 20px;line-height: 20px;height: 20px;color:#646464">&nbsp;学习交流</span></i>
@@ -96,7 +91,7 @@
 					</div>
 					<hr style="height:2px;border:none;border-top:3px solid #e5e5e5;margin-top: 10px;color: #cecece"/>
 				</div>
-				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);padding: 0;border: 0;">
+				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);height: 60%;padding: 0;border: 0;overflow: auto;">
 					<div v-for="item in currUserReceiverBriefRecordsfirstPage" class="firstPage-briefs-item">
 						<div class="firstPage-briefs-item_title">
 							<a class="firstPage-briefs_item_title-a" @click="handleBriefView(item.briefId)"><i style="margin-left: 15px;margin-right: 15px">•</i>{{item.briefTitle || ''}}</a>
@@ -105,10 +100,8 @@
 							{{item.sendTime.substr(0, 10)}}
 						</div>
 					</div>
-					
 				</div>
 			</div>
-		  
 		  </el-col>
 		</el-row>
 	</div>
@@ -124,4 +117,5 @@
 		</div>
 	</el-dialog>
 </div>
+
 </html>

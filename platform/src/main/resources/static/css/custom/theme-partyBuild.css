@@ -374,7 +374,7 @@ div[pType="elTable"] th>.cell {
 
 .firstPage-quickEntry-item2 {
     cursor:pointer;
-    height:140px;
+    height:80px;
     width:180px;
     flex-direction: column;
     display: -webkit-flex;
@@ -399,14 +399,14 @@ div[pType="elTable"] th>.cell {
     justify-content:center;
 }
 .firstPage-quickEntry-item_img{
-    width: 65px;
-    height: 65px;
+    width: 45px;
+    height: 45px;
     color: #4f4f4f;
 }
 
 .firstPage-quickEntry-item_name{
-    margin-top: 27px;
-    font-size: 18px;
+    margin-top: 10px;
+    font-size: 16px;
     color: #4f4f4f;
 }
 .firstPage-function-item_name{
