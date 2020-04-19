@@ -1,5 +1,6 @@
 package com.oa.platform.biz;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,12 +12,16 @@ import org.springframework.stereotype.Component;
  */
 
 import com.oa.platform.common.ResultVo;
+import com.oa.platform.entity.Organization;
 import com.oa.platform.entity.PrePartyMemeber;
+import com.oa.platform.service.OrgService;
 import com.oa.platform.service.PrePartyService;
 import com.oa.platform.util.StringUtil;
 @Component
 public class PrePartyBiz extends BaseBiz{
 	
+	@Autowired
+	private OrgService orgSerivce;
 	@Autowired
 	private PrePartyService prePartyService;
 	
@@ -31,7 +36,18 @@ public class PrePartyBiz extends BaseBiz{
 	}
 	
 	public List<PrePartyMemeber> getPrePartyList(String orgId, String userName, Integer stage) {
-		return prePartyService.getPrePartyList(orgId, userName, stage);
+		if(orgId == null || "".equals(orgId)) {
+			return new ArrayList<PrePartyMemeber>();
+		}
+		List<String> orgIds = new ArrayList<String>();
+        List<Organization> result = orgSerivce.getUserUpperOrgList(orgId);
+        if(result == null || result.size() == 0) {
+        	return new ArrayList<PrePartyMemeber>();
+        }
+		for (Organization organization : result) {
+			orgIds.add(organization.getOrgId());
+		}
+		return prePartyService.getPrePartyList(orgIds, userName, stage);
 	}
 
 	public ResultVo save(PrePartyMemeber preParty,String userId) {

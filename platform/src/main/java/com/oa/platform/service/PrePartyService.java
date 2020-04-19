@@ -24,5 +24,5 @@ public interface PrePartyService extends BaseService<PrePartyMemeber, String> {
 	 * @param stage
 	 * @return
 	 */
-	List<PrePartyMemeber> getPrePartyList(String orgId,String userName,Integer stage);
+	List<PrePartyMemeber> getPrePartyList(List<String> orgIds,String userName,Integer stage);
 }
