@@ -48,17 +48,17 @@
             -->
         </el-col>
     </el-form>
-    <el-row :gutter="20" v-loading="orgCommitteeLoading">
-	    <el-col :span="8" >
+    <el-container style="border:0;" v-loading="orgCommitteeLoading">
+	    <el-aside style="width: 20%;" >
 	    	<el-tree :data="committeeOrg" default-expand-all :props="dwjbxxProps" :expand-on-click-node="false" @node-click="getCurrentData">
-		    	<span style="align-items: center;justify-content: space-between;font-size: 14px;" slot-scope="{ node, data }">
+		    	<span style="align-items: center;justify-content: space-between;font-size: 16px;" slot-scope="{ node, data }">
 		    		<img v-if="data.orgType && data.orgType != `orgType1`" src="/images/icon/partyIcon.png" style="width: 12px;height: 12px;"/>
 		    		<img v-if="data.orgType && data.orgType == `orgType1`" src="/images/icon/partyIcon_red.png" style="width: 12px;height: 12px;"/>
-			      <span >{{ node.label}}</span>
+			      <span  class="nodeLableStyle" :title="node.label" >{{ node.label}}</span>
 			      </span>
 		    </el-tree>
-	    </el-col>
-	    <el-col :span="16" v-if="resTableView">
+	    </el-aside>
+	    <el-main style="padding-top:0;" v-if="resTableView">
 	        <el-button plain @click="edit('res','','',true)" size="small" icon="el-icon-upload2">新建上传</el-button>
 	        <template  v-if="userOwnedModuleMaps['viewOrg'] && userOwnedModuleMaps['viewOrg'] != undefined">
 	        <el-cascader v-model="formSearchRes.orgId"
@@ -131,8 +131,8 @@
 		            </el-pagination>
 		        </div>
 		    </div>
-	   </el-col>
-   </el-row>
+	   </el-main>
+   </el-container>
     <el-dialog title="新增/编辑" :visible.sync="dialogShow.res" lock-scroll="true" width="800px" v-loading="orgCommitteeLoading">
         <el-card shadow="never" style="width: 100%;" type="card">
             <el-form ref="formRes" :rules="rules" :model="formRes" label-width="100px" :validate-on-rule-change="false" size="small">

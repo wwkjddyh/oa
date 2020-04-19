@@ -1911,7 +1911,8 @@ new Vue({
     		return {
     			height: `calc(100% - 10px)`,
     		}
-    	}
+    	},
+    	
     	
     },
     methods: {

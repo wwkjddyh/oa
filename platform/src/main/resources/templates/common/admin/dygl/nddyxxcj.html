@@ -3,18 +3,17 @@
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 
 <div th:fragment="content"  >
- 				<el-row :gutter="50" >
-					  <el-col :span="8"  v-loading ="dwjbxxLoading">
+ 				<el-container style="border: 0;" >
+					  <el-aside style="width: 20%;"  v-loading ="dwjbxxLoading">
 				    <el-tree :data="userUpperOrg" default-expand-all :props="dwjbxxProps" :expand-on-click-node="false" @node-click="nddyxxcjHandleNodeClick">
 				    	<span style="align-items: center;justify-content: space-between;font-size: 14px;" slot-scope="{ node, data }">
 				    		<img v-if="data.orgType && data.orgType != `orgType1`" src="/images/icon/partyIcon.png" style="width: 12px;height: 12px;"/>
 				    		<img v-if="data.orgType && data.orgType == `orgType1`" src="/images/icon/partyIcon_red.png" style="width: 12px;height: 12px;"/>
-					      <span >{{ node.label}}</span>
+					      <span class="nodeLableStyle"  :title="node.label">{{ node.label}}</span>
 					      </span>
 				    </el-tree>
-				    </el-col>
-		 <el-col :span="16" >
-			    <el-main style="padding:0px;height:100%;" v-if="dwjbxxMain == true" v-loading ="fullscreenLoading">
+				    </el-aside>
+			    <el-main style="padding-top:0px;height:100%;" v-if="dwjbxxMain == true" v-loading ="fullscreenLoading">
 			    	<div style="display:flex">
 				            <el-button plain @click="edit('nddyxxcj','','',true)" type="primary" size="small" v-if="dwjbxxMainAdd"><i class="el-icon-plus"></i>新增</el-button>
 				            <!-- <el-button plain type="danger" size="mini"><i class="el-icon-close" size=""></i>删除</el-button> -->
@@ -565,7 +564,7 @@
                  </el-card>
              </el-dialog>
 			    </el-main>
-			    </el-col>
+			    </el-container>
 			  
 </div>
 </html>
