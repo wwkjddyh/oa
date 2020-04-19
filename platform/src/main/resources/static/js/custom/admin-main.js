@@ -1020,6 +1020,7 @@ new Vue({
         formBriefSendRecord: {},
         formPrePartyMemeber: {},
         loading:{},
+        fzdyListShow: false,
         nddyxxcjLoading:false,
         dwjbxxLoading: false,
         fullscreenLoading:false,
@@ -5392,7 +5393,9 @@ new Vue({
             let data = node.data;
             if (that.showContent == 'fzdy') {   // 发展党员特殊处理
                 console.log('dzzTreeNodeClickHandle-node', node)
-                if (node.childNodes.length === 0 && node.data.orgType === 'orgType3') {
+                that.fzdyListShow = false;
+                // if (node.childNodes.length === 0 && node.data.orgType === 'orgType3') {
+                if (node.data.orgType === 'orgType2' || node.data.orgType === 'orgType3') {
                     let upperOrgs = that.getParentOrgs(node).reverse();
                     that.fzdyCurrentOrg = node.data.orgId;
                     that.loadfzdy(node.data.orgId);
@@ -5410,6 +5413,28 @@ new Vue({
                         title: node.label || ''
                     })
                     that.fzdyBreadcrumbs = _fzdyBreadcrumbs;
+                }
+                else if(node.data.orgType === 'orgType1') {
+                    that.fzdyListShow = true;
+                    that.fzdyBreadcrumbs = [];
+                    //加载发展党员列表
+                    // that.getResOtherTypes();
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = 'ed535138-6ec2-468c-8083-d967a24c2f33';
+                    that.formRes.typeName = '发展党员';
+                    that.formSearchRes.typeId = 'ed535138-6ec2-468c-8083-d967a24c2f33';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '发展党员';
+                    that.formSearchRes.orgId = node.data.orgId;
+                    // that.formSearchRes.yearMonth = that.getCurrYearMonth();
+                    that.uploadData = {
+                        name: '',
+                        type: 'res2-fzdy',
+                        parse: '1',
+                    };
+                    that.loadResList('', 1, that.pager.res.pageSize);
                 }
             }else{
 
@@ -6756,7 +6781,8 @@ new Vue({
             console.log('uploadFileList', that.uploadFileList, that.formRes);
             //this.$refs.uploadRes.submit();
             if (that.uploadData.type != 'res-dyfgzd' && that.uploadData.type != 'res-dzzfgzd'
-                && that.uploadData.type != 'res-dffgzd' && that.uploadData.type != 'res-hjfgzd') {
+                && that.uploadData.type != 'res-dffgzd' && that.uploadData.type != 'res-hjfgzd'
+                && that.uploadData.type != 'res2-fzdy') {
                 if (that.formRes.publishTime == '') {
                     this.$message.error('请选择发布日期!');
                     return false;

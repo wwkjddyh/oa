@@ -67,65 +67,67 @@
                 </div>
             </div>
             <!--步进区域-->
-            <div v-bind:class="fzdyBreadcrumbs.length === 0 ? 'fzdy_actions2_2' : 'fzdy_actions2'">
-                <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
-                <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
-            </div>
-            <div style="margin-top: 10px">
-                <el-table size="small"
-                          :data="resArray"
-                          border
-                          style="width: 100%;color: #4f4f4f;font-size: 16px;">
-                    <!--
-                    <el-table-column
-                            align="center"
-                            width="50"
-                            label="序号">
-                        <template slot-scope="scope">
-                            {{scope.$index+1}}
-                        </template>
-                    </el-table-column>
-                    -->
-                    <el-table-column
-                            prop="publishTime"
-                            label="发布日期"
-                            width="150">
-                        <template slot-scope="scope">
-                            <span class="list-row-base-style">{{scope.row.publishTime}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="resName"
-                            label="名称">
-                        <template slot-scope="scope">
-                            <span class="list-row-base-style">{{scope.row.resName}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            align="center"
-                            width="343"
-                            label="操作">
-                        <template slot-scope="scope">
-                            <div style="display: flex;width:100%;justify-content: flex-end;">
-                                <el-button size="mini" :disabled="scope.row.originalName === ''" type="" icon="el-icon-view" @click="handleViewRes(scope.row)">预览</el-button>
-                                <el-button size="mini" :disabled="scope.row.originalName === ''" type="" icon="el-icon-download" @click="handleDownloadRes(scope.row)">下载</el-button>
-                                <el-button size="mini" @click="edit('res', scope.$index,scope.row, false)" icon="el-icon-edit">修改</el-button>
-                                <!--                        <el-button size="mini" :disabled="scope.row.originalName !== ''" @click="handleUpload2(scope.row)" icon="el-icon-upload2">上传</el-button>-->
-                                <el-button size="mini" type="danger" @click="handleDel(scope.$index, 'res')" icon="el-icon-delete">删除</el-button>
-                            </div>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <div align="center" style="margin-top: 20px">
-                    <el-pagination size="small"
-                                   @size-change="handleResSizeChange"
-                                   @current-change="handleResCurrentChange"
-                                   :current-page="pager.res.currentPage"
-                                   :page-sizes="[10, 20, 30, 40]"
-                                   :page-size="pager.res.pageSize"
-                                   layout="total, sizes, prev, pager, next, jumper"
-                                   :total="pager.res.totalCount">
-                    </el-pagination>
+            <div v-if="fzdyListShow">
+                <div v-bind:class="fzdyBreadcrumbs.length === 0 ? 'fzdy_actions2_2' : 'fzdy_actions2'">
+                    <el-button plain @click="edit('res','','',true)" size="mini" icon="el-icon-upload2">新建上传</el-button>
+                    <el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>
+                </div>
+                <div style="margin-top: 10px">
+                    <el-table size="small"
+                              :data="resArray"
+                              border
+                              style="width: 100%;color: #4f4f4f;font-size: 16px;">
+                        <!--
+                        <el-table-column
+                                align="center"
+                                width="50"
+                                label="序号">
+                            <template slot-scope="scope">
+                                {{scope.$index+1}}
+                            </template>
+                        </el-table-column>
+                        -->
+                        <el-table-column
+                                prop="publishTime"
+                                label="发布日期"
+                                width="150">
+                            <template slot-scope="scope">
+                                <span class="list-row-base-style">{{scope.row.publishTime}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="resName"
+                                label="名称">
+                            <template slot-scope="scope">
+                                <span class="list-row-base-style">{{scope.row.resName}}</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                align="center"
+                                width="343"
+                                label="操作">
+                            <template slot-scope="scope">
+                                <div style="display: flex;width:100%;justify-content: flex-end;">
+                                    <el-button size="mini" :disabled="scope.row.originalName === ''" type="" icon="el-icon-view" @click="handleViewRes(scope.row)">预览</el-button>
+                                    <el-button size="mini" :disabled="scope.row.originalName === ''" type="" icon="el-icon-download" @click="handleDownloadRes(scope.row)">下载</el-button>
+                                    <el-button size="mini" @click="edit('res', scope.$index,scope.row, false)" icon="el-icon-edit">修改</el-button>
+                                    <!--                        <el-button size="mini" :disabled="scope.row.originalName !== ''" @click="handleUpload2(scope.row)" icon="el-icon-upload2">上传</el-button>-->
+                                    <el-button size="mini" type="danger" @click="handleDel(scope.$index, 'res')" icon="el-icon-delete">删除</el-button>
+                                </div>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <div align="center" style="margin-top: 20px">
+                        <el-pagination size="small"
+                                       @size-change="handleResSizeChange"
+                                       @current-change="handleResCurrentChange"
+                                       :current-page="pager.res.currentPage"
+                                       :page-sizes="[10, 20, 30, 40]"
+                                       :page-size="pager.res.pageSize"
+                                       layout="total, sizes, prev, pager, next, jumper"
+                                       :total="pager.res.totalCount">
+                        </el-pagination>
+                    </div>
                 </div>
             </div>
         </el-main>
@@ -133,7 +135,7 @@
     <el-dialog title="新增/编辑" :visible.sync="dialogShow.res" lock-scroll="true" width="800px">
         <el-card shadow="never" style="width: 100%;" type="card">
             <el-form ref="formRes" :rules="rules" :model="formRes" label-width="100px" :validate-on-rule-change="false" size="small">
-                <el-form-item label="发布日期" prop="publishTime">
+                <!--<el-form-item label="发布日期" prop="publishTime">
                     <el-date-picker style="width: 300px;" size="small"
                                     v-model="formRes.publishTime"
                                     type="date"
@@ -142,7 +144,7 @@
                     </el-date-picker>
                     <el-tooltip class="item" effect="dark" placement="top">
                         <div slot="content">发布日期</div><i class="el-icon-question"></i></el-tooltip>
-                </el-form-item>
+                </el-form-item>-->
                 <el-form-item label="其他分类" prop="assTypeId" v-if="uploadData.type === 'res2-fzdy'">
                     <!--
                     <el-select v-model="formRes.assTypeId" style="width: 300px;" placeholder="请选择分类" size="small">
@@ -152,7 +154,7 @@
                         <div slot="content">其他分类</div><i class="el-icon-question"></i></el-tooltip>
                     -->
                     <el-radio-group v-model="formRes.assTypeId" size="mini">
-                        <el-radio v-for="item in resOtherTypes" :label="item.dictId" :value="item.dictId" :key="item.dictId">{{item.dictName}}</el-radio>
+                        <el-radio v-for="item in resOtherTypes" v-if="item.dictId != 'monthDevPlan'" :label="item.dictId" :value="item.dictId" :key="item.dictId">{{item.dictName}}</el-radio>
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="资料名称" prop="resName">
