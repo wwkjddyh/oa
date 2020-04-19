@@ -780,16 +780,16 @@ new Vue({
         showContent: 'firstPage',
         receiverUserName: '',
         scrollBoxContent: '',
-        // defaultBriefContent: '<p style="text-align: center; margin-bottom: 20px;">\n' +
-        //     '    <strong><span style="font-size:48px;font-family:宋体;color:red">党 建 工 作 简 报</span></strong>\n' +
-        //     '</p >\n' +
-        //     '<p style="text-align:center">\n' +
-        //     '    <span style="font-size:19px;font-family:宋体;color:red">&nbsp; &nbsp;XXXX</span><span style="font-size:19px;font-family:宋体;color:red">年XX期&nbsp; &nbsp; &nbsp; &nbsp; 中共天津市住房和城乡建设委员会委员会</span>\n' +
-        //     '</p >\n' +
-        //     '<p style="text-align: center;">\n' +
-        //     '    <span style="font-size: 19px; font-family: 宋体; text-decoration: underline; color: rgb(255, 0, 0);">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>\n' +
-        //     '</p >',
-        defaultBriefContent: '',
+        defaultBriefContent: '<p style="text-align: center; margin-bottom: 20px;">\n' +
+            '    <strong><span style="font-size:48px;font-family:宋体;color:red">党 建 工 作 简 报</span></strong>\n' +
+            '</p >\n' +
+            '<p style="text-align:center">\n' +
+            '    <span style="font-size:19px;font-family:宋体;color:red">&nbsp; &nbsp;XXXX</span><span style="font-size:19px;font-family:宋体;color:red">年XX期&nbsp; &nbsp; &nbsp; &nbsp; 中共天津市住房和城乡建设委员会委员会</span>\n' +
+            '</p >\n' +
+            '<p style="text-align: center;">\n' +
+            '    <span style="font-size: 19px; font-family: 宋体; text-decoration: underline; color: rgb(255, 0, 0);">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</span>\n' +
+            '</p >',
+        // defaultBriefContent: '',
         currentArticleFormTitle: '文章',
         currentChartId : CurrentChartId,
         currUserEchartsData: {   /*当前用户图片数据*/
@@ -7084,6 +7084,7 @@ new Vue({
             console.log('initEChartsPieChart', chartId);
             let that = this;
             let option = {
+                color: ['#ccaf71', '#B2453F'],
                 animation: 'auto',
                 animationDuration: () => 0,
                 title : {
@@ -7335,6 +7336,7 @@ new Vue({
                 }
             };
             let options = {
+                color: ['#ccaf71', '#B2453F'],
                 title : {
                     text: title || '',
                     subtext: subtext || '',
