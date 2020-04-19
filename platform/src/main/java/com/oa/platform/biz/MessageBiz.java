@@ -1,20 +1,17 @@
 package com.oa.platform.biz;
 
-import com.beust.jcommander.internal.Lists;
 import com.google.common.collect.Sets;
 import com.oa.platform.common.Constants;
-import com.oa.platform.entity.Area;
 import com.oa.platform.entity.Message;
 import com.oa.platform.entity.MessageRoom;
-import com.oa.platform.entity.UserMessageStat;
 import com.oa.platform.service.MessageService;
 import com.oa.platform.util.DateUtil;
 import com.oa.platform.util.StringUtil;
 import com.oa.platform.util.ThreadUtil;
+import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -78,6 +75,9 @@ public class MessageBiz extends BaseBiz {
                 ret = this.getParamErrorVo();
             }
             else {
+                if ("".equals(content)) {
+                    content = EmojiParser.parseToHtmlDecimal(content, EmojiParser.FitzpatrickAction.PARSE);
+                }
                 Message message = new Message();
                 message.setCategoryId(categoryId);
                 message.setSenderId(senderId);
@@ -116,10 +116,10 @@ public class MessageBiz extends BaseBiz {
             }
             else {
                 try {
-                    messageService.batchSave(messages);
                     // 添加或更新用户统计信息
                     Set<String> userIds = Sets.newHashSet();
                     for (Message message : messages) {
+                        message.setContent(EmojiParser.parseToHtmlDecimal(message.getContent(), EmojiParser.FitzpatrickAction.PARSE));
                         String senderId = StringUtil.trim(message.getSenderId());
                         String receiverId = StringUtil.trim(message.getReceiverId());
                         if (!"".equals(senderId)) {
@@ -129,6 +129,8 @@ public class MessageBiz extends BaseBiz {
                             userIds.add(receiverId);
                         }
                     }
+
+                    messageService.batchSave(messages);
                     messageService.saveOrUpdateUserMessageStatByUserIds(userIds);
                     ret = this.getSuccessVo("", "");
                 }
