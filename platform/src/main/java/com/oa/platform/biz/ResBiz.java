@@ -3,8 +3,10 @@ package com.oa.platform.biz;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.oa.platform.common.Constants;
+import com.oa.platform.entity.Organization;
 import com.oa.platform.entity.Res;
 import com.oa.platform.entity.ResDl;
+import com.oa.platform.service.OrgService;
 import com.oa.platform.service.ResService;
 import com.oa.platform.service.UserService;
 import com.oa.platform.util.DateUtil;
@@ -30,7 +32,8 @@ public class ResBiz extends BaseBiz {
 
     @Autowired
     private UserService userService;
-
+    @Autowired
+	private OrgService orgSerivce;
     /**
      * 保存或更新资源
      * @param res 资源信息
@@ -203,22 +206,27 @@ public class ResBiz extends BaseBiz {
             orgId = StringUtil.trim(orgId);
 
             String currUserId = this.getUserIdOfSecurity();
-            List<String> announcerIds = Lists.newArrayList();
-            if ("".equals(orgId)) { // 查询全部
-                announcerIds = userService.getUsersByCurrentUser(currUserId);
-            }
-            else {  // 匹配传入的组织ID
-                announcerIds = userService.getUsersByCurrentUser(currUserId, orgId);
-            }
-            if (announcerIds == null || announcerIds.isEmpty()) {
-                announcerIds = Lists.newArrayList(currUserId);
-            }
-            else {
-                if (!announcerIds.contains(currUserId)) {
-                    announcerIds.add(currUserId);
-                }
-            }
-            res.setAnnouncerIds(announcerIds);
+			/*
+			 * List<String> announcerIds = Lists.newArrayList(); if ("".equals(orgId)) { //
+			 * 查询全部 announcerIds = userService.getUsersByCurrentUser(currUserId); } else {
+			 * // 匹配传入的组织ID announcerIds = userService.getUsersByCurrentUser(currUserId,
+			 * orgId); }
+			 */
+//            if (announcerIds == null || announcerIds.isEmpty()) {
+//                announcerIds = Lists.newArrayList(currUserId);
+//            }
+//            else {
+//                if (!announcerIds.contains(currUserId)) {
+//                    announcerIds.add(currUserId);
+//                }
+//            }
+            //res.setAnnouncerIds(announcerIds);
+            List<String> orgIds = new ArrayList<String>();
+            List<Organization> result = orgSerivce.getUserUpperOrgList(orgId);
+			for (Organization organization : result) {
+				orgIds.add(organization.getOrgId());
+			}
+			res.setOrgIds(orgIds);
             PageInfo<Res> pageInfo = resService.search(res, pageNum, pageSize);
             ret = this.getPageInfo(pageInfo);
         }

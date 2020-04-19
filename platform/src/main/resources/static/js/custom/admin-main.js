@@ -310,6 +310,7 @@ new Vue({
                     break;
                 case 'nddfszqkgs':    // 年度党费收支情况公示
                     that.getResOtherTypes();
+                    that.resTableView = false;
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '4bfeb907-05c0-48a5-9719-70d07eb640a2';
                     that.formRes.typeName = '年度党费收支情况公示';
@@ -329,6 +330,7 @@ new Vue({
                     break;
                 case 'nddfszjcqk':    // 年度党费收支结存情况
                     that.getResOtherTypes();
+                    that.resTableView = false;
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '0737d01e-b6f9-4567-8892-63fa9071903f';
                     that.formRes.typeName = '年度党费收支结存情况';
@@ -347,6 +349,7 @@ new Vue({
                     break;
                 case 'ndhjgzjh':    // 年度换届工作计划
                     that.getResOtherTypes();
+                    that.resTableView = false;
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '3d4565b4-041d-44e0-b411-b441865047c7';
                     that.formRes.typeName = '年度换届工作计划';
@@ -366,6 +369,7 @@ new Vue({
                     break;
                 case 'hjgztz':    // 换届工作台账
                     that.getResOtherTypes();
+                    that.resTableView = false;
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '4a056958-6d34-4dbc-ac12-1385b0745023';
                     that.formRes.typeName = '换届工作台账';
@@ -385,6 +389,7 @@ new Vue({
                     break;
                 case 'ndsjdfqk':    // 年度党费上缴情况
                     that.getResOtherTypes();
+                    that.resTableView = false;
                     that.formSearchRes.key = '';
                     that.formRes.typeId = 'e5e6bc19-d214-49fd-9cfe-0317b8e1a6c5';
                     that.formRes.typeName = '年度党费上缴情况';
@@ -1318,6 +1323,7 @@ new Vue({
         operateIcon: 'el-icon-setting',
         articleTypes: [],
         isSuperAdmin: false,
+        resTableView:false,
         currUserReceiverBriefRecords: [],
         currUserReceiverNewsRecords: [],
         currUserReceiverBriefRecordsfirstPage: [],
@@ -3121,6 +3127,7 @@ new Vue({
         submitRes() {
             let that = this;
             let operName = '添加';
+            that.orgCommitteeLoading = true;
             /*
             let params = new URLSearchParams();
             params.append("assId", that.formRes.assId);
@@ -3157,20 +3164,22 @@ new Vue({
                 // params.append('recordId',that.formRes.recordId || '');
             }
             axios.post("/api/res/save",_data, {
-                    headers: {
-                        "Content-type": "application/json;charset=utf-8"
-                    }
-                })
-                .then(function(response){
-                	that.handleResponse(response);
-                    that.responseMessageHandler(response, '资源信息', operName, function() {
-                        that.dialogShow.res = false;
-                        that.pager.res.currentPage = 1;
-                        that.loadResList('',1,that.pager.res.pageSize);
-                    });
-                }).catch(function(err){
-                console.warn(err);
-            });
+                headers: {
+                    "Content-type": "application/json;charset=utf-8"
+                }
+            })
+            .then(function(response){
+	            	that.handleResponse(response);
+	                that.responseMessageHandler(response, '资源信息', operName, function() {
+	                    that.dialogShow.res = false;
+	                    that.pager.res.currentPage = 1;
+	                    that.loadResList('',that.pager.res.currentPage,that.pager.res.pageSize);
+	                });
+	                that.orgCommitteeLoading = false;
+	            }).catch(function(err){
+	            console.warn(err);
+	            that.orgCommitteeLoading = false;
+	        });
         },
         goToFaceMeet(){
         	if(this.faceMeetCode != '' && this.faceMeetCode != null){
@@ -3793,7 +3802,8 @@ new Vue({
                             console.log('that.formRes.typeId', that.formRes.typeId);
                             let _typeId = that.formRes.typeId + '';
                             that.formRes = {
-                                typeId: _typeId,
+                                    typeId: _typeId,
+                                    orgId: that.formSearchRes.orgId
                             };
                             console.log('add=>that.formRes=>', that.formRes)
                         }
@@ -6416,6 +6426,7 @@ new Vue({
          */
         loadResList(criteria, pageNum, pageSize) {
             let that = this;
+            that.orgCommitteeLoading = true;
             axios.get("/api/res/search", {params:{
                     key: that.formSearchRes.key,
                     typeId: that.formSearchRes.typeId,
@@ -6434,9 +6445,11 @@ new Vue({
                         that.resArray = response.data.data.list;
                         that.pager.res.totalCount = response.data.data.total;
                     }
+                	that.orgCommitteeLoading = false;
                 })
                 .catch(function(err){/*异常*/
                     console.log(err);
+                    that.orgCommitteeLoading = false;
                 });
         },
         //每页显示数据量变更
@@ -8525,9 +8538,11 @@ new Vue({
          */
         
         getCurrentData(data){
-        	console.log('点击 === ',data.orgId);
+        	this.resTableView = true;
         	let orgId = data.orgId;
-        	this.loadResList('', 1, this.pager.res.pageSize,orgId);
+        	this.formSearchRes.orgId = data.orgId;
+        	this.loadResList('', 1, this.pager.res.pageSize);
+        	
         }
     },
     props: {
