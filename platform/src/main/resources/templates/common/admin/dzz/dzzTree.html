@@ -9,13 +9,13 @@
 				<img v-if="data.orgType && data.orgType == `orgType1`" src="/images/icon/partyIcon_red.png" style="width: 12px;height: 12px;"/>
 
 				<!-- style="display: inline-block; maxWidth: 190px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;word-break: break-all;" -->
-				<span @click="dzzTreeNodeClickHandle(node)" >{{ node.label }}</span>
+				<span @click="dzzTreeNodeClickHandle(node)" style="font-size: 16px">{{ node.label }}</span>
 				<span v-if="showContent !== 'fzdy'">
-				  <el-button type="text" @click="edit('dwjbxx',11,null,true)" v-if="typeof node.data.isAdmin !='undefined'" style="display: flex;width:30%;">根组织新增</el-button>
+				  <el-button type="text" @click="edit('dwjbxx',11,null,true)" v-if="typeof node.data.isAdmin !='undefined'" style="display: flex;width:30%;"><span style="font-size: 16px">根组织新增</span></el-button>
 
-				  <el-button size="mini" v-if="node.level <= 3 && typeof node.data.isAdmin == 'undefined'" type="text" @click="edit('dwjbxx',11,node.data,null)" >添加下级组织</el-button>
+					<el-button size="mini" v-if="node.level <= 3 && typeof node.data.isAdmin == 'undefined'" type="text" @click="edit('dwjbxx',11,node.data,null)"><span style="font-size: 16px">添加下级组织</span></el-button>
 
-				  <el-button size="mini" v-if="typeof node.data.isAdmin == 'undefined'" type="text" @click="dwjbxxDel(node.data,'dwjbxx')"  style="color:red">删除</el-button>
+					<el-button size="mini" v-if="typeof node.data.isAdmin == 'undefined'" type="text" @click="dwjbxxDel(node.data,'dwjbxx')"  style="color:red;"><span style="font-size: 16px">删除</span></el-button>
 				</span>
 			  </span>
         </el-tree>
