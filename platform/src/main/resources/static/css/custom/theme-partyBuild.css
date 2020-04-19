@@ -374,9 +374,8 @@ div[pType="elTable"] th>.cell {
 
 .firstPage-quickEntry-item2 {
     cursor:pointer;
-    /* height:80px; */
-    /* width:180px; */
-    width: 40%;
+    height:80px; 
+    width:180px; 
     flex-direction: column;
     display: -webkit-flex;
     align-items:center;
@@ -400,8 +399,8 @@ div[pType="elTable"] th>.cell {
     justify-content:center;
 }
 .firstPage-quickEntry-item_img{
-    width: 45%;
-    height: 60%;
+    width: 45px;
+    height: 45px;
     color: #4f4f4f;
 }
 
