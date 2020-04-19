@@ -8597,7 +8597,16 @@ new Vue({
         	this.formSearchRes.orgId = data.orgId;
         	this.loadResList('', 1, this.pager.res.pageSize);
         	
-        }
+        },
+
+        /**
+         * 发展党员（搜索）分类
+         */
+        fzdyListShowRadioGroupHandle(val) {
+            let that = this;
+            that.formSearchRes.assTypeId = val;
+            that.loadResList('', 1, that.pager.res.pageSize);
+        },
     },
     props: {
 
