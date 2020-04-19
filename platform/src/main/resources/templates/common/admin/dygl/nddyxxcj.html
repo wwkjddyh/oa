@@ -38,7 +38,7 @@
                         row-key="orgId"
                         row-class-name="partyStyle"
                         :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
-                    <el-table-column
+                    <!-- <el-table-column
                             prop="orgName"
                             label="组织简称"
                             align="center"
@@ -46,7 +46,7 @@
 						<template slot-scope="scope">
 							<span class="list-row-base-style">{{scope.row.orgName}}</span>
 						</template>
-                    </el-table-column>
+                    </el-table-column> -->
                     <el-table-column
                             prop="userName"
                             label="姓名"
@@ -83,17 +83,17 @@
 							<span class="list-row-base-style">{{scope.row.birthTime}}</span>
 						</template>
                     </el-table-column>
-                    <el-table-column
+                    <!-- <el-table-column
                             prop="nation"
                             align="center"
                             label="民族">
-                            <!-- <template v-slot="scope">
+                            <template v-slot="scope">
 						         {{ getNationValue(scope.row.nation)}}
-						    </template> -->
+						    </template>
 						<template slot-scope="scope">
 							<span class="list-row-base-style">{{scope.row.nation}}</span>
 						</template>
-                    </el-table-column>
+                    </el-table-column> -->
                     <el-table-column
                             prop="educationName"
                             align="center"
