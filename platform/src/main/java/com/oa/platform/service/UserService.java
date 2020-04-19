@@ -1,9 +1,11 @@
 package com.oa.platform.service;
 
 import com.github.pagehelper.PageInfo;
+import com.oa.platform.entity.Organization;
 import com.oa.platform.entity.Role;
 import com.oa.platform.entity.User;
 import com.oa.platform.entity.UserDtl;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -110,6 +112,15 @@ public interface UserService extends BaseService<User,String>, UserDetailsServic
 	 * @return
 	 */
 	List<String> getUsersByCurrentUser(String userId);
+
+    /**
+     * 根据当前用户获取可见用户集合
+     * @param userId 用户ID
+     * @param orgId 组织ID(如果该值不为null，则仅匹配该组织以及下属组织)
+     * @return
+     */
+    List<String> getUsersByCurrentUser(String userId, String orgId);
+
 	/**
 	 * 根据当前用户获取用户可见组织
 	 * @param userId
@@ -120,4 +131,18 @@ public interface UserService extends BaseService<User,String>, UserDetailsServic
 	void updateUserEmailAndPhone(String userId, String mail,String phone);
 
 	List<String> getuserIdByUser(String userName);
+
+    /**
+     * 根据组织ID查询查询该组织的所有下级组织
+     * @param orgId 组织ID
+     * @return (当前组织以及所有下级组织信息)
+     */
+    List<Organization> getSubOrgsByOrgId(String orgId);
+
+    /**
+     * 组织列表信息转换为Map(key:组织ID，value:组织信息)
+     * @param list 组织信息列表
+     * @return
+     */
+    Map<String, Organization> orgListToMap(List<Organization> list);
 }

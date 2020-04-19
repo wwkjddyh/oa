@@ -13,6 +13,7 @@ import com.oa.platform.util.ThreadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -200,26 +201,24 @@ public class ResBiz extends BaseBiz {
             res.setKey(StringUtil.trim(key));
             res.setRecordFlag(Constants.INT_NORMAL);
             orgId = StringUtil.trim(orgId);
-            if (!"".equals(orgId)) {
-                List<String> orgIds = Lists.newArrayList();
-                orgIds.add(orgId);
-                res.setOrgIds(orgIds);
+
+            String currUserId = this.getUserIdOfSecurity();
+            List<String> announcerIds = Lists.newArrayList();
+            if ("".equals(orgId)) { // 查询全部
+                announcerIds = userService.getUsersByCurrentUser(currUserId);
+            }
+            else {  // 匹配传入的组织ID
+                announcerIds = userService.getUsersByCurrentUser(currUserId, orgId);
+            }
+            if (announcerIds == null || announcerIds.isEmpty()) {
+                announcerIds = Lists.newArrayList(currUserId);
             }
             else {
-                //res.setAnnouncerId(StringUtil.trim(announcerId));
-//                List<String> announcerIds = Lists.newArrayList(this.getUserIdOfSecurity());
-                String currUserId = this.getUserIdOfSecurity();
-                List<String> announcerIds = userService.getUsersByCurrentUser(currUserId);
-                if (announcerIds == null || announcerIds.isEmpty()) {
-                    announcerIds = Lists.newArrayList(currUserId);
+                if (!announcerIds.contains(currUserId)) {
+                    announcerIds.add(currUserId);
                 }
-                else {
-                    if (!announcerIds.contains(currUserId)) {
-                        announcerIds.add(currUserId);
-                    }
-                }
-                res.setAnnouncerIds(announcerIds);
             }
+            res.setAnnouncerIds(announcerIds);
             PageInfo<Res> pageInfo = resService.search(res, pageNum, pageSize);
             ret = this.getPageInfo(pageInfo);
         }
