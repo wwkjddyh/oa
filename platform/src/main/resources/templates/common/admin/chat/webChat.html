@@ -251,24 +251,21 @@
                 <div class="webchat-right-sendArea-container">
                     <div class="webchat-right-sendArea">
                         <div class="actions">
-                            <el-popover
+                            <el-popover size="mini"
                                     placement="top-start"
                                     title=""
-                                    width="200"
+                                    width="300"
                                     trigger="click"
                                     content="">
-                                    <div>🌋🗻🏠🏡🏢🏣🏤🏥🏦🏨🏩🏪🏫🏬🏭🏯🏰💒🗼🗽⛪⛲🌁🌃🌆🌇🌉🌌🎠🎡🎢🚂🚃🚄🚅🚆🚇🚈🚉
-                                        🚊🚝🚞🚋🚌🚍🚎🚏🚐🚑🚒🚓🚔🚕🚖🚗🚘🚚🚛🚜🚲⛽🚨🚥🚦🚧⚓⛵🚤🚢✈💺🚁🚟🚠🚡🚀🎑🗿🛂🛃🛄🛅
-                                        🔃🔄🔙🔚🔛🔜🔝</div>
+                                <a v-for="(val, key) in chatEmojis" :key="key" style="cursor: pointer;font-size: 14px;margin-right: 2px" onclick="emojiChangeHandle(this)">{{val.emoji}}</a>
                                 <a style="cursor: pointer" slot="reference">😀</a>
                             </el-popover>
                             <a >插入图片</a> <a >上传文件</a>
                         </div>
                         <div class="sendArea">
                             <div id="messageBox" contenteditable="true">
-                                🌋🗻🏠🏡🏢🏣🏤🏥🏦🏨🏩🏪🏫🏬🏭🏯🏰💒🗼🗽⛪⛲🌁🌃🌆🌇🌉🌌🎠🎡🎢🚂🚃🚄🚅🚆🚇🚈🚉
                                 🚊🚝🚞🚋🚌🚍🚎🚏🚐🚑🚒🚓🚔🚕🚖🚗🚘🚚🚛🚜🚲⛽🚨🚥🚦🚧⚓⛵🚤🚢✈💺🚁🚟🚠🚡🚀🎑🗿🛂🛃🛄🛅
-                                <img src="1.jpg" style="width: 50px; height: 25x;">
+                                <img src="/images/title.png" style="width: 50px; height: 25x;">
                             </div>
                             <button @click="webChatSendHandle">发送</button>
                         </div>

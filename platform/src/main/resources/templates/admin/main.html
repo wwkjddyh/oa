@@ -72,6 +72,12 @@
         function closeWebchat() {
             document.getElementById("webchat-main").style.visibility = 'hidden';
         }
+
+
+        function emojiChangeHandle(_this) {
+            console.log('emojiChangeHandle._this', _this.innerHTML);
+            document.getElementById("messageBox").innerHTML += _this.innerHTML;
+        }
     </script>
 </head>
 <body>
