@@ -9,7 +9,7 @@
 				    	<span style="align-items: center;justify-content: space-between;font-size: 16px;" slot-scope="{ node, data }">
 				    		<img v-if="data.orgType && data.orgType != `orgType1`" src="/images/icon/partyIcon.png" style="width: 16px;height: 16px;"/>
 				    		<img v-if="data.orgType && data.orgType == `orgType1`" src="/images/icon/partyIcon_red.png" style="width: 16px;height: 16px;"/>
-					      <span class="nodeLableStyle"  :title="node.label" style="font-size: 16px">{{ node.label}}</span>
+					      <span class="nodeLableStyle"  :title="node.label" >{{ node.label}}</span>
 					      </span>
 				    </el-tree>
 				    </el-aside>

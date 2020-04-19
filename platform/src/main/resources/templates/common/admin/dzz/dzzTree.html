@@ -9,7 +9,7 @@
 				<img v-if="data.orgType && data.orgType != `orgType1`" src="/images/icon/partyIcon.png" style="width: 12px;height: 12px;"/>
 				<img v-if="data.orgType && data.orgType == `orgType1`" src="/images/icon/partyIcon_red.png" style="width: 12px;height: 12px;"/>
 
-				<span @click="dzzTreeNodeClickHandle(node)" class="nodeLableStyle"  :title="node.label" style="font-size: 16px">{{ node.label }}</span>
+				<span @click="dzzTreeNodeClickHandle(node)" class="nodeLableStyle"  :title="node.label" >{{ node.label }}</span>
 				<span v-if="showContent !== 'fzdy'">
 				  <el-button type="text" @click="edit('dwjbxx',11,null,true)" v-if="typeof node.data.isAdmin !='undefined'" style="display: flex;width:30%;font-size: 16px">根组织新增</el-button>
 					<span  v-if="node.level <= 3 && typeof node.data.isAdmin == 'undefined'" @click="edit('dwjbxx',11,node.data,null)">
