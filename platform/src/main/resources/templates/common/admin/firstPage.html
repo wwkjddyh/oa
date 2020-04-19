@@ -55,7 +55,7 @@
 						<div class="firstPage-briefs-item_title">
 							<label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi list-row-base-style"><span style="font-family:微软雅黑;font-size:16px">【已读】</span></label>
 							<label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi list-row-base-style"><span style="font-family:微软雅黑;font-size:16px">【未读】</span></label>
-							<a class="firstPage-briefs_item_title-a" @click="handleNoticeView(item.recordId)">{{item.newsTitle || ''}}</a>
+							<a class="firstPage-briefs_item_title-a" @click="handleNoticeView(item.recordId)">{{item.newsTitle.length > 15 ? (item.newsTitle.substr(0,16)+'......') : item.newsTitle}}</a>
 						</div>
 						<div class="firstPage-briefs-item_time">
 							{{item.sendTime ? item.sendTime.substr(0, 10) : '--'}}
@@ -74,7 +74,7 @@
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);height: 60%;padding: 0;border: 0;overflow: auto;">
 					<div v-for="item in currUserReceiverBriefRecordsfirstPage" class="firstPage-briefs-item">
 						<div class="firstPage-briefs-item_title">
-							<a class="firstPage-briefs_item_title-a" @click="handleBriefView(item.briefId)"><i style="margin-left: 15px;margin-right: 15px">•</i>{{item.briefTitle || ''}}</a>
+							<a class="firstPage-briefs_item_title-a" @click="handleBriefView(item.briefId)"><i style="margin-left: 15px;margin-right: 15px">•</i>{{item.briefTitle.length > 15 ? (item.briefTitle.substr(0,16)+'......') : item.briefTitle}}</a>
 						</div>
 						<div class="firstPage-briefs-item_time">
 							{{item.sendTime.substr(0, 10)}}
@@ -94,7 +94,7 @@
 				<div style="margin: 15px 20px 15px 20px;width: calc(100% - 40px);height: 60%;padding: 0;border: 0;overflow: auto;">
 					<div v-for="item in currUserReceiverXxjlRecordsfirstPage" class="firstPage-briefs-item">
 						<div class="firstPage-briefs-item_title">
-							<a class="firstPage-briefs_item_title-a" @click="handleBriefView(item.briefId)"><i style="margin-left: 15px;margin-right: 15px">•</i>{{item.briefTitle || ''}}</a>
+							<a class="firstPage-briefs_item_title-a" @click="handleBriefView(item.briefId)"><i style="margin-left: 15px;margin-right: 15px">•</i>{{item.briefTitle.length > 15 ? (item.briefTitle.substr(0,16)+'......') : item.briefTitle}}</a>
 						</div>
 						<div class="firstPage-briefs-item_time">
 							{{item.sendTime.substr(0, 10)}}
