@@ -5840,7 +5840,7 @@ new Vue({
          * 处理没有children结构的数据
          */
         getTreeData(list, dataArr,committeeFlag) {
-        	console.log('list ==== ',list,'dataArr',dataArr);
+        	  console.log('committeeFlag ====',committeeFlag)
             dataArr.map((pNode, i) => {
             	if(pNode.level == null){
             		pNode.level = 0 ;
@@ -5866,7 +5866,7 @@ new Vue({
             	  pNode.children = null;
               }
               if (childObj.length > 0) {
-                this.getTreeData(list, childObj)
+                this.getTreeData(list, childObj,committeeFlag)
               }
             })
             return dataArr
@@ -8397,6 +8397,7 @@ new Vue({
             	if(parseInt(response.data.code) == 200 ){
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.committeeOrg = that.getTreeData(response.data.result, parentArr,true);
+        			console.log('committeeOrg ====',that.committeeOrg);
         			that.orgCommitteeLoading = false;
         		}else{
         			that.$message.error('数据加载失败');
