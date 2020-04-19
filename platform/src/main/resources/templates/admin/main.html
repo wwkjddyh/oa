@@ -4,7 +4,7 @@
       xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>基层党建工作信息化系统</title>
+    <title>奥维云创基层党建信息化系统</title>
     <link rel="icon" href="images/title.png" type="image/x-icon">
     <META HTTP-EQUIV="Pragma" CONTENT="no-cache"/>
     <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache"/>
@@ -26,6 +26,7 @@
         }
         .homePage .el-card__body {
         	padding: 0px !important;
+        	height: 100% !important;
         }
         
         
@@ -198,10 +199,10 @@
                             <div th:replace="/common/admin/category/categoryTypes :: content"/>
                         </el-card>
                         <!--首页  -->
-                        <!-- <el-card shadow="never" v-if="showContent == 'firstPage'" key="firstPage" -->
-                                <!--  style="border: 0;padding:0;" class="homePage"> -->
-                            <div  v-if="showContent == 'firstPage'" key="firstPage" th:replace="/common/admin/firstPage :: content" style="height: 100%" class="homePage"/>
-                        <!-- </el-card> -->
+                        <el-card shadow="never" v-if="showContent == 'firstPage'" key="firstPage" 
+                                 style="border: 0;padding:0;height: 100%;" class="homePage"> 
+                            <div   th:replace="/common/admin/firstPage :: content" style="height: 100%" />
+                        </el-card>
                         <!--党员管理法规制度-->
                         <el-card shadow="never" v-if="showContent == 'dyfgzd'" key="dyfgzd">
 <!--                            <div th:replace="/common/admin/dygl/dyfgzd :: content"/>-->
