@@ -3201,6 +3201,13 @@ new Vue({
         	}
         	this.faceMeetCode = '';
         },
+        createFaceMeet(){
+        	
+			let url = "https://www.awycjcdj.com:8443/";
+			window.open(url);
+        	
+        	
+        },
         /**
          * 更新资源附件信息
          */
