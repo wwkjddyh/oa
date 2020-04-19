@@ -1174,10 +1174,10 @@ new Vue({
             },
             {
                 index:2,
-                name:'正式文件',
-                url:'pFile',
+                name:'学习交流',
+                url:'xxjl',
                 imgUrl:'/images/icon/zswj.png',
-                modelName:'正式文件'
+                modelName:'学习交流'
             },
             {
                 index:3,
