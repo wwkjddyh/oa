@@ -6407,7 +6407,7 @@ new Vue({
         /**
          * 加载资源信息
          */
-        loadResList(criteria, pageNum, pageSize,orgId) {
+        loadResList(criteria, pageNum, pageSize) {
             let that = this;
             axios.get("/api/res/search", {params:{
                     key: that.formSearchRes.key,
@@ -6416,10 +6416,10 @@ new Vue({
                     assTypeId: that.formSearchRes.assTypeId,
                     announcerId: that.formSearchRes.announcerId,
                     publishTime: that.formSearchRes.publishTime,
-                    yearMonth: orgId ? '': that.formSearchRes.yearMonth,
+                    // yearMonth: orgId ? '': that.formSearchRes.yearMonth,
                     pageNum: pageNum,
                     pageSize: pageSize,
-                    orgId: orgId ? orgId : ""
+                    orgId: that.formSearchRes.orgId,
                 }})
                 .then(function(response){/*成功*/
                 	that.handleResponse(response);
