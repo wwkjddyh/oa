@@ -1183,7 +1183,7 @@ new Vue({
             {
                 index:3,
                 name:'资料库',
-                url:'reposity',
+                url:'zlk',
                 imgUrl:'/images/icon/zlk.png',
                 modelName:'资料库'
             }
@@ -6666,12 +6666,6 @@ new Vue({
                     type: 'info'
                 });
         	}else if(item.url == 'pFile' ){
-        		that.$message({
-                    message: '功能建设中',
-                    center:true,
-                    type: 'info'
-                });
-        	}else if(item.url == 'reposity' ){
         		that.$message({
                     message: '功能建设中',
                     center:true,
