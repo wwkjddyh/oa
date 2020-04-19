@@ -6,7 +6,7 @@
  				<el-container style="border: 0;" >
 					  <el-aside style="width: 20%;"  v-loading ="dwjbxxLoading">
 				    <el-tree :data="userUpperOrg" default-expand-all :props="dwjbxxProps" :expand-on-click-node="false" @node-click="nddyxxcjHandleNodeClick">
-				    	<span style="align-items: center;justify-content: space-between;font-size: 14px;" slot-scope="{ node, data }">
+				    	<span style="align-items: center;justify-content: space-between;font-size: 16px;" slot-scope="{ node, data }">
 				    		<img v-if="data.orgType && data.orgType != `orgType1`" src="/images/icon/partyIcon.png" style="width: 12px;height: 12px;"/>
 				    		<img v-if="data.orgType && data.orgType == `orgType1`" src="/images/icon/partyIcon_red.png" style="width: 12px;height: 12px;"/>
 					      <span class="nodeLableStyle"  :title="node.label">{{ node.label}}</span>

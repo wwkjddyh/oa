@@ -41,8 +41,14 @@
 		FROM
 			t_pre_party_memeber 
 		WHERE
-			org_id = #{orgId}
-			and record_flag='1'
+			
+			record_flag='1'
+			<if test="orgIds != null and orgIds.size() > 0">
+		        AND org_id IN
+		        <foreach collection="orgIds" index="index" item="itemId" open="(" separator="," close=")">
+		          #{itemId}
+		        </foreach>
+		    </if>
 		<if test="userName != null and userName != ''">
 	        AND user_name = #{userName}
 	    </if>

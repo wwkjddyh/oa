@@ -757,9 +757,10 @@ new Vue({
                 	that.formSearchArticle.sendType = '1';
                     that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
                     //that.loadArticles('',1, that.pager.article.pageSize);
-                    that.currAction = 'append';
-                    that.def_menu_id = 'articles';
+                    /*that.currAction = 'append';
+                    that.def_menu_id = 'articles';*/
                     that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, 5,null);
+                    that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, 3,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
                     break;
             }
         },
@@ -778,7 +779,7 @@ new Vue({
         def_menu_id: 'firstPage',
         currAction: 'append',
         isCollapse: false,
-        headerTitle: '奥维云创基层党建信息化系统',
+        headerTitle: '基层党建工作信息化系统',
         menuCollapseDivClass: 'menu-collapse-div',
         menuCollapseIcon: 'el-icon-s-fold',
         activeTabName: 'first',
@@ -1020,6 +1021,9 @@ new Vue({
         formBriefSendRecord: {},
         formPrePartyMemeber: {},
         loading:{},
+        fzdyListShow: false,
+        fzdyPrePartyMemberAdd: false,
+        fzdyPrePartyMemberSetps: false,
         nddyxxcjLoading:false,
         dwjbxxLoading: false,
         fullscreenLoading:false,
@@ -1183,7 +1187,7 @@ new Vue({
             {
                 index:3,
                 name:'资料库',
-                url:'reposity',
+                url:'zlk',
                 imgUrl:'/images/icon/zlk.png',
                 modelName:'资料库'
             }
@@ -1328,6 +1332,7 @@ new Vue({
         currUserReceiverBriefRecords: [],
         currUserReceiverNewsRecords: [],
         currUserReceiverBriefRecordsfirstPage: [],
+        currUserReceiverXxjlRecordsfirstPage: [],
         currUserReceiverNewsRecordsfirstPage: [],
         faceMeetCode:'',
         ssdzzqk:[
@@ -4682,7 +4687,7 @@ new Vue({
             that.scrollBoxContent = '';
             axios.get("/api/news/getCurrUserNews", {params:{
                     pageNum: 1,
-                    pageSize: 6
+                    pageSize: 3
                 }})
                 .then(function(response){
                     that.handleResponse(response);
@@ -5393,24 +5398,53 @@ new Vue({
             let data = node.data;
             if (that.showContent == 'fzdy') {   // 发展党员特殊处理
                 console.log('dzzTreeNodeClickHandle-node', node)
-                if (node.childNodes.length === 0 && node.data.orgType === 'orgType3') {
-                    let upperOrgs = that.getParentOrgs(node).reverse();
+                that.fzdyListShow = false;
+                that.fzdyPrePartyMemberAdd = false;
+                that.fzdyPrePartyMemberSetps = false;
+                let upperOrgs = that.getParentOrgs(node).reverse();
+                let _fzdyBreadcrumbs = [];
+                let _upperOrgsLen = upperOrgs.length;
+                for (let i = 0; i < _upperOrgsLen; i ++) {
+                    let _upperOrg = upperOrgs[i];
+                    _fzdyBreadcrumbs.push({
+                        id: i + 1,
+                        title: _upperOrg.label || '',
+                    })
+                }
+                _fzdyBreadcrumbs.push({
+                    id: _upperOrgsLen + 1,
+                    title: node.label || ''
+                })
+                that.fzdyBreadcrumbs = _fzdyBreadcrumbs;
+                // if (node.childNodes.length === 0 && node.data.orgType === 'orgType3') {
+                if (node.data.orgType === 'orgType2' || node.data.orgType === 'orgType3') {
+                    that.fzdyPrePartyMemberSetps = true;
+                    if (node.data.orgType === 'orgType3') {
+                        that.fzdyPrePartyMemberAdd = true;
+                    }
                     that.fzdyCurrentOrg = node.data.orgId;
                     that.loadfzdy(node.data.orgId);
-                    let _fzdyBreadcrumbs = [];
-                    let _upperOrgsLen = upperOrgs.length;
-                    for (let i = 0; i < _upperOrgsLen; i ++) {
-                        let _upperOrg = upperOrgs[i];
-                        _fzdyBreadcrumbs.push({
-                            id: i + 1,
-                            title: _upperOrg.label || '',
-                        })
-                    }
-                    _fzdyBreadcrumbs.push({
-                        id: _upperOrgsLen + 1,
-                        title: node.label || ''
-                    })
-                    that.fzdyBreadcrumbs = _fzdyBreadcrumbs;
+                }
+                else if(node.data.orgType === 'orgType1') {
+                    that.fzdyListShow = true;
+                    //加载发展党员列表
+                    // that.getResOtherTypes();
+                    that.formSearchRes.key = '';
+                    that.formRes.typeId = 'ed535138-6ec2-468c-8083-d967a24c2f33';
+                    that.formRes.typeName = '发展党员';
+                    that.formSearchRes.typeId = 'ed535138-6ec2-468c-8083-d967a24c2f33';
+                    that.formSearchRes.assId = '';
+                    that.formSearchRes.assTypeId = '';
+                    that.formSearchRes.announcerId = '';
+                    that.formSearchRes.currTypeName = '发展党员';
+                    that.formSearchRes.orgId = node.data.orgId;
+                    // that.formSearchRes.yearMonth = that.getCurrYearMonth();
+                    that.uploadData = {
+                        name: '',
+                        type: 'res2-fzdy',
+                        parse: '1',
+                    };
+                    that.loadResList('', 1, that.pager.res.pageSize);
                 }
             }else{
 
@@ -6277,8 +6311,14 @@ new Vue({
                 	that.handleResponse(response);
                 	if(parseInt(response.status) == 200 ) {
                         that.currUserReceiverBriefRecords = response.data.data.list;
-                        if(pageSize == 5){
-                        	that.currUserReceiverBriefRecordsfirstPage =response.data.data.list;
+                        if(categoryid == null){
+                        	if(pageSize == 3){
+                            	that.currUserReceiverBriefRecordsfirstPage =response.data.data.list;
+                            }
+                        }else{
+                        	if(pageSize == 3){
+                            	that.currUserReceiverXxjlRecordsfirstPage =response.data.data.list;
+                            }
                         }
                         that.pager.briefSendRecord.totalCount = response.data.data.total;
                     }
@@ -6314,8 +6354,14 @@ new Vue({
                 	that.handleResponse(response);
                 	if(parseInt(response.status) == 200 ) {
                         that.currUserReceiverBriefRecords = response.data.data.list;
-                        if(pageSize == 5){
-                        	that.currUserReceiverBriefRecordsfirstPage =response.data.data.list;
+                        if(categoryid == null){
+                        	if(pageSize == 3){
+                            	that.currUserReceiverBriefRecordsfirstPage =response.data.data.list;
+                            }
+                        }else{
+                        	if(pageSize == 3){
+                            	that.currUserReceiverXxjlRecordsfirstPage =response.data.data.list;
+                            }
                         }
                         
                         that.pager.briefSendRecord.totalCount = response.data.data.total;
@@ -6672,12 +6718,6 @@ new Vue({
                     center:true,
                     type: 'info'
                 });
-        	}else if(item.url == 'reposity' ){
-        		that.$message({
-                    message: '功能建设中',
-                    center:true,
-                    type: 'info'
-                });
         	}
         	else{
         		that.showContent  = item.url;
@@ -6763,7 +6803,8 @@ new Vue({
             console.log('uploadFileList', that.uploadFileList, that.formRes);
             //this.$refs.uploadRes.submit();
             if (that.uploadData.type != 'res-dyfgzd' && that.uploadData.type != 'res-dzzfgzd'
-                && that.uploadData.type != 'res-dffgzd' && that.uploadData.type != 'res-hjfgzd') {
+                && that.uploadData.type != 'res-dffgzd' && that.uploadData.type != 'res-hjfgzd'
+                && that.uploadData.type != 'res2-fzdy') {
                 if (that.formRes.publishTime == '') {
                     this.$message.error('请选择发布日期!');
                     return false;
@@ -8557,7 +8598,16 @@ new Vue({
         	this.formSearchRes.orgId = data.orgId;
         	this.loadResList('', 1, this.pager.res.pageSize);
         	
-        }
+        },
+
+        /**
+         * 发展党员（搜索）分类
+         */
+        fzdyListShowRadioGroupHandle(val) {
+            let that = this;
+            that.formSearchRes.assTypeId = val;
+            that.loadResList('', 1, that.pager.res.pageSize);
+        },
     },
     props: {
 
@@ -8627,7 +8677,8 @@ new Vue({
         //that.loadArticles('',1, that.pager.article.pageSize);
         this.currAction = 'append';
         //this.def_menu_id = 'articles';
-        this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 5,null);
+        this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 3,null);
+        this.loadCurrUserReceiverBriefRecord(this.formSearchBriefSendRecord.key, 1, 3,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
         this.getOrgIdByUserId();
         this.getAreaTreeDict();
         this.getCurrUserEchartsData();

@@ -31,5 +31,5 @@ public interface PrePartyRepository extends BaseRepository<PrePartyMemeber, Stri
 	 * @param stage
 	 * @return
 	 */
-	List<PrePartyMemeber> getPrePartyList(@Param("orgId") String orgId,@Param("userName") String userName,@Param("stage") Integer stage);
+	List<PrePartyMemeber> getPrePartyList(@Param("orgIds") List<String> orgIds,@Param("userName") String userName,@Param("stage") Integer stage);
 }

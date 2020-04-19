@@ -37,7 +37,7 @@ public class PrePartyServiceImpl extends AbstractBaseService<PrePartyMemeber, St
 	}
 
 	@Override
-	public List<PrePartyMemeber> getPrePartyList(String orgId, String userName, Integer stage) {
-		return prePartyRepository.getPrePartyList(orgId, userName, stage);
+	public List<PrePartyMemeber> getPrePartyList(List<String> orgIds, String userName, Integer stage) {
+		return prePartyRepository.getPrePartyList(orgIds, userName, stage);
 	}
 }
