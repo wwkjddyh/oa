@@ -46,9 +46,7 @@ public class ResBiz extends BaseBiz {
                     res.setRecordId(StringUtil.getRandomUUID());
                     res.setAnnouncerId(this.getUserIdOfSecurity());
                     res.setRecordFlag(Constants.INT_NORMAL);
-                    // 获取组织ID
-                    String orgId = "";
-                    res.setOrgId(orgId);
+                    res.setOrgId(StringUtil.trim(res.getOrgId()));
                     // 针对法规制度上传，不需要发布时间的问题，做特殊处理
                     String publishTime = StringUtil.trim(res.getPublishTime());
                     if ("".equals(publishTime)) {
