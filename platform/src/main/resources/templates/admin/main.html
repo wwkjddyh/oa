@@ -77,6 +77,9 @@
         function emojiChangeHandle(_this) {
             console.log('emojiChangeHandle._this', _this.innerHTML);
             document.getElementById("messageBox").innerHTML += _this.innerHTML;
+            var obj = window.event.srcElement;
+            console.log("光标目标", obj)
+
         }
     </script>
 </head>
