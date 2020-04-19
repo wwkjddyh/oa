@@ -1272,6 +1272,7 @@ new Vue({
         formSearchPrePartyMemeber: {},
         formdwjbxx:{},
         dwjbxxMain: false,
+        dwjbxxMainAdd: false,   // 年度党员信息采集：是否呈现新增按钮
         adminOrgAdd:{
             label: '',
             isAdmin:true
@@ -5304,7 +5305,13 @@ new Vue({
         	that.dwjbxxMain = true;
         	that.fullscreenLoading = true;
         	let searchName = '';
-        	that.nddyxxcjSelectOrg=data.orgId;
+        	that.nddyxxcjSelectOrg = data.orgId;
+        	if (data.orgType === 'orgType3') {
+                that.dwjbxxMainAdd = true;
+            }
+        	else {
+                that.dwjbxxMainAdd = false;
+            }
         	console.log(data.orgId)
         	if(that.nddyxxSearchCondition == null || that.nddyxxSearchCondition == ''){
         		searchName = null;
