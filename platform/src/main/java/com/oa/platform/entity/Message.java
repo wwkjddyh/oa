@@ -49,7 +49,6 @@ public class Message implements Serializable {
      */
     private String roomId;
 
-
     /**
      * 分类名称
      */
@@ -69,6 +68,16 @@ public class Message implements Serializable {
      * 房间名称
      */
     private String roomTitle;
+
+    /**
+     * 消息状态(0, 已发送成功; 1: 未发送成功; 10, 已接收成功; 11, 未接收成功;)-->关联查询获取
+     */
+    private Integer status;
+
+    /**
+     * 关联用户ID(关联查询用)
+     */
+    private String associatedUserId;
 
     /**
      * 关键字
@@ -139,6 +148,14 @@ public class Message implements Serializable {
         this.roomId = roomId;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
     public String getCategoryName() {
         return categoryName;
     }
@@ -171,6 +188,14 @@ public class Message implements Serializable {
         this.roomTitle = roomTitle;
     }
 
+    public String getAssociatedUserId() {
+        return associatedUserId;
+    }
+
+    public void setAssociatedUserId(String associatedUserId) {
+        this.associatedUserId = associatedUserId;
+    }
+
     public String getKey() {
         return key;
     }
@@ -183,7 +208,7 @@ public class Message implements Serializable {
     }
 
     public Message(String recordId, String categoryId, String senderId, String receiverId,
-                   String content, String recordTime, Integer recordFlag, String roomId) {
+                   String content, String recordTime, Integer recordFlag, String roomId, Integer status) {
         this.recordId = recordId;
         this.categoryId = categoryId;
         this.senderId = senderId;
@@ -192,6 +217,7 @@ public class Message implements Serializable {
         this.recordTime = recordTime;
         this.recordFlag = recordFlag;
         this.roomId = roomId;
+        this.status = status;
     }
 
     @Override
@@ -205,6 +231,7 @@ public class Message implements Serializable {
                 ", recordTime='" + recordTime + '\'' +
                 ", recordFlag=" + recordFlag +
                 ", roomId='" + roomId + '\'' +
+                ", status=" + status +
                 ", categoryName='" + categoryName + '\'' +
                 ", senderName='" + senderName + '\'' +
                 ", receiverName='" + receiverName + '\'' +

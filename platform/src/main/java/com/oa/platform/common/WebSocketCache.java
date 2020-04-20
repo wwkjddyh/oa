@@ -23,5 +23,5 @@ public class WebSocketCache {
      * 用于保存用户会话信息
      * {key:登录名或登录名加sessionid；value：用户登录会话}
      */
-    public static final ConcurrentHashMap<String, WebSocketSession> USER_SESSIONS = new ConcurrentHashMap<>();
+    public static ConcurrentHashMap<String, WebSocketSession> USER_SESSIONS = new ConcurrentHashMap<>();
 }

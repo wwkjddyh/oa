@@ -3,6 +3,7 @@ package com.oa.platform.service;
 import com.github.pagehelper.PageInfo;
 import com.oa.platform.entity.Message;
 import com.oa.platform.entity.MessageRoom;
+import com.oa.platform.entity.UserMessage;
 import com.oa.platform.entity.UserMessageStat;
 
 import java.util.List;
@@ -74,4 +75,50 @@ public interface MessageService extends BaseService<Message, String> {
      * @param userIds 用户ID列表
      */
     void saveOrUpdateUserMessageStatByUserIds(Set<String> userIds);
+
+    /**
+     * 保存用户-消息关联信息
+     * @param userMessage 用户-消息关联信息
+     */
+    void saveUserMessage(UserMessage userMessage);
+
+    /**
+     * 批量保存用户-消息关联信息列表
+     * @param userMessages 用户-消息关联信息列表
+     */
+    void batchSaveUserMessage(List<UserMessage> userMessages);
+
+    /**
+     * 修改用户-消息关联信息
+     * @param userMessage 用户-消息关联信息
+     */
+    void updateUserMessage(UserMessage userMessage);
+
+    /**
+     * 批量修改用户-消息关联信息
+     * @param userMessages 用户-消息关联信息列表
+     */
+    void updateBatchUserMessage(List<UserMessage> userMessages);
+
+    /**
+     * 删除用户-消息关联信息
+     * @param userMessage 用户-消息关联信息
+     */
+    void deleteUserMessage(UserMessage userMessage);
+
+    /**
+     * 查询用户消息(必须设置属性associatedUserId)
+     * @param message 参数
+     * @return
+     */
+    List<Message> findUserMessage(Message message);
+
+    /**
+     * 分页查询用户消息(必须设置属性associatedUserId)
+     * @param message 参数
+     * @return
+     */
+    PageInfo<Message> searchUserMessage(Message message, int pageNum, int pageSize);
+
+
 }

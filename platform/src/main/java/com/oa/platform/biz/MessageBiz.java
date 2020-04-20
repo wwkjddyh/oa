@@ -4,6 +4,7 @@ import com.google.common.collect.Sets;
 import com.oa.platform.common.Constants;
 import com.oa.platform.entity.Message;
 import com.oa.platform.entity.MessageRoom;
+import com.oa.platform.entity.UserMessage;
 import com.oa.platform.service.MessageService;
 import com.oa.platform.util.DateUtil;
 import com.oa.platform.util.StringUtil;
@@ -12,6 +13,7 @@ import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -62,10 +64,12 @@ public class MessageBiz extends BaseBiz {
      * @param senderId 发送者ID
      * @param receiverId 接收者ID
      * @param content 消息内容
+     * @param recordTime 消息发送时间
+     * @param recordId 唯一标识
      * @return
      */
     public Map<String, Object> saveMessage(String categoryId, String senderId, String receiverId,
-                                           String content) {
+                                           String content, String recordTime, String recordId) {
         try {
             categoryId = StringUtil.trim(categoryId);
             senderId = StringUtil.trim(senderId);
@@ -75,16 +79,21 @@ public class MessageBiz extends BaseBiz {
                 ret = this.getParamErrorVo();
             }
             else {
+                recordId = StringUtil.trim(recordId, StringUtil.getRandomUUID());
                 if ("".equals(content)) {
                     content = EmojiParser.parseToHtmlDecimal(content, EmojiParser.FitzpatrickAction.PARSE);
+                }
+                if ("".equals(recordTime)) {
+                    recordTime = DateUtil.currDateFormat(null);
                 }
                 Message message = new Message();
                 message.setCategoryId(categoryId);
                 message.setSenderId(senderId);
                 message.setReceiverId(receiverId);
                 message.setContent(content);
-                message.setRecordId(StringUtil.getRandomUUID());
+                message.setRecordId(recordId);
                 message.setRecordFlag(Constants.INT_NORMAL);
+                message.setRecordTime(recordTime);
                 messageService.save(message);
                 // 添加或更新用户统计信息
                 Set<String> userIds = Sets.newHashSet(senderId, receiverId);
@@ -94,6 +103,7 @@ public class MessageBiz extends BaseBiz {
             }
         }
         catch (Exception e) {
+            e.printStackTrace();
             loggerError(ThreadUtil.getCurrentFullMethodName(), e);
             ret = this.getErrorVo();
         }
@@ -112,7 +122,8 @@ public class MessageBiz extends BaseBiz {
         else {
             if (messages.size() == 1) {
                 Message message = messages.get(0);
-                ret = saveMessage(message.getCategoryId(), message.getSenderId(), message.getReceiverId(), message.getContent());
+                ret = saveMessage(message.getCategoryId(), message.getSenderId(),
+                        message.getReceiverId(), message.getContent(), message.getRecordTime(), message.getRecordId());
             }
             else {
                 try {
@@ -128,8 +139,13 @@ public class MessageBiz extends BaseBiz {
                         if (!"".equals(receiverId)) {
                             userIds.add(receiverId);
                         }
-                    }
+                        String recordId = message.getRecordId();
+                        recordId = StringUtil.trim(recordId, StringUtil.getRandomUUID());
+                        message.setRecordId(recordId);
+                        String recordTime = StringUtil.trim(message.getRecordTime(), DateUtil.currDateFormat(null));
+                        message.setRecordTime(recordTime);
 
+                    }
                     messageService.batchSave(messages);
                     messageService.saveOrUpdateUserMessageStatByUserIds(userIds);
                     ret = this.getSuccessVo("", "");
@@ -257,6 +273,85 @@ public class MessageBiz extends BaseBiz {
                 ret = this.getSuccessVo("", "");
             }
             catch (Exception e) {
+                loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+                ret = this.getErrorVo();
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 更新消息状态
+     * @param recordId 消息唯一标识
+     * @param status 消息状态(0, 已发送成功; 1: 未发送成功; 10, 已接收成功; 11, 未接收成功;)
+     * @return
+     */
+    public Map<String, Object> updateMessageStatus(String recordId, Integer status) {
+        recordId = StringUtil.trim(recordId);
+        if ("".equals(recordId)) {
+            ret = this.getParamErrorVo();
+        }
+        else {
+            try {
+                UserMessage userMessage = new UserMessage();
+                userMessage.setRecordId(recordId);
+                userMessage.setStatus(status);
+                messageService.updateUserMessage(userMessage);
+                ret = this.getSuccessVo("", "");
+            }
+            catch (Exception e) {
+                loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+                ret = this.getErrorVo();
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 删除用户-消息关联信息
+     * @param recorIds 唯一标识列表
+     * @return
+     */
+    public Map<String, Object> deleteUserMessage(String... recorIds) {
+        if (recorIds == null || recorIds.length == 0) {
+            ret = this.getParamErrorVo();
+        }
+        else {
+            try {
+                UserMessage userMessage = new UserMessage();
+                if (recorIds.length == 1) {
+                    userMessage.setRecordId(recorIds[0]);
+                }
+                else {
+                    userMessage.setRecordIds(Arrays.asList(recorIds));
+                }
+                messageService.deleteUserMessage(userMessage);
+                ret = this.getSuccessVo("", "");
+            }
+            catch (Exception e) {
+                loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+                ret = this.getErrorVo();
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 批量保存用户-消息关联信息
+     * @param userMessages 用户-消息关联信息
+     * @return
+     */
+    public Map<String, Object> batchSaveUserMessage(List<UserMessage> userMessages) {
+        if (userMessages == null || !userMessages.isEmpty()) {
+            ret = this.getParamErrorVo();
+        }
+        else {
+            try {
+                messageService.batchSaveUserMessage(userMessages);
+                ret = this.getSuccessVo("", "");
+            }
+            catch (Exception e) {
+                e.printStackTrace();
                 loggerError(ThreadUtil.getCurrentFullMethodName(), e);
                 ret = this.getErrorVo();
             }

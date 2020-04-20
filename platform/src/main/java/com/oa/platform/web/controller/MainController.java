@@ -169,6 +169,16 @@ public class MainController {
 		return "test-websocket2";
 	}
 
+	@RequestMapping("/test/chat")
+	public String socketChat(@RequestParam(defaultValue = "test") String name, Model model, HttpServletRequest request) {
+		model.addAttribute("name", name);
+		// 向会话中写入信息
+		HttpSession httpSession = request.getSession(true);
+		httpSession.setAttribute(Constants.SESSION_USERNAME, name);
+		model.addAttribute("JSESSIONID", httpSession.getId());
+		return "test-websocket-chat";
+	}
+
 	@RequestMapping("/test/html2canvas")
 	public String html2canvas() {
 		return "html2canvas";

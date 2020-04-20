@@ -16,7 +16,7 @@
     <result column="sender_name" property="senderName" jdbcType="VARCHAR"/>
     <result column="receiver_name" property="receiverName" jdbcType="VARCHAR"/>
     <result column="room_title" property="roomTitle" jdbcType="VARCHAR"/>
-
+    <result column="status" property="status" jdbcType="INTEGER"/>
   </resultMap>
 
   <resultMap id="messageRoom" type="com.oa.platform.entity.MessageRoom">
@@ -55,16 +55,23 @@
 
   </resultMap>
 
+  <resultMap id="userMessage" type="com.oa.platform.entity.UserMessage">
+    <result column="record_id" property="recordId" jdbcType="VARCHAR"/>
+    <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+    <result column="message_id" property="messageId" jdbcType="VARCHAR"/>
+    <result column="status" property="status" jdbcType="INTEGER"/>
+  </resultMap>
+
     <insert id="insert" parameterType="message">
       INSERT INTO t_message (record_id,category_id,sender_id,receiver_id,content,room_id,record_time,record_flag)
-      VALUES (#{recordId},#{categoryId},#{senderId},#{receiverId},#{content},#{roomId},NOW(),#{recordFlag})
+      VALUES (#{recordId},#{categoryId},#{senderId},#{receiverId},#{content},#{roomId},STR_TO_DATE(#{recordTime},'%Y-%m-%d %H:%i:%s'),#{recordFlag})
     </insert>
 
   <insert id="batchInsert" parameterType="java.util.List">
     INSERT INTO t_message (record_id,category_id,sender_id,receiver_id,content,room_id,record_time,record_flag)
     VALUES
     <foreach collection="list" item="item" index="index" separator=",">
-      (#{item.recordId},#{item.categoryId},#{item.senderId},#{item.receiverId},#{item.content},#{item.roomId},NOW(),#{item.recordFlag})
+      (#{item.recordId},#{item.categoryId},#{item.senderId},#{item.receiverId},#{item.content},#{item.roomId},STR_TO_DATE(#{item.recordTime},'%Y-%m-%d %H:%i:%s'),#{item.recordFlag})
     </foreach>
   </insert>
 
@@ -103,6 +110,18 @@
       WHERE t1.record_time = t2.record_time and (t1.receiver_id = #{userId} OR t1.sender_id = #{userId})
     </foreach>
   </insert>
+    <insert id="insertUserMessage" parameterType="userMessage">
+      INSERT INTO t_user_message (record_id,status,user_id,message_id)
+      VALUES (#{recordId},#{status},#{userId},#{messageId})
+    </insert>
+
+    <insert id="batchInsertUserMessage" parameterType="java.util.List">
+      INSERT INTO t_user_message (record_id,status,user_id,message_id)
+      VALUES
+      <foreach collection="list" item="item" index="index" separator=",">
+        (#{item.recordId},#{item.status},#{item.userId},#{item.messageId})
+      </foreach>
+    </insert>
 
     <update id="update" parameterType="message">
       UPDATE t_message
@@ -167,6 +186,39 @@
           </if>
           <if test="item.messageTotal != null">
             message_total = #{item.messageTotal},
+          </if>
+        </set>
+        where user_id = #{item.userId}
+        <if test="item.recordId != null and item.recordId != ''">
+          record_id = #{item.recordId}
+        </if>
+      </foreach>
+    </update>
+
+    <update id="updateUserMessage" parameterType="userMessage">
+      UPDATE t_user_message
+      <trim prefix="SET" suffixOverrides="," suffix=" WHERE record_id = #{recordId}">
+        <if test="userId != null and userId != ''">
+          user_id = #{userId},
+        </if>
+        <if test="messageId != null and messageId != ''">
+          message_id = #{messageId},
+        </if>
+        <if test="status != null">
+          status = #{status},
+        </if>
+      </trim>
+    </update>
+
+    <update id="updateBatchUserMessage" parameterType="java.util.List" >
+      <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+        update t_user_message
+        <set >
+          <if test="item.messageId != null and item.messageId != ''">
+            message_id = #{item.messageId},
+          </if>
+          <if test="item.status == null">
+            status = #{item.status},
           </if>
         </set>
         where user_id = #{item.userId}
@@ -247,6 +299,30 @@
         </if>
       </trim>
     </delete>
+
+  <delete id="deleteUserMessage" parameterType="userMessage">
+    DELETE FROM t_user_message
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="userId != null and userId != ''">
+        AND user_id = #{userId}
+      </if>
+      <if test="messageId != null and messageId != ''">
+        AND message_id = #{messageId}
+      </if>
+      <if test="status != null">
+        AND status = #{status}
+      </if>
+      <if test="recordIds != null and recordIds.size() > 0">
+        AND record_id IN
+        <foreach collection="recordIds" index="index" item="itemId" open="(" separator="," close=")">
+          #{itemId}
+        </foreach>
+      </if>
+    </trim>
+  </delete>
 
     <select id="findById" resultMap="message" parameterType="java.lang.String">
       SELECT record_id,category_id,sender_id,receiver_id,room_id,content,
@@ -420,5 +496,55 @@
         </if>
       </trim>
     </select>
+
+  <!--查询用户的消息-->
+  <select id="findUserMessage" parameterType="message" resultMap="message">
+    SELECT
+    record_id,category_id,sender_id,receiver_id,room_id,content,
+    DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+    record_flag,category_name,sender_name,receiver_name,room_title,`status`
+    FROM (
+    SELECT t1.*, t2.`name` category_name, t3.user_name sender_name,
+    t4.user_name receiver_name, t5.room_title
+    FROM (SELECT t21.* ,t20.`status` FROM
+    (SELECT *FROM t_user_message WHERE user_id = #{associatedUserId}) t20 ,
+    (SELECT *FROM t_message WHERE record_flag = 1) t21
+    WHERE t20.message_id = t21.record_id) t1
+    LEFT JOIN t_category t2 ON t1.category_id = t2.record_id
+    LEFT JOIN t_user t3 ON t1.sender_id = t3.user_id
+    LEFT JOIN t_user t4 ON t1.receiver_id = t4.user_id
+    LEFT JOIN t_message_room t5 ON t1.room_id = t5.room_id
+    ) t
+    <trim prefix="WHERE" prefixOverrides="AND | OR">
+      <if test="recordId != null and recordId != ''">
+        AND record_id = #{recordId}
+      </if>
+      <if test="categoryId != null and categoryId != ''">
+        AND category_id = #{categoryId}
+      </if>
+      <if test="senderId != null and senderId != ''">
+        AND sender_id = #{senderId}
+      </if>
+      <if test="receiverId != null and receiverId != ''">
+        AND receiver_id = #{receiverId}
+      </if>
+      <if test="roomId != null and roomId != ''">
+        AND room_id = #{roomId}
+      </if>
+      <if test="status != null">
+        AND `status` = #{status}
+      </if>
+      <if test="recordFlag != null">
+        AND record_flag = #{recordFlag}
+      </if>
+      <if test="key != null and key != ''">
+        AND (UPPER(content) LIKE CONCAT('%',UPPER(#{key}),'%')
+        OR UPPER(room_title) LIKE CONCAT('%',UPPER(#{key}),'%')
+        OR UPPER(receiver_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+        OR UPPER(sender_name) LIKE CONCAT('%',UPPER(#{key}),'%')
+        )
+      </if>
+    </trim>
+  </select>
 
 </mapper>

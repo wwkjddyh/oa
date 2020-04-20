@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.oa.platform.entity.Message;
 import com.oa.platform.entity.MessageRoom;
+import com.oa.platform.entity.UserMessage;
 import com.oa.platform.entity.UserMessageStat;
 import com.oa.platform.repository.MessageRepository;
 import com.oa.platform.service.MessageService;
@@ -119,5 +120,46 @@ public class MessageServiceImpl extends AbstractBaseService<Message, String> imp
         userMessageStat.setUserIds(ids);
         messageRepository.deleteUserMessageStat(userMessageStat);
         messageRepository.insertUserMessageStatByUserIds(ids);
+    }
+
+    @Override
+    public void saveUserMessage(UserMessage userMessage) {
+        messageRepository.insertUserMessage(userMessage);
+    }
+
+    @Override
+    public void batchSaveUserMessage(List<UserMessage> userMessages) {
+        messageRepository.batchInsertUserMessage(userMessages);
+    }
+
+    @Override
+    public void updateUserMessage(UserMessage userMessage) {
+        messageRepository.updateUserMessage(userMessage);
+    }
+
+    @Override
+    public void updateBatchUserMessage(List<UserMessage> userMessages) {
+        messageRepository.updateBatchUserMessage(userMessages);
+    }
+
+    @Override
+    public void deleteUserMessage(UserMessage userMessage) {
+        messageRepository.deleteUserMessage(userMessage);
+    }
+
+    @Override
+    public List<Message> findUserMessage(Message message) {
+        List<Message> messages = Lists.newArrayList();
+        if (message != null && message.getAssociatedUserId() != null) {
+            messages = messageRepository.findUserMessage(message);
+        }
+        return messages;
+    }
+
+    @Override
+    public PageInfo<Message> searchUserMessage(Message message, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Message> records = messageRepository.findUserMessage(message == null ? new Message() : message);
+        return new PageInfo<>(records);
     }
 }

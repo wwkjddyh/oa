@@ -267,4 +267,39 @@ public class Constants {
      * 是否已读：否(0)
      */
     public static final int UN_VIEWED = 0;
+
+    /**
+     * 聊天消息类型：广播("0")
+     */
+    public static final String CHAT_MESSAGE_BROADCAST = "0";
+
+    /**
+     * 聊天消息类型：用户对用户("1")
+     */
+    public static final String CHAT_MESSAGE_P2P = "1";
+
+    /**
+     * 聊天消息类型：群内发言("2")
+     */
+    public static final String CHAT_MESSAGE_ROOM = "2";
+
+    /**
+     * 聊天消息状态：未发送成功(1)
+     */
+    public static final int CHAT_MESSAGE_STATUS_SEND_FAIL = 1;
+
+    /**
+     * 聊天消息状态：发送成功(0)
+     */
+    public static final int CHAT_MESSAGE_STATUS_SEND_SUCC = 0;
+
+    /**
+     * 聊天消息状态：未接收成功(11)
+     */
+    public static final int CHAT_MESSAGE_STATUS_RECEIVE_FAIL = 11;
+
+    /**
+     * 聊天消息状态：接收成功(10)
+     */
+    public static final int CHAT_MESSAGE_STATUS_RECEIVE_SUCC = 10;
 }
