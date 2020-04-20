@@ -1915,6 +1915,7 @@ new Vue({
             label: 'label'
         },
         orgCommitteeLoading: false,
+        isRoleAdmin: null,
 
     },
     computed:{
@@ -8421,6 +8422,10 @@ new Vue({
         		that.orgCommitteeLoading = false;
                 });
         },
+        //导出
+        handleExport () {
+        	
+        },
 
         /**
          * websocket重连
@@ -8778,10 +8783,7 @@ new Vue({
         that.ueditors.article.addListener('blur', function(editor){
             that.formArticle.content = that.ueditors.article.getContent();
         });
-        let bodyHeight = document.body.offsetHeight;
-        let workHeight = document.getElementById('wokespaceMain').offsetHeight;
-        console.log('body 高度=======',bodyHeight,workHeight);
-
+        
     },
     destroyed: function() {
         this.ueditors.article.destroy();
