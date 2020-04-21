@@ -6,88 +6,13 @@
     <el-button round @click="handleNewsSearchByViewed('')" size="mini" :type="formSearchNews.allBtnType">全部</el-button>
     <el-button round @click="handleNewsSearchByViewed('1')" size="mini" :type="formSearchNews.viewedBtnType">已读</el-button>
     <el-button round @click="handleNewsSearchByViewed('0')" size="mini" :type="formSearchNews.unViewedBtnType">未读</el-button>
-    <!--
-    <el-tabs v-model="activeTabName" type="card">
-        <el-tab-pane label="通知公告" name="first">
-        </el-tab-pane>
-    </el-tabs>
-    -->
-        
-        <el-input placeholder="关键字"  class="input-with-select" size="mini" style="width: 30%; margin-left: 10px" v-model="formSearchNews.title">
-					    <el-button slot="append" icon="el-icon-search" @click="searchForm('formSearchNews')"></el-button>
-					 </el-input>
-    <!--
-    <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
-    -->
-    
-    <!--
-    <el-button plain @click="searchForm('formSearchNews')" size="mini"><i class="el-icon-refresh"></i>&nbsp;刷新</el-button>
-    -->
+    <el-input placeholder="关键字"  class="input-with-select" size="mini" style="width: 30%; margin-left: 10px" v-model="formSearchNews.title">
+	    <el-button slot="append" icon="el-icon-search" @click="searchForm('formSearchNews')"></el-button>
+	 </el-input>
     <div style="margin-top: 20px">
-        <!--
-        <el-table
-                :data="newsArray"
-                border
-                style="width: 100%">
-            <el-table-column
-                    align="center"
-                    width="50"
-                    label="序号">
-                <template slot-scope="scope">
-                    {{scope.$index+1}}
-                </template>
-            </el-table-column>
-            <el-table-column
-                    prop="title"
-                    label="名称"
-                    width="200">
-            </el-table-column>
-            <el-table-column
-                    prop="content"
-                    label="描述">
-            </el-table-column>
-            <el-table-column
-                    align="center"
-                    width="230"
-                    label="操作">
-                <template slot-scope="scope">
-                    <div style="display: flex;width:100%">
-                        <el-button size="mini" @click="edit('news', scope.$index,scope.row, false)"><i class="el-icon-edit"></i>修改</el-button>
-                        <el-button size="mini" type="danger" @click="handleDel(scope.$index,'news')"><i class="el-icon-delete"></i>删除</el-button>
-                    </div>
-                </template>
-            </el-table-column>
-        </el-table>
-        -->
         <div style="margin-top: 20px; width: 100%" v-loading="newsLoading">
-            <!--
-            <div v-for="item in newsArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
-                <div style="width: 70%; height: auto">
-                    <div style="height: 20px; font-size: 15px;font-weight: bold;">
-                        <label v-if="item.status && item.status == 1" style="color: #82848a">[已读]</label>
-                        <label v-if="!item.status || item.status == 0">[未读]</label>
-                         <a style="color: #409EFF; margin-left: 20px">{{item.newsTitle || ''}}</a>
-                    </div>
-                    <div style="height: auto; min-height: 20px; margin-top: 10px; font-size: 13px; color: #8c939d; font-weight: bold;">
-                        {{item.newsContent}}
-                    </div>
-                </div>
-                <div style="width: 30%; font-size: 13px; color: #8c939d;">
-                    {{item.sendTime}}
-                </div>
-            </div>
-            -->
             <div v-for="item in newsArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
                 <div style="width: 70%; height: auto" v-if="formSearchNews.isViewed == ''">
-                    <!--
-                    <el-popover
-                            placement="top-start"
-                            width="400"
-                            trigger="manual"
-                            :content="item.newsContent" v-model="item.dialogShow">
-                        <a style="color: #409EFF; margin-left: 20px; cursor: pointer;" slot="reference" @click="handleNewsView(item.recordId)">{{item.newsTitle || ''}}</a>
-                    </el-popover>
-                    -->
                     <label v-if="newsOperate == true" @click="deleteNews(item.recordId)" class="el-icon-close" style="font-size: 16px;color: red;font-weight:bold;cursor: pointer;"></label>
                     <label v-if="item.status && item.status == 1" class="iconfont icon-yiduxinxi" style="font-size: 16px;color: #4f4f4f;"></label>
                     <label v-if="!item.status || item.status == 0" class="iconfont icon-024weiduxinxi" style="font-size: 16px;color: #4f4f4f;"></label>
@@ -138,6 +63,19 @@
                 <el-form-item label="标题" prop="title">
                     <el-input v-model="formNews.title" size="small" auto-complete="off" style="width: 650px;" maxlength="512" placeholder="标题"></el-input>
                     
+                </el-form-item>
+                 <el-form-item label="附件" prop="title" >
+                 	<el-upload
+                 	  style="width: 300px;" size="small"
+					  class="upload-demo"
+					  action="/api/file/upload"
+					  multiple
+					  :before-remove="beforeUploadRemove2"
+					  :on-success="handleUploadSuccess2"
+                   	  :on-error="handleUploadError"
+					  >
+					  <el-button size="mini" type="primary"><i class="el-icon-upload" style="font-size:20px"></i>选择文件</el-button>
+					</el-upload>
                 </el-form-item>
                 <el-form-item label="内容" prop="content">
                     <el-input v-model="formNews.content" type="textarea" size="small" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:650px;" maxlength="512" placeholder="内容"></el-input>
