@@ -4064,6 +4064,18 @@ new Vue({
             
             return isImg && isLt2M;
         },
+        beforeFJAvatarUpload(file) {
+
+            let isLt2M = file.size / 1024 / 1024 < 3;
+
+
+            if (!isLt2M) {
+              this.$message.error('单个附件大小不能超过 3MB!');
+              return false;
+            }
+            
+            return true;
+        },
         setImgUrl(response, file, fileList){
         	let that = this;
         	
@@ -6910,7 +6922,19 @@ new Vue({
             that.formRes.originalName = originalName;
             return that.$confirm(`确定移除 ${ file.name }？`);
         },
-
+        beforeFJRemove(file, fileList) {
+            let that = this;
+            let originalName = '';
+            if (fileList && fileList instanceof Array) {
+                let _names = [];
+                for (let i = 0; i < fileList.length; i ++) {
+                    _names.push(fileList[i].name);
+                }
+                originalName = _names.join(";");
+            }
+            that.formRes.originalName = originalName;
+            return true;
+        },
         /**
          * 文件上传之前
          * @param file 文件

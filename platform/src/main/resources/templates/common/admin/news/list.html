@@ -150,10 +150,11 @@
                             action="/api/file/upload"
                             :on-preview="handleUploadPreview"
                             :on-remove="handleFJRemove"
-                            :before-remove="beforeUploadRemove"
+                            :before-remove="beforeFJRemove"
                             multiple
                             :limit="5" :accept="uploadAccept"
                             :on-exceed="handleUploadExceedNews"
+                            :before-upload="beforeFJAvatarUpload"
                             :file-list="uploadFJList"
                                :on-success="handleFJSuccess"
                                :on-error="handleUploadError"
