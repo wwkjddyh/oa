@@ -1269,6 +1269,7 @@ new Vue({
         singleImg:true,
         nddyxxcTableText:'',
         currUserChat: { /*当前用户聊天信息相关*/
+            chatShow: true,
             friends: [
                 {
                     userId : '001',
@@ -1305,6 +1306,8 @@ new Vue({
                 currentFriendUserId: '001',
                 currentFriendType: '1', /*好友类型：用户*/
                 currentFriendName: '路人甲',
+                currentMessageContent: '🚝🚞🚋🚌🚍🚎🚏🚐🚑🚒🚓🚔🚕🚖🚗🚘🚚🚛🚜🚲⛽🚨🚥🚦🚧⚓⛵🚤🚢✈💺🚁🚟🚠🚡🚀🎑🗿🛂🛃🛄🛅\n' +
+                    '                                <img src="/images/title.png" style="width: 50px; height: 25x;">',
                 msgList: [
                     {
                         recordId: '00001',
@@ -8702,7 +8705,7 @@ new Vue({
 
         /**
          * 聊天：好友列表项选择事件处理
-         * @param __idx
+         * @param __idx 序号
          */
         chatFriendItemChangeHandle: function(__idx) {
             let that = this;
@@ -8724,6 +8727,33 @@ new Vue({
                     }
                 }
             }
+        },
+
+        /**
+         * 显示聊天处理
+         * @param chatId
+         */
+        showWebChatHandle: function(chatId) {
+            console.log('showWebchatHandle', chatId)
+            let that = this;
+            let webchat = document.getElementById(chatId);
+            if (webchat.style.visibility == 'hidden') {
+                webchat.style.visibility = 'visible';
+            }
+            else {
+                webchat.style.visibility = 'hidden';
+            }
+        },
+
+        /**
+         * 聊天表情处理
+         * @param emojiId 表情序号
+         * @param emoji 表情信息
+         */
+        chatEmojiChangeHandle: function(emojiId, emoji) {
+            let that = this;
+            console.log('chatEmojiChangeHandle', emojiId, emoji);
+            that.currUserChat.currChatWindow.currentMessageContent += emoji.emoji;
         },
     },
     props: {
