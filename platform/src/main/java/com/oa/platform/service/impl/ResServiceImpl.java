@@ -56,4 +56,10 @@ public class ResServiceImpl extends AbstractBaseService<Res, String> implements 
         PageHelper.startPage(pageNum, pageSize);
         return new PageInfo<>(findResDl(resDl));
     }
+
+	@Override
+	public List<String> getOrgIdByUserId(String userId) {
+		
+		return resRepository.getOrgIdByUserId(userId);
+	}
 }

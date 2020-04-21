@@ -1576,6 +1576,9 @@ new Vue({
         currNotice: {},
         //uploadFileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
         uploadFileList: [],
+        uploadFJList: [],
+        uploadFJName: [],
+        uploadFJUrl: [],
         continent: '',
         nation: '',
         rules: {},
@@ -3133,6 +3136,14 @@ new Vue({
             params.append('sendSms', that.formNews.sendSms ? '1' : '0');
             params.append('sendMail', that.formNews.sendMail ? "1" : "0");
              */
+            let fileUrl = '';
+            let fileName = '';
+            if(that.uploadFJUrl != null && that.uploadFJUrl.length > 0){
+            	fileUrl = that.uploadFJUrl.join(',');
+            }
+            if(that.uploadFJName != null && that.uploadFJName.length > 0){
+            	fileName = that.uploadFJName.join(',');
+            }
             let _data = {
                 "recordId" : that.formNews.recordId || '',
                 "receiverId" : that.formNews.receiverId,
@@ -3148,6 +3159,8 @@ new Vue({
                 "endTime" : that.formNews.endTime || '',
                 "receiverType" : that.formNews.receiverType || '0',
                 "recordFlag": that.formNews.recordFlag || '1',
+                "fileUrl" : fileUrl,
+                "fileName": fileName
             };
             if(that.currAction === 'edit') {
                 operName = '修改';
@@ -3746,6 +3759,9 @@ new Vue({
                             		sendSms:0,
                             		sendMail:0
                             };
+                            that.uploadFJList =[];
+                            that.uploadFJName = [];
+                            that.uploadFJUrl = [];
                         }
                         else {
                             entry = that.newsArray[scopeIndex];
@@ -4052,6 +4068,23 @@ new Vue({
         	let that = this;
         	
         	that.formnddyxxcj.imageUrl = response.data.destName;
+        },
+        handleFJSuccess(response, file, fileList){
+        	let that = this;
+        	that.uploadFJUrl.push(response.data.filePath);
+        	that.uploadFJName.push(response.data.fileName);
+        	console.log(that.uploadFJUrl);
+        	console.log(that.uploadFJName);
+        	
+        },
+        handleFJRemove(file, fileList){
+        	let that = this;
+        	console.log(file)
+        	console.log(file.response.data.filePath)
+        	let urlIndex = that.uploadFJUrl.indexOf(file.response.data.filePath);
+        	let nameIndex = that.uploadFJName.indexOf(file.response.data.fileName);
+        	that.uploadFJUrl.splice(urlIndex,1);
+        	that.uploadFJName.splice(nameIndex,1);
         },
         renderHeader (h,{column}) { // h即为cerateElement的简写，具体可看vue官方文档
         	  return h(
@@ -6849,7 +6882,15 @@ new Vue({
             // this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
             this.$message.warning(`当前限制选择多个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
         },
-
+        /**
+         * 执行上传文件
+         * @param files 文件组
+         * @param fileList 文件列表
+         */
+        handleUploadExceedNews(files, fileList) {
+            // this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+            this.$message.warning(`附件最多为5个，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+        },
         /**
          * 文件上传之前
          * @param file 文件

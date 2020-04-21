@@ -145,4 +145,6 @@ public interface UserService extends BaseService<User,String>, UserDetailsServic
      * @return
      */
     Map<String, Organization> orgListToMap(List<Organization> list);
+
+	List<String> getAllUsersByCurrentUser(String userId);
 }

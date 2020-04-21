@@ -57,12 +57,22 @@ public class MailServiceImpl implements MailService {
     public Map<String, Object> sendSimpleMail(Mail mail) {
         Map<String, Object> ret = new HashMap<>(0);
         try {
-            SimpleMailMessage message = new SimpleMailMessage();
+        	MimeMessage mimeMessage = mailSender.createMimeMessage();
+        	MimeMessageHelper message = new MimeMessageHelper(mimeMessage, true);
+            //SimpleMailMessage message = new SimpleMailMessage();
             message.setFrom(mail.getForm());
             message.setTo(mail.getSendTo());
             message.setSubject(mail.getSubject());
             message.setText(mail.getContent());
-            mailSender.send(message);
+            if(mail.getFileUrl() != null && !"".equals(mail.getFileUrl())) {
+            	String[] urls = mail.getFileUrl().split(",");
+            	String[] filenames = mail.getFileName().split(",");
+            	for(int i = 0 ; i < urls.length ; i++) {
+                    FileSystemResource file = new FileSystemResource(new File(urls[i]));
+                    message.addAttachment(filenames[i], file); 
+            	}
+            }
+            mailSender.send(mimeMessage);
             ret.put("code", 200);
         }
         catch (Exception e) {

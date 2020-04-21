@@ -44,4 +44,6 @@ public interface ResRepository extends BaseRepository<Res, String> {
      * @return
      */
     List<ResDl> findResDl(ResDl resDl);
+
+	List<String> getOrgIdByUserId(String userId);
 }

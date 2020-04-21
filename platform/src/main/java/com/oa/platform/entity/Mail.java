@@ -17,6 +17,15 @@ public class Mail {
 	private String content;
 	//附件地址
 	private String fileUrl;
+	//附件名称
+	private String fileName;
+	
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 	public String getForm() {
 		return form;
 	}

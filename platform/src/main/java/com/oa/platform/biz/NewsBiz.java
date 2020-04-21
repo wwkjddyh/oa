@@ -112,6 +112,8 @@ public class NewsBiz extends BaseBiz {
 		                        mail.setContent(news.getContent());
 		                        mail.setSendTo(sendToList.toArray(new String[sendToList.size()]));
 		                        mail.setForm("tjzjdw@126.com");
+		                        mail.setFileUrl(news.getFileUrl());
+		                        mail.setFileName(news.getFileName());
 		                        mailService.sendSimpleMail(mail);
 	                        }
                         }

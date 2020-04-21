@@ -219,7 +219,29 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
 		
 	}
 
-
+	@Override
+	public List<String> getAllUsersByCurrentUser(String userId) {
+		User user = new User();
+        user.setUserType(User.TYPE_ADMIN);
+        user.setRecordFlag(Constants.INT_NORMAL);
+        List<String> orgIds = new ArrayList<String>();
+        
+        List<Organization> orgIdByuserId = orgRepository.getOrgIdByuserId(userId);
+		if(orgIdByuserId == null || orgIdByuserId.size() == 0) {
+			return null;
+		}
+		List<Organization> result = orgRepository.getOrgList(orgIdByuserId.get(0).getOrgId(),false);
+		for (Organization organization : result) {
+			orgIds.add(organization.getOrgId());
+		}
+        
+        List<User> searchUsersByOrgIds = userRepository.searchUsersByOrgIds(user,false,orgIds);
+        List<String> userIds = new ArrayList<String>();
+        for (User user2 : searchUsersByOrgIds) {
+        	userIds.add(user2.getUserId());
+		}
+		return userIds;
+	}
 	@Override
 	public List<String> getUsersByCurrentUser(String userId) {
 		User user = new User();

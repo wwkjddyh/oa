@@ -374,7 +374,7 @@ div[pType="elTable"] th>.cell {
 
 .firstPage-quickEntry-item2 {
     cursor:pointer;
-    height:80px; 
+    height:100px; 
     width:180px; 
     flex-direction: column;
     display: -webkit-flex;
