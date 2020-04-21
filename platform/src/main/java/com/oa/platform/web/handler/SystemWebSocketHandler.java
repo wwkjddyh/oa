@@ -315,7 +315,7 @@ public class SystemWebSocketHandler implements WebSocketHandler {
             }
 
             if (!userMessages.isEmpty()) {
-//                messageBiz.batchSaveUserMessage(userMessages);
+                messageBiz.batchSaveUserMessage(userMessages);
             }
         }
 

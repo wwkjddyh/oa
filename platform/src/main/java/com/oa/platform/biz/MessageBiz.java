@@ -12,6 +12,7 @@ import com.oa.platform.util.ThreadUtil;
 import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.context.IContext;
 
 import java.util.Arrays;
 import java.util.List;
@@ -80,7 +81,7 @@ public class MessageBiz extends BaseBiz {
             }
             else {
                 recordId = StringUtil.trim(recordId, StringUtil.getRandomUUID());
-                if ("".equals(content)) {
+                if (!"".equals(content)) {
                     content = EmojiParser.parseToHtmlDecimal(content, EmojiParser.FitzpatrickAction.PARSE);
                 }
                 if ("".equals(recordTime)) {
@@ -342,7 +343,7 @@ public class MessageBiz extends BaseBiz {
      * @return
      */
     public Map<String, Object> batchSaveUserMessage(List<UserMessage> userMessages) {
-        if (userMessages == null || !userMessages.isEmpty()) {
+        if (userMessages == null || userMessages.isEmpty()) {
             ret = this.getParamErrorVo();
         }
         else {
