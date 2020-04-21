@@ -73,10 +73,11 @@ public class SystemWebSocketHandler implements WebSocketHandler {
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus arg1)
             throws Exception {
-        System.err.println("websocket connection closed......");
-        logger.debug("websocket connection closed......");
-        users.remove(session);
         String userName = (String) session.getAttributes().get(WebSocketCache.WEBSOCKET_USERNAME);
+        System.err.println("websocket ('" + userName + "') connection closed......");
+        logger.debug("websocket ('" + userName + "') connection closed......");
+        users.remove(session);
+
         USER_SESSIONS.remove(userName);
     }
 
