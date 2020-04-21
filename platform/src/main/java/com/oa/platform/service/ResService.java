@@ -53,4 +53,6 @@ public interface ResService extends BaseService<Res, String> {
      * @return
      */
     PageInfo<ResDl> searchResDl(ResDl resDl, int pageNum, int pageSize);
+
+	List<String> getOrgIdByUserId(String userIdOfSecurity);
 }

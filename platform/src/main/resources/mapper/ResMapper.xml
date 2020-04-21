@@ -373,4 +373,7 @@
     </trim>
     ORDER BY t.dl_time DESC
   </select>
+  <select id="getOrgIdByUserId" resultType="java.lang.String">
+  		select org_id from t_org_user where user_id=#{userId}
+  </select>
 </mapper>

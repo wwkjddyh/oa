@@ -11,7 +11,7 @@
 					<hr style="height:2px;border:none;border-top:3px solid #e5e5e5;margin-top: 10px;color: #4f4f4f"/>
 				</div>
 				<div style="margin: 25px 20px;width: calc(100% - 40px);padding: 0;border: 0;display: inline-flex;justify-content: space-between;">
-					<div class="firstPage-quickEntry-item2" @click="goToMenu(item)" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 4 : 0">
+					<div class="firstPage-quickEntry-item2" @click="goToMenu(item)" v-for="item in firstPage1" :key="item.url" :offset="item.index > 0 ? 2 : 0">
 						<img :src="item.imgUrl" class="firstPage-quickEntry-item_img" />
 						<span class="firstPage-quickEntry-item_name">{{item.name}}</span>
 					</div>

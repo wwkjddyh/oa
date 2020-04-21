@@ -81,6 +81,31 @@
                     <el-input v-model="formNews.content" type="textarea" size="small" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:650px;" maxlength="512" placeholder="内容"></el-input>
                     
                 </el-form-item>
+                <el-form-item label="附件" prop="fj">
+                    <el-upload style="width: 300px;" size="small"
+                               ref="uploadRes"
+                            class="upload-demo"
+                            action="/api/file/upload"
+                            :on-preview="handleUploadPreview"
+                            :on-remove="handleFJRemove"
+                            :before-remove="beforeFJRemove"
+                            multiple
+                            :limit="5" :accept="uploadAccept"
+                            :on-exceed="handleUploadExceedNews"
+                            :before-upload="beforeFJAvatarUpload"
+                            :file-list="uploadFJList"
+                               :on-success="handleFJSuccess"
+                               :on-error="handleUploadError"
+                               :on-change="uploadFileChange"
+                               :show-file-list="true"
+                            >
+                        <el-button size="mini" type="primary">选择文件</el-button>
+                    </el-upload>
+                    <el-card v-if="currAction == 'edit' && formRes.isShowFileOriginalName == true" shadow="hover" style="width: 470px" body-style="{padding: '2px'}">
+                        <div>文件名：{{formNews.currName || ''}}</div>
+                        <div>原始文件名：{{formNews.originalName || ''}}</div>
+                    </el-card>
+                </el-form-item>
                 <el-form-item label="" prop="" align="center">
                     <el-checkbox v-model="formNews.sendSms" :label="formNews.sendSms">是否发送短信</el-checkbox>
                     <el-checkbox v-model="formNews.sendMail" :label="formNews.sendMail">是否发送邮件</el-checkbox>

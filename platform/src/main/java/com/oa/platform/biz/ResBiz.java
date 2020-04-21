@@ -51,6 +51,17 @@ public class ResBiz extends BaseBiz {
                     res.setRecordId(StringUtil.getRandomUUID());
                     res.setAnnouncerId(this.getUserIdOfSecurity());
                     res.setRecordFlag(Constants.INT_NORMAL);
+					/*
+					 * if("01ef5219-464e-44a3-890a-557e3bbabd4e".equals(res.getTypeId()) ||
+					 * "1e9941a0-2a6f-4c2f-b74c-970d0351469f".equals(res.getTypeId()) ||
+					 * "3dea99ab-ec00-4633-b24c-7c44a5ce57b8".equals(res.getTypeId()) ||
+					 * "2e9941a0-2a6f-4c2f-b74c-970d0351469f".equals(res.getTypeId())) {
+					 * //获取组织挂接组织机构 List<String> orgIds =
+					 * resService.getOrgIdByUserId(this.getUserIdOfSecurity()); if(orgIds!= null &&
+					 * orgIds.size() > 0 ) { res.setOrgId(orgIds.get(0)); }
+					 * 
+					 * }
+					 */
                     // 针对法规制度上传，不需要发布时间的问题，做特殊处理
                     String publishTime = StringUtil.trim(res.getPublishTime());
                     if ("".equals(publishTime)) {
@@ -206,27 +217,34 @@ public class ResBiz extends BaseBiz {
             orgId = StringUtil.trim(orgId);
 
             String currUserId = this.getUserIdOfSecurity();
-			/*
-			 * List<String> announcerIds = Lists.newArrayList(); if ("".equals(orgId)) { //
-			 * 查询全部 announcerIds = userService.getUsersByCurrentUser(currUserId); } else {
-			 * // 匹配传入的组织ID announcerIds = userService.getUsersByCurrentUser(currUserId,
-			 * orgId); }
-			 */
-//            if (announcerIds == null || announcerIds.isEmpty()) {
-//                announcerIds = Lists.newArrayList(currUserId);
-//            }
-//            else {
-//                if (!announcerIds.contains(currUserId)) {
-//                    announcerIds.add(currUserId);
-//                }
-//            }
-            //res.setAnnouncerIds(announcerIds);
-            List<String> orgIds = new ArrayList<String>();
-            List<Organization> result = orgSerivce.getUserUpperOrgList(orgId);
-			for (Organization organization : result) {
-				orgIds.add(organization.getOrgId());
+			if("01ef5219-464e-44a3-890a-557e3bbabd4e".equals(typeId) || "1e9941a0-2a6f-4c2f-b74c-970d0351469f".equals(typeId)
+					|| "3dea99ab-ec00-4633-b24c-7c44a5ce57b8".equals(typeId)) {
+				  List<String> announcerIds = Lists.newArrayList(); 
+//				  if ("".equals(orgId)) {
+					  //查询全部 
+					  announcerIds = userService.getAllUsersByCurrentUser(currUserId); 
+//				  } else {
+//					  // 匹配传入的组织ID 
+//					  announcerIds = userService.getUsersByCurrentUser(currUserId,orgId); 
+//					}
+					 
+		            if (announcerIds == null || announcerIds.isEmpty()) {
+		                announcerIds = Lists.newArrayList(currUserId);
+		            }
+		            else {
+		                if (!announcerIds.contains(currUserId)) {
+		                    announcerIds.add(currUserId);
+		                }
+		            }
+		            res.setAnnouncerIds(announcerIds);
+			}else {
+	            List<String> orgIds = new ArrayList<String>();
+	            List<Organization> result = orgSerivce.getUserUpperOrgList(orgId);
+				for (Organization organization : result) {
+					orgIds.add(organization.getOrgId());
+				}
+				res.setOrgIds(orgIds);
 			}
-			res.setOrgIds(orgIds);
             PageInfo<Res> pageInfo = resService.search(res, pageNum, pageSize);
             ret = this.getPageInfo(pageInfo);
         }

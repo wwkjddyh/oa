@@ -134,8 +134,26 @@ public class News implements Serializable {
      * <当前用户>是否已浏览(用于判定用户已查看该消息)
      */
     private Integer isViewed;
+    private String fileUrl;
+    private String fileName;
+    
+    public String getFileUrl() {
+		return fileUrl;
+	}
 
-    /**
+	public void setFileUrl(String fileUrl) {
+		this.fileUrl = fileUrl;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	/**
      * <当前>浏览者ID
      */
     private String viewerId;

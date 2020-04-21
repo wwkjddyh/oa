@@ -1268,6 +1268,81 @@ new Vue({
         dialogVisible: false,
         singleImg:true,
         nddyxxcTableText:'',
+        currUserChat: { /*当前用户聊天信息相关*/
+            chatShow: true,
+            friends: [
+                {
+                    userId : '001',
+                    userName: '路人甲',
+                    avatar: '🌋',
+                    avatarUrl: '',
+                    date: '2020/04/14',
+                    msg: '你在么？',
+                    isCurrent: true,
+                    type: '1',  /*聊天类型：用户对用户*/
+                },
+                {
+                    userId : '002',
+                    userName: '路人乙',
+                    avatar: '🌋',
+                    avatarUrl: '',
+                    date: '2020/04/14',
+                    msg: '你不在么？',
+                    isCurrent: false,
+                    type: '1',  /*聊天类型：用户对用户*/
+                },
+                {
+                    userId : '003',
+                    userName: '路人丙',
+                    avatar: '🌋',
+                    avatarUrl: '',
+                    date: '2020/04/14',
+                    msg: '还是不在啊🍏？',
+                    isCurrent: false,
+                    type: '1',  /*聊天类型：用户对用户*/
+                },
+            ],
+            currChatWindow: {   /*当前聊天窗口信息*/
+                currentFriendUserId: '001',
+                currentFriendType: '1', /*好友类型：用户*/
+                currentFriendName: '路人甲',
+                currentMessageContent: '🚝🚞🚋🚌🚍🚎🚏🚐🚑🚒🚓🚔🚕🚖🚗🚘🚚🚛🚜🚲⛽🚨🚥🚦🚧⚓⛵🚤🚢✈💺🚁🚟🚠🚡🚀🎑🗿🛂🛃🛄🛅\n' +
+                    '                                <img src="/images/title.png" style="width: 50px; height: 25x;">',
+                msgList: [
+                    {
+                        recordId: '00001',
+                        t: "1",
+                        msg: '你今天开心么？',
+                        date: '2020/04/05',
+                        receiverId: 'feng',
+                        receiverName: 'jianbo',
+                        receiverAvatar: '🌋',
+                        receiverAvatarUrl: '',
+                        senderId: 'test',
+                        senderName: '路人甲',
+                        senderAvatar: '🌋',
+                        senderAvatarUrl: '',
+                        isMe: false,
+
+                    },
+                    {
+                        recordId: '00001',
+                        t: "1",
+                        msg: 'sadfasdfsadfasdfasdfsadf？',
+                        date: '2020/04/05',
+                        receiverId: 'test',
+                        receiverName: '路人甲',
+                        receiverAvatar: '🌋',
+                        receiverAvatarUrl: '',
+                        senderId: 'feng',
+                        senderName: 'jianbo',
+                        senderAvatar: '🌋',
+                        senderAvatarUrl: '',
+                        isMe: true,
+                    },
+                ],
+            },
+        },
         formSearchAuthUserRole: {},
         formSearchAuthRoleModule: {},
         formSearchAuthRole: {},
@@ -1501,6 +1576,9 @@ new Vue({
         currNotice: {},
         //uploadFileList: [{name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}, {name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}],
         uploadFileList: [],
+        uploadFJList: [],
+        uploadFJName: [],
+        uploadFJUrl: [],
         continent: '',
         nation: '',
         rules: {},
@@ -3058,6 +3136,14 @@ new Vue({
             params.append('sendSms', that.formNews.sendSms ? '1' : '0');
             params.append('sendMail', that.formNews.sendMail ? "1" : "0");
              */
+            let fileUrl = '';
+            let fileName = '';
+            if(that.uploadFJUrl != null && that.uploadFJUrl.length > 0){
+            	fileUrl = that.uploadFJUrl.join(',');
+            }
+            if(that.uploadFJName != null && that.uploadFJName.length > 0){
+            	fileName = that.uploadFJName.join(',');
+            }
             let _data = {
                 "recordId" : that.formNews.recordId || '',
                 "receiverId" : that.formNews.receiverId,
@@ -3073,6 +3159,8 @@ new Vue({
                 "endTime" : that.formNews.endTime || '',
                 "receiverType" : that.formNews.receiverType || '0',
                 "recordFlag": that.formNews.recordFlag || '1',
+                "fileUrl" : fileUrl,
+                "fileName": fileName
             };
             if(that.currAction === 'edit') {
                 operName = '修改';
@@ -3671,6 +3759,9 @@ new Vue({
                             		sendSms:0,
                             		sendMail:0
                             };
+                            that.uploadFJList =[];
+                            that.uploadFJName = [];
+                            that.uploadFJUrl = [];
                         }
                         else {
                             entry = that.newsArray[scopeIndex];
@@ -3973,10 +4064,39 @@ new Vue({
             
             return isImg && isLt2M;
         },
+        beforeFJAvatarUpload(file) {
+
+            let isLt2M = file.size / 1024 / 1024 < 3;
+
+
+            if (!isLt2M) {
+              this.$message.error('单个附件大小不能超过 3MB!');
+              return false;
+            }
+            
+            return true;
+        },
         setImgUrl(response, file, fileList){
         	let that = this;
         	
         	that.formnddyxxcj.imageUrl = response.data.destName;
+        },
+        handleFJSuccess(response, file, fileList){
+        	let that = this;
+        	that.uploadFJUrl.push(response.data.filePath);
+        	that.uploadFJName.push(response.data.fileName);
+        	console.log(that.uploadFJUrl);
+        	console.log(that.uploadFJName);
+        	
+        },
+        handleFJRemove(file, fileList){
+        	let that = this;
+        	console.log(file)
+        	console.log(file.response.data.filePath)
+        	let urlIndex = that.uploadFJUrl.indexOf(file.response.data.filePath);
+        	let nameIndex = that.uploadFJName.indexOf(file.response.data.fileName);
+        	that.uploadFJUrl.splice(urlIndex,1);
+        	that.uploadFJName.splice(nameIndex,1);
         },
         renderHeader (h,{column}) { // h即为cerateElement的简写，具体可看vue官方文档
         	  return h(
@@ -6774,7 +6894,15 @@ new Vue({
             // this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
             this.$message.warning(`当前限制选择多个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
         },
-
+        /**
+         * 执行上传文件
+         * @param files 文件组
+         * @param fileList 文件列表
+         */
+        handleUploadExceedNews(files, fileList) {
+            // this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+            this.$message.warning(`附件最多为5个，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+        },
         /**
          * 文件上传之前
          * @param file 文件
@@ -6794,7 +6922,19 @@ new Vue({
             that.formRes.originalName = originalName;
             return that.$confirm(`确定移除 ${ file.name }？`);
         },
-
+        beforeFJRemove(file, fileList) {
+            let that = this;
+            let originalName = '';
+            if (fileList && fileList instanceof Array) {
+                let _names = [];
+                for (let i = 0; i < fileList.length; i ++) {
+                    _names.push(fileList[i].name);
+                }
+                originalName = _names.join(";");
+            }
+            that.formRes.originalName = originalName;
+            return true;
+        },
         /**
          * 文件上传之前
          * @param file 文件
@@ -8626,6 +8766,59 @@ new Vue({
             let that = this;
             that.formSearchRes.assTypeId = val;
             that.loadResList('', 1, that.pager.res.pageSize);
+        },
+
+        /**
+         * 聊天：好友列表项选择事件处理
+         * @param __idx 序号
+         */
+        chatFriendItemChangeHandle: function(__idx) {
+            let that = this;
+            console.log('chatFriendItemChangeHandle', __idx);
+            let __friends = that.currUserChat.friends;
+            let __friendsLen = __friends.length;
+            if (__friendsLen > 0) {
+                for (let i = 0; i < __friendsLen; i ++) {
+                    let __friend = __friends[i];
+                    if (i == __idx) {
+                        __friend.isCurrent = true;
+                        // 重新设置当前窗口显示信息
+                        that.currUserChat.currChatWindow.currentFriendName = __friend.userName;
+                        // 重新加载当前窗口信息列表
+                        // currUserChat.currChatWindow.msgList = ....
+                    }
+                    else {
+                        __friend.isCurrent = false;
+                    }
+                }
+            }
+        },
+
+        /**
+         * 显示聊天处理
+         * @param chatId
+         */
+        showWebChatHandle: function(chatId) {
+            console.log('showWebchatHandle', chatId)
+            let that = this;
+            let webchat = document.getElementById(chatId);
+            if (webchat.style.visibility == 'hidden') {
+                webchat.style.visibility = 'visible';
+            }
+            else {
+                webchat.style.visibility = 'hidden';
+            }
+        },
+
+        /**
+         * 聊天表情处理
+         * @param emojiId 表情序号
+         * @param emoji 表情信息
+         */
+        chatEmojiChangeHandle: function(emojiId, emoji) {
+            let that = this;
+            console.log('chatEmojiChangeHandle', emojiId, emoji);
+            that.currUserChat.currChatWindow.currentMessageContent += emoji.emoji;
         },
     },
     props: {
