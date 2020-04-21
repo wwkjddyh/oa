@@ -1278,6 +1278,7 @@ new Vue({
                     date: '2020/04/14',
                     msg: '你在么？',
                     isCurrent: true,
+                    type: '1',  /*聊天类型：用户对用户*/
                 },
                 {
                     userId : '002',
@@ -1287,6 +1288,7 @@ new Vue({
                     date: '2020/04/14',
                     msg: '你不在么？',
                     isCurrent: false,
+                    type: '1',  /*聊天类型：用户对用户*/
                 },
                 {
                     userId : '003',
@@ -1296,8 +1298,47 @@ new Vue({
                     date: '2020/04/14',
                     msg: '还是不在啊🍏？',
                     isCurrent: false,
+                    type: '1',  /*聊天类型：用户对用户*/
                 },
             ],
+            currChatWindow: {   /*当前聊天窗口信息*/
+                currentFriendUserId: '001',
+                currentFriendType: '1', /*好友类型：用户*/
+                currentFriendName: '路人甲',
+                msgList: [
+                    {
+                        recordId: '00001',
+                        t: "1",
+                        msg: '你今天开心么？',
+                        date: '2020/04/05',
+                        receiverId: 'feng',
+                        receiverName: 'jianbo',
+                        receiverAvatar: '🌋',
+                        receiverAvatarUrl: '',
+                        senderId: 'test',
+                        senderName: '路人甲',
+                        senderAvatar: '🌋',
+                        senderAvatarUrl: '',
+                        isMe: false,
+
+                    },
+                    {
+                        recordId: '00001',
+                        t: "1",
+                        msg: 'sadfasdfsadfasdfasdfsadf？',
+                        date: '2020/04/05',
+                        receiverId: 'test',
+                        receiverName: '路人甲',
+                        receiverAvatar: '🌋',
+                        receiverAvatarUrl: '',
+                        senderId: 'feng',
+                        senderName: 'jianbo',
+                        senderAvatar: '🌋',
+                        senderAvatarUrl: '',
+                        isMe: true,
+                    },
+                ],
+            },
         },
         formSearchAuthUserRole: {},
         formSearchAuthRoleModule: {},

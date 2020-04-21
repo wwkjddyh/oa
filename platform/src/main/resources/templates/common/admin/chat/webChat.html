@@ -48,7 +48,7 @@
                         </div>
                         <div class="webchat-right-top-area-body">
                             <div class="webchat-right-top-area-body-name">
-                                <span id="currentFriendName">路人丙</span>
+                                <span id="currentFriendName">{{currUserChat.currChatWindow.currentFriendName}}</span>
                             </div>
                             <div></div>
 
@@ -57,29 +57,30 @@
                 </div>
                 <div class="webchat-right-messages">
                     <div class="messages" id="messageList">
-                        <div class="message-left">
-                            <div class="message-left-avatar">
-                                <div>🌋</div>
-                                <div class="avatar-triangle-left"></div>
-                            </div>
-                            <div class="message-left-message">
-                                <div class="message-left-message_title"><span>张三</span></div>
-                                <div class="message-left-message_content">
-                                    sadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadf
-                                    sadfasdfsadfasdfasdfsadfsadfasdfsadfasdfasdfsadf
+                        <template v-for="(__msg, index) in currUserChat.currChatWindow.msgList">
+                            <div class="message-left" v-if="!__msg.isMe">
+                                <div class="message-left-avatar">
+                                    <div>{{__msg.senderAvatar}}</div>
+                                    <div class="avatar-triangle-left"></div>
+                                </div>
+                                <div class="message-left-message">
+                                    <div class="message-left-message_title"><span>{{__msg.senderName}}</span></div>
+                                    <div class="message-left-message_content">
+                                        {{__msg.msg}}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="message-right">
-                            <div class="message-right-message">
-                                <div class="message-right-message_title"><span>张三</span></div>
-                                <div class="message-right-message_content">sadfasdfsadfasdfasdfsadf</div>
+                            <div class="message-right" v-if="__msg.isMe">
+                                <div class="message-right-message">
+                                    <div class="message-right-message_title"><span>{{__msg.senderName}}</span></div>
+                                    <div class="message-right-message_content">{{__msg.msg}}</div>
+                                </div>
+                                <div class="message-right-avatar">
+                                    <div class="avatar-triangle-right"></div>
+                                    <div>{{__msg.senderAvatar}}</div>
+                                </div>
                             </div>
-                            <div class="message-right-avatar">
-                                <div class="avatar-triangle-right"></div>
-                                <div>🌋</div>
-                            </div>
-                        </div>
+                        </template>
                     </div>
                 </div>
                 <div class="webchat-right-sendArea-container">
