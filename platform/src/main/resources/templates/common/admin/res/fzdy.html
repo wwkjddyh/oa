@@ -5,7 +5,7 @@
         <el-aside width="20%" >
             <div th:replace="/common/admin/dzz/dzzTree :: content"/>
         </el-aside>
-        <el-main style="padding-top:0;">
+        <el-main style="padding: 0 20px 20px 40px;">
             <el-breadcrumb separator-class="el-icon-arrow-right" v-if="fzdyBreadcrumbs.length != 0">
                 <el-breadcrumb-item v-for="(item, index) in fzdyBreadcrumbs">{{item.title}}</el-breadcrumb-item>
             </el-breadcrumb>

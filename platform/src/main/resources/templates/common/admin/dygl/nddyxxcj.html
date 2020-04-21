@@ -5,7 +5,7 @@
 <div th:fragment="content"  >
  				<el-container style="border: 0;" >
 					  <el-aside style="width: 20%;"  v-loading ="dwjbxxLoading">
-				    <el-tree :data="userUpperOrg" default-expand-all :props="dwjbxxProps" :expand-on-click-node="false" @node-click="nddyxxcjHandleNodeClick">
+				    <el-tree :data="userUpperOrg"  :props="dwjbxxProps" :expand-on-click-node="false" @node-click="nddyxxcjHandleNodeClick">
 				    	<span style="align-items: center;justify-content: space-between;font-size: 16px;" slot-scope="{ node, data }">
 				    		<img v-if="data.orgType && data.orgType != `orgType1`" src="/images/icon/partyIcon.png" style="width: 16px;height: 16px;"/>
 				    		<img v-if="data.orgType && data.orgType == `orgType1`" src="/images/icon/partyIcon_red.png" style="width: 16px;height: 16px;"/>
@@ -13,7 +13,7 @@
 					      </span>
 				    </el-tree>
 				    </el-aside>
-			    <el-main style="padding-top:0px;height:100%;" v-if="dwjbxxMain == true" v-loading ="fullscreenLoading">
+			    <el-main style="padding: 0 20px 20px 40px;height:100%;" v-if="dwjbxxMain == true" v-loading ="fullscreenLoading">
 			    	<el-row>
 			    		<el-col :span="14">
 			    			<el-button plain @click="edit('nddyxxcj','','',true)" type="primary" size="small" v-if="dwjbxxMainAdd"><i class="el-icon-plus"></i>新增</el-button>

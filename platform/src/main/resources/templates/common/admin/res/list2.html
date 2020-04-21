@@ -50,7 +50,7 @@
     </el-form>
     <el-container style="border:0;" v-loading="orgCommitteeLoading">
 	    <el-aside style="width: 20%;" >
-	    	<el-tree :data="committeeOrg" default-expand-all :props="dwjbxxProps" :expand-on-click-node="false" @node-click="getCurrentData">
+	    	<el-tree :data="committeeOrg"  :props="dwjbxxProps" :expand-on-click-node="false" @node-click="getCurrentData">
 		    	<span style="align-items: center;justify-content: space-between;font-size: 16px;" slot-scope="{ node, data }">
 		    		<img v-if="data.orgType && data.orgType != `orgType1`" src="/images/icon/partyIcon.png" style="width: 16px;height: 16px;"/>
 		    		<img v-if="data.orgType && data.orgType == `orgType1`" src="/images/icon/partyIcon_red.png" style="width: 16px;height: 16px;"/>
@@ -58,7 +58,7 @@
 			      </span>
 		    </el-tree>
 	    </el-aside>
-	    <el-main style="padding-top:0;" v-if="resTableView">
+	    <el-main style="padding: 0 20px 20px 40px;" v-if="resTableView">
 	        <el-button plain @click="edit('res','','',true)" size="small" icon="el-icon-upload2">新建上传</el-button>
 	        <template  v-if="userOwnedModuleMaps['viewOrg'] && userOwnedModuleMaps['viewOrg'] != undefined">
 	        <el-cascader v-model="formSearchRes.orgId"
