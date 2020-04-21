@@ -5,8 +5,8 @@
     <div class="webchat-main-default" id="webchat-main">
         <div class="webchat-container" id="webchat-container">
             <div class="webchat-container-left">
-                <template v-for="__friend in currUserChat.friends">
-                    <div class="webchat-container-left_item item-active-bgcolor" onclick="changeFriendsBgColor(this)" v-if="__friend.isCurrent">
+                <template v-for="(__friend, index) in currUserChat.friends">
+                    <div class="webchat-container-left_item item-active-bgcolor" @click="chatFriendItemChangeHandle(index)" v-if="__friend.isCurrent">
                         <div class="webchat-container-left_item-area">
                             <div class="webchat-container-left_item-area-avatar">
                                 {{__friend.avatar}}
@@ -20,7 +20,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)" v-if="__friend.isCurrent == false">
+                    <div class="webchat-container-left_item" @click="chatFriendItemChangeHandle(index)" v-if="!__friend.isCurrent">
                         <div class="webchat-container-left_item-area">
                             <div class="webchat-container-left_item-area-avatar">
                                 {{__friend.avatar}}

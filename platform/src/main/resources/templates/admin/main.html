@@ -44,22 +44,22 @@
         
     </style>
     <script type="text/javascript">
-        function changeFriendsBgColor(_this) {
-            // 获取所有兄弟节点
-            var siblings  = [];
-            var items = _this.parentNode.children;
-            for (var i = 0; i < items.length; i ++) {
-                var _item = items[i];
-                if (_item !== _this) {
-                    siblings.push(_item);
-                }
-            }
-            _this.className = 'webchat-container-left_item item-active-bgcolor';
-            //document.getElementById("currentFriendName").innerHTML = '';
-            for (var i = 0; i < siblings.length; i ++) {
-                siblings[i].className = 'webchat-container-left_item';
-            }
-        }
+        // function changeFriendsBgColor(_this) {
+        //     // 获取所有兄弟节点
+        //     var siblings  = [];
+        //     var items = _this.parentNode.children;
+        //     for (var i = 0; i < items.length; i ++) {
+        //         var _item = items[i];
+        //         if (_item !== _this) {
+        //             siblings.push(_item);
+        //         }
+        //     }
+        //     _this.className = 'webchat-container-left_item item-active-bgcolor';
+        //     //document.getElementById("currentFriendName").innerHTML = '';
+        //     for (var i = 0; i < siblings.length; i ++) {
+        //         siblings[i].className = 'webchat-container-left_item';
+        //     }
+        // }
         function openOrCloseWebChat() {
             var webChatMain = document.getElementById('#webchat-main');
             console.log('webChatMain', webChatMain);

@@ -8699,6 +8699,32 @@ new Vue({
             that.formSearchRes.assTypeId = val;
             that.loadResList('', 1, that.pager.res.pageSize);
         },
+
+        /**
+         * 聊天：好友列表项选择事件处理
+         * @param __idx
+         */
+        chatFriendItemChangeHandle: function(__idx) {
+            let that = this;
+            console.log('chatFriendItemChangeHandle', __idx);
+            let __friends = that.currUserChat.friends;
+            let __friendsLen = __friends.length;
+            if (__friendsLen > 0) {
+                for (let i = 0; i < __friendsLen; i ++) {
+                    let __friend = __friends[i];
+                    if (i == __idx) {
+                        __friend.isCurrent = true;
+                        // 重新设置当前窗口显示信息
+                        that.currUserChat.currChatWindow.currentFriendName = __friend.userName;
+                        // 重新加载当前窗口信息列表
+                        // currUserChat.currChatWindow.msgList = ....
+                    }
+                    else {
+                        __friend.isCurrent = false;
+                    }
+                }
+            }
+        },
     },
     props: {
 
