@@ -5,202 +5,36 @@
     <div class="webchat-main-default" id="webchat-main">
         <div class="webchat-container" id="webchat-container">
             <div class="webchat-container-left">
-                <div class="webchat-container-left_item" @click="closeWebchatHandle">
-                    <div class="webchat-container-left_item-area">
-                        <div class="webchat-container-left_item-area-avatar">
-                            🌋
-                        </div>
-                        <div class="webchat-container-left_item-area-message">
-                            <div class="webchat-container-left_item-area-message-top">
-                                <div class="webchat-container-left_item-area-message-name">路人甲</div>
-                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                <template v-for="__friend in currUserChat.friends">
+                    <div class="webchat-container-left_item item-active-bgcolor" onclick="changeFriendsBgColor(this)" v-if="__friend.isCurrent">
+                        <div class="webchat-container-left_item-area">
+                            <div class="webchat-container-left_item-area-avatar">
+                                {{__friend.avatar}}
                             </div>
-                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                            <div class="webchat-container-left_item-area-message">
+                                <div class="webchat-container-left_item-area-message-top">
+                                    <div class="webchat-container-left_item-area-message-name">{{__friend.userName}}</div>
+                                    <div class="webchat-container-left_item-area-message-time">{{__friend.date}}</div>
+                                </div>
+                                <div class="webchat-container-left_item-area-message-content">{{__friend.msg}}</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
-                    <div class="webchat-container-left_item-area">
-                        <div class="webchat-container-left_item-area-avatar">
-                            🌋
-                        </div>
-                        <div class="webchat-container-left_item-area-message">
-                            <div class="webchat-container-left_item-area-message-top">
-                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
-                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
+                    <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)" v-if="__friend.isCurrent == false">
+                        <div class="webchat-container-left_item-area">
+                            <div class="webchat-container-left_item-area-avatar">
+                                {{__friend.avatar}}
                             </div>
-                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
+                            <div class="webchat-container-left_item-area-message">
+                                <div class="webchat-container-left_item-area-message-top">
+                                    <div class="webchat-container-left_item-area-message-name">{{__friend.userName}}</div>
+                                    <div class="webchat-container-left_item-area-message-time">{{__friend.date}}</div>
+                                </div>
+                                <div class="webchat-container-left_item-area-message-content">{{__friend.msg}}</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="webchat-container-left_item item-active-bgcolor" onclick="changeFriendsBgColor(this)">
-                    <div class="webchat-container-left_item-area">
-                        <div class="webchat-container-left_item-area-avatar">
-                            🌋
-                        </div>
-                        <div class="webchat-container-left_item-area-message">
-                            <div class="webchat-container-left_item-area-message-top">
-                                <div class="webchat-container-left_item-area-message-name">路人丙</div>
-                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
-                            </div>
-                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
-                    <div class="webchat-container-left_item-area">
-                        <div class="webchat-container-left_item-area-avatar">
-                            🌋
-                        </div>
-                        <div class="webchat-container-left_item-area-message">
-                            <div class="webchat-container-left_item-area-message-top">
-                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
-                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
-                            </div>
-                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
-                    <div class="webchat-container-left_item-area">
-                        <div class="webchat-container-left_item-area-avatar">
-                            🌋
-                        </div>
-                        <div class="webchat-container-left_item-area-message">
-                            <div class="webchat-container-left_item-area-message-top">
-                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
-                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
-                            </div>
-                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
-                    <div class="webchat-container-left_item-area">
-                        <div class="webchat-container-left_item-area-avatar">
-                            🌋
-                        </div>
-                        <div class="webchat-container-left_item-area-message">
-                            <div class="webchat-container-left_item-area-message-top">
-                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
-                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
-                            </div>
-                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
-                    <div class="webchat-container-left_item-area">
-                        <div class="webchat-container-left_item-area-avatar">
-                            🌋
-                        </div>
-                        <div class="webchat-container-left_item-area-message">
-                            <div class="webchat-container-left_item-area-message-top">
-                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
-                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
-                            </div>
-                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
-                    <div class="webchat-container-left_item-area">
-                        <div class="webchat-container-left_item-area-avatar">
-                            🌋
-                        </div>
-                        <div class="webchat-container-left_item-area-message">
-                            <div class="webchat-container-left_item-area-message-top">
-                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
-                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
-                            </div>
-                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
-                    <div class="webchat-container-left_item-area">
-                        <div class="webchat-container-left_item-area-avatar">
-                            🌋
-                        </div>
-                        <div class="webchat-container-left_item-area-message">
-                            <div class="webchat-container-left_item-area-message-top">
-                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
-                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
-                            </div>
-                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
-                    <div class="webchat-container-left_item-area">
-                        <div class="webchat-container-left_item-area-avatar">
-                            🌋
-                        </div>
-                        <div class="webchat-container-left_item-area-message">
-                            <div class="webchat-container-left_item-area-message-top">
-                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
-                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
-                            </div>
-                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
-                    <div class="webchat-container-left_item-area">
-                        <div class="webchat-container-left_item-area-avatar">
-                            🌋
-                        </div>
-                        <div class="webchat-container-left_item-area-message">
-                            <div class="webchat-container-left_item-area-message-top">
-                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
-                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
-                            </div>
-                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
-                    <div class="webchat-container-left_item-area">
-                        <div class="webchat-container-left_item-area-avatar">
-                            🌋
-                        </div>
-                        <div class="webchat-container-left_item-area-message">
-                            <div class="webchat-container-left_item-area-message-top">
-                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
-                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
-                            </div>
-                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
-                    <div class="webchat-container-left_item-area">
-                        <div class="webchat-container-left_item-area-avatar">
-                            🌋
-                        </div>
-                        <div class="webchat-container-left_item-area-message">
-                            <div class="webchat-container-left_item-area-message-top">
-                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
-                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
-                            </div>
-                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="webchat-container-left_item" onclick="changeFriendsBgColor(this)">
-                    <div class="webchat-container-left_item-area">
-                        <div class="webchat-container-left_item-area-avatar">
-                            🌋
-                        </div>
-                        <div class="webchat-container-left_item-area-message">
-                            <div class="webchat-container-left_item-area-message-top">
-                                <div class="webchat-container-left_item-area-message-name">路人乙</div>
-                                <div class="webchat-container-left_item-area-message-time">2020/04/14</div>
-                            </div>
-                            <div class="webchat-container-left_item-area-message-content">asdasdfasdfasdfasda12123123123123sdfasdfasdfasdasdfasdfasdf</div>
-                        </div>
-                    </div>
-                </div>
+                </template>
             </div>
             <div id="webchat" class="webchat">
                 <div class="webchat-right-top">
