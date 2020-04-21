@@ -14,6 +14,7 @@ import com.oa.platform.util.DateUtil;
 import com.oa.platform.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.*;
 
 import java.io.IOException;
@@ -35,6 +36,7 @@ public class SystemWebSocketHandler implements WebSocketHandler {
 
     Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
 
+    @Autowired
     private MessageBiz messageBiz;
 
     static {
@@ -259,7 +261,7 @@ public class SystemWebSocketHandler implements WebSocketHandler {
             String msgGson = gson.toJson(info);
 
             String messageId = StringUtil.getRandomUUID();
-//            messageBiz.saveMessage("msg-platform-msg", from, to, msgGson, dateTime, messageId);
+            messageBiz.saveMessage("msg-platform-msg", from, to, msgGson, dateTime, messageId);
 
             List<UserMessage> userMessages = Lists.newArrayList();
             if (USER_SESSIONS.containsKey(from)) {
