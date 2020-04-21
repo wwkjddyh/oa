@@ -64,19 +64,7 @@
                     <el-input v-model="formNews.title" size="small" auto-complete="off" style="width: 650px;" maxlength="512" placeholder="标题"></el-input>
                     
                 </el-form-item>
-                 <el-form-item label="附件" prop="title" >
-                 	<el-upload
-                 	  style="width: 300px;" size="small"
-					  class="upload-demo"
-					  action="/api/file/upload"
-					  multiple
-					  :before-remove="beforeUploadRemove2"
-					  :on-success="handleUploadSuccess2"
-                   	  :on-error="handleUploadError"
-					  >
-					  <el-button size="mini" type="primary"><i class="el-icon-upload" style="font-size:20px"></i>选择文件</el-button>
-					</el-upload>
-                </el-form-item>
+                 
                 <el-form-item label="内容" prop="content">
                     <el-input v-model="formNews.content" type="textarea" size="small" auto-complete="off" :autosize="{minRows: 5, maxRows: 5}" style="width:650px;" maxlength="512" placeholder="内容"></el-input>
                     
@@ -99,7 +87,7 @@
                                :on-change="uploadFileChange"
                                :show-file-list="true"
                             >
-                        <el-button size="mini" type="primary">选择文件</el-button>
+                        <el-button icon="el-icon-upload" size="mini" type="primary">选择文件</el-button>
                     </el-upload>
                     <el-card v-if="currAction == 'edit' && formRes.isShowFileOriginalName == true" shadow="hover" style="width: 470px" body-style="{padding: '2px'}">
                         <div>文件名：{{formNews.currName || ''}}</div>
@@ -129,7 +117,7 @@
             </div>
         </el-card>
     </el-dialog>
-    <el-dialog :title="currNewsSendRecord.title" :visible.sync="dialogShow.viewNews" lock-scroll="true" center="true" width="30%">
+    <el-dialog class="detailDialog" :title="currNewsSendRecord.title" :visible.sync="dialogShow.viewNews" lock-scroll="true" center="true" width="30%" >
         <div style="width: 100%; text-align: center;color: #4f4f4f;font-size: 16px;">
             {{currNewsSendRecord.content}}
         </div>
