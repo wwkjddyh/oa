@@ -8863,110 +8863,199 @@ new Vue({
             let that = this;
             let currUserId = 'feng';
             // 从服务端接口获取
-            let __friends = [
-                {
-                    userId : '001',
-                    userName: '路人甲',
-                    avatar: '🌋',
-                    avatarUrl: '',
-                    date: '2020/04/14',
-                    msg: '你在么？',
-                    isCurrent: true,
-                    type: '1',  /*聊天类型：用户对用户*/
-                    msgArr: [   /*最新消息列表*/
-                        {
-                            recordId: '00001',
-                            t: "1",
-                            msg: '你今天开心么？',
-                            date: '2020/04/05',
-                            receiverId: 'feng',
-                            receiverName: 'jianbo',
-                            receiverAvatar: '🌋',
-                            receiverAvatarUrl: '',
-                            senderId: 'test',
-                            senderName: '路人甲',
-                            senderAvatar: '🌋',
-                            senderAvatarUrl: '',
-                            isMe: false,
+            axios.get("/api/chat/findFriendsLastestMessage", {params:{
+                    userId: currUserId
+                }})
+                .then(function(response){/*成功*/
+                    that.handleResponse(response);
+                    let data = response.data;
+                    if(parseInt(data.code) === 200) {
+                        let __data = data.data;
+                        console.log('findFriendsLastestMessage.data', __data)
+                        let __friends = [];
+                        let __activeFriend = {
+                            currentFriendUserId: '',
+                            currentFriendType: '',
+                            currentFriendName: '',
+                            currentMessageContent: '',
+                            msgList: [],
+                        };
+                        let myFriends = __data.friends || [];
+                        let myActiveFriend = __data.activeFriend || [];
+                        let myFriendsLen = myFriends.length;
+                        if (myFriendsLen > 0) {
+                            for (let i = 0; i < myFriendsLen; i ++) {
+                                let myFriendMsgArr = [];
+                                let myFriend = myFriends[i];
+                                let _frendId = '', _friendName = '';
+                                if (myFriend.senderId === currUserId) {
+                                    _frendId = myFriend.receiverId || '';
+                                    _friendName = myFriend.receiverName || '';
+                                }
+                                else if (myFriend.receiverId === currUserId) {
+                                    _frendId = myFriend.senderId || '';
+                                    _friendName = myFriend.senderName || '';
+                                }
+                                if (i == 0) {
+                                    for (let j = 0; j < myActiveFriend.length; j ++) {
+                                        let _myActiveFriendMsg = myActiveFriend[i];
+                                        myFriendMsgArr.push({
+                                            recordId: _myActiveFriendMsg.recordId,
+                                            t: "1",
+                                            msg: _myActiveFriendMsg.content || '',
+                                            date: _myActiveFriendMsg.recordTime || '',
+                                            receiverId: _myActiveFriendMsg.receiverId || '',
+                                            receiverName: _myActiveFriendMsg.receiverName || '',
+                                            receiverAvatar: '🌋',
+                                            receiverAvatarUrl: '',
+                                            senderId: _myActiveFriendMsg.senderId || '',
+                                            senderName: _myActiveFriendMsg.senderName || '',
+                                            senderAvatar: '🌋',
+                                            senderAvatarUrl: '',
+                                            isMe: _myActiveFriendMsg.senderId == currUserId,
+                                        })
+                                    }
 
-                        },
-                        {
-                            recordId: '00001',
-                            t: "1",
-                            msg: 'sadfasdfsadfasdfasdfsadf？',
-                            date: '2020/04/05',
-                            receiverId: 'test',
-                            receiverName: '路人甲',
-                            receiverAvatar: '🌋',
-                            receiverAvatarUrl: '',
-                            senderId: 'feng',
-                            senderName: 'jianbo',
-                            senderAvatar: '🌋',
-                            senderAvatarUrl: '',
-                            isMe: true,
-                        },
-                    ],
-                },
-                {
-                    userId : '002',
-                    userName: '路人乙',
-                    avatar: '🌋',
-                    avatarUrl: '',
-                    date: '2020/04/14',
-                    msg: '你不在么？',
-                    isCurrent: false,
-                    type: '1',  /*聊天类型：用户对用户*/
-                    msgArr: [],
-                },
-                {
-                    userId : '003',
-                    userName: '路人丙',
-                    avatar: '🌋',
-                    avatarUrl: '',
-                    date: '2020/04/14',
-                    msg: '还是不在啊🍏？',
-                    isCurrent: false,
-                    type: '1',  /*聊天类型：用户对用户*/
-                    msgArr: [],
-                },
-            ];
+                                    __activeFriend = {
+                                        currentFriendUserId: _frendId || '',
+                                        currentFriendType:  '1',
+                                        currentFriendName: _friendName || '',
+                                        currentMessageContent: myFriend.content || '',
+                                        msgList: myFriendMsgArr || [],
+                                    };
+                                }
+                                __friends.push({
+                                    msgId: myFriend.recordId || '',
+                                    userId : _frendId,
+                                    userName: _friendName,
+                                    avatar: '🌋',
+                                    avatarUrl: '',
+                                    date: myFriend.recordTime || '',
+                                    msg: myFriend.content || '',
+                                    isCurrent: i == 0,
+                                    type: '1',  /*聊天类型：用户对用户*/
+                                    msgArr: myFriendMsgArr,
+                                });
+                            }
+                        }
 
-            let __activeFriend = {
-                currentFriendUserId: '',
-                currentFriendType: '',
-                currentFriendName: '',
-                currentMessageContent: '',
-                msgList: [],
-            };
+                        that.currUserChat.friends = __friends;
+                        that.currUserChat.currChatWindow = __activeFriend;
 
-            for (let i = 0; i < __friends.length; i ++) {
-                let __friend = __friends[i];
-                if (i === 0) {  // 默认取最新的一条记录以及对应的好友信息
-                    __activeFriend = {
-                        currentFriendUserId: __friend.userId || '',
-                        currentFriendType: __friend.type || '',
-                        currentFriendName: __friend.userName || '',
-                        currentMessageContent: __friend.msg || '',
-                        msgList: __friend.msgArr || [],
-                    };
-                }
-                if (__friend.isCurrent === true) {  // 如果有当前好友，则重新设置当前正在聊天的好友
-                    __activeFriend = {
-                        currentFriendUserId: __friend.userId || '',
-                        currentFriendType: __friend.type || '',
-                        currentFriendName: __friend.userName || '',
-                        currentMessageContent: __friend.msg || '',
-                        msgList: __friend.msgArr || [],
-                    };
-                }
-            }
+                        // 打开窗口
+                        that.currUserChat.chatShow = true;
+                        that.$forceUpdate();
+                    }
 
-            that.currUserChat.friends = __friends;
-            that.currUserChat.currChatWindow = __activeFriend;
+                })
+                .catch(function(err){/*异常*/
 
-            // 打开窗口
-            that.currUserChat.chatShow = true;
-            that.$forceUpdate();
+                });
+
+            // let __friends = [
+            //     {
+            //         userId : '001',
+            //         userName: '路人甲',
+            //         avatar: '🌋',
+            //         avatarUrl: '',
+            //         date: '2020/04/14',
+            //         msg: '你在么？',
+            //         isCurrent: true,
+            //         type: '1',  /*聊天类型：用户对用户*/
+            //         msgArr: [   /*最新消息列表*/
+            //             {
+            //                 recordId: '00001',
+            //                 t: "1",
+            //                 msg: '你今天开心么？',
+            //                 date: '2020/04/05',
+            //                 receiverId: 'feng',
+            //                 receiverName: 'jianbo',
+            //                 receiverAvatar: '🌋',
+            //                 receiverAvatarUrl: '',
+            //                 senderId: 'test',
+            //                 senderName: '路人甲',
+            //                 senderAvatar: '🌋',
+            //                 senderAvatarUrl: '',
+            //                 isMe: false,
+            //
+            //             },
+            //             {
+            //                 recordId: '00001',
+            //                 t: "1",
+            //                 msg: 'sadfasdfsadfasdfasdfsadf？',
+            //                 date: '2020/04/05',
+            //                 receiverId: 'test',
+            //                 receiverName: '路人甲',
+            //                 receiverAvatar: '🌋',
+            //                 receiverAvatarUrl: '',
+            //                 senderId: 'feng',
+            //                 senderName: 'jianbo',
+            //                 senderAvatar: '🌋',
+            //                 senderAvatarUrl: '',
+            //                 isMe: true,
+            //             },
+            //         ],
+            //     },
+            //     {
+            //         userId : '002',
+            //         userName: '路人乙',
+            //         avatar: '🌋',
+            //         avatarUrl: '',
+            //         date: '2020/04/14',
+            //         msg: '你不在么？',
+            //         isCurrent: false,
+            //         type: '1',  /*聊天类型：用户对用户*/
+            //         msgArr: [],
+            //     },
+            //     {
+            //         userId : '003',
+            //         userName: '路人丙',
+            //         avatar: '🌋',
+            //         avatarUrl: '',
+            //         date: '2020/04/14',
+            //         msg: '还是不在啊🍏？',
+            //         isCurrent: false,
+            //         type: '1',  /*聊天类型：用户对用户*/
+            //         msgArr: [],
+            //     },
+            // ];
+            //
+            // let __activeFriend = {
+            //     currentFriendUserId: '',
+            //     currentFriendType: '',
+            //     currentFriendName: '',
+            //     currentMessageContent: '',
+            //     msgList: [],
+            // };
+            //
+            // for (let i = 0; i < __friends.length; i ++) {
+            //     let __friend = __friends[i];
+            //     if (i === 0) {  // 默认取最新的一条记录以及对应的好友信息
+            //         __activeFriend = {
+            //             currentFriendUserId: __friend.userId || '',
+            //             currentFriendType: __friend.type || '',
+            //             currentFriendName: __friend.userName || '',
+            //             currentMessageContent: __friend.msg || '',
+            //             msgList: __friend.msgArr || [],
+            //         };
+            //     }
+            //     if (__friend.isCurrent === true) {  // 如果有当前好友，则重新设置当前正在聊天的好友
+            //         __activeFriend = {
+            //             currentFriendUserId: __friend.userId || '',
+            //             currentFriendType: __friend.type || '',
+            //             currentFriendName: __friend.userName || '',
+            //             currentMessageContent: __friend.msg || '',
+            //             msgList: __friend.msgArr || [],
+            //         };
+            //     }
+            // }
+            //
+            // that.currUserChat.friends = __friends;
+            // that.currUserChat.currChatWindow = __activeFriend;
+            //
+            // // 打开窗口
+            // that.currUserChat.chatShow = true;
+            // that.$forceUpdate();
         },
     },
     props: {
