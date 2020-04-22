@@ -1280,6 +1280,39 @@ new Vue({
                     msg: '你在么？',
                     isCurrent: true,
                     type: '1',  /*聊天类型：用户对用户*/
+                    msgArr: [   /*最新消息列表*/
+                        {
+                            recordId: '00001',
+                            t: "1",
+                            msg: '你今天开心么？',
+                            date: '2020/04/05',
+                            receiverId: 'feng',
+                            receiverName: 'jianbo',
+                            receiverAvatar: '🌋',
+                            receiverAvatarUrl: '',
+                            senderId: 'test',
+                            senderName: '路人甲',
+                            senderAvatar: '🌋',
+                            senderAvatarUrl: '',
+                            isMe: false,
+
+                        },
+                        {
+                            recordId: '00001',
+                            t: "1",
+                            msg: 'sadfasdfsadfasdfasdfsadf？',
+                            date: '2020/04/05',
+                            receiverId: 'test',
+                            receiverName: '路人甲',
+                            receiverAvatar: '🌋',
+                            receiverAvatarUrl: '',
+                            senderId: 'feng',
+                            senderName: 'jianbo',
+                            senderAvatar: '🌋',
+                            senderAvatarUrl: '',
+                            isMe: true,
+                        },
+                    ],
                 },
                 {
                     userId : '002',
@@ -1290,6 +1323,7 @@ new Vue({
                     msg: '你不在么？',
                     isCurrent: false,
                     type: '1',  /*聊天类型：用户对用户*/
+                    msgArr: [],
                 },
                 {
                     userId : '003',
@@ -1300,6 +1334,7 @@ new Vue({
                     msg: '还是不在啊🍏？',
                     isCurrent: false,
                     type: '1',  /*聊天类型：用户对用户*/
+                    msgArr: [],
                 },
             ],
             currChatWindow: {   /*当前聊天窗口信息*/
