@@ -660,7 +660,7 @@ const formStructConfig = {
             { required: true, message: '请输入姓名', trigger: 'blur' },
         ],
         birthTime: [
-            { required: true, message: '请选择出生日期', trigger: 'blur' },
+            { required: false, message: '请选择出生日期', trigger: 'blur' },
         ],
         gender: [
             { required: true, message: '请选择性别', trigger: 'blur' },
@@ -672,13 +672,13 @@ const formStructConfig = {
             { required: true, message: '请选择民族', trigger: 'blur' },
         ],
         hometown: [
-            { required: true, message: '请选择籍贯', trigger: 'blur' },
+            { required: false, message: '请选择籍贯', trigger: 'blur' },
         ],
         education: [
-            { required: true, message: '请填写学历', trigger: 'blur' },
+            { required: false, message: '请填写学历', trigger: 'blur' },
         ],
         leader:[
-            { required: true, message: '请选择是否为部门领导人', trigger: 'blur' },
+            { required: false, message: '请选择是否为部门领导人', trigger: 'blur' },
         ],
         assTypeId: [
             { required: true, message: '请选择其他分类', trigger: 'blur' },
@@ -706,16 +706,18 @@ const formStructConfig = {
             { required: true, message: '请填写批准组织级别', trigger: 'blur' },
         ],
         orgId: [
-            { required: true, message: '请选择所在党组织', trigger: 'blur' },
+            { required: false, message: '请选择所在党组织', trigger: 'blur' },
         ],
         
         mail: [
-            { required: true, message: '请填写邮箱', trigger: 'blur' },
+            { required: false, message: '请填写邮箱', trigger: 'blur' },
         ],
         phone: [
             { required: true, message: '请填写手机号码', trigger: 'blur' },
         ],
-        
+        idCard: [
+            { required: true, message: '请填写批准组织级别', trigger: 'blur' },
+        ],
     },
     chatEmojis : {
         "biaoqing0": { "emoji": "😀", "title": "", "titleEn": "", "unicode": "", },
