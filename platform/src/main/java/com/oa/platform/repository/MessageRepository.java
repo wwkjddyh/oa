@@ -4,6 +4,7 @@ import com.oa.platform.entity.Message;
 import com.oa.platform.entity.MessageRoom;
 import com.oa.platform.entity.UserMessage;
 import com.oa.platform.entity.UserMessageStat;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -102,4 +103,19 @@ public interface MessageRepository extends BaseRepository<Message, String> {
      * @return
      */
     List<Message> findUserMessage(Message message);
+
+    /**
+     * 查询用户和各个好友交流的最新一条记录
+     * @param userId 用户ID
+     * @return
+     */
+    List<Message> findFriendsLastestMessage(String userId);
+
+    /**
+     * 查询用户与(某个)朋友之间的聊天记录(倒序排列)
+     * @param userId 用户ID
+     * @param friendId 好友ID
+     * @return
+     */
+    List<Message> findUserChatHistoryWithFriend(@Param("userId")String userId, @Param("friendId") String friendId);
 }

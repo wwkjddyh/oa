@@ -120,5 +120,46 @@ public interface MessageService extends BaseService<Message, String> {
      */
     PageInfo<Message> searchUserMessage(Message message, int pageNum, int pageSize);
 
+    /**
+     * 查询用户和各个好友交流的最新一条记录
+     * @param userId 用户ID
+     * @return
+     */
+    List<Message> findFriendsLastestMessage(String userId);
 
+    /**
+     * 解析消息内容
+     * @param message 消息
+     */
+    void parsingMessageContent(Message message);
+
+    /**
+     * 解析消息内容
+     * @param messages 消息列表
+     */
+    void parsingMessageContent(List<Message> messages);
+
+    /**
+     * 解析消息内容
+     * @param pageInfo 分页信息
+     */
+    void parsingMessageContent(PageInfo<Message> pageInfo);
+
+    /**
+     * 查询用户与(某个)朋友之间的聊天记录(倒序排列)
+     * @param userId 用户ID
+     * @param friendId 好友ID
+     * @return
+     */
+    List<Message> getUserChatHistoryWithFriend(String userId, String friendId);
+
+    /**
+     * 分页查询用户与(某个)朋友之间的聊天记录(倒序排列)
+     * @param userId 用户ID
+     * @param friendId 好友ID
+     * @param pageNum 页码
+     * @param pageSize 每页记录数
+     * @return
+     */
+    PageInfo<Message> getUserChatHistoryWithFriend(String userId, String friendId, int pageNum, int pageSize);
 }

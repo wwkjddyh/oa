@@ -296,21 +296,21 @@ public class SystemWebSocketHandler implements WebSocketHandler {
                 if (receiverSession.isOpen()) { // 在线
                     try {
                         receiverSession.sendMessage(new TextMessage(msgGson));
-                        userMessages.add(new UserMessage(StringUtil.getRandomUUID(), from, messageId, CHAT_MESSAGE_STATUS_RECEIVE_SUCC));
+                        userMessages.add(new UserMessage(StringUtil.getRandomUUID(), to, messageId, CHAT_MESSAGE_STATUS_RECEIVE_SUCC));
                         System.err.println("接收者'"+to+"' 在线......会将数据保存到数据库表中，记录信息为发送---->receiverSession");
                     } catch (Exception e) {
                         logger.error("send message to '"+ to +"' error!",e);
-                        userMessages.add(new UserMessage(StringUtil.getRandomUUID(), from, messageId, CHAT_MESSAGE_STATUS_RECEIVE_FAIL));
+                        userMessages.add(new UserMessage(StringUtil.getRandomUUID(), to, messageId, CHAT_MESSAGE_STATUS_RECEIVE_FAIL));
                         System.err.println("接收者'"+to+"' 不在线......会将数据保存到数据库表中，记录信息为未发送--->2(发送异常)");
                     }
                 }
                 else {
-                    userMessages.add(new UserMessage(StringUtil.getRandomUUID(), from, messageId, CHAT_MESSAGE_STATUS_RECEIVE_FAIL));
+                    userMessages.add(new UserMessage(StringUtil.getRandomUUID(), to, messageId, CHAT_MESSAGE_STATUS_RECEIVE_FAIL));
                     System.err.println("接收者'"+to+"' 不在线......会将数据保存到数据库表中，记录信息为未发送--->002");
                 }
             }
             else {  // 如果接收者不在线，则将信息保存
-                userMessages.add(new UserMessage(StringUtil.getRandomUUID(), from, messageId, CHAT_MESSAGE_STATUS_RECEIVE_FAIL));
+                userMessages.add(new UserMessage(StringUtil.getRandomUUID(), to, messageId, CHAT_MESSAGE_STATUS_RECEIVE_FAIL));
                 System.err.println("接收者'"+to+"' 不在线......会将数据保存到数据库表中，记录信息为未发送--->002");
             }
 

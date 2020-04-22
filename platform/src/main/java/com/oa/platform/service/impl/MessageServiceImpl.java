@@ -9,9 +9,12 @@ import com.oa.platform.entity.UserMessage;
 import com.oa.platform.entity.UserMessageStat;
 import com.oa.platform.repository.MessageRepository;
 import com.oa.platform.service.MessageService;
+import com.oa.platform.util.StringUtil;
+import com.vdurmont.emoji.EmojiParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -160,6 +163,55 @@ public class MessageServiceImpl extends AbstractBaseService<Message, String> imp
     public PageInfo<Message> searchUserMessage(Message message, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<Message> records = messageRepository.findUserMessage(message == null ? new Message() : message);
+        return new PageInfo<>(records);
+    }
+
+    @Override
+    public List<Message> findFriendsLastestMessage(String userId) {
+        userId = StringUtil.trim(userId);
+        if ("".equals(userId)) {
+            return new ArrayList<>(0);
+        }
+        return messageRepository.findFriendsLastestMessage(userId);
+    }
+
+    @Override
+    public void parsingMessageContent(Message message) {
+        if (message != null) {
+            message.setContent(EmojiParser.parseToUnicode(message.getContent()));
+        }
+    }
+
+    @Override
+    public void parsingMessageContent(List<Message> messages) {
+        if (messages != null) {
+            messages.parallelStream().forEach(m -> parsingMessageContent(m));
+        }
+    }
+
+    @Override
+    public void parsingMessageContent(PageInfo<Message> pageInfo) {
+        if (pageInfo != null) {
+            List<Message> messages = pageInfo.getList();
+            if (messages == null) {
+                pageInfo.setList(new ArrayList<>(0));
+            }
+            else {
+                parsingMessageContent(messages);
+                pageInfo.setList(messages);
+            }
+        }
+    }
+
+    @Override
+    public List<Message> getUserChatHistoryWithFriend(String userId, String friendId) {
+        return messageRepository.findUserChatHistoryWithFriend(userId, friendId);
+    }
+
+    @Override
+    public PageInfo<Message> getUserChatHistoryWithFriend(String userId, String friendId, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Message> records = messageRepository.findUserChatHistoryWithFriend(userId, friendId);
         return new PageInfo<>(records);
     }
 }

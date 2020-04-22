@@ -544,7 +544,47 @@
         OR UPPER(sender_name) LIKE CONCAT('%',UPPER(#{key}),'%')
         )
       </if>
-    </trim>
+    </trim> ORDER BY record_time desc
+  </select>
+
+  <!-- 查询用户和各个好友交流的最新一条记录 -->
+  <select id="findFriendsLastestMessage" resultMap="message" parameterType="java.lang.String">
+     SELECT
+        record_id,category_id,sender_id,receiver_id,room_id,content,
+        DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+        record_flag,category_name,sender_name,receiver_name,room_title
+        FROM (
+            SELECT t1.*,t2.`name` category_name, t3.user_name sender_name,
+                t4.user_name receiver_name, t5.room_title
+            FROM (
+              SELECT t10.* FROM t_message t10, (select sender_id, max(record_time) record_time, 1 as is_me FROM t_message where record_flag = 1 and sender_id = #{userId} GROUP BY sender_id) t11 WHERE t10.sender_id = t11.sender_id and t10.record_time = t11.record_time
+              UNION ALL
+              SELECT t20.* FROM t_message t20, (select sender_id, max(record_time) record_time, 0 as is_me FROM t_message where record_flag = 1 and receiver_id = #{userId} GROUP BY sender_id) t21 WHERE t20.sender_id = t21.sender_id and t20.record_time = t21.record_time
+            ) t1
+                LEFT JOIN t_category t2 ON t1.category_id = t2.record_id
+                LEFT JOIN t_user t3 ON t1.sender_id = t3.user_id
+                LEFT JOIN t_user t4 ON t1.receiver_id = t4.user_id
+                LEFT JOIN t_message_room t5 ON t1.room_id = t5.room_id
+	    ) t ORDER BY record_time DESC
+  </select>
+
+  <!--查询用户与(某个)朋友之间的聊天记录(倒序排列)-->
+  <select id="findUserChatHistoryWithFriend" resultMap="message">
+    SELECT
+        record_id,category_id,sender_id,receiver_id,room_id,content,
+        DATE_FORMAT(record_time,'%Y-%m-%d %H:%i:%s') record_time,
+        record_flag,category_name,sender_name,receiver_name,room_title
+        FROM (
+            SELECT t1.*,t2.`name` category_name, t3.user_name sender_name,
+                t4.user_name receiver_name, t5.room_title
+            FROM (
+              SELECT * FROM t_message where record_flag = 1 and ((sender_id = #{userId} and receiver_id = #{friendId}) or (sender_id = #{friendId} and receiver_id = #{userId}))
+            ) t1
+                LEFT JOIN t_category t2 ON t1.category_id = t2.record_id
+                LEFT JOIN t_user t3 ON t1.sender_id = t3.user_id
+                LEFT JOIN t_user t4 ON t1.receiver_id = t4.user_id
+                LEFT JOIN t_message_room t5 ON t1.room_id = t5.room_id
+	    ) t ORDER BY record_time DESC
   </select>
 
 </mapper>

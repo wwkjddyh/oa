@@ -145,6 +145,14 @@ public abstract class BaseBiz {
     }
 
     /**
+     * 返回未授权信息
+     * @return
+     */
+    public Map<String, Object> getUnauthorizedErrorVo() {
+        return StringUtil.getResultVo(StatusCode.UNAUTHORIZED,"UNAUTHORIZED","");
+    }
+
+    /**
      * 获得页码
      * @param pageNum
      * @return
@@ -187,6 +195,7 @@ public abstract class BaseBiz {
     	resultVo.setResult(result);
     	return resultVo;
     }
+
     /**
      * 获得HttpServletRequest
      * @return

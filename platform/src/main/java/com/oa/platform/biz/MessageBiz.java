@@ -1,5 +1,8 @@
 package com.oa.platform.biz;
 
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.oa.platform.common.Constants;
 import com.oa.platform.entity.Message;
@@ -359,4 +362,80 @@ public class MessageBiz extends BaseBiz {
         }
         return ret;
     }
+
+    /**
+     * 查询用户和各个好友交流的最新一条记录
+     * @param userId 用户ID（必须）
+     * @return
+     */
+    public Map<String, Object> findFriendsLastestMessage(String userId) {
+        userId = StringUtil.trim(userId);
+        if ("".equals(userId)) {
+            ret = this.getParamErrorVo();
+        }
+        else {
+            try {
+                Map<String, Object> data = Maps.newHashMap();
+                List<Message> messages = messageService.findFriendsLastestMessage(userId);
+                List<Message> userChatHistoryWithFriend = Lists.newArrayList();
+                if (messages != null && !messages.isEmpty()) {
+                    messageService.parsingMessageContent(messages);
+                    Message firstMessage = messages.get(0);
+                    String fMsgReceiverId = StringUtil.trim(firstMessage.getReceiverId());
+                    String fMsgSenderId = StringUtil.trim(firstMessage.getSenderId());
+                    String friendId = "";
+                    if (fMsgReceiverId.equals(userId)) {
+                        friendId = fMsgSenderId;
+                    }
+                    else if (fMsgSenderId.equals(userId)) {
+                        friendId = fMsgReceiverId;
+                    }
+                    if (!"".equals(friendId)) {
+                        PageInfo<Message> pageInfo = messageService.getUserChatHistoryWithFriend(userId, friendId, 1, 10);
+                        userChatHistoryWithFriend = pageInfo.getList();
+                        messageService.parsingMessageContent(userChatHistoryWithFriend);
+                    }
+                }
+                data.put("friends", messages);
+                data.put("activeFriend", userChatHistoryWithFriend);
+                ret = this.getSuccessVo("", data);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+                ret = this.getErrorVo();
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 查询用户与(某个)朋友之间的聊天记录(倒序排列)
+     * @param userId 用户ID（必须）
+     * @param friendId 好友ID（必须）
+     * @param pageNum 页码
+     * @param pageSize 每页记录数
+     * @return
+     */
+    public Map<String, Object> getUserChatHistoryWithFriend(String userId, String friendId, int pageNum, int pageSize) {
+        userId = StringUtil.trim(userId);
+        friendId = StringUtil.trim(friendId);
+        if ("".equals(userId) || "".equals(friendId)) {
+            ret = this.getParamErrorVo();
+        }
+        else {
+            try {
+                PageInfo<Message> pageInfo = messageService.getUserChatHistoryWithFriend(userId, friendId, pageNum, pageSize);
+                messageService.parsingMessageContent(pageInfo);
+                ret = this.getPageInfo(pageInfo);
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+                loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+                ret = this.getErrorVo();
+            }
+        }
+        return ret;
+    }
+
 }
