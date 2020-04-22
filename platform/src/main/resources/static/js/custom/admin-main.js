@@ -5512,7 +5512,7 @@ new Vue({
         	}
         	axios.get("/api/org/getOrgUserListByOrg",{params:{
                 userName: searchName,
-                year: that.dyxxyear.year,
+               /* year: that.dyxxyear.year,*/
                 orgId: data.orgId
             }})
             .then(function(response){/*成功*/

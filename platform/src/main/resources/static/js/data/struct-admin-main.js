@@ -716,7 +716,7 @@ const formStructConfig = {
             { required: true, message: '请填写手机号码', trigger: 'blur' },
         ],
         idCard: [
-            { required: true, message: '请填写批准组织级别', trigger: 'blur' },
+            { required: true, message: '请填写身份证', trigger: 'blur' },
         ],
     },
     chatEmojis : {

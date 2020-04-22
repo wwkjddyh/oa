@@ -11,7 +11,7 @@
 
 				<span @click="dzzTreeNodeClickHandle(node)" class="nodeLableStyle"  :title="node.label" >{{ node.label }}</span>
 				<span v-if="showContent !== 'fzdy'">
-				  <span @click="edit('dwjbxx',11,null,true)" v-if="typeof node.data.isAdmin !='undefined'" style="color:#ccaf71;font-size: 16px;">根组织新增</span>
+				  <span @click="edit('dwjbxx',11,null,true)" v-if="typeof node.data.isAdmin !='undefined'" style="color:#ccaf71;font-size: 15px;">根组织新增</span>
 					<span  v-if="node.level <= 3 && typeof node.data.isAdmin == 'undefined'" @click="edit('dwjbxx',11,node.data,null)">
 						<img  src="/images/icon/addicon.png" style="width: 16px;height: 16px;"/>
 					</span>
