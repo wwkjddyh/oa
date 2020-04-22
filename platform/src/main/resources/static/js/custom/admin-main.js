@@ -8855,6 +8855,119 @@ new Vue({
             console.log('chatEmojiChangeHandle', emojiId, emoji);
             that.currUserChat.currChatWindow.currentMessageContent += emoji.emoji;
         },
+
+        /**
+         * 聊天：加载好友信息列表
+         */
+        loadChatUserFriends: function() {
+            let that = this;
+            let currUserId = 'feng';
+            // 从服务端接口获取
+            let __friends = [
+                {
+                    userId : '001',
+                    userName: '路人甲',
+                    avatar: '🌋',
+                    avatarUrl: '',
+                    date: '2020/04/14',
+                    msg: '你在么？',
+                    isCurrent: true,
+                    type: '1',  /*聊天类型：用户对用户*/
+                    msgArr: [   /*最新消息列表*/
+                        {
+                            recordId: '00001',
+                            t: "1",
+                            msg: '你今天开心么？',
+                            date: '2020/04/05',
+                            receiverId: 'feng',
+                            receiverName: 'jianbo',
+                            receiverAvatar: '🌋',
+                            receiverAvatarUrl: '',
+                            senderId: 'test',
+                            senderName: '路人甲',
+                            senderAvatar: '🌋',
+                            senderAvatarUrl: '',
+                            isMe: false,
+
+                        },
+                        {
+                            recordId: '00001',
+                            t: "1",
+                            msg: 'sadfasdfsadfasdfasdfsadf？',
+                            date: '2020/04/05',
+                            receiverId: 'test',
+                            receiverName: '路人甲',
+                            receiverAvatar: '🌋',
+                            receiverAvatarUrl: '',
+                            senderId: 'feng',
+                            senderName: 'jianbo',
+                            senderAvatar: '🌋',
+                            senderAvatarUrl: '',
+                            isMe: true,
+                        },
+                    ],
+                },
+                {
+                    userId : '002',
+                    userName: '路人乙',
+                    avatar: '🌋',
+                    avatarUrl: '',
+                    date: '2020/04/14',
+                    msg: '你不在么？',
+                    isCurrent: false,
+                    type: '1',  /*聊天类型：用户对用户*/
+                    msgArr: [],
+                },
+                {
+                    userId : '003',
+                    userName: '路人丙',
+                    avatar: '🌋',
+                    avatarUrl: '',
+                    date: '2020/04/14',
+                    msg: '还是不在啊🍏？',
+                    isCurrent: false,
+                    type: '1',  /*聊天类型：用户对用户*/
+                    msgArr: [],
+                },
+            ];
+
+            let __activeFriend = {
+                currentFriendUserId: '',
+                currentFriendType: '',
+                currentFriendName: '',
+                currentMessageContent: '',
+                msgList: [],
+            };
+
+            for (let i = 0; i < __friends.length; i ++) {
+                let __friend = __friends[i];
+                if (i === 0) {  // 默认取最新的一条记录以及对应的好友信息
+                    __activeFriend = {
+                        currentFriendUserId: __friend.userId || '',
+                        currentFriendType: __friend.type || '',
+                        currentFriendName: __friend.userName || '',
+                        currentMessageContent: __friend.msg || '',
+                        msgList: __friend.msgArr || [],
+                    };
+                }
+                if (__friend.isCurrent === true) {  // 如果有当前好友，则重新设置当前正在聊天的好友
+                    __activeFriend = {
+                        currentFriendUserId: __friend.userId || '',
+                        currentFriendType: __friend.type || '',
+                        currentFriendName: __friend.userName || '',
+                        currentMessageContent: __friend.msg || '',
+                        msgList: __friend.msgArr || [],
+                    };
+                }
+            }
+
+            that.currUserChat.friends = __friends;
+            that.currUserChat.currChatWindow = __activeFriend;
+
+            // 打开窗口
+            that.currUserChat.chatShow = true;
+            that.$forceUpdate();
+        },
     },
     props: {
 
