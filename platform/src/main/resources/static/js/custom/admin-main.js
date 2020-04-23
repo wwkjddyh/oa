@@ -75,7 +75,11 @@ new Vue({
                 case 'sysUsers':
                     that.getAllAuthRole();
                     that.getNddyxxOptions();
-                    
+                    if(that.isSuperAdmin){
+                  		that.getAdminUpperOrg();
+                  	}else{
+                  		that.getUserUpperOrgList();
+                  	}
                     that.loadSysUsers('',1, that.pager.sysUser.pageSize);
                     break;
                 case 'dwjbxx':
@@ -185,6 +189,11 @@ new Vue({
                 case 'nddyxxcj':
                 	that.setDyxxYear();
                 	that.dwjbxxMain = false;
+                	if(that.isSuperAdmin){
+                  		that.getAdminUpperOrg();
+                  	}else{
+                  		that.getUserUpperOrgList();
+                  	}
                 	//that.getUpperOrg();
                 	//that.loadDwjbxx();
                 	that.getNddyxxOptions();
@@ -1531,6 +1540,9 @@ new Vue({
         userUpperOrg:[],
         committeeOrg:[], //委员会架构
         resDlArray: [],
+        toApprove: '',
+        approveSuccess: '',
+        approveFail: '',
         orignUpperOrg:[],
         newsReceiveUsers: {
             '1fe30445-96ec-4a1d-88e2-749f29440bef2': {
@@ -3663,7 +3675,8 @@ new Vue({
                     	
                     	if(isAdd){
                     		that.formnddyxxcj={
-                    				leader:'0'
+                    				leader:'0',
+                    				orgId: that.nddyxxcjSelectOrg
                     		};
                     		that.imageInfo =[];
                     	}else{
@@ -3939,7 +3952,7 @@ new Vue({
                         }
                         that.dialogShow.partyDues = !that.dialogShow.partyDues;
                         break;
-                    case 'nddyxxcj':
+                    /*case 'nddyxxcj':
                     	if(isAdd){
                     		that.formnddyxxcj={
                     		    orgId: that.nddyxxcjSelectOrg
@@ -3948,7 +3961,7 @@ new Vue({
                     		
                     	}
                     	that.dialogShow.nddyxxcj = !that.dialogShow.nddyxxcj;
-                    	break;
+                    	break;*/
                     case 'res':
                         that.getResOtherTypes();
                         that.uploadFileList = [];
@@ -4545,7 +4558,44 @@ new Vue({
 
             that.dialogShow.roleModule = true;
         },
-
+        deletefzdyByOrg(){
+        	let that = this;
+        	that.$confirm('重置发展党员进度表将清空所有进度，是否重置', '警告', {
+                confirmButtonText: '是',
+                cancelButtonText: '否',
+                type: 'warning',
+                callback: action => {
+                    if(action === "cancel"){
+                        that.$message({
+                            type: 'info',
+                            message: "取消重置"
+                        });
+                    }else{ 
+                        let params = new URLSearchParams();
+                        params.append("orgId",that.fzdyCurrentOrg);
+                        that.dwjbxxLoading = true;
+                        axios.post("/api/preParty/deletefzdyByOrg",params)
+                            .then(function(response){
+                            	that.handleResponse(response);
+                                if(parseInt(response.data.code) === 200){
+                                	that.loadfzdy(that.fzdyCurrentOrg);
+                                    that.$message({
+                                        message: '重置成功',
+                                        type: 'success'
+                                    });
+                                }else{
+                                	that.$message.error("重置失败");
+                                }
+                                that.dwjbxxLoading = false;
+                            }).catch(function(err){
+                    			that.dwjbxxLoading = false;
+                    			that.$message.error("出现异常，请联系管理员");
+                            });
+                                
+                        }
+                    }
+            });
+        },
         /**
          * 用户-角色信息设置
          * @param user 用户信息
@@ -5016,11 +5066,11 @@ new Vue({
                           }
                       }
                       console.log(that.userOwnedMenus)
-                      if(that.isSuperAdmin){
+                      /*if(that.isSuperAdmin){
                   		that.getAdminUpperOrg();
                   	}else{
                   		that.getUserUpperOrgList();
-                  	}
+                  	}*/
                       that.getUserRootOrgList();
                   })
                   .catch(function(err){/*异常*/
@@ -6727,8 +6777,12 @@ new Vue({
         handlexxjlSearchByViewed(type){
         	let that = this;
         	if(type == '1'){
+        		//已收
         		that.receiveArtcleType='info';
         		that.sendArtcleType='';
+        		that.toApprove='',
+        		that.approveSuccess='',
+        		that.approveFail='',
         		that.newsOperate=false;
         		that.operateName = '操作';
         		that.operateIcon = 'el-icon-setting';
@@ -6741,13 +6795,68 @@ new Vue({
                 that.def_menu_id = 'xxjl';
                 that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
         	}else if(type == '0'){
+        		//已发
         		that.receiveArtcleType='';
         		that.sendArtcleType='info';
+        		that.toApprove='',
+        		that.approveSuccess='',
+        		that.approveFail='',
         		that.currentArticleFormTitle = '学习交流';
                 that.formSearchArticle.isBrief = true;
                 that.formSearchArticle.sendType = '1';
                 that.formSearchArticle.categoryId = '63c34dec-7447-4bbc-9ff3-af0f0686b07f';
                 that.formSearchArticle.flag='0';
+                //that.loadArticles('',1, that.pager.article.pageSize);
+                that.currAction = 'append';
+                that.def_menu_id = 'xxjl';
+                that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+        	}else if(type == '2'){
+        		//待审批
+        		that.receiveArtcleType='';
+        		that.sendArtcleType='';
+        		that.toApprove='info',
+        		that.approveSuccess='',
+        		that.approveFail='',
+        		that.currentArticleFormTitle = '学习交流';
+        		that.newsOperate=false;
+                that.formSearchArticle.isBrief = true;
+                that.formSearchArticle.sendType = '1';
+                that.formSearchArticle.categoryId = '63c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                that.formSearchArticle.flag='2';
+                //that.loadArticles('',1, that.pager.article.pageSize);
+                that.currAction = 'append';
+                that.def_menu_id = 'xxjl';
+                that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+        	}else if(type == '3'){
+        		//审批通过
+        		that.receiveArtcleType='';
+        		that.sendArtcleType='';
+        		that.toApprove='';
+        		that.approveSuccess='info';
+        		that.newsOperate=false;
+        		that.approveFail='';
+        		that.currentArticleFormTitle = '学习交流';
+                that.formSearchArticle.isBrief = true;
+                that.formSearchArticle.sendType = '1';
+                that.formSearchArticle.categoryId = '63c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                that.formSearchArticle.flag='3';
+                //that.loadArticles('',1, that.pager.article.pageSize);
+                that.currAction = 'append';
+                that.def_menu_id = 'xxjl';
+                that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+        	}else if(type == '4'){
+        		//审批未通过
+        		that.receiveArtcleType='';
+        		that.sendArtcleType='';
+        		that.toApprove='';
+        		that.approveSuccess='';
+        		that.newsOperate=false;
+        		that.approveFail='info';
+        		that.currentArticleFormTitle = '学习交流';
+                that.formSearchArticle.isBrief = true;
+                that.formSearchArticle.sendType = '1';
+                that.formSearchArticle.categoryId = '63c34dec-7447-4bbc-9ff3-af0f0686b07f';
+                that.formSearchArticle.flag='4';
                 //that.loadArticles('',1, that.pager.article.pageSize);
                 that.currAction = 'append';
                 that.def_menu_id = 'xxjl';
