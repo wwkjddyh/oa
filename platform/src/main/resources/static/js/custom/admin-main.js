@@ -3941,7 +3941,9 @@ new Vue({
                         break;
                     case 'nddyxxcj':
                     	if(isAdd){
-                    		that.formnddyxxcj={};
+                    		that.formnddyxxcj={
+                    		    orgId: that.nddyxxcjSelectOrg
+                            };
                     	}else{
                     		
                     	}
