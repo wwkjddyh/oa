@@ -57,4 +57,7 @@
 	    </if>
 	    order by record_time desc
 	</select>
+	<update id="deletefzdyByOrg">
+		update t_pre_party_memeber set record_flag='0' where org_id=#{orgId}
+	</update>
 </mapper>

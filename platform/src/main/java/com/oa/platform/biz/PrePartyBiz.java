@@ -61,4 +61,8 @@ public class PrePartyBiz extends BaseBiz{
 		prePartyService.save(preParty);
 		return getSuccessResultVo(null);
 	}
+
+	public void deletefzdyByOrg(String orgId) {
+		prePartyService.deletefzdyByOrg(orgId);
+	}
 }

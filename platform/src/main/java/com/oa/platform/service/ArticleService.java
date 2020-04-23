@@ -5,6 +5,7 @@ import com.oa.platform.entity.Article;
 import com.oa.platform.entity.BriefSendRecord;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 文章
@@ -75,4 +76,10 @@ public interface ArticleService extends BaseService<Article,String> {
 	void deleteArticleById(String recordId,String userId);
 
 	PageInfo<BriefSendRecord> searchBriefSendRecordBySendId(BriefSendRecord record, int pageNum, int pageSize);
+
+	PageInfo<BriefSendRecord> searchApproveXXJLRecord(String userId, int parseInt, String categoryId, int pageNum, int pageSize);
+
+	void updateRecordStatus(String briefId, String approveType);
+
+	void updateArtcleUser(String briefId, String briefId2, int status);
 }

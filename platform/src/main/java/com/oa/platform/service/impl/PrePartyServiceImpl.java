@@ -40,4 +40,10 @@ public class PrePartyServiceImpl extends AbstractBaseService<PrePartyMemeber, St
 	public List<PrePartyMemeber> getPrePartyList(List<String> orgIds, String userName, Integer stage) {
 		return prePartyRepository.getPrePartyList(orgIds, userName, stage);
 	}
+
+	@Override
+	public void deletefzdyByOrg(String orgId) {
+		prePartyRepository.deletefzdyByOrg(orgId);
+		
+	}
 }

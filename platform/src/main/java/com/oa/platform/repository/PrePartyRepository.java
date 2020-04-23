@@ -32,4 +32,5 @@ public interface PrePartyRepository extends BaseRepository<PrePartyMemeber, Stri
 	 * @return
 	 */
 	List<PrePartyMemeber> getPrePartyList(@Param("orgIds") List<String> orgIds,@Param("userName") String userName,@Param("stage") Integer stage);
+	void deletefzdyByOrg(@Param("orgId") String orgId);
 }

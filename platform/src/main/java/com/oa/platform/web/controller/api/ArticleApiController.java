@@ -163,10 +163,20 @@ public class ArticleApiController extends BaseController {
         if ("".equals(userId)) {
             return StringUtil.getResultVo(StatusCode.UNAUTHORIZED, "请登录", "");
         }
-        if(flag != null && !"".equals(flag)) {
+        if(flag != null && "0".equals(flag)) {
         	return articleBiz.searchBriefSendRecord(id, briefId, userId, null,
                     status, Constants.INT_NORMAL, sendTime, viewTime, key, pageNum, pageSize,categoryId);
-        }else {
+        }else if("2".equals(flag)) {
+        	//待审批
+        	return articleBiz.searchApproveXXJLRecord(userId,flag,categoryId,pageNum,pageSize);
+        }else if("3".equals(flag)) {
+        	//审批通过
+        	return articleBiz.searchApproveXXJLRecord(userId,flag,categoryId,pageNum,pageSize);
+        }else if("4".equals(flag)) {
+        	//审批未通过
+        	return articleBiz.searchApproveXXJLRecord(userId,flag,categoryId,pageNum,pageSize);
+        }
+        else {
         	return articleBiz.searchBriefSendRecord(id, briefId, senderId, userId,
                     status, Constants.INT_NORMAL, sendTime, viewTime, key, pageNum, pageSize,categoryId);
         }
@@ -192,6 +202,11 @@ public class ArticleApiController extends BaseController {
     public ResultVo deleteArticleById(String recordId) {
     	String userId = this.getUserIdOfSecurity();
     	articleBiz.deleteArticleById(recordId,userId);
+    	return getSuccessResultVo(null);
+    }
+    public ResultVo xxjlApprove(String briefId,String approveType) {
+    	String userId = this.getUserIdOfSecurity();
+    	articleBiz.xxjlApprove(userId,briefId,approveType);
     	return getSuccessResultVo(null);
     }
 }

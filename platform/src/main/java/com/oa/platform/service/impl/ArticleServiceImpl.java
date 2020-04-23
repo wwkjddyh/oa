@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 文章信息
@@ -90,5 +91,24 @@ public class ArticleServiceImpl extends AbstractBaseService<Article,String> impl
 		PageHelper.startPage(pageNum, pageSize);
         List<BriefSendRecord> records = articleRepository.searchBriefSendRecordBySendId(record == null ? new BriefSendRecord() : record);
         return new PageInfo<>(records);
+	}
+
+	@Override
+	public PageInfo<BriefSendRecord> searchApproveXXJLRecord(String userId, int status, String categoryId, int pageNum, int pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		List<BriefSendRecord> records = articleRepository.searchApproveXXJLRecord(userId,status,categoryId);
+		return new PageInfo<>(records);
+	}
+
+	@Override
+	public void updateRecordStatus(String briefId, String approveType) {
+		articleRepository.updateRecordStatus(briefId,Integer.parseInt(approveType));
+		
+	}
+
+	@Override
+	public void updateArtcleUser(String briefId, String userId, int status) {
+		articleRepository.updateArtcleUser(briefId,userId,status);
+		
 	}
 }

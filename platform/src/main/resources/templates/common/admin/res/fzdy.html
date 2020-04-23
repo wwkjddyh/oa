@@ -11,6 +11,7 @@
             </el-breadcrumb>
             <div style="margin-top: 10px" v-if="fzdyPrePartyMemberAdd">
                 <el-button plain @click="dialogShow.prePartyMemeber = !dialogShow.prePartyMemeber" size="mini" icon="el-icon-plus">添加</el-button>
+                <el-button type="danger" @click="deletefzdyByOrg" size="mini" icon="el-icon-refresh-right">重置</el-button>
                 <!--<el-button size="mini" @click="searchForm('formSearchRes')" type="primary" plain icon="el-icon-search" >检索</el-button>-->
             </div>
             <!--步进区域-->

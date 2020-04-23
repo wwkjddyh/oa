@@ -12,6 +12,7 @@ import com.oa.platform.util.StringUtil;
 import com.oa.platform.util.ThreadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -349,5 +350,14 @@ public class ArticleBiz extends BaseBiz {
 	public void deleteArticleById(String recordId,String userId) {
 		articleService.deleteArticleById(recordId,userId);
 		
+	}
+
+	public Map<String, Object> searchApproveXXJLRecord(String userId, String flag, String categoryId, int pageNum, int pageSize) {
+		PageInfo<BriefSendRecord> pageInfo = articleService.searchApproveXXJLRecord(userId,Integer.parseInt(flag),categoryId,pageNum,pageSize);
+    	ret = this.getPageInfo(pageInfo);
+		return ret;
+	}
+	public void xxjlApprove(String userId, String briefId, String approveType) {
+		articleService.updateArtcleUser(briefId,userId,Integer.parseInt(approveType));
 	}
 }

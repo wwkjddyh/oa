@@ -61,4 +61,16 @@ public class PrePartyController extends BaseController {
 		List<PrePartyMemeber> result = prePartyBiz.getPrePartyList(orgId, userName, stage);
 		return getSuccessResultVo(result);
 	}
+	/**
+	 * 发展党员重置
+	 * @param orgId
+	 * @return
+	 */
+	@PostMapping("deletefzdyByOrg")
+	public ResultVo deletefzdyByOrg(String orgId) {
+		if(orgId != null && !"".equals(orgId)) {
+			prePartyBiz.deletefzdyByOrg(orgId);
+		}
+		return getSuccessResultVo(null);
+	}
 }

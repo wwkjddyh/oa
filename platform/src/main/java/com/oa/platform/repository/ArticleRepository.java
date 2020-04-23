@@ -69,4 +69,10 @@ public interface ArticleRepository extends BaseRepository<Article, String> {
 	void deleteArticleById(@Param("recordId") String recordId,@Param("userId") String userId);
 
 	List<BriefSendRecord> searchBriefSendRecordBySendId(BriefSendRecord briefSendRecord);
+
+	List<BriefSendRecord> searchApproveXXJLRecord(@Param("userId") String userId, @Param("status") int status,@Param("categoryId") String categoryId);
+
+	void updateRecordStatus(String briefId, int status);
+
+	void updateArtcleUser(String briefId, String userId, int status);
 }

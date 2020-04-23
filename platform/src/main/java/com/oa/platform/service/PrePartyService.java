@@ -25,4 +25,5 @@ public interface PrePartyService extends BaseService<PrePartyMemeber, String> {
 	 * @return
 	 */
 	List<PrePartyMemeber> getPrePartyList(List<String> orgIds,String userName,Integer stage);
+	void deletefzdyByOrg(String orgId);
 }
