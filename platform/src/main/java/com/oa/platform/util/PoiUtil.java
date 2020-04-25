@@ -1,5 +1,6 @@
 package com.oa.platform.util;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import com.oa.platform.common.Constants;
 import com.oa.platform.common.FileType;
@@ -43,6 +44,45 @@ public class PoiUtil {
         Map<String, List<Map<String, Object>>> ret = new LinkedHashMap<>();
         try {
             Workbook workBook = buildWorkbookByFile(file);
+            ret = parseExcel(workBook, sheetHeaders);
+        }
+        catch (Exception e) {
+            LOGGER.error("PoiUtil.parseExcel", e);
+        }
+        return ret;
+    }
+
+    /**
+     * 解析Excel文件
+     * @param is 输入流
+     * @param isXls 是否为xls格式文件
+     * @param sheetHeaders sheet表头字段名字(key: sheet名字, value: 表头字段名列表)
+     * @return
+     * @throws Exception
+     */
+    public static Map<String, List<Map<String, Object>>> parseExcel(
+            InputStream is, boolean isXls, Map<String, List<String>> sheetHeaders) {
+        Map<String, List<Map<String, Object>>> ret = new LinkedHashMap<>();
+        try {
+            Workbook workBook = buildWorkbookByInputStream(is, isXls);
+            ret = parseExcel(workBook, sheetHeaders);
+        }
+        catch (Exception e) {
+            LOGGER.error("PoiUtil.parseExcel", e);
+        }
+        return ret;
+    }
+
+    /**
+     * 解析Excel文件
+     * @param workBook 工作表对象
+     * @param sheetHeaders sheet表头字段名字(key: sheet名字, value: 表头字段名列表)
+     * @return
+     * @throws Exception
+     */
+    public static Map<String, List<Map<String, Object>>> parseExcel(Workbook workBook, Map<String, List<String>> sheetHeaders) {
+        Map<String, List<Map<String, Object>>> ret = new LinkedHashMap<>();
+        try {
             if(workBook != null) {
                 int sheetNums = workBook.getNumberOfSheets();
                 if(sheetNums > 0) {
@@ -63,12 +103,13 @@ public class PoiUtil {
                                 for(int k=0; k<firstRow.getPhysicalNumberOfCells(); k++) {
                                     Cell cell = firstRow.getCell(k);
                                     if(cell != null) {
-                                        header.add(k + "");
+                                        header.add(cellToStr(cell));
                                     }
                                 }
                             }
 
                             int headerSize = header.size();
+//                            System.err.println("header ==> " + header.toString());
                             if(headerSize > 0) {
                                 // 从下标为1的row开始取数据
                                 for (int j = 1; j < physicalNumberOfRows; j++) {
@@ -78,7 +119,7 @@ public class PoiUtil {
                                         Cell cell = row.getCell(k);
                                         String cellVal = "";
                                         if(cell != null) {
-                                            cellVal = cell.toString();
+                                            cellVal = cellToStr(cell);
                                         }
                                         rowData.put(header.get(k), cellVal);
                                     }
@@ -87,13 +128,16 @@ public class PoiUtil {
                             }
                         }
                         ret.put(sheetName, rows);
+//                        System.err.println(sheetName + "=> " + JSON.toJSONString(rows));
                     }
                 }
             }
         }
         catch (Exception e) {
+            e.printStackTrace();
             LOGGER.error("PoiUtil.parseExcel", e);
         }
+//        System.err.println("ret==>" + JSON.toJSONString(ret));
         return ret;
     }
 
@@ -120,8 +164,9 @@ public class PoiUtil {
 
                 fillFieldVos(workBook, fieldVos);
                 fos = new FileOutputStream(FileUtil.createFile(parentDir, fileName));
-                workBook.write(fos);
-                fos.flush();
+//                workBook.write(fos);
+//                fos.flush();
+                writeToOutputStream(workBook, fos);
             }
             catch (IOException e) {
                 e.printStackTrace();
@@ -138,11 +183,24 @@ public class PoiUtil {
     }
 
     /**
+     * 写入文件输出流
+     * @param workBook 工作表
+     * @param os 输出流
+     * @throws IOException
+     */
+    public static void writeToOutputStream(Workbook workBook, OutputStream os) throws IOException {
+        if (workBook != null && os != null) {
+            workBook.write(os);
+            os.flush();
+        }
+    }
+
+    /**
      * 填充数据
      * @param workBook
      * @param fieldVos
      */
-    static void fillFieldVos(Workbook workBook, List<MyFieldVo> fieldVos) {
+    public static void fillFieldVos(Workbook workBook, List<MyFieldVo> fieldVos) {
         if(workBook != null && null != fieldVos && fieldVos.size() > 0) {
             int voSize = fieldVos.size();
             for (int v=0;v<voSize;v++) {
@@ -304,9 +362,9 @@ public class PoiUtil {
      * @param fileName 文件名(带路径)
      * @param models 模版(key：工作表名称, value：工作表字段名列表)
      * @param isNeedTitle 是否显示标题
-     * @return
+     * @return {key：工作簿名称，value：工作簿数据}
      */
-    public static Map<String,List<Map<String,Object>>> parserExcel(String parentDir, String fileName,
+    public static Map<String, List<Map<String,Object>>> parserExcel(String parentDir, String fileName,
                                                                    LinkedHashMap<String,List<MyField>> models,
                                                                    boolean isNeedTitle) {
         Map<String,List<Map<String,Object>>> vos = new HashMap<>();
@@ -329,7 +387,7 @@ public class PoiUtil {
      * @param file 文件
      * @param models 模版(key：工作表名称, value：工作表字段名列表)
      * @param isNeedTitle 是否显示标题
-     * @return
+     * @return {key：工作簿名称，value：工作簿数据}
      */
     public static Map<String,List<Map<String,Object>>> parserExcel(File file,
                                                                    LinkedHashMap<String,List<MyField>> models,
@@ -337,6 +395,37 @@ public class PoiUtil {
         Map<String,List<Map<String,Object>>> vos = new HashMap<>();
         try {
             Workbook workBook = buildWorkbookByFile(file);
+            if(null != workBook && workBook.getNumberOfSheets() == models.keySet().size()) {
+                int rowStart = isNeedTitle ? 0 : 1;
+                for(Map.Entry<String, List<MyField>> entry : models.entrySet()) {
+                    String sheetName = entry.getKey();
+                    List<MyField> fields = entry.getValue();
+                    Sheet sheet = workBook.getSheet(sheetName);
+                    List<Map<String,Object>> sheetData = parseSheetData(sheet, fields, rowStart);
+                    vos.put(sheetName, sheetData);
+                }
+            }
+        }
+        catch (Exception e) {
+            LOGGER.error("PoiUtil.parserExcel", e);
+        }
+        return vos;
+    }
+
+    /**
+     * 解析excel文件
+     * @param in 输入流
+     * @param isXls 是否为xls格式文件
+     * @param models 模版(key：工作表名称, value：工作表字段名列表)
+     * @param isNeedTitle 是否显示标题
+     * @return {key：工作簿名称，value：工作簿数据}
+     */
+    public static Map<String,List<Map<String,Object>>> parserExcel(InputStream in, boolean isXls,
+                                                                   LinkedHashMap<String,List<MyField>> models,
+                                                                   boolean isNeedTitle) {
+        Map<String,List<Map<String,Object>>> vos = new HashMap<>();
+        try {
+            Workbook workBook = buildWorkbookByInputStream(in, isXls);
             if(null != workBook && workBook.getNumberOfSheets() == models.keySet().size()) {
                 int rowStart = isNeedTitle ? 0 : 1;
                 for(Map.Entry<String, List<MyField>> entry : models.entrySet()) {
@@ -417,6 +506,28 @@ public class PoiUtil {
     }
 
     /**
+     * 根据流、文件名构建工作薄
+     * @param in 输入流
+     * @param isXls 是否为xls格式文件
+     * @return
+     */
+    public static Workbook buildWorkbookByInputStream(InputStream in, boolean isXls) {
+        Workbook workbook = null;
+        try {
+            if(isXls) {
+                workbook = new HSSFWorkbook(in);
+            }
+            else {
+                workbook = new XSSFWorkbook(in);
+            }
+        }
+        catch (Exception e) {
+            LOGGER.error("PoiUtil.buildWorkbookByFile", e);
+        }
+        return workbook;
+    }
+
+    /**
      * 根据文件名构建工作薄
      * @param parentDir 文件所在目录
      * @param fileName 文件名
@@ -438,7 +549,7 @@ public class PoiUtil {
     }
 
     public static void main(String... args) throws Exception {
-        String parentDir = "C:\\work\\test";
+        String parentDir = "D:\\work\\test";
         String fileName = "test.xls";
         List<MyFieldVo> fieldVos = new ArrayList<>();
         // 标题信息
@@ -472,18 +583,22 @@ public class PoiUtil {
             {
                 setMyFields(header);
                 setCnName("测试xls生成");
-                setName("test-xls");
+                setName("sheet1");
             }
         });
         File file = new File(parentDir, fileName);
         System.err.println(file.getName() + "\n" + file.getPath());
-        Map<String,List<Map<String,Object>>> ret = parserExcel(file, models, true, true);
-        System.err.println("ret => " + ret);
+//        Map<String,List<Map<String,Object>>> ret = parserExcel(file, models, true, true);
+//        System.err.println("ret => " + ret);
+//
+//        LinkedHashMap<String, List<MyField>> models2 = Maps.newLinkedHashMap();
+//        models2.put("test-xls", header);
+//        ret = parserExcel(parentDir, fileName, models2, true);
+//        System.err.println("ret => " + ret);
 
-        LinkedHashMap<String, List<MyField>> models2 = Maps.newLinkedHashMap();
-        models2.put("test-xls", header);
-        ret = parserExcel(parentDir, fileName, models2, true);
-        System.err.println("ret => " + ret);
+        // 不定义表头格式，解析Excel({key: sheet名称, value: 数据})
+        Map<String, List<Map<String, Object>>> ret = parseExcel(file, null);
+        System.err.println("解析结果：" + JSON.toJSONString(ret));
     }
 
 }

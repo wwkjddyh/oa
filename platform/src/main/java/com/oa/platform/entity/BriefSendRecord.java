@@ -84,8 +84,17 @@ public class BriefSendRecord implements Serializable {
      */
     private Article article;
     private String categoryId;
+    private Integer approve;
     
-    public String getCategoryId() {
+    public Integer getApprove() {
+		return approve;
+	}
+
+	public void setApprove(Integer approve) {
+		this.approve = approve;
+	}
+
+	public String getCategoryId() {
 		return categoryId;
 	}
 

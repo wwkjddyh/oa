@@ -1,12 +1,19 @@
 package com.oa.platform.biz;
 
-import com.oa.platform.aspect.LogRecordAdvice;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.oa.platform.common.Constants;
 import com.oa.platform.common.FileType;
 import com.oa.platform.util.FileUtil;
+import com.oa.platform.util.PoiUtil;
 import com.oa.platform.util.StringUtil;
-import lombok.extern.slf4j.Slf4j;
+import com.oa.platform.vo.MyField;
+import com.oa.platform.vo.MyFieldVo;
 
+import opennlp.tools.parser.Cons;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.tika.Tika;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,10 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * 文件上传下载
@@ -113,6 +117,12 @@ public class FileBiz extends BaseBiz {
                     }
                 }
             }
+            // 是否解析XLS或XLSX文件
+            String parseExcel = StringUtil.trim(request.getParameter("parseXls"), "0");
+            if ("1".equals(parseExcel) && !"".equals(type)) {
+                parseExcelData(file.getInputStream(), fileName, type);
+            }
+
             map.put("content", content);
             ret = this.getSuccessVo("", map);
         } catch (IOException e) {
@@ -263,5 +273,140 @@ public class FileBiz extends BaseBiz {
                 }
             }
         }
+    }
+
+    /**
+     * 解析Excel文件
+     * @param is 输入流
+     * @param fileName 文件名
+     * @param type (业务)类型
+     */
+    public void parseExcelData(InputStream is, String fileName, String type) throws IOException {
+        type = StringUtil.trim(type);
+        String __fileName = StringUtil.trim(fileName).toLowerCase(Constants.LOCALE_DEFAULT);
+        if (is != null && !"".equals(__fileName) && !"".equals(type)) {
+            if (__fileName.endsWith(FileType.XLS.getFormat()) || __fileName.endsWith(FileType.XLSX.getFormat())) {
+                // 根据业务类型(type)进行解析XLS/XLSX文件
+                boolean isXls = false;
+                if (__fileName.endsWith(FileType.XLS.getFormat())) {
+                    isXls = true;
+                }
+                //解析结果：{key：工作簿名称，value：工作簿数据}
+                Map<String, List<Map<String, Object>>> ret = PoiUtil.parseExcel(is, isXls, null);
+
+                // 业务处理，比如入库等等
+            }
+        }
+    }
+
+    /**
+     * 根据类型初始化数据
+     * @param type (业务)类型
+     */
+    public List<MyFieldVo> initExcelDataByType(String type) {
+        type = StringUtil.trim(type);
+        List<MyFieldVo> fieldVos = Lists.newArrayList();
+        if ("".equals(type)) {  // 默认数据
+            List<MyField> header = Lists.newArrayList();
+            header.add(new MyField("field1", MyField.TYPE_STRING, 255, false, "field1", "field1"));
+            header.add(new MyField("field2", MyField.TYPE_STRING, 255, false, "field2", "field2"));
+            header.add(new MyField("field3", MyField.TYPE_STRING, 255, false, "field3", "field3"));
+            // 数据
+            List<List<MyField>> dataRows = Lists.newArrayList();
+            dataRows.add(Lists.newArrayList(
+                    new MyField("field1-value", MyField.TYPE_STRING),
+                    new MyField("field2-value", MyField.TYPE_STRING),
+                    new MyField("field3-value", MyField.TYPE_STRING)));
+            fieldVos.add(new MyFieldVo(){{
+                setMyFields(header);
+                setDataRows(dataRows);
+                setCnName("sheet1");
+                setName("sheet1");
+            }});
+        }
+        else {
+            // 根据type封装数据
+            List<MyField> header = Lists.newArrayList();
+            header.add(new MyField("field1", MyField.TYPE_STRING, 255, false, "field1", "field1"));
+            header.add(new MyField("field2", MyField.TYPE_STRING, 255, false, "field2", "field2"));
+            header.add(new MyField("field3", MyField.TYPE_STRING, 255, false, "field3", "field3"));
+            // 数据
+            List<List<MyField>> dataRows = Lists.newArrayList();
+            dataRows.add(Lists.newArrayList(
+                    new MyField("field1-value", MyField.TYPE_STRING),
+                    new MyField("field2-value", MyField.TYPE_STRING),
+                    new MyField("field3-value", MyField.TYPE_STRING)));
+            fieldVos.add(new MyFieldVo(){{
+                setMyFields(header);
+                setDataRows(dataRows);
+                setCnName("sheet1");
+                setName("sheet1");
+            }});
+        }
+        return fieldVos;
+    }
+
+    /**
+     * 导出Excel(默认XLXS格式)
+     * @param request HTTP请求对象
+     * @param response HTTP响应对象
+     * @param isDownload 是否下载(0, 否; 1, 是)
+     * @param type (业务)类型
+     * @param viewName 显示名称(可不带文件格式后缀), 不能为空
+     */
+    public void exportExcel(HttpServletRequest request, HttpServletResponse response,
+                            Integer isDownload, String type, String viewName) {
+        viewName = StringUtil.trim(viewName);
+        if (!"".equals(viewName)) {
+            try {
+                // 默认XLXS格式
+                if (!viewName.toLowerCase(Constants.LOCALE_DEFAULT).endsWith(FileType.XLS.getFormat()) &&
+                        !viewName.toLowerCase(Constants.LOCALE_DEFAULT).endsWith(FileType.XLSX.getFormat())) {
+                    viewName = viewName + FileType.XLSX.getFormat();
+                }
+                isDownload = isDownload == null ? 1 : 0;
+                boolean isXls = false;
+                if (viewName.toLowerCase(Constants.LOCALE_DEFAULT).endsWith(FileType.XLS.getFormat())) {
+                    isXls = true;
+                }
+
+                request.setCharacterEncoding(Constants.DEFAULT_CHARSET);
+                response.setCharacterEncoding(Constants.DEFAULT_CHARSET);
+                response.setContentType("text/html;charset=" + Constants.DEFAULT_CHARSET);
+//                response.reset();
+                response.addHeader("Content-Disposition", "attachment; fileName="
+                        + viewName +";filename*=" + Constants.DEFAULT_CHARSET + "''"
+                        + URLEncoder.encode(viewName, Constants.DEFAULT_CHARSET));
+                if (isDownload == 1) {
+                    response.setContentType("application/gorce-download");
+                }
+                else {
+                    if (isXls) {
+                        response.setContentType("application/x-msexcel");
+                    }
+                    else {
+                        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                    }
+                }
+                //
+                List<MyFieldVo> fieldVos = initExcelDataByType(type);
+                Workbook workBook = null;
+                if (isXls) {
+                    workBook = new HSSFWorkbook();
+                }
+                else {
+                    workBook = new XSSFWorkbook();
+                }
+                // 填充数据
+                PoiUtil.fillFieldVos(workBook, fieldVos);
+                OutputStream os = response.getOutputStream();
+                PoiUtil.writeToOutputStream(workBook, os);
+                os.close();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }

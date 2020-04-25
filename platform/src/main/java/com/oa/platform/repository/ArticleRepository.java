@@ -70,9 +70,9 @@ public interface ArticleRepository extends BaseRepository<Article, String> {
 
 	List<BriefSendRecord> searchBriefSendRecordBySendId(BriefSendRecord briefSendRecord);
 
-	List<BriefSendRecord> searchApproveXXJLRecord(@Param("userId") String userId, @Param("status") int status,@Param("categoryId") String categoryId);
+	List<BriefSendRecord> searchApproveXXJLRecord(@Param("userId") String userId, @Param("status") Integer status,@Param("categoryId") String categoryId);
 
 	void updateRecordStatus(String briefId, int status);
 
-	void updateArtcleUser(String briefId, String userId, int status);
+	void updateArtcleUser(@Param("briefId") String briefId, @Param("userId") String userId, @Param("status") int status);
 }

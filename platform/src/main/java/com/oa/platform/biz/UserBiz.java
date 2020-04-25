@@ -199,13 +199,28 @@ public class UserBiz extends BaseBiz {
         userName = StringUtil.trim(userName);
         userPwd = StringUtil.trim(userPwd);
         if(!"".equals(userName) && !"".equals(userPwd)) {
-            User user = userService.findUserByNameAndPwd(userName,userPwd);
-            if(user == null) {
+            User user = userService.findUserByName(userName);
+            if (user == null) {
                 ret = getParamErrorVo();
             }
             else {
-                ret = getSuccessVo("", JSONObject.toJSONString(user));
+                String userPassword = user.getPassword();
+                if (SecurityUtil.matchesBCryptPassword(userPwd, userPassword)) {
+                    user.setUserPwd("");
+                    user.setUserPwdOrigi("");
+                    ret = getSuccessVo("", JSONObject.toJSONString(user));
+                }
+                else {
+                    ret = getParamErrorVo();
+                }
             }
+//            User user = userService.findUserByNameAndPwd(userName,userPwd);
+//            if(user == null) {
+//                ret = getParamErrorVo();
+//            }
+//            else {
+//                ret = getSuccessVo("", JSONObject.toJSONString(user));
+//            }
         }
         else {
             ret = getParamErrorVo();
@@ -305,11 +320,12 @@ public class UserBiz extends BaseBiz {
         return isRepeat;
     }
     /**
-	 	* 手机号/邮箱格式校验
-	 * @param phone
+	 * 手机号/邮箱格式校验
+	 * @param phoneOrMail 手机或邮箱
+     * @param regex 正则表达式
 	 * @return
 	 */
-	private static final boolean checkPhone(String phoneOrMail,String regex) {
+	private static final boolean checkPhone(String phoneOrMail, String regex) {
 	    if (StringUtils.isEmpty(phoneOrMail)) {
 	        return false;
 	    }

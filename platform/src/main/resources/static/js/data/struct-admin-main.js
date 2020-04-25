@@ -621,7 +621,7 @@ const formStructConfig = {
         	{ required: true, message: '请选择本届班子当选日期' , trigger: 'blur'}
         ],
         changeOrgRelationAuth:[
-        	{ required: true, message: '请选择转接组织关系权限' , trigger: 'blur'}
+        	{ required: false, message: '请选择转接组织关系权限' , trigger: 'blur'}
         ],
         concatPersion:[
         	{ required: true, message: '请填写党组织联系人' , trigger: 'blur'}
