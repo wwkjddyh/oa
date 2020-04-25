@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //    web.ignoring().antMatchers("/static/**", "/**/*.jsp");
         web.ignoring().antMatchers("/static/**","/css/**","/img/**","/images/**","/js/**","/fonts/**",
                 "/test/**", "/tmp/**", "/api/file/**", "/api/socket/**", "/api/verify/**", "/api/news/**",
-                "/ueditor/**","/api/auth/needSms","/api/auth/getSMS","/api/auth/validateSMS");
+                "/ueditor/**","/api/auth/needSms","/api/auth/getSMS","/api/auth/validateSMS", "/api/chat/**","/api/user/getUserByNameAndPwd");
     }
 
     // @formatter:off
