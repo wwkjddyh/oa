@@ -2365,7 +2365,6 @@ new Vue({
                     that.formSearchArticle.isBrief = true;
                     that.formSearchArticle.sendType = '1';
                     //that.formSearchArticle.categoryId = '53c34dec-7447-4bbc-9ff3-af0f0686b07f';
-                    that.formSearchArticle.flag='0';
                     //that.loadArticles('',1, that.pager.article.pageSize);
                     that.currAction = 'append';
                     //that.def_menu_id = 'articles';
@@ -2384,6 +2383,38 @@ new Vue({
             	that.$message.error('删除失败');
             	that.newsLoading = false;
             });
+        },
+        approveXXJL(recordId,approve){
+
+        	let that = this;
+        	let params = new URLSearchParams();
+            params.append('briefId', recordId || '');
+            params.append('approveType', approve);
+            that.newsLoading = true;
+        	axios.post("/api/article/xxjlApprove", params)
+            .then(function(response){
+            	that.handleResponse(response);
+                let responseCode = parseInt(response.data.code);
+                if(parseInt(responseCode) === 200){
+                	that.$message({
+                        message: '审批成功',
+                        type: 'success'
+                    });
+                    that.formSearchArticle.isBrief = true;
+                    that.formSearchArticle.sendType = '1';
+                    that.currAction = 'append';
+                    
+                    that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, that.pager.briefSendRecord.currentPage, that.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+                	that.newsLoading = false;
+                }else{
+                	that.$message.error('审批失败');
+                	that.newsLoading = false;
+                }
+            }).catch(function(err){
+            	that.$message.error('审批失败');
+            	that.newsLoading = false;
+            });
+        
         },
         getNationValue(nationId){
         	let list = this.nation.filter(x=>x.dictId == nationId);
@@ -2802,16 +2833,30 @@ new Vue({
                                 type: 'success'
                             });
                         }else if(that.currentArticleFormTitle === '学习交流'){
+                        	that.receiveArtcleType='info';
+                    		that.sendArtcleType='';
+                    		that.toApprove='',
+                    		that.approveSuccess='',
+                    		that.approveFail='',
+                    		that.newsOperate=false;
+                    		that.operateName = '操作';
+                    		that.operateIcon = 'el-icon-setting';
+                    		that.currentArticleFormTitle = '学习交流';
+                            that.formSearchArticle.isBrief = true;
+                            that.formSearchArticle.sendType = '1';
+                            that.formSearchArticle.categoryId = '63c34dec-7447-4bbc-9ff3-af0f0686b07f';
                         	that.editableTabsOptions.editableTabsValue = 'articles';
                             that.def_menu_id = 'xxjl';
                             that.showContent = 'xxjl';
                             that.$refs['menuRef'].activeIndex = 'xxjl';
                             that.briefReceiveUserIds = [];
                             that.pager.briefSendRecord.currentPage = 1;
-                            if(that.sendArtcleType =='info'){
-                            	that.loadCurrUserSendBriefRecord('', 1, that.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
-                            }else{
+                            if(that.receiveArtcleType =='info'){
                             	that.loadCurrUserReceiverBriefRecord('', 1, that.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+
+                            }else{
+                            	that.loadCurrUserSendBriefRecord('', 1, that.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+
                             }
                             
                             that.$forceUpdate();
@@ -6584,7 +6629,6 @@ new Vue({
                             	that.currUserReceiverXxjlRecordsfirstPage =response.data.data.list;
                             }
                         }
-                        
                         that.pager.briefSendRecord.totalCount = response.data.data.total;
                     }
                 	that.newsLoading=false;
@@ -6598,10 +6642,12 @@ new Vue({
         handleCurrUserReceiverBriefRecordSizeChange: function(val) {
             this.pager.briefSendRecord.pageSize = val;
             if(this.currentArticleFormTitle === '学习交流'){
-            	if(this.sendArtcleType =='info'){
-                    this.loadCurrUserSendBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
-            	}else{
+            	if(this.receiveArtcleType =='info'){
             		this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+
+            	}else{
+                    this.loadCurrUserSendBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+
             	}
             }else{
             	if(this.sendArtcleType =='info'){
@@ -6618,10 +6664,12 @@ new Vue({
         handleCurrUserReceiverBriefRecordCurrentChange: function(val) {
             this.pager.briefSendRecord.currentPage = val;
             if(this.currentArticleFormTitle === '学习交流'){
-            	if(this.sendArtcleType =='info'){
-                    this.loadCurrUserSendBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
-            	}else{
+            	if(this.receiveArtcleType =='info'){
             		this.loadCurrUserReceiverBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+
+            	}else{
+                    this.loadCurrUserSendBriefRecord(this.pager.briefSendRecord.criteria, this.pager.briefSendRecord.currentPage, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
+
             	}
             }else{
             	if(this.sendArtcleType =='info'){
@@ -6802,6 +6850,8 @@ new Vue({
         		that.approveSuccess='',
         		that.approveFail='',
         		that.currentArticleFormTitle = '学习交流';
+        		that.operateName = '操作';
+        		that.operateIcon = 'el-icon-setting';
                 that.formSearchArticle.isBrief = true;
                 that.formSearchArticle.sendType = '1';
                 that.formSearchArticle.categoryId = '63c34dec-7447-4bbc-9ff3-af0f0686b07f';
@@ -6826,6 +6876,7 @@ new Vue({
                 //that.loadArticles('',1, that.pager.article.pageSize);
                 that.currAction = 'append';
                 that.def_menu_id = 'xxjl';
+                console.log(that.toApprove)
                 that.loadCurrUserSendBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
         	}else if(type == '3'){
         		//审批通过

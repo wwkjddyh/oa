@@ -204,6 +204,7 @@ public class ArticleApiController extends BaseController {
     	articleBiz.deleteArticleById(recordId,userId);
     	return getSuccessResultVo(null);
     }
+    @PostMapping("xxjlApprove")
     public ResultVo xxjlApprove(String briefId,String approveType) {
     	String userId = this.getUserIdOfSecurity();
     	articleBiz.xxjlApprove(userId,briefId,approveType);

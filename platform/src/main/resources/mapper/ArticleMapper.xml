@@ -44,7 +44,7 @@
     <result column="status" property="status" jdbcType="INTEGER"/>
     <result column="record_flag" property="recordFlag" jdbcType="INTEGER"/>
     <result column="category_id" property="categoryId" jdbcType="VARCHAR"/>
-	
+	<result column="approve" property="approve" jdbcType="INTEGER"/>
     <result column="brief_title" property="briefTitle" jdbcType="VARCHAR"/>
     <result column="sender_name" property="senderName" jdbcType="VARCHAR"/>
     <result column="receiver_name" property="receiverName" jdbcType="VARCHAR"/>
@@ -339,7 +339,7 @@
       (SELECT
         t1.record_id, t1.send_time, t1.record_flag, t1.view_time, t1.brief_id, t1.sender_id, t1.receiver_id, t1.`status`,
         t4.title brief_title, t2.user_name sender_name, t3.user_name receiver_name,
-        t1.sender_remark, t1.receiver_remark,t4.category_id
+        t1.sender_remark, t1.receiver_remark,t4.category_id,t4.approve
       FROM
         t_brief_send_record t1
         LEFT JOIN t_article t4 ON t1.brief_id = t4.record_id
@@ -368,6 +368,9 @@
       <if test="recordFlag != null">
         AND record_flag = #{recordFlag}
       </if>
+      <if test="approve == 3">
+        AND approve =#{approve}
+      </if>
       <if test="key != null and key != ''">
         AND (UPPER(brief_title) LIKE CONCAT('%',UPPER(#{key}),'%')
         )
@@ -392,12 +395,12 @@
     	distinct
       DATE_FORMAT(t.send_time,'%Y-%m-%d %H:%i:%s') send_time, t.record_flag,
       t.brief_id, t.`status`,
-      t.brief_title
+      t.brief_title,approve
     FROM
       (SELECT
         t1.record_id, t1.send_time, t1.record_flag, t1.view_time, t1.brief_id, t1.sender_id, t1.receiver_id, t1.`status`,
         t4.title brief_title, t2.user_name sender_name, t3.user_name receiver_name,
-        t1.sender_remark, t1.receiver_remark,t4.category_id
+        t1.sender_remark, t1.receiver_remark,t4.category_id,t4.approve
       FROM
         t_brief_send_record t1
         LEFT JOIN t_article t4 ON t1.brief_id = t4.record_id
@@ -455,7 +458,7 @@
       (SELECT
         t1.record_id, t1.send_time, t1.record_flag, t1.view_time, t1.brief_id, t1.sender_id, t1.receiver_id, t1.`status`,
         t4.title brief_title, t2.user_name sender_name, t3.user_name receiver_name,
-        t1.sender_remark, t1.receiver_remark,t4.category_id,t4.updator_id
+        t1.sender_remark, t1.receiver_remark,t4.category_id,t4.updator_id,t4.approve
       FROM
         t_brief_send_record t1
         LEFT JOIN t_article t4 ON t1.brief_id = t4.record_id
@@ -465,30 +468,22 @@
     ) t
     <trim prefix="WHERE" prefixOverrides="AND | OR">
     	record_flag = 1
-      <if test="recordId != null and recordId != ''">
-        AND record_id = #{recordId}
-      </if>
+      
       <if test="categoryId != null and categoryId != ''">
         AND category_id = #{categoryId}
       </if>
-      <if test="briefId != null and briefId != ''">
-        AND brief_id = #{briefId}
-      </if>
-      <if test="senderId != null and senderId != ''">
-        AND sender_id = #{senderId}
-      </if>
-      <if test="receiverId != null and receiverId != ''">
-        AND receiver_id = #{receiverId}
-      </if>
-      <if test="status ==2">
-        AND status = #{status}
+      
+      
+      
+      <if test="status == 2">
+        AND approve = #{status}
       </if>
       <if test="status == 3">
-        AND status = 1
+        AND approve = #{status}
         AND updator_id=#{userId}
       </if>
       <if test="status == 4">
-        AND status = #{status}
+        AND approve = #{status}
         AND updator_id=#{userId}
       </if>
       
@@ -505,6 +500,6 @@
   	update t_brief_send_record set approve=#{status} where brief_id=#{recordId} and record_flag=1
   </update>
   <update id="updateArtcleUser">
-  	update t_artcle set updator_id=#{userId} and approve=#{status} where brief_id=#{recordId}
+  	update t_article set updator_id=#{userId},approve=#{status} where record_id=#{briefId}
   </update>
 </mapper>
