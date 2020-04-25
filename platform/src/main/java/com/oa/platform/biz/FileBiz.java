@@ -293,7 +293,8 @@ public class FileBiz extends BaseBiz {
                         new MyField("fName2", MyField.TYPE_STRING, 255, false, "fName2", "fName2"),
                         new MyField("fName3", MyField.TYPE_STRING, 16, false, "fName3", "fName3")
                 );
-                models.put("test-xls", header);
+                String sheetName = "test-xls";
+                models.put(sheetName, header);
                 boolean isXls = false;
                 if (__fileName.endsWith(FileType.XLS.getFormat())) {
                     isXls = true;
