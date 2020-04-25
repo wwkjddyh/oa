@@ -287,21 +287,14 @@ public class FileBiz extends BaseBiz {
         if (is != null && !"".equals(__fileName) && !"".equals(type)) {
             if (__fileName.endsWith(FileType.XLS.getFormat()) || __fileName.endsWith(FileType.XLSX.getFormat())) {
                 // 根据业务类型(type)进行解析XLS/XLSX文件
-                LinkedHashMap<String, List<MyField>> models = Maps.newLinkedHashMap();
-                List<MyField> header = Lists.newArrayList(
-                        new MyField("fName1", MyField.TYPE_STRING, 255, false, "fName1", "fName1"),
-                        new MyField("fName2", MyField.TYPE_STRING, 255, false, "fName2", "fName2"),
-                        new MyField("fName3", MyField.TYPE_STRING, 16, false, "fName3", "fName3")
-                );
-                String sheetName = "test-xls";
-                models.put(sheetName, header);
                 boolean isXls = false;
                 if (__fileName.endsWith(FileType.XLS.getFormat())) {
                     isXls = true;
                 }
-
                 //解析结果：{key：工作簿名称，value：工作簿数据}
-                Map<String,List<Map<String,Object>>> ret = PoiUtil.parserExcel(is, isXls, models, true);
+                Map<String, List<Map<String, Object>>> ret = PoiUtil.parseExcel(is, isXls, null);
+
+                // 业务处理，比如入库等等
             }
         }
     }

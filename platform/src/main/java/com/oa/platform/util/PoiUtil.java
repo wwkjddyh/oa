@@ -1,5 +1,6 @@
 package com.oa.platform.util;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Maps;
 import com.oa.platform.common.Constants;
 import com.oa.platform.common.FileType;
@@ -43,6 +44,45 @@ public class PoiUtil {
         Map<String, List<Map<String, Object>>> ret = new LinkedHashMap<>();
         try {
             Workbook workBook = buildWorkbookByFile(file);
+            ret = parseExcel(workBook, sheetHeaders);
+        }
+        catch (Exception e) {
+            LOGGER.error("PoiUtil.parseExcel", e);
+        }
+        return ret;
+    }
+
+    /**
+     * 解析Excel文件
+     * @param is 输入流
+     * @param isXls 是否为xls格式文件
+     * @param sheetHeaders sheet表头字段名字(key: sheet名字, value: 表头字段名列表)
+     * @return
+     * @throws Exception
+     */
+    public static Map<String, List<Map<String, Object>>> parseExcel(
+            InputStream is, boolean isXls, Map<String, List<String>> sheetHeaders) {
+        Map<String, List<Map<String, Object>>> ret = new LinkedHashMap<>();
+        try {
+            Workbook workBook = buildWorkbookByInputStream(is, isXls);
+            ret = parseExcel(workBook, sheetHeaders);
+        }
+        catch (Exception e) {
+            LOGGER.error("PoiUtil.parseExcel", e);
+        }
+        return ret;
+    }
+
+    /**
+     * 解析Excel文件
+     * @param workBook 工作表对象
+     * @param sheetHeaders sheet表头字段名字(key: sheet名字, value: 表头字段名列表)
+     * @return
+     * @throws Exception
+     */
+    public static Map<String, List<Map<String, Object>>> parseExcel(Workbook workBook, Map<String, List<String>> sheetHeaders) {
+        Map<String, List<Map<String, Object>>> ret = new LinkedHashMap<>();
+        try {
             if(workBook != null) {
                 int sheetNums = workBook.getNumberOfSheets();
                 if(sheetNums > 0) {
@@ -63,12 +103,13 @@ public class PoiUtil {
                                 for(int k=0; k<firstRow.getPhysicalNumberOfCells(); k++) {
                                     Cell cell = firstRow.getCell(k);
                                     if(cell != null) {
-                                        header.add(k + "");
+                                        header.add(cellToStr(cell));
                                     }
                                 }
                             }
 
                             int headerSize = header.size();
+//                            System.err.println("header ==> " + header.toString());
                             if(headerSize > 0) {
                                 // 从下标为1的row开始取数据
                                 for (int j = 1; j < physicalNumberOfRows; j++) {
@@ -78,7 +119,7 @@ public class PoiUtil {
                                         Cell cell = row.getCell(k);
                                         String cellVal = "";
                                         if(cell != null) {
-                                            cellVal = cell.toString();
+                                            cellVal = cellToStr(cell);
                                         }
                                         rowData.put(header.get(k), cellVal);
                                     }
@@ -87,13 +128,16 @@ public class PoiUtil {
                             }
                         }
                         ret.put(sheetName, rows);
+//                        System.err.println(sheetName + "=> " + JSON.toJSONString(rows));
                     }
                 }
             }
         }
         catch (Exception e) {
+            e.printStackTrace();
             LOGGER.error("PoiUtil.parseExcel", e);
         }
+//        System.err.println("ret==>" + JSON.toJSONString(ret));
         return ret;
     }
 
@@ -531,19 +575,19 @@ public class PoiUtil {
             setCnName("测试xls生成");
             setName("test-xls");
         }});
-        buildExcelFile(parentDir, fileName, fieldVos);
+//        buildExcelFile(parentDir, fileName, fieldVos);
 
         // 解析xls
-//        List<MyFieldVo> models = new ArrayList<>();
-//        models.add(new MyFieldVo() {
-//            {
-//                setMyFields(header);
-//                setCnName("测试xls生成");
-//                setName("test-xls");
-//            }
-//        });
-//        File file = new File(parentDir, fileName);
-//        System.err.println(file.getName() + "\n" + file.getPath());
+        List<MyFieldVo> models = new ArrayList<>();
+        models.add(new MyFieldVo() {
+            {
+                setMyFields(header);
+                setCnName("测试xls生成");
+                setName("sheet1");
+            }
+        });
+        File file = new File(parentDir, fileName);
+        System.err.println(file.getName() + "\n" + file.getPath());
 //        Map<String,List<Map<String,Object>>> ret = parserExcel(file, models, true, true);
 //        System.err.println("ret => " + ret);
 //
@@ -551,6 +595,10 @@ public class PoiUtil {
 //        models2.put("test-xls", header);
 //        ret = parserExcel(parentDir, fileName, models2, true);
 //        System.err.println("ret => " + ret);
+
+        // 不定义表头格式，解析Excel({key: sheet名称, value: 数据})
+        Map<String, List<Map<String, Object>>> ret = parseExcel(file, null);
+        System.err.println("解析结果：" + JSON.toJSONString(ret));
     }
 
 }
