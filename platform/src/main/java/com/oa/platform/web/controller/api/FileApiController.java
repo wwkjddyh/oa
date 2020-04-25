@@ -74,7 +74,7 @@ public class FileApiController extends BaseController {
      * @param viewName 显示名称(可不带文件格式后缀)
      * @see <a href="/api/file/exportExcel/0/aaa/est测试啊1.xlsx">示例： /api/file/exportExcel/1/aaa/est测试啊1.xlsx</a>
      */
-    @RequestMapping(value = "/exportExcel/{isDownload}/{type}/{viewName}")
+    @RequestMapping(value = "/exportExcel/{isDownload}/{type}/{viewName}", method = {RequestMethod.GET, RequestMethod.POST})
     public void exportExcel(HttpServletRequest request, HttpServletResponse response,
                             @PathVariable Integer isDownload,
                             @PathVariable String type, @PathVariable String viewName) {
