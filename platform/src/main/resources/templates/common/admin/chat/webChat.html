@@ -2,8 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:v-bind="http://www.w3.org/1999/xhtml">
 <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 <div th:fragment="content"  >
-    <div class="webchat-main-default" id="webchat-main">
-        <div class="webchat-container" id="webchat-container">
+    <div v-if="showChat" class="webchat-main-default" id="webchat-main">
+    	<iframe :src="chatSrc"  style="width: 100%;height:100%;border: 0;box-shadow: 2px 2px 5px #888888;" ></iframe>
+       <!-- <div class="webchat-container" id="webchat-container">
             <div class="webchat-container-left">
                 <template v-for="(__friend, index) in currUserChat.friends">
                     <div class="webchat-container-left_item item-active-bgcolor" @click="chatFriendItemChangeHandle(index)" v-if="__friend.isCurrent">
@@ -40,10 +41,10 @@
                 <div class="webchat-right-top">
                     <div class="webchat-right-top-area">
                         <div class="webchat-right-top-area-top">
-                            <!--
+                            
                             <a href="#" title="最小化" style="margin-left: 20px;">-</a>
                             <a href="#" title="全屏" style="margin-left: 20px;">口</a>
-                            -->
+                           
                             <a title="close" @click="showWebChatHandle('webchat-main')" style="margin-left: 20px;cursor: pointer;">X</a>
                         </div>
                         <div class="webchat-right-top-area-body">
@@ -109,7 +110,17 @@
 
             </div>
 
-        </div>
+        </div> -->
+        
+        
+        
+        
+        
+        
     </div>
 </div>
+
+
+
+
 </html>

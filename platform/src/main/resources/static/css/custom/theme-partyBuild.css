@@ -41,7 +41,7 @@
 
 .list-row-base-style {
     color: #4f4f4f;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 /**
@@ -319,9 +319,12 @@
     padding-left: 10px;
     padding-right: 10px;
     width: 100%;
-    font-size: 12px;
+    font-size: 14px;
     color: #4f4f4f;
     font-weight: normal;
+}
+#dwjbxxSubTable1  .el-table td>.cell {
+	font-size: 14px;
 }
 
 div[pType="elTable"] th>.cell {
@@ -847,14 +850,12 @@ div[pType="elTable"] th>.cell {
 }
 
 .webchat-main-default {
-    display: flex;
-    width: auto;
-    justify-content: center;
-    position: fixed;
-    top: calc(50% - 347px);
-    left: calc(50% - 350px);
-    visibility: hidden;
-    background-color: #DEDCDD;
+    width: 75vw;
+    height: 75vh;
+    z-index: 2;
+    position: absolute;
+    top: 15%;
+    left: 12%;
 }
 
 .webchat-main-show {

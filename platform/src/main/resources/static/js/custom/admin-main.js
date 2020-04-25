@@ -1006,6 +1006,7 @@ new Vue({
         dwjbxxTableData: [],
         upperOrg:[],
         currentUser: {},        // 当前用户信息
+        currentUserStr: "",
         userOwnedModuleMaps: {},  //  当前用户所拥有(的所有角色)的模块<Map格式>
         userOwnedModules: [],    //  当前用户所拥有(的所有角色)的模块
         userOwnedMenus: [],     // 当前用户所拥有(的所有角色)的菜单
@@ -2041,6 +2042,8 @@ new Vue({
         },
         orgCommitteeLoading: false,
         isRoleAdmin: null,
+        showChat: false,
+        chatSrc: `http://localhost:3006/#/welcome`
 
     },
     computed:{
@@ -4992,6 +4995,14 @@ new Vue({
                   	that.handleResponse(response);
                   	let data = response.data;
                       that.currentUser = data.data;
+                      that.currentUserStr = JSON.stringify({
+	                      id: data.data.userId,
+	                      name: data.data.username,
+	                      nickname: data.data.userNickname
+	                    });
+                      console.log('currentUser ==== ',that.currentUser,that.currentUserStr);
+                      that.chatSrc = "http://localhost:3006/#/?data=" + that.currentUserStr;
+                      console.log('oa ===== ',that.chatSrc);
                       that.setDwjbxxAuth();
                       let __modules = data.data['modules'] || [];
                       //let parentArr = __modules.filter(l => (l.parentId === null || l.parentId === ''));
@@ -9242,6 +9253,7 @@ new Vue({
         this.getOrgIdByUserId();
         this.getAreaTreeDict();
         this.getCurrUserEchartsData();
+        
         
     },
     beforeMount: function() {
