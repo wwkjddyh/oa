@@ -41,7 +41,12 @@
     <div style="margin-top: 20px" v-loading="newsLoading">
         <div v-for="item in currUserReceiverBriefRecords" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
             <div style="width: 70%; height: auto">
+            <label v-if="toApprove == 'info'" @click="approveXXJL(item.briefId,3)" style="font-size: 15px;color: #062ff9;cursor: pointer;">通过&nbsp;</label>
+            	<label v-if="toApprove == 'info'"  @click="approveXXJL(item.briefId,4)" style="font-size: 15px;color: red;cursor: pointer;">不通过&nbsp;</label>
             	<label v-if="newsOperate == true" @click="deleteArtcle(item.briefId)" class="el-icon-close" style="font-size: 16px;color: red;font-weight:bold;cursor: pointer;"></label>
+            	<label v-if="sendArtcleType == 'info' && item.approve == 2"  style="font-size: 15px;color: #9c9784;">待审批</label>
+            	<label v-if="sendArtcleType == 'info' && item.approve == 3"  style="font-size: 15px;color: #062ff9;">审批通过</label>
+            	<label v-if="sendArtcleType == 'info' && item.approve == 4"  style="font-size: 15px;color: red;">审批不通过</label>
             	
                 <a class="list-row-base-style" style="cursor: pointer;" @click="handleBriefView(item.briefId)">·{{item.briefTitle || ''}}</a>
             </div>

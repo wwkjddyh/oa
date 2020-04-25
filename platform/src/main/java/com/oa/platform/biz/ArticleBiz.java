@@ -304,6 +304,10 @@ public class ArticleBiz extends BaseBiz {
             	PageInfo<BriefSendRecord> pageInfo = articleService.searchBriefSendRecordBySendId(record, pageNum, pageSize);
             	ret = this.getPageInfo(pageInfo);
             }else {
+            	if("63c34dec-7447-4bbc-9ff3-af0f0686b07f".equals(categoryId)) {
+            		//学习交流
+            		record.setApprove(3);
+            	}
             	PageInfo<BriefSendRecord> pageInfo = articleService.searchBriefSendRecord(record, pageNum, pageSize);
             	ret = this.getPageInfo(pageInfo);
             }
