@@ -318,9 +318,9 @@ public class PoiUtil {
      * @param fileName 文件名(带路径)
      * @param models 模版(key：工作表名称, value：工作表字段名列表)
      * @param isNeedTitle 是否显示标题
-     * @return
+     * @return {key：工作簿名称，value：工作簿数据}
      */
-    public static Map<String,List<Map<String,Object>>> parserExcel(String parentDir, String fileName,
+    public static Map<String, List<Map<String,Object>>> parserExcel(String parentDir, String fileName,
                                                                    LinkedHashMap<String,List<MyField>> models,
                                                                    boolean isNeedTitle) {
         Map<String,List<Map<String,Object>>> vos = new HashMap<>();
@@ -343,7 +343,7 @@ public class PoiUtil {
      * @param file 文件
      * @param models 模版(key：工作表名称, value：工作表字段名列表)
      * @param isNeedTitle 是否显示标题
-     * @return
+     * @return {key：工作簿名称，value：工作簿数据}
      */
     public static Map<String,List<Map<String,Object>>> parserExcel(File file,
                                                                    LinkedHashMap<String,List<MyField>> models,
@@ -351,6 +351,37 @@ public class PoiUtil {
         Map<String,List<Map<String,Object>>> vos = new HashMap<>();
         try {
             Workbook workBook = buildWorkbookByFile(file);
+            if(null != workBook && workBook.getNumberOfSheets() == models.keySet().size()) {
+                int rowStart = isNeedTitle ? 0 : 1;
+                for(Map.Entry<String, List<MyField>> entry : models.entrySet()) {
+                    String sheetName = entry.getKey();
+                    List<MyField> fields = entry.getValue();
+                    Sheet sheet = workBook.getSheet(sheetName);
+                    List<Map<String,Object>> sheetData = parseSheetData(sheet, fields, rowStart);
+                    vos.put(sheetName, sheetData);
+                }
+            }
+        }
+        catch (Exception e) {
+            LOGGER.error("PoiUtil.parserExcel", e);
+        }
+        return vos;
+    }
+
+    /**
+     * 解析excel文件
+     * @param in 输入流
+     * @param isXls 是否为xls格式文件
+     * @param models 模版(key：工作表名称, value：工作表字段名列表)
+     * @param isNeedTitle 是否显示标题
+     * @return {key：工作簿名称，value：工作簿数据}
+     */
+    public static Map<String,List<Map<String,Object>>> parserExcel(InputStream in, boolean isXls,
+                                                                   LinkedHashMap<String,List<MyField>> models,
+                                                                   boolean isNeedTitle) {
+        Map<String,List<Map<String,Object>>> vos = new HashMap<>();
+        try {
+            Workbook workBook = buildWorkbookByInputStream(in, isXls);
             if(null != workBook && workBook.getNumberOfSheets() == models.keySet().size()) {
                 int rowStart = isNeedTitle ? 0 : 1;
                 for(Map.Entry<String, List<MyField>> entry : models.entrySet()) {
@@ -421,6 +452,28 @@ public class PoiUtil {
                 workbook = new HSSFWorkbook(in);
             }
             else if(fileName.toLowerCase(Constants.LOCALE_DEFAULT).endsWith(FileType.XLSX.getFormat())) {
+                workbook = new XSSFWorkbook(in);
+            }
+        }
+        catch (Exception e) {
+            LOGGER.error("PoiUtil.buildWorkbookByFile", e);
+        }
+        return workbook;
+    }
+
+    /**
+     * 根据流、文件名构建工作薄
+     * @param in 输入流
+     * @param isXls 是否为xls格式文件
+     * @return
+     */
+    public static Workbook buildWorkbookByInputStream(InputStream in, boolean isXls) {
+        Workbook workbook = null;
+        try {
+            if(isXls) {
+                workbook = new HSSFWorkbook(in);
+            }
+            else {
                 workbook = new XSSFWorkbook(in);
             }
         }

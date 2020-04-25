@@ -1,6 +1,7 @@
 package com.oa.platform.biz;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.oa.platform.common.Constants;
 import com.oa.platform.common.FileType;
 import com.oa.platform.util.FileUtil;
@@ -9,6 +10,7 @@ import com.oa.platform.util.StringUtil;
 import com.oa.platform.vo.MyField;
 import com.oa.platform.vo.MyFieldVo;
 
+import opennlp.tools.parser.Cons;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -115,6 +117,12 @@ public class FileBiz extends BaseBiz {
                     }
                 }
             }
+            // 是否解析XLS或XLSX文件
+            String parseExcel = StringUtil.trim(request.getParameter("parseXls"), "0");
+            if ("1".equals(parseExcel) && !"".equals(type)) {
+                parseExcelData(file.getInputStream(), fileName, type);
+            }
+
             map.put("content", content);
             ret = this.getSuccessVo("", map);
         } catch (IOException e) {
@@ -263,6 +271,36 @@ public class FileBiz extends BaseBiz {
                         e.printStackTrace();
                     }
                 }
+            }
+        }
+    }
+
+    /**
+     * 解析Excel文件
+     * @param is 输入流
+     * @param fileName 文件名
+     * @param type (业务)类型
+     */
+    public void parseExcelData(InputStream is, String fileName, String type) throws IOException {
+        type = StringUtil.trim(type);
+        String __fileName = StringUtil.trim(fileName).toLowerCase(Constants.LOCALE_DEFAULT);
+        if (is != null && !"".equals(__fileName) && !"".equals(type)) {
+            if (__fileName.endsWith(FileType.XLS.getFormat()) || __fileName.endsWith(FileType.XLSX.getFormat())) {
+                // 根据业务类型(type)进行解析XLS/XLSX文件
+                LinkedHashMap<String, List<MyField>> models = Maps.newLinkedHashMap();
+                List<MyField> header = Lists.newArrayList(
+                        new MyField("fName1", MyField.TYPE_STRING, 255, false, "fName1", "fName1"),
+                        new MyField("fName2", MyField.TYPE_STRING, 255, false, "fName2", "fName2"),
+                        new MyField("fName3", MyField.TYPE_STRING, 16, false, "fName3", "fName3")
+                );
+                models.put("test-xls", header);
+                boolean isXls = false;
+                if (__fileName.endsWith(FileType.XLS.getFormat())) {
+                    isXls = true;
+                }
+
+                //解析结果：{key：工作簿名称，value：工作簿数据}
+                Map<String,List<Map<String,Object>>> ret = PoiUtil.parserExcel(is, isXls, models, true);
             }
         }
     }
