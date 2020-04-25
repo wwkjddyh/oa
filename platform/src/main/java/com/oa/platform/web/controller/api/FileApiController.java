@@ -65,4 +65,20 @@ public class FileApiController extends BaseController {
         fileBiz.dl(response, type, fName, viewName);
     }
 
+    /**
+     * 导出Excel表格(默认XLXS格式)
+     * @param request 请求对象
+     * @param response 响应对象
+     * @param isDownload 是否下载(0, 否; 1, 是)
+     * @param type 类型
+     * @param viewName 显示名称(可不带文件格式后缀)
+     * @see <a href="/api/file/exportExcel/0/aaa/est测试啊1.xlsx">示例： /api/file/exportExcel/1/aaa/est测试啊1.xlsx</a>
+     */
+    @RequestMapping(value = "/exportExcel/{isDownload}/{type}/{viewName}")
+    public void exportExcel(HttpServletRequest request, HttpServletResponse response,
+                            @PathVariable Integer isDownload,
+                            @PathVariable String type, @PathVariable String viewName) {
+        fileBiz.exportExcel(request, response, isDownload, type, viewName);
+    }
+
 }

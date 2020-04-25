@@ -120,8 +120,9 @@ public class PoiUtil {
 
                 fillFieldVos(workBook, fieldVos);
                 fos = new FileOutputStream(FileUtil.createFile(parentDir, fileName));
-                workBook.write(fos);
-                fos.flush();
+//                workBook.write(fos);
+//                fos.flush();
+                writeToOutputStream(workBook, fos);
             }
             catch (IOException e) {
                 e.printStackTrace();
@@ -138,11 +139,24 @@ public class PoiUtil {
     }
 
     /**
+     * 写入文件输出流
+     * @param workBook 工作表
+     * @param os 输出流
+     * @throws IOException
+     */
+    public static void writeToOutputStream(Workbook workBook, OutputStream os) throws IOException {
+        if (workBook != null && os != null) {
+            workBook.write(os);
+            os.flush();
+        }
+    }
+
+    /**
      * 填充数据
      * @param workBook
      * @param fieldVos
      */
-    static void fillFieldVos(Workbook workBook, List<MyFieldVo> fieldVos) {
+    public static void fillFieldVos(Workbook workBook, List<MyFieldVo> fieldVos) {
         if(workBook != null && null != fieldVos && fieldVos.size() > 0) {
             int voSize = fieldVos.size();
             for (int v=0;v<voSize;v++) {
@@ -438,7 +452,7 @@ public class PoiUtil {
     }
 
     public static void main(String... args) throws Exception {
-        String parentDir = "C:\\work\\test";
+        String parentDir = "D:\\work\\test";
         String fileName = "test.xls";
         List<MyFieldVo> fieldVos = new ArrayList<>();
         // 标题信息
@@ -464,26 +478,26 @@ public class PoiUtil {
             setCnName("测试xls生成");
             setName("test-xls");
         }});
-//        buildExcelFile(parentDir, fileName, fieldVos);
+        buildExcelFile(parentDir, fileName, fieldVos);
 
         // 解析xls
-        List<MyFieldVo> models = new ArrayList<>();
-        models.add(new MyFieldVo() {
-            {
-                setMyFields(header);
-                setCnName("测试xls生成");
-                setName("test-xls");
-            }
-        });
-        File file = new File(parentDir, fileName);
-        System.err.println(file.getName() + "\n" + file.getPath());
-        Map<String,List<Map<String,Object>>> ret = parserExcel(file, models, true, true);
-        System.err.println("ret => " + ret);
-
-        LinkedHashMap<String, List<MyField>> models2 = Maps.newLinkedHashMap();
-        models2.put("test-xls", header);
-        ret = parserExcel(parentDir, fileName, models2, true);
-        System.err.println("ret => " + ret);
+//        List<MyFieldVo> models = new ArrayList<>();
+//        models.add(new MyFieldVo() {
+//            {
+//                setMyFields(header);
+//                setCnName("测试xls生成");
+//                setName("test-xls");
+//            }
+//        });
+//        File file = new File(parentDir, fileName);
+//        System.err.println(file.getName() + "\n" + file.getPath());
+//        Map<String,List<Map<String,Object>>> ret = parserExcel(file, models, true, true);
+//        System.err.println("ret => " + ret);
+//
+//        LinkedHashMap<String, List<MyField>> models2 = Maps.newLinkedHashMap();
+//        models2.put("test-xls", header);
+//        ret = parserExcel(parentDir, fileName, models2, true);
+//        System.err.println("ret => " + ret);
     }
 
 }
