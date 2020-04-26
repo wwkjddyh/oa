@@ -1,5 +1,6 @@
 package com.oa.platform.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -224,5 +225,28 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 	@Override
 	public List<String> findOrgIdByUserId(String userId) {
 		return orgRepository.findOrgIdByUserId(userId);
+	}
+	@Override
+	public void insertExcelUsers(List<OrgUser> orgUsers) {
+		orgRepository.insertExcelUsers(orgUsers);
+		
+	}
+	@Override
+	public void insertExcelUsersDtl(List<OrgUser> orgUsers) {
+		orgRepository.insertExcelUsersDtl(orgUsers);
+		
+	}
+	@Override
+	public void insertExcelUsersOrg(List<OrgUser> orgUsers) {
+		orgRepository.insertExcelUsersOrg(orgUsers);
+		
+	}
+	@Override
+	public List<String> getOrgIdByName(String orgName) {
+		return orgRepository.getOrgIdByName(orgName);
+	}
+	@Override
+	public List<OrgUser> getPartyExcelList(List<String> arrayList) {
+		return orgRepository.getPartyExcelList(arrayList);
 	}
 }

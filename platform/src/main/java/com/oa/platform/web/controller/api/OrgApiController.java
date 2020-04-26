@@ -2,6 +2,8 @@ package com.oa.platform.web.controller.api;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -254,5 +256,19 @@ public class OrgApiController extends BaseController{
 		User user = getUserOfSecurity();
 		Map<String,Object> result = orgBiz.getEchartsDataByCurrentUser(user.getUserId());
 		return getSuccessResultVo(result);
+	}
+	/**
+	 * 党员导入
+	 * @param filePath
+	 * @return
+	 */
+	@PostMapping("partyMemberExcelImport")
+	public ResultVo partyMemberExcelImport(String filePath) {
+		return orgBiz.partyMemberExcelImport(filePath);
+	}
+	@GetMapping("nddyxxcjExcelExport")
+	public void nddyxxcjExcelExport(HttpServletResponse response) {
+		User user = getUserOfSecurity();
+		orgBiz.nddyxxcjExcelExport(response,user.getUserId());
 	}
 }

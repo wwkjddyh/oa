@@ -1,11 +1,32 @@
 package com.oa.platform.biz;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -548,8 +569,209 @@ public class OrgBiz extends BaseBiz {
 		}
 		
 	}
+	@Transactional
+	public ResultVo partyMemberExcelImport(String filePath) {
+		String[] filePaths = filePath.split(",");
+		for (String path : filePaths) {
+			File file = new File(path);
+			if(file.getName().endsWith(".xls") || file.getName().endsWith(".xlsx")
+					|| file.getName().endsWith(".XLS") || file.getName().endsWith(".XLSX")) {
+				InputStream is = null;
+				Workbook workbook =null;
+				try {
+					
+					is = new FileInputStream(file);
+					workbook = getWorkBook(is, file);
+					 int sheetNum = workbook.getNumberOfSheets();
+				        List<OrgUser> dataList = new ArrayList<OrgUser>();
+				        for(int index = 0;index<sheetNum;index++){
+				            Sheet sheet = workbook.getSheetAt(index);
+				            if(sheet==null || index > 0 ){
+				                continue;
+				            }
+				            for(int rowIndex=2;rowIndex<=sheet.getLastRowNum();rowIndex++){
+				                Row row = sheet.getRow(rowIndex);
+				                if(row==null){
+				                    continue;
+				                }
+				                OrgUser partyMember = new OrgUser();
+				                
+				                for(int cellIndex=1;cellIndex<row.getLastCellNum();cellIndex++){
+				                    Cell cell = row.getCell(cellIndex);
+				                    cell.setCellType(CellType.STRING);
+				                    if(cellIndex == 1) {
+				                    	String orgName = cell.getStringCellValue().trim();
+				                    	partyMember.setUserId(StringUtil.getRandomUUID());
+				                    	if(orgName == null || "".equals(orgName)) {
+				                    		return getErroResultVo(2000, "第"+(rowIndex+1)+"行,第"+(cellIndex+1)+"列支部名称不能无值", null);
+				                    	}
+				                    	List<String> orgIdByName = orgSerivce.getOrgIdByName(orgName);
+				                    	if(orgIdByName == null || orgIdByName.size() == 0) {
+				                    		return getErroResultVo(2000, "第"+(rowIndex+1)+"行,第"+(cellIndex+1)+"列支部名称不存在", null);
+				                    	}
+				                    	partyMember.setOrgId(orgIdByName.get(0));
+				                    }
+				                    if(cellIndex == 2) {
+				                    	String userName = cell.getStringCellValue().trim();
+				                    	if(userName == null || "".equals(userName)) {
+				                    		return getErroResultVo(2000, "第"+(rowIndex+1)+"行,第"+(cellIndex+1)+"列姓名不能无值", null);
+				                    	}
+				                    	partyMember.setUserName(userName);
+				                    }
+				                    if(cellIndex == 3) {
+				                    	String idCard = cell.getStringCellValue().trim();
+				                    	if(idCard == null || "".equals(idCard)) {
+				                    		return getErroResultVo(2000, "第"+(rowIndex+1)+"行,第"+(cellIndex+1)+"列身份证号不能无值", null);
+				                    	}
+				                    	partyMember.setIdCard(idCard);
+				                    }
+				                    if(cellIndex == 4) {
+				                    	String nation = cell.getStringCellValue().trim();
+				                    	if(nation == null || "".equals(nation)) {
+				                    		return getErroResultVo(2000, "第"+(rowIndex+1)+"行,第"+(cellIndex+1)+"列民族不能无值", null);
+				                    	}
+				                    	partyMember.setNation(nation);
+				                    }
+				                    if(cellIndex == 5) {
+				                    	String gender = cell.getStringCellValue().trim();
+				                    	if(gender == null || "".equals(gender)) {
+				                    		return getErroResultVo(2000, "第"+(rowIndex+1)+"行,第"+(cellIndex+1)+"列性别不能无值", null);
+				                    	}
+				                    	if("男".equals(gender)) {
+				                    		partyMember.setGender("1");
+				                    	}else if("女".equals(gender)) {
+				                    		partyMember.setGender("0");
+				                    	}
+				                    }
+				                    if(cellIndex == 6) {
+				                    	String joinPartyTime = cell.getStringCellValue().trim();
+				                    	if(joinPartyTime == null || "".equals(joinPartyTime)) {
+				                    		return getErroResultVo(2000, "第"+(rowIndex+1)+"行,第"+(cellIndex+1)+"列入党时间不能无值", null);
+				                    	}
+				                    	partyMember.setJoinPartyTime(joinPartyTime);
+				                    }
+				                    if(cellIndex == 7) {
+				                    	String phone = cell.getStringCellValue().trim();
+				                    	if(phone == null || "".equals(phone)) {
+				                    		return getErroResultVo(2000, "第"+(rowIndex+1)+"行,第"+(cellIndex+1)+"列联系电话不能无值", null);
+				                    	}
+				                    	partyMember.setPhone(phone);
+				                    }
+				                }
+				                dataList.add(partyMember);
+				            }
+				            if(dataList.size() > 0) {
+					            orgSerivce.insertExcelUsers(dataList);
+					            orgSerivce.insertExcelUsersDtl(dataList);
+					            orgSerivce.insertExcelUsersOrg(dataList);
+				            }
+				        }
+				        
+				} catch (Exception e) {
+					e.printStackTrace();
+					return getErroResultVo(2000, "导入异常", null);
+				}finally {
+					if(is != null) {
+						try {
+							is.close();
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+				}
+		        
+		       
+				
+			}else {
+				return getErroResultVo(2000, "只能导入Excel文件", null);
+			}
+		}
+		return getSuccessResultVo(null);
+	}
 	
-	
-	
-	
+  
+    /**
+     *判断excel的版本，并根据文件流数据获取workbook
+     * @throws IOException 
+     *
+     */
+    public static Workbook getWorkBook(InputStream is,File file) throws Exception{
+        
+        Workbook workbook = null;
+        if(file.getName().endsWith(".xls")){
+            workbook = new HSSFWorkbook(is);
+        }else if(file.getName().endsWith(".xlsx")){
+            workbook = new XSSFWorkbook(is);
+        }
+        
+        return workbook;
+    }
+	@SuppressWarnings("resource")
+	public void nddyxxcjExcelExport(HttpServletResponse response, String userId) {
+		
+		List<Organization> orgIdByuserId = orgSerivce.getOrgIdByuserId(userId);
+		if(orgIdByuserId == null || orgIdByuserId.size() == 0) {
+			LOGGER.error("ERROR");
+		}else {
+			List<Organization> orgs = orgSerivce.getUserUpperOrgList(orgIdByuserId.get(0).getOrgId());
+			List<String> orgIds = new ArrayList<String>();
+			for (Organization organization : orgs) {
+				orgIds.add(organization.getOrgId());
+			}
+			List<OrgUser> result = orgSerivce.getPartyExcelList(orgIds);
+			
+			HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
+			// 创建sheet页
+	        HSSFSheet sheet = hssfWorkbook.createSheet("党员信息");
+	        // 创建表头
+	        createTitle(sheet);
+			for(int i = 0; i < result.size() ; i++) {
+				OrgUser orgUser = result.get(i);
+				if(orgUser == null ) {
+					continue;
+				}
+				HSSFRow row = sheet.createRow(i + 1);
+				row.createCell(0).setCellValue(orgUser.getUserName());
+				row.createCell(1).setCellValue(orgUser.getBirthTime());
+				row.createCell(2).setCellValue(orgUser.getGender());
+				row.createCell(3).setCellValue(orgUser.getJoinPartyTime());
+				row.createCell(4).setCellValue(orgUser.getNation());
+				row.createCell(5).setCellValue(orgUser.getTurnRightTime());
+				row.createCell(6).setCellValue(orgUser.getHometown());
+				row.createCell(7).setCellValue(orgUser.getBachelor());
+				row.createCell(8).setCellValue(orgUser.getEducation());
+				row.createCell(9).setCellValue(orgUser.getPhone());
+				row.createCell(10).setCellValue(orgUser.getOrgName());
+				row.createCell(11).setCellValue(orgUser.getOfficeNumber());
+				row.createCell(12).setCellValue(orgUser.getLiveAddress());
+				row.createCell(13).setCellValue(orgUser.getMail());
+				row.createCell(14).setCellValue(orgUser.getIdCard());
+			}
+			response.setContentType("application/octet-stream");
+	        response.setHeader("Content-disposition", "attachment;filename=党员信息.xlsx");
+	        try {
+	            OutputStream outputStream = response.getOutputStream();
+	            response.flushBuffer();
+	            hssfWorkbook.write(outputStream);
+	            outputStream.flush();
+	            outputStream.close();
+	        } catch (Exception e) {
+	            LOGGER.error(e.toString());
+	        }
+		}
+	}
+	 /**
+     * 创建表头
+     *
+     * @param sheet
+     */
+    private void createTitle(HSSFSheet sheet) {
+        String[] headers = {"姓名", "出生日期", "性别", "入党时间", "民族","转正时间","籍贯","学位","学历","手机号码","所在党组织","工作电话","现居住地","电子邮件","身份证号码"};
+        HSSFRow row = sheet.createRow(0);
+        for (int i = 0; i < headers.length; i++) {
+            HSSFCell cell = row.createCell(i);
+            HSSFRichTextString text = new HSSFRichTextString(headers[i]);
+            cell.setCellValue(text);
+        }
+    }
 }

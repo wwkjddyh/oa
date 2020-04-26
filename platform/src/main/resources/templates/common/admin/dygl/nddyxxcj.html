@@ -17,7 +17,8 @@
 			    	<el-row>
 			    		<el-col :span="14">
 			    			<el-button plain @click="edit('nddyxxcj','','',true)" type="primary" size="small" v-if="dwjbxxMainAdd"><i class="el-icon-plus"></i>新增</el-button>
-			    			<el-button plain @click="handleExport" type="primary" size="small" ><i class="el-icon-download"></i>导出</el-button>
+			    			<el-button plain @click="dialogShow.nddyxxcjImport = true" type="primary" size="small" ><i class="el-icon-upload"></i>导入</el-button>
+			    			<el-button plain @click="nddyxxcjExcelDownload" type="primary" size="small" ><i class="el-icon-download"></i>导出</el-button>
 			    			<el-input placeholder="按姓名搜索"  class="input-with-select" size="small" style="width: 55%;margin-left:5px" v-model="nddyxxSearchCondition">
 						    	<el-button slot="append" icon="el-icon-search" @click="searchForm('nddyxxcj')" size="small">
 						    	</el-button>
@@ -406,6 +407,38 @@
 			  	<div align="center">
 				    <el-button @click="addYear"  type="primary" plain align="center" >确定</el-button>
                     <el-button @click="dialogShow.nddyxxcjYear = false" type="cancel" plain align="center">取消</el-button>
+				</div> 
+			</el-dialog>
+			<el-dialog :visible.sync="dialogShow.nddyxxcjImport" foot-center lock-scroll="true"  title="党员批量导入" center v-loading ="fullscreenLoading">
+				<el-card shadow="always" style="width: 100%;" type="card" >
+					<el-form ref="formnddyxxcjimport"  :rules="rules" :model="formnddyxxcjimport" style="width: 100%;" label-position="left">
+						<el-form-item label="选择要上传的文件">
+							
+						<el-upload style="width: 300px;" size="small"
+                               ref="uploadRes"
+                            class="upload-demo"
+                            action="/api/file/upload"
+                            :on-preview="handleUploadPreview"
+                            :on-remove="handleFJRemove"
+                            :before-remove="beforeFJRemove"
+                            multiple
+                            :limit="5" :accept="uploadAccept"
+                            :on-exceed="handleUploadExceedNews"
+                            :before-upload="beforeNddyxxjcAvatarUpload"
+                            :file-list="uploadFJList"
+                               :on-success="handleFJSuccess"
+                               :on-error="handleUploadError"
+                               :on-change="uploadFileChange"
+                               :show-file-list="true"
+                            >
+                        <el-button icon="el-icon-upload" size="mini" type="primary">选择文件</el-button>
+                    </el-upload>
+						</el-form-item>
+					</el-form>
+				</el-card>
+				<div align="center" style="margin-top:20px">
+				    <el-button @click="submitNddyxxcjExcel"  type="primary" plain align="center" >确定</el-button>
+                    <el-button @click="dialogShow.nddyxxcjImport = false" type="cancel" plain align="center">取消</el-button>
 				</div> 
 			</el-dialog>
             <el-dialog :visible.sync="dialogShow.nddyxxcjdetail" foot-center lock-scroll="true" width="1010px" title="个人信息详情" center>

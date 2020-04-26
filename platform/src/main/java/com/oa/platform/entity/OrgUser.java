@@ -33,7 +33,57 @@ public class OrgUser implements Serializable{
 	private String starFlag;
 	//省份证号码
 	private String idCard;
+	//入党时间
+	private String joinPartyTime;
+	private String turnRightTime;
+	private String hometown;
+	private String bachelor;
+	private String officeNumber;
+	private String liveAddress;
+	private String mail;
 	
+	public String getTurnRightTime() {
+		return turnRightTime;
+	}
+	public void setTurnRightTime(String turnRightTime) {
+		this.turnRightTime = turnRightTime;
+	}
+	public String getHometown() {
+		return hometown;
+	}
+	public void setHometown(String hometown) {
+		this.hometown = hometown;
+	}
+	public String getBachelor() {
+		return bachelor;
+	}
+	public void setBachelor(String bachelor) {
+		this.bachelor = bachelor;
+	}
+	public String getOfficeNumber() {
+		return officeNumber;
+	}
+	public void setOfficeNumber(String officeNumber) {
+		this.officeNumber = officeNumber;
+	}
+	public String getLiveAddress() {
+		return liveAddress;
+	}
+	public void setLiveAddress(String liveAddress) {
+		this.liveAddress = liveAddress;
+	}
+	public String getMail() {
+		return mail;
+	}
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+	public String getJoinPartyTime() {
+		return joinPartyTime;
+	}
+	public void setJoinPartyTime(String joinPartyTime) {
+		this.joinPartyTime = joinPartyTime;
+	}
 	public String getIdCard() {
 		return idCard;
 	}
