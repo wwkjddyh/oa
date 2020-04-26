@@ -748,7 +748,7 @@ public class OrgBiz extends BaseBiz {
 				row.createCell(14).setCellValue(orgUser.getIdCard());
 			}
 			response.setContentType("application/octet-stream");
-	        response.setHeader("Content-disposition", "attachment;filename=党员信息.xlsx");
+	        response.setHeader("Content-disposition", "attachment;filename=DYXX.xlsx");
 	        try {
 	            OutputStream outputStream = response.getOutputStream();
 	            response.flushBuffer();

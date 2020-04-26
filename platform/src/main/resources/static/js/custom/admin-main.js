@@ -1799,7 +1799,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             authRole: {
                 //搜索条件
@@ -1818,7 +1818,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             user: {
                 //搜索条件
@@ -1840,7 +1840,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             sysUser: {
                 //搜索条件
@@ -1859,7 +1859,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             category: {
                 //搜索条件
@@ -1878,7 +1878,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             categoryType: {
                 //搜索条件
@@ -1897,7 +1897,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             langConf: {
                 //搜索条件
@@ -1916,7 +1916,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             news: {
                 //搜索条件
@@ -1935,7 +1935,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             article: {
                 //搜索条件
@@ -1954,7 +1954,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
 
             briefSendRecord: {
@@ -1994,7 +1994,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
 
             res: {
@@ -2014,7 +2014,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
 
             resDl: {
@@ -2034,7 +2034,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
         },
         defaultProps: {
@@ -6777,6 +6777,13 @@ new Vue({
             this.pager.partyDues.currentPage = val;
             this.loadPartyDues(this.pager.partyDues.criteria, this.pager.partyDues.currentPage, this.pager.partyDues.pageSize);
         },
+        nddyxxcjImportStart(){
+        	let that = this;
+        	that.dialogShow.nddyxxcjImport = true;
+        	that.uploadFJList =[];
+            that.uploadFJName = [];
+            that.uploadFJUrl = [];
+        },
         submitNddyxxcjExcel(){
         	let that = this;	
         	let params = new URLSearchParams();
@@ -7163,6 +7170,10 @@ new Vue({
             // this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
             this.$message.warning(`附件最多为5个，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
         },
+        handleNddyxxcjExcelImport(files, fileList) {
+            // this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+            this.$message.warning(`单次只能导入单个数据文件`);
+        },
         /**
          * 文件上传之前
          * @param file 文件
@@ -7474,7 +7485,28 @@ new Vue({
             }
         },
         nddyxxcjExcelDownload(){
-        	window.location.href = "/api/org/nddyxxcjExcelExport";
+        	let that = this;
+        	that.$confirm('是否导出当前用户可见所有党员？', '警告', {
+                confirmButtonText: '是',
+                cancelButtonText: '否',
+                type: 'warning',
+                callback: action => {
+                    if(action === "cancel"){
+                        that.$message({
+                            type: 'info',
+                            message: "取消导出"
+                        });
+                    }else{
+                    	
+                    	window.location.href = "/api/org/nddyxxcjExcelExport";
+                    	that.$message({
+                            type: 'success',
+                            message: "正在导出，请等待..."
+                        });
+                    }
+                }
+        	});
+        	
         },
         /**
          * 下载资源

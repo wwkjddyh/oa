@@ -17,7 +17,7 @@
 			    	<el-row>
 			    		<el-col :span="14">
 			    			<el-button plain @click="edit('nddyxxcj','','',true)" type="primary" size="small" v-if="dwjbxxMainAdd"><i class="el-icon-plus"></i>新增</el-button>
-			    			<el-button plain @click="dialogShow.nddyxxcjImport = true" type="primary" size="small" ><i class="el-icon-upload"></i>导入</el-button>
+			    			<el-button plain @click="nddyxxcjImportStart" type="primary" size="small" ><i class="el-icon-upload"></i>导入</el-button>
 			    			<el-button plain @click="nddyxxcjExcelDownload" type="primary" size="small" ><i class="el-icon-download"></i>导出</el-button>
 			    			<el-input placeholder="按姓名搜索"  class="input-with-select" size="small" style="width: 55%;margin-left:5px" v-model="nddyxxSearchCondition">
 						    	<el-button slot="append" icon="el-icon-search" @click="searchForm('nddyxxcj')" size="small">
@@ -83,17 +83,7 @@
 							<span class="list-row-base-style">{{scope.row.birthTime}}</span>
 						</template>
                     </el-table-column>
-                    <!-- <el-table-column
-                            prop="nation"
-                            align="center"
-                            label="民族">
-                            <template v-slot="scope">
-						         {{ getNationValue(scope.row.nation)}}
-						    </template>
-						<template slot-scope="scope">
-							<span class="list-row-base-style">{{scope.row.nation}}</span>
-						</template>
-                    </el-table-column> -->
+                    
                     <el-table-column
                             prop="educationName"
                             align="center"
@@ -409,7 +399,7 @@
                     <el-button @click="dialogShow.nddyxxcjYear = false" type="cancel" plain align="center">取消</el-button>
 				</div> 
 			</el-dialog>
-			<el-dialog :visible.sync="dialogShow.nddyxxcjImport" foot-center lock-scroll="true"  title="党员批量导入" center v-loading ="fullscreenLoading">
+			<el-dialog :visible.sync="dialogShow.nddyxxcjImport" foot-center lock-scroll="true"  title="党员批量导入" center v-loading ="fullscreenLoading" width="600px">
 				<el-card shadow="always" style="width: 100%;" type="card" >
 					<el-form ref="formnddyxxcjimport"  :rules="rules" :model="formnddyxxcjimport" style="width: 100%;" label-position="left">
 						<el-form-item label="选择要上传的文件">
@@ -422,8 +412,8 @@
                             :on-remove="handleFJRemove"
                             :before-remove="beforeFJRemove"
                             multiple
-                            :limit="5" :accept="uploadAccept"
-                            :on-exceed="handleUploadExceedNews"
+                            :limit="1" :accept="uploadAccept"
+                            :on-exceed="handleNddyxxcjExcelImport"
                             :before-upload="beforeNddyxxjcAvatarUpload"
                             :file-list="uploadFJList"
                                :on-success="handleFJSuccess"
