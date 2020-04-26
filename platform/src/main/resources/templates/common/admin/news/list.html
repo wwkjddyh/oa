@@ -9,8 +9,8 @@
     <el-input placeholder="关键字"  class="input-with-select" size="mini" style="width: 30%; margin-left: 10px" v-model="formSearchNews.title">
 	    <el-button slot="append" icon="el-icon-search" @click="searchForm('formSearchNews')"></el-button>
 	 </el-input>
-    <div style="margin-top: 20px">
-        <div style="margin-top: 20px; width: 100%" v-loading="newsLoading">
+    <div style="margin-top: 20px" v-loading="newsLoading">
+        <div style="margin-top: 20px; width: 100%" >
             <div v-for="item in newsArray" style="margin-top: 10px;display: flex;display: -webkit-flex; align-items:center;">
                 <div style="width: 70%; height: auto" v-if="formSearchNews.isViewed == ''">
                     <label v-if="newsOperate == true" @click="deleteNews(item.recordId)" class="el-icon-close" style="font-size: 16px;color: red;font-weight:bold;cursor: pointer;"></label>

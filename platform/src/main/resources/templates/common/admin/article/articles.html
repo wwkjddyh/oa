@@ -29,7 +29,7 @@
             </el-form>
             <hr style="height:1px;border:none;border-top:1px dashed #DDDDDD;"/>
             -->
-    <el-button plain @click="edit('article', '', '', true)" size="mini" icon="el-icon-plus" >新增</el-button>
+    <el-button plain @click="edit('article', '', '', true)" size="mini" icon="el-icon-plus" v-if="isSuperAdmin">新增</el-button>
     <el-button round @click="handleArtcleSearchByViewed('1')" size="mini" :type="receiveArtcleType" >已收简报</el-button>
     <el-button round @click="handleArtcleSearchByViewed('0')" size="mini" :type="sendArtcleType" >已发简报</el-button>
     <el-button plain @click="operateNews()" size="mini" :icon="operateIcon" v-if="sendArtcleType == 'info'">{{operateName}}</el-button>

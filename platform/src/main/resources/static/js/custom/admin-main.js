@@ -6281,6 +6281,7 @@ new Vue({
             if (that.formSearchNews.isViewed && that.formSearchNews.isViewed != '') {
                 _isViewed = that.formSearchNews.isViewed;
             }
+            that.newsLoading = true;
             axios.get("/api/news/getCurrUserNews",{params:{
                     key: criteria,
                     pageNum: pageNum,
@@ -6289,12 +6290,14 @@ new Vue({
                 }})
                 .then(function(response){/*成功*/
                 	that.handleResponse(response);
+                	that.newsLoading = false;
                 	if(parseInt(response.status) == 200 ) {
                         that.newsArray = response.data.data.list;
                         that.pager.news.totalCount = response.data.data.total;
                     }
                 })
                 .catch(function(err){/*异常*/
+                	that.newsLoading = false;
                     console.log(err);
                 });
         },
