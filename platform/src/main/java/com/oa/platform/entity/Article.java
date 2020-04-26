@@ -129,8 +129,18 @@ public class Article implements Serializable {
      * 简报发送者ID
      */
     private String senderId;
+    private Integer approve;
+    
 
-    public String getKey() {
+	public Integer getApprove() {
+		return approve;
+	}
+
+	public void setApprove(Integer approve) {
+		this.approve = approve;
+	}
+
+	public String getKey() {
         return key;
     }
 

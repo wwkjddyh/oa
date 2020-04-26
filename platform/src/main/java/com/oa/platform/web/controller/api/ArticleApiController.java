@@ -52,9 +52,10 @@ public class ArticleApiController extends BaseController {
             @RequestParam(defaultValue = "", required = false) String sourceSite,
             @RequestParam(defaultValue = "1", required = false) String flag,
             @RequestParam(defaultValue = "", required = false) String sendType,
+            @RequestParam(defaultValue = "0", required = false) String superAdmin,
             String[] receiverIds) {
         return articleBiz.saveArticle(recordId, categoryId, title, intro, content, tags,source, authorName, sourceSite,
-                flag, sendType, receiverIds);
+                flag, sendType, receiverIds,superAdmin);
     }
 
     /**

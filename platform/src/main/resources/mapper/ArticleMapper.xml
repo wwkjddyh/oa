@@ -31,6 +31,7 @@
     <result column="view_count" property="viewCount" jdbcType="BIGINT"/>
     <result column="like_count" property="likeCount" jdbcType="BIGINT"/>
     <result column="stinky_egg" property="stinkyEgg" jdbcType="BIGINT"/>
+    <result column="approve" property="approve" jdbcType="INTEGER"/>
   </resultMap>
 
   <!-- 简报 -->
@@ -57,7 +58,7 @@
     INSERT INTO t_article (record_id,category_id,`title`,`content`,`intro`,`tags`,
                           `source`,`author_name`,source_site,creator_id,updator_id,update_time,record_time,flag,approve)
     VALUES (#{recordId},#{categoryId},#{title},#{content},#{intro},#{tags},#{source},#{authorName},#{sourceSite},
-                          #{creatorId},#{updatorId},#{updateTime},NOW(),#{flag},2)
+                          #{creatorId},#{updatorId},#{updateTime},NOW(),#{flag},#{approve})
   </insert>
 
   <!--插入发送简报记录-->

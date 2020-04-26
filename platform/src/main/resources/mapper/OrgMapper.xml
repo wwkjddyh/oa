@@ -1053,7 +1053,10 @@
 			usrdtl.education,
 			usrdtl.is_leader,
 			orguser.org_id act_org,
-			sysorg.org_nm
+			sysorg.org_nm,
+			CASE
+				WHEN TIMESTAMPDIFF( YEAR, usrdtl.join_party_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) &lt; 0 
+				THEN 0 else TIMESTAMPDIFF( YEAR, usrdtl.join_party_time, DATE_FORMAT( NOW( ), '%Y-%m-%d %H:%i:%S' ) ) end join_party_time
 		from 
 			t_user usr
 		left join t_user_dtl usrdtl on usr.user_id = usrdtl.user_id and usr.record_flag='1'

@@ -95,7 +95,7 @@
                     label="操作">
                 <template slot-scope="scope">
                     <div style="display: flex;width:100%">
-                        <el-button size="mini" @click="handleSetUserRole(scope.row,true)" icon="el-icon-setting">角色设置</el-button>
+                        <el-button size="mini" @click="handleSetUserRole(scope.row,true)" icon="el-icon-setting" v-if="isSuperAdmin">角色设置</el-button>
                         <el-button size="mini" @click="edit('sysUser',scope.$index,scope.row,false)" icon="el-icon-edit">修改</el-button>
                         <el-button size="mini" @click="resetPwd(scope.row)" icon="el-icon-refresh-left" type="warning">重置密码</el-button>
                         <el-button v-if="scope.row.userName !== 'admin'" size="mini" type="danger" @click="handleDel(scope.$index,'sysUser')" icon="el-icon-delete">删除</el-button>

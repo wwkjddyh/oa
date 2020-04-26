@@ -33,9 +33,9 @@
     <el-button round @click="handlexxjlSearchByViewed('1')" size="mini" :type="receiveArtcleType" >已收</el-button>
     <el-button round @click="handlexxjlSearchByViewed('0')" size="mini" :type="sendArtcleType" >已发</el-button>
     <el-button plain @click="operateNews()" size="mini" :icon="operateIcon" v-if="sendArtcleType == 'info'">{{operateName}}</el-button>
-    	<el-button round @click="handlexxjlSearchByViewed('2')" size="mini" :type="toApprove" v-if="currentUser.isAdmin == 1">待审批</el-button>
-    	<el-button round @click="handlexxjlSearchByViewed('3')" size="mini" :type="approveSuccess" v-if="currentUser.isAdmin == 1">审批通过</el-button>
-    	<el-button round @click="handlexxjlSearchByViewed('4')" size="mini" :type="approveFail" v-if="currentUser.isAdmin == 1">审批不通过</el-button>
+    	<el-button round @click="handlexxjlSearchByViewed('2')" size="mini" :type="toApprove" v-if="isSuperAdmin">待审批</el-button>
+    	<el-button round @click="handlexxjlSearchByViewed('3')" size="mini" :type="approveSuccess" v-if="isSuperAdmin">审批通过</el-button>
+    	<el-button round @click="handlexxjlSearchByViewed('4')" size="mini" :type="approveFail" v-if="isSuperAdmin">审批不通过</el-button>
     
     
     <div style="margin-top: 20px" v-loading="newsLoading">
@@ -78,12 +78,12 @@
         </div>
     </div>
     <el-dialog :title="(currBrief.title || '')" :visible.sync="dialogShow.viewBrief" lock-scroll="true" width="50%"
-               style="border-radius: 5px;">
+               style="border-radius: 5px;" align="center">
         <div style="width: 100%; text-align: center" v-html="(currBrief.content || '')">
         </div>
         <span slot="footer" class="dialog-footer">
-		    <el-button type="success" round size="mini" style="width: 68px;">通过</el-button>
-		    <el-button type="danger" round size="mini" >不通过</el-button>
+		    <el-button type="success" round size="mini" style="width: 68px;" v-if="toApprove == 'info'">通过</el-button>
+		    <el-button type="danger" round size="mini" v-if="toApprove == 'info'">不通过</el-button>
 		 </span>
         
     </el-dialog>

@@ -46,7 +46,7 @@ public class ArticleBiz extends BaseBiz {
      */
     public Map<String,Object> saveArticle(String recordId, String categoryId, String title, String intro,
                                           String content, String tags, String source, String authorName,
-                                          String sourceSite, String flag, String sendType, String[] receiverIds) {
+                                          String sourceSite, String flag, String sendType, String[] receiverIds,String superAdmin) {
         recordId = StringUtil.trim(recordId);
         categoryId = StringUtil.trim(categoryId);
         title = StringUtil.trim(title);
@@ -114,6 +114,11 @@ public class ArticleBiz extends BaseBiz {
                        recordId = StringUtil.getRandomUUID();
                        if ("1".equals(sendType)) {
                            sendBriefs(recordId, userId, receiverIds, dateStr);
+                       }
+                       if("1".equals(superAdmin) ) {
+                    	   article.setApprove(3);
+                       }else {
+                    	   article.setApprove(2);
                        }
                        article.setRecordId(recordId);
                        article.setCreatorId(userId);

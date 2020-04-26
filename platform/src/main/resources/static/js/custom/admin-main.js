@@ -2801,6 +2801,11 @@ new Vue({
             params.append('authorName',that.formArticle.authorName || '');
             params.append('source',that.formArticle.source || '');
             params.append('sourceSite',that.formArticle.sourceSite || '');
+            if(that.isSuperAdmin){
+            	params.append('superAdmin','1');
+            }else{
+            	params.append('superAdmin','0');
+            }
             if (that.currentArticleFormTitle === '简报' || that.currentArticleFormTitle === '学习交流') {
                 params.append('sendType', sendType);
                 params.append('receiverIds', receiverIds);
