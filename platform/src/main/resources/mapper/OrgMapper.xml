@@ -83,6 +83,14 @@
 		<result column="is_leader" property="isLeader" jdbcType="VARCHAR"/>
 		<result column="act_org" property="actOrg" jdbcType="VARCHAR"/>
 		<result column="star_flag" property="starFlag" jdbcType="VARCHAR"/>
+		<result column="join_party_time" property="joinPartyTime" jdbcType="VARCHAR"/>
+		<result column="turn_right_time" property="turnRightTime" jdbcType="VARCHAR"/>
+		<result column="hometown" property="hometown" jdbcType="VARCHAR"/>
+		<result column="bachelor" property="bachelor" jdbcType="VARCHAR"/>
+		<result column="office_number" property="officeNumber" jdbcType="VARCHAR"/>
+		<result column="live_address" property="liveAddress" jdbcType="VARCHAR"/>
+		<result column="mail" property="mail" jdbcType="VARCHAR"/>
+		<result column="id_card" property="idCard" jdbcType="VARCHAR"/>
 	</resultMap>
 	<insert id="orgAdd" parameterType="com.oa.platform.entity.Organization">
 		insert into t_sys_org (
@@ -1071,5 +1079,68 @@
 			t_org_user
 		WHERE
 			user_id = #{userId} and status='1'
+	</select>
+	<insert id="insertExcelUsers" parameterType="java.util.List">
+		insert into t_user (user_id,user_type,user_name,user_pwd,user_pwd_origi,record_flag,record_time) 
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+	      (#{item.userId}, 3,#{item.userName}, '$2a$10$ELoQRmGUvr0/81JdAHyHfewt6h.zqjlaIjM1NUNN.Fwcy5mkP4qp2', '123456', 1,now()
+	       
+	      )
+	    </foreach>
+	</insert>
+	<insert id="insertExcelUsersDtl" parameterType="java.util.List">
+		insert into t_user_dtl (user_id,gender,phone,nation,join_party_time,id_card,is_party,is_leader,create_on) 
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+	      (#{item.userId}, #{item.gender},#{item.phone}, #{item.nation}, #{item.joinPartyTime}, #{item.idCard},'1','0',now()
+	       
+	      )
+	    </foreach>
+	</insert>
+	<insert id="insertExcelUsersOrg" parameterType="java.util.List">
+		insert into t_org_user (org_id,user_id,status)
+		values
+		<foreach collection="list" item="item" index="index" separator=",">
+	      (#{item.orgId}, #{item.userId},'1'
+	      )
+	    </foreach>
+	</insert>
+	<select id="getOrgIdByName" resultType="java.lang.String">
+		select org_id from t_sys_org where org_nm=#{orgName}
+	</select>
+	<select id="getPartyExcelList" resultMap="orgUserMap">
+		SELECT
+			usr.user_name,
+			org.org_nm,
+			dict.dict_name bachelor,
+			dict2.dict_name education,
+			case when usrdtl.gender = '1' then '男'  when usrdtl.gender = '0' then '女'  end gender,
+			usrdtl.phone,
+			usrdtl.birth_time,
+			usrdtl.nation,
+			usrdtl.join_party_time,
+			usrdtl.turn_right_time,
+			usrdtl.hometown,
+			usrdtl.office_number,
+			usrdtl.live_address,
+			usrdtl.mail,
+			usrdtl.id_card 
+		FROM
+			t_user usr
+			LEFT JOIN t_user_dtl usrdtl ON usr.user_id = usrdtl.user_id
+			LEFT JOIN t_org_user orguser ON usr.user_id = orguser.user_id
+			LEFT JOIN t_sys_org org ON orguser.org_id = org.org_id
+			LEFT JOIN t_dict dict ON usrdtl.bachelor = dict.dict_id
+			LEFT JOIN t_dict dict2 ON usrdtl.education = dict2.dict_id 
+		WHERE
+			usr.record_flag = 1 
+			AND usrdtl.is_party = '1' 
+			AND org.STATUS = '1' 
+			AND orguser.STATUS = '1'
+			AND orguser.org_id in
+			<foreach collection="orgIds" index="index" item="itemId" open="(" separator="," close=")">
+		      #{itemId}
+		    </foreach> 
 	</select>
 </mapper>

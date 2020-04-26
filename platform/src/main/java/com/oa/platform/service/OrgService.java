@@ -1,5 +1,6 @@
 package com.oa.platform.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -106,4 +107,10 @@ public interface OrgService extends BaseService<Organization, String> {
 	 * @return
 	 */
 	List<String> findOrgIdByUserId(@Param("userId") String userId);
+	
+	void insertExcelUsers(List<OrgUser> orgUsers);
+	void insertExcelUsersDtl(List<OrgUser> orgUsers);
+	void insertExcelUsersOrg(List<OrgUser> orgUsers);
+	List<String> getOrgIdByName(String orgName);
+	List<OrgUser> getPartyExcelList(List<String> arrayList);
 }

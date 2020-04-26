@@ -1004,6 +1004,7 @@ new Vue({
             ]
         },
         dwjbxxTableData: [],
+        formnddyxxcjimport: [],
         upperOrg:[],
         currentUser: {},        // 当前用户信息
         currentUserStr: "",
@@ -1274,6 +1275,7 @@ new Vue({
         	}
         ],
         imageInfo:[],
+        nddyxxcjLoading: false,
         dialogImageUrl: '',
         dialogVisible: false,
         singleImg:true,
@@ -1798,7 +1800,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             authRole: {
                 //搜索条件
@@ -1817,7 +1819,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             user: {
                 //搜索条件
@@ -1839,7 +1841,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             sysUser: {
                 //搜索条件
@@ -1858,7 +1860,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             category: {
                 //搜索条件
@@ -1877,7 +1879,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             categoryType: {
                 //搜索条件
@@ -1896,7 +1898,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             langConf: {
                 //搜索条件
@@ -1915,7 +1917,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             news: {
                 //搜索条件
@@ -1934,7 +1936,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
             article: {
                 //搜索条件
@@ -1953,7 +1955,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
 
             briefSendRecord: {
@@ -1993,7 +1995,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
 
             res: {
@@ -2013,7 +2015,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
 
             resDl: {
@@ -2033,7 +2035,7 @@ new Vue({
                 start: 1,
 
                 //默认数据总数
-                totalCount: 1000,
+                totalCount: 0,
             },
         },
         defaultProps: {
@@ -4178,6 +4180,18 @@ new Vue({
             
             return true;
         },
+        beforeNddyxxjcAvatarUpload(file) {
+
+            let isLt2M = file.size / 1024 / 1024 < 50;
+
+
+            if (!isLt2M) {
+              this.$message.error('单个附件大小不能超过 50MB!');
+              return false;
+            }
+            
+            return true;
+        },
         setImgUrl(response, file, fileList){
         	let that = this;
         	
@@ -5875,8 +5889,10 @@ new Vue({
         getUserUpperOrgList(){
         	let that = this;
         	let treeTable =[];
+        	that.nddyxxcjLoading = true;
         	axios.get("/api/org/getUserUpperOrgList",null).then(function(response){
         		that.handleResponse(response);
+        		that.nddyxxcjLoading = false;
         		if(parseInt(response.status) == 200 ){
         			for(let i =0 ; i <response.data.result.length;i++){
         				response.data.result[i].value=response.data.result[i].orgId;
@@ -5885,7 +5901,10 @@ new Vue({
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.userUpperOrg = that.getTreeData(response.data.result, parentArr);
         		}
-        	});
+        	})
+        	.catch(function(err){/*异常*/
+        		that.nddyxxcjLoading = false;
+                });
         },
         getUserRootOrgList(){
         	let that = this;
@@ -6764,7 +6783,49 @@ new Vue({
             this.pager.partyDues.currentPage = val;
             this.loadPartyDues(this.pager.partyDues.criteria, this.pager.partyDues.currentPage, this.pager.partyDues.pageSize);
         },
-
+        nddyxxcjImportStart(){
+        	let that = this;
+        	that.dialogShow.nddyxxcjImport = true;
+        	that.uploadFJList =[];
+            that.uploadFJName = [];
+            that.uploadFJUrl = [];
+        },
+        submitNddyxxcjExcel(){
+        	let that = this;	
+        	let params = new URLSearchParams();
+        	
+        	if(that.uploadFJUrl != null && that.uploadFJUrl.length >0){
+            	params.append('filePath',that.uploadFJUrl.join(','));
+        	}else{
+        		that.$message.error("请选择文件");
+        		return false;
+        	}
+        	
+        	that.fullscreenLoading = true;
+        	axios.post("/api/org/partyMemberExcelImport",params)
+    		.then(function(response){
+    			that.uploadFJList =[];
+                that.uploadFJName = [];
+                that.uploadFJUrl = [];
+    			that.handleResponse(response);
+    			if(parseInt(response.data.code) === 200){
+                    that.$message({
+                        message: '导入成功',
+                        type: 'success'
+                    });
+                    that.dialogShow.nddyxxcjImport = false;
+                }else if(parseInt(response.data.code) === 2000){
+                	that.$message.error(response.data.msg);
+                }
+    			else{
+                	that.$message.error("导入失败");
+                }
+    			that.fullscreenLoading = false;
+    		}).catch(function(err){
+    			that.fullscreenLoading = false;
+    			that.$message.error("导入失败,请联系管理员");
+            });
+        },
         /**
          * 加载资源信息
          */
@@ -7115,6 +7176,10 @@ new Vue({
             // this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
             this.$message.warning(`附件最多为5个，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
         },
+        handleNddyxxcjExcelImport(files, fileList) {
+            // this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+            this.$message.warning(`单次只能导入单个数据文件`);
+        },
         /**
          * 文件上传之前
          * @param file 文件
@@ -7425,7 +7490,33 @@ new Vue({
                 return false;
             }
         },
-
+        nddyxxcjExampleDownload(){
+        	
+        },
+        nddyxxcjExcelDownload(){
+        	let that = this;
+        	that.$confirm('是否导出当前用户可见所有党员？', '警告', {
+                confirmButtonText: '是',
+                cancelButtonText: '否',
+                type: 'warning',
+                callback: action => {
+                    if(action === "cancel"){
+                        that.$message({
+                            type: 'info',
+                            message: "取消导出"
+                        });
+                    }else{
+                    	
+                    	window.location.href = "/api/org/nddyxxcjExcelExport";
+                    	that.$message({
+                            type: 'success',
+                            message: "正在导出，请等待..."
+                        });
+                    }
+                }
+        	});
+        	
+        },
         /**
          * 下载资源
          * @param res
