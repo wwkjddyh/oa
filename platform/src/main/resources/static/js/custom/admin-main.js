@@ -2060,8 +2060,10 @@ new Vue({
     },
     methods: {
     	handleOpenChat () {
-    		console.log('打开聊天系统');
-    		this.showChat = !this.showChat;
+    		this.showChat = true;
+    	},
+    	handleCloseChat () {
+    		this.showChat = false;
     	},
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
@@ -5065,7 +5067,13 @@ new Vue({
 	                      nickname: data.data.userNickname
 	                    });
                       console.log('currentUser ==== ',that.currentUser,that.currentUserStr);
-                      that.chatSrc = "http://localhost:3006/#/?data=" + that.currentUserStr;
+                      let _src = "http://chat.dzry.top/#/;" 
+	                    if (window.location.hostname == "localhost"){
+	                    	_src = "http://localhost:3006/#/"
+	                    } else {
+	                    	 _src = "http://chat.dzry.top/#/;" 
+	                    }
+                      that.chatSrc = `${_src}?data=` + that.currentUserStr;
                       console.log('oa ===== ',that.chatSrc);
                       that.setDwjbxxAuth();
                       let __modules = data.data['modules'] || [];

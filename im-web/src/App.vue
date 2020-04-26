@@ -17,17 +17,17 @@ html,body,#app {
   padding: 0px;
 }
 .el-button--primary {
-  background-color: #fbbda4;
-  border-color:#fbbda4;
+  background-color: #fbbda4 !important;
+  border-color:#fbbda4 !important;
 }
 
 .el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover {
-  background-color: #fbdacdcf;
-  border-color: #fbdacdcf;
+  background-color: #fbdacdcf !important;
+  border-color: #fbdacdcf !important;
 }
 .el-button--primary:focus, .el-button--primary:hover{
-  background-color: #ec9775;
-  border-color:#ec9775;
+  background-color: #ec9775 !important;
+  border-color:#ec9775 !important;
 
 }
 </style>
