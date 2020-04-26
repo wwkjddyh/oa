@@ -25,4 +25,9 @@ html,body,#app {
   background-color: #fbdacdcf;
   border-color: #fbdacdcf;
 }
+.el-button--primary:focus, .el-button--primary:hover{
+  background-color: #ec9775;
+  border-color:#ec9775;
+
+}
 </style>

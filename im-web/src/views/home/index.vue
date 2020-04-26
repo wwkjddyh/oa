@@ -471,9 +471,11 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next){
-    let paramstr = decodeURIComponent(window.location.href).split('?')[1];
+    console.log('路由进入 === ',Object.keys(to.query));
+    let queryLen = Object.keys(to.query).length;
+    let paramstr =  queryLen > 0 ? decodeURIComponent(window.location.href).split('?')[1] : null;
+    console.log('paramstr',paramstr);
     if (paramstr) {
-
       let userInfoObj = JSON.parse(paramstr.replace('data=',''));
       console.log('userInfoObj === ',userInfoObj);
       login(userInfoObj.name, '123456')

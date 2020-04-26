@@ -2056,6 +2056,10 @@ new Vue({
     	
     },
     methods: {
+    	handleOpenChat () {
+    		console.log('打开聊天系统');
+    		this.showChat = !this.showChat;
+    	},
         handleOpen(key, keyPath) {
             console.log(key, keyPath);
         },

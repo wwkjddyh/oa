@@ -41,6 +41,7 @@ const router = new Router({
 
 // 验证token，存在才跳转
 router.beforeEach((to, from, next) => {
+
   let token = sessionStorage.getItem('token')
   
   next()
