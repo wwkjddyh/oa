@@ -7490,6 +7490,9 @@ new Vue({
                 return false;
             }
         },
+        nddyxxcjExampleDownload(){
+        	
+        },
         nddyxxcjExcelDownload(){
         	let that = this;
         	that.$confirm('是否导出当前用户可见所有党员？', '警告', {

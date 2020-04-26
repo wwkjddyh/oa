@@ -19,6 +19,8 @@
 			    			<el-button plain @click="edit('nddyxxcj','','',true)" type="primary" size="small" v-if="dwjbxxMainAdd"><i class="el-icon-plus"></i>新增</el-button>
 			    			<el-button plain @click="nddyxxcjImportStart" type="primary" size="small" ><i class="el-icon-upload"></i>导入</el-button>
 			    			<el-button plain @click="nddyxxcjExcelDownload" type="primary" size="small" ><i class="el-icon-download"></i>导出</el-button>
+			    			<el-button plain @click="nddyxxcjExampleDownload" size="small"  type="primary"><i class="el-icon-download"></i>模板下载</el-button>
+			    			
 			    			<el-input placeholder="按姓名搜索"  class="input-with-select" size="small" style="width: 55%;margin-left:5px" v-model="nddyxxSearchCondition">
 						    	<el-button slot="append" icon="el-icon-search" @click="searchForm('nddyxxcj')" size="small">
 						    	</el-button>
@@ -422,6 +424,7 @@
                                :show-file-list="true"
                             >
                         <el-button icon="el-icon-upload" size="mini" type="primary">选择文件</el-button>
+                        
                     </el-upload>
 						</el-form-item>
 					</el-form>
