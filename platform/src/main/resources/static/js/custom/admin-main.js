@@ -1004,6 +1004,7 @@ new Vue({
             ]
         },
         dwjbxxTableData: [],
+        formnddyxxcjimport: [],
         upperOrg:[],
         currentUser: {},        // 当前用户信息
         currentUserStr: "",
@@ -4178,6 +4179,18 @@ new Vue({
             
             return true;
         },
+        beforeNddyxxjcAvatarUpload(file) {
+
+            let isLt2M = file.size / 1024 / 1024 < 50;
+
+
+            if (!isLt2M) {
+              this.$message.error('单个附件大小不能超过 50MB!');
+              return false;
+            }
+            
+            return true;
+        },
         setImgUrl(response, file, fileList){
         	let that = this;
         	
@@ -6764,7 +6777,42 @@ new Vue({
             this.pager.partyDues.currentPage = val;
             this.loadPartyDues(this.pager.partyDues.criteria, this.pager.partyDues.currentPage, this.pager.partyDues.pageSize);
         },
-
+        submitNddyxxcjExcel(){
+        	let that = this;	
+        	let params = new URLSearchParams();
+        	
+        	if(that.uploadFJUrl != null && that.uploadFJUrl.length >0){
+            	params.append('filePath',that.uploadFJUrl.join(','));
+        	}else{
+        		that.$message.error("请选择文件");
+        		return false;
+        	}
+        	
+        	that.fullscreenLoading = true;
+        	axios.post("/api/org/partyMemberExcelImport",params)
+    		.then(function(response){
+    			that.uploadFJList =[];
+                that.uploadFJName = [];
+                that.uploadFJUrl = [];
+    			that.handleResponse(response);
+    			if(parseInt(response.data.code) === 200){
+                    that.$message({
+                        message: '导入成功',
+                        type: 'success'
+                    });
+                    that.dialogShow.nddyxxcjImport = false;
+                }else if(parseInt(response.data.code) === 2000){
+                	that.$message.error(response.data.msg);
+                }
+    			else{
+                	that.$message.error("导入失败");
+                }
+    			that.fullscreenLoading = false;
+    		}).catch(function(err){
+    			that.fullscreenLoading = false;
+    			that.$message.error("导入失败,请联系管理员");
+            });
+        },
         /**
          * 加载资源信息
          */
@@ -7425,7 +7473,9 @@ new Vue({
                 return false;
             }
         },
-
+        nddyxxcjExcelDownload(){
+        	window.location.href = "/api/org/nddyxxcjExcelExport";
+        },
         /**
          * 下载资源
          * @param res

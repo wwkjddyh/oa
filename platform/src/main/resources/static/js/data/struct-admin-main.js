@@ -567,6 +567,7 @@ const formStructConfig = {
         receiverIds: false,
         briefReceivers: false,
         prePartyMemeber: false,
+        nddyxxcjImport: false,
     },
     rules: {
         name: [
