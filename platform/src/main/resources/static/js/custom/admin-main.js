@@ -1275,6 +1275,7 @@ new Vue({
         	}
         ],
         imageInfo:[],
+        nddyxxcjLoading: false,
         dialogImageUrl: '',
         dialogVisible: false,
         singleImg:true,
@@ -5888,8 +5889,10 @@ new Vue({
         getUserUpperOrgList(){
         	let that = this;
         	let treeTable =[];
+        	that.nddyxxcjLoading = true;
         	axios.get("/api/org/getUserUpperOrgList",null).then(function(response){
         		that.handleResponse(response);
+        		that.nddyxxcjLoading = false;
         		if(parseInt(response.status) == 200 ){
         			for(let i =0 ; i <response.data.result.length;i++){
         				response.data.result[i].value=response.data.result[i].orgId;
@@ -5898,7 +5901,10 @@ new Vue({
         			let parentArr = response.data.result.filter(l => l.upperOrg === null);
         			that.userUpperOrg = that.getTreeData(response.data.result, parentArr);
         		}
-        	});
+        	})
+        	.catch(function(err){/*异常*/
+        		that.nddyxxcjLoading = false;
+                });
         },
         getUserRootOrgList(){
         	let that = this;
