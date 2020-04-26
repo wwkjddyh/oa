@@ -1540,6 +1540,7 @@ new Vue({
         newsArray: [],
         partyDuesArray: [],
         resArray: [],
+        zlkloading: false,
         userUpperOrg:[],
         committeeOrg:[], //委员会架构
         resDlArray: [],
@@ -6846,6 +6847,7 @@ new Vue({
                 }})
                 .then(function(response){/*成功*/
                 	that.handleResponse(response);
+                	
                 	if(parseInt(response.status) == 200 ) {
                         that.resArray = response.data.data.list;
                         that.pager.res.totalCount = response.data.data.total;
