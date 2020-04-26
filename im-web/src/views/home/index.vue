@@ -471,7 +471,7 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next){
-    console.log('路由进入 === ',Object.keys(to.query));
+    console.log('路由进入 === ',Object.keys(to.query),to,from);
     let queryLen = Object.keys(to.query).length;
     let paramstr =  queryLen > 0 ? decodeURIComponent(window.location.href).split('?')[1] : null;
     console.log('paramstr',paramstr);
