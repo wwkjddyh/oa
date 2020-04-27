@@ -899,6 +899,8 @@ new Vue({
                 ],
             }
         ],
+        // 即时聊天配置
+        chatConfig: {},
         ueditors: {
             article: null,
         },
@@ -9407,6 +9409,11 @@ new Vue({
                 that.dialogShow = config.dialogShow;
                 that.rules = config.rules;
                 that.chatEmojis = config.chatEmojis;
+
+                let __chatConfig = config.chatConfig;
+                that.chatConfig = __chatConfig[__chatConfig.active];
+                // console.log('that.chatConfig', that.chatConfig);
+
               //  console.log('rules,',that.rules);
                 let searchForm = config.searchForm;
                 that.formSearchAuthModule = searchForm.authModule;

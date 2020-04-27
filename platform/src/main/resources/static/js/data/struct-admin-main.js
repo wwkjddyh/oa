@@ -851,6 +851,36 @@ const formStructConfig = {
         editableTabs: [],
         tabIndex: 2,
         activeName: 'first',
+    },
+    chatConfig: { /*即时聊天配置*/
+        active: 'dev',
+        dev: {
+            server: {
+                http: 'http://localhost:2006',
+                ws: 'ws://localhost:2007'
+            },
+            web: {
+                url: 'http://localhost:3006/#/'
+            }
+        },
+        test: {
+            server: {
+                http: 'http://www.dzry.top:2006',
+                    ws: 'ws://www.dzry.top:2007'
+            },
+            web: {
+                url: 'http://chat.dzry.top/#/'
+            }
+        },
+        prod: {
+            server: {
+                http: 'http://www.awycjcdj.com:2006',
+                ws: 'ws://www.awycjcdj.com:2007'
+            },
+            web: {
+                url: 'http://chat.awycjcdj.com/#/'
+            }
+        }
     }
 };
 
