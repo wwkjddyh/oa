@@ -123,6 +123,9 @@ new Vue({
                     that.currAction = 'append';
                     that.def_menu_id = 'xxjl';
                     that.receiveArtcleType='info';
+                    that.toApprove='',
+            		that.approveSuccess='',
+            		that.approveFail='',
                     that.sendArtcleType='';
                     that.loadCurrUserReceiverBriefRecord(that.formSearchBriefSendRecord.key, 1, this.pager.briefSendRecord.pageSize,'63c34dec-7447-4bbc-9ff3-af0f0686b07f');
                     break;
