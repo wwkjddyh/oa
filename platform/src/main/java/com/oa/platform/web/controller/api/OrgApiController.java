@@ -271,4 +271,10 @@ public class OrgApiController extends BaseController{
 		User user = getUserOfSecurity();
 		orgBiz.nddyxxcjExcelExport(response,user.getUserId());
 	}
+	@GetMapping("dwjbxxExcelExport")
+	public void dwjbxxExcelExport(HttpServletResponse response,
+			@RequestParam(defaultValue = "0", required = false) String isSuperAdmin) {
+		User user = getUserOfSecurity();
+		orgBiz.dwjbxxExcelExport(response,user.getUserId(),isSuperAdmin);
+	}
 }

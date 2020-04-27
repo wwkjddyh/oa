@@ -7535,6 +7535,33 @@ new Vue({
         	});
         	
         },
+        dwjbxxExcelDownload(){
+        	let that = this;
+        	that.$confirm('是否导出当前用户可见所有党委基本信息？', '警告', {
+                confirmButtonText: '是',
+                cancelButtonText: '否',
+                type: 'warning',
+                callback: action => {
+                    if(action === "cancel"){
+                        that.$message({
+                            type: 'info',
+                            message: "取消导出"
+                        });
+                    }else{
+                    	let url = "/api/org/dwjbxxExcelExport";
+                    	if(that.isSuperAdmin){
+                    		url = url +"?isSuperAdmin=1"
+                    	}
+                    	window.location.href = url;
+                    	that.$message({
+                            type: 'success',
+                            message: "正在导出，请等待..."
+                        });
+                    }
+                }
+        	});
+        	
+        },
         /**
          * 下载资源
          * @param res

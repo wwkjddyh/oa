@@ -249,4 +249,8 @@ public class OrgServiceImpl extends AbstractBaseService<Organization, String> im
 	public List<OrgUser> getPartyExcelList(List<String> arrayList) {
 		return orgRepository.getPartyExcelList(arrayList);
 	}
+	@Override
+	public List<Organization> getdwjbxxExcelOrg(String orgId,boolean isSuperAdmin) {
+		return orgRepository.getdwjbxxExcelOrg(orgId,isSuperAdmin);
+	}
 }

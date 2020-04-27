@@ -722,7 +722,7 @@ public class OrgBiz extends BaseBiz {
 			
 			HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
 			// 创建sheet页
-	        HSSFSheet sheet = hssfWorkbook.createSheet("党员信息");
+	        HSSFSheet sheet = hssfWorkbook.createSheet("dyxx");
 	        // 创建表头
 	        createTitle(sheet);
 			for(int i = 0; i < result.size() ; i++) {
@@ -774,4 +774,68 @@ public class OrgBiz extends BaseBiz {
             cell.setCellValue(text);
         }
     }
+    /**
+     * 党组织表头创建
+     * @param sheet
+     */
+    private void createOrgTitle(HSSFSheet sheet) {
+    	String[] headers = {"党组织名称", "上级党组织","党组织类型", "批准建立党组织日期", "党组织属地关系", "选举方式","领导班子","职务名称","本届班子当选日期","任期年限","党组织联系人","党组织联系人手机号"};
+        HSSFRow row = sheet.createRow(0);
+        for (int i = 0; i < headers.length; i++) {
+            HSSFCell cell = row.createCell(i);
+            HSSFRichTextString text = new HSSFRichTextString(headers[i]);
+            cell.setCellValue(text);
+        }
+    }
+	public void dwjbxxExcelExport(HttpServletResponse response, String userId,String isSuperAdmin) {
+		List<Organization> excelData = null;
+		if("1".equals(isSuperAdmin)) {
+			excelData = orgSerivce.getdwjbxxExcelOrg(null,true);
+		}else {
+			String orgId = null;
+			//根据用户id获取所在组织主键
+			List<Organization> orgInfo = orgSerivce.getOrgIdByuserId(userId);
+			if(orgInfo != null && orgInfo.size() > 0) {
+				excelData = orgSerivce.getdwjbxxExcelOrg(orgInfo.get(0).getOrgId(),false);
+			}
+		}
+		HSSFWorkbook hssfWorkbook = new HSSFWorkbook();
+		// 创建sheet页
+        HSSFSheet sheet = hssfWorkbook.createSheet("dwjbxx");
+        // 创建表头
+        createOrgTitle(sheet);
+        if(excelData != null) {
+			for(int i = 0; i < excelData.size() ; i++) {
+				Organization organization = excelData.get(i);
+				if(organization == null ) {
+					continue;
+				}
+				HSSFRow row = sheet.createRow(i + 1);
+				row.createCell(0).setCellValue(organization.getOrgName());
+				row.createCell(1).setCellValue(organization.getUpperOrgName());
+				row.createCell(2).setCellValue(organization.getOrgType());
+				row.createCell(3).setCellValue(organization.getFoundTime());
+				row.createCell(4).setCellValue(organization.getOrgAddressRelation());
+				row.createCell(5).setCellValue(organization.getElctType());
+				row.createCell(6).setCellValue(organization.getLeader());
+//				row.createCell(7).setCellValue(organization.getLeader());
+				row.createCell(8).setCellValue(organization.getCurrentLeaderTime());
+				row.createCell(9).setCellValue(organization.getLeadTime());
+				row.createCell(10).setCellValue(organization.getConcatPersion());
+				row.createCell(11).setCellValue(organization.getPhone());
+
+			}
+        }
+		response.setContentType("application/octet-stream");
+        response.setHeader("Content-disposition", "attachment;filename=DWJBXX.xlsx");
+        try {
+            OutputStream outputStream = response.getOutputStream();
+            response.flushBuffer();
+            hssfWorkbook.write(outputStream);
+            outputStream.flush();
+            outputStream.close();
+        } catch (Exception e) {
+            LOGGER.error(e.toString());
+        }
+	}
 }

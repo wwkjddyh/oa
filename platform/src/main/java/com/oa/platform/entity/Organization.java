@@ -22,6 +22,7 @@ public class Organization implements Serializable {
 	private String orgCode;
 	//上级党组织
 	private String upperOrg;
+	private String upperOrgName;
 	//根党组织
 	private String rootOrg;
 	//成立时间
@@ -319,6 +320,12 @@ public class Organization implements Serializable {
 	}
 	public void setLeader(String leader) {
 		this.leader = leader;
+	}
+	public String getUpperOrgName() {
+		return upperOrgName;
+	}
+	public void setUpperOrgName(String upperOrgName) {
+		this.upperOrgName = upperOrgName;
 	}
 
 }

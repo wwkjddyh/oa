@@ -28,6 +28,8 @@
 			    	<el-button  @click="dwjbxxView('baseInfo')" size="mini" :type="dwjbxxBaseInfoType">基本信息</el-button>
 				    <el-button  @click="dwjbxxView('phone')" size="mini" :type="dwjbxxPhoneType">联系方式</el-button>
 				    <el-button  @click="dwjbxxView('leader')" size="mini" :type="dwjbxxLeaderType">班子成员</el-button>
+				    <el-button plain @click="dwjbxxExcelDownload" type="primary" size="mini" ><i class="el-icon-download"></i>导出</el-button>
+				    
 				    <div style="margin-top: 20px;">
 						<span style="font-family:微软雅黑;font-size:14px;">{{dwjbxxDialog.title}}</span>
 					</div>
