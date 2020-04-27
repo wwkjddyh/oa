@@ -5074,12 +5074,13 @@ new Vue({
 	                      nickname: data.data.userNickname
 	                    });
                       console.log('currentUser ==== ',that.currentUser,that.currentUserStr);
-                      let _src = "http://chat.dzry.top/#/;" 
-	                    if (window.location.hostname == "localhost"){
-	                    	_src = "http://localhost:3006/#/"
-	                    } else {
-	                    	 _src = "http://chat.dzry.top/#/;" 
-	                    }
+                      // let _src = "http://chat.dzry.top/#/;"
+	                  //   if (window.location.hostname == "localhost"){
+	                  //   	_src = "http://localhost:3006/#/"
+	                  //   } else {
+	                  //   	 _src = "http://chat.dzry.top/#/;"
+	                  //   }
+                      let _src = that.chatConfig.web.url || '';
                       that.chatSrc = `${_src}?data=` + that.currentUserStr;
                       console.log('oa ===== ',that.chatSrc);
                       that.setDwjbxxAuth();
