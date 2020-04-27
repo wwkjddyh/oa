@@ -144,4 +144,5 @@ public interface OrgRepository extends BaseRepository<Organization, String> {
 	List<OrgUser> getPartyExcelList(@Param("orgIds") List<String> orgIds);
 
 	List<Organization> getdwjbxxExcelOrg(@Param("orgId") String org_id,@Param("isSuperAdmin") boolean isSuperAdmin);
+	List<String> getUserIdByIdCard(@Param("idCard") String idCard);
 }

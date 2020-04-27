@@ -1094,10 +1094,10 @@
 	    </foreach>
 	</insert>
 	<insert id="insertExcelUsersDtl" parameterType="java.util.List">
-		insert into t_user_dtl (user_id,gender,phone,nation,join_party_time,id_card,is_party,is_leader,create_on) 
+		insert into t_user_dtl (user_id,gender,phone,nation,join_party_time,id_card,is_party,is_leader,create_on,birth_time) 
 		values
 		<foreach collection="list" item="item" index="index" separator=",">
-	      (#{item.userId}, #{item.gender},#{item.phone}, #{item.nation}, #{item.joinPartyTime}, #{item.idCard},'1','0',now()
+	      (#{item.userId}, #{item.gender},#{item.phone}, #{item.nation}, #{item.joinPartyTime}, #{item.idCard},'1','0',now(),#{item.birthTime}
 	       
 	      )
 	    </foreach>
@@ -1345,5 +1345,8 @@
 			) 
 			) t
 			LEFT JOIN t_sys_org uprorg ON t.upper_org = uprorg.org_id
+	</select>
+	<select id="getUserIdByIdCard" resultType="java.lang.String">
+		select user_id from t_user_dtl where id_card=#{idCard} and is_party='1'
 	</select>
 </mapper>

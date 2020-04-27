@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -572,6 +574,7 @@ public class OrgBiz extends BaseBiz {
 	@Transactional
 	public ResultVo partyMemberExcelImport(String filePath) {
 		String[] filePaths = filePath.split(",");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		for (String path : filePaths) {
 			File file = new File(path);
 			if(file.getName().endsWith(".xls") || file.getName().endsWith(".xlsx")
@@ -595,11 +598,13 @@ public class OrgBiz extends BaseBiz {
 				                    continue;
 				                }
 				                OrgUser partyMember = new OrgUser();
-				                
-				                for(int cellIndex=1;cellIndex<row.getLastCellNum();cellIndex++){
+				                boolean isRepeat = false;
+				                for(int cellIndex=1;cellIndex< 9;cellIndex++){
 				                    Cell cell = row.getCell(cellIndex);
-				                    cell.setCellType(CellType.STRING);
+				                    
 				                    if(cellIndex == 1) {
+				                    	
+				                    	cell.setCellType(CellType.STRING);
 				                    	String orgName = cell.getStringCellValue().trim();
 				                    	partyMember.setUserId(StringUtil.getRandomUUID());
 				                    	if(orgName == null || "".equals(orgName)) {
@@ -612,6 +617,7 @@ public class OrgBiz extends BaseBiz {
 				                    	partyMember.setOrgId(orgIdByName.get(0));
 				                    }
 				                    if(cellIndex == 2) {
+				                    	cell.setCellType(CellType.STRING);
 				                    	String userName = cell.getStringCellValue().trim();
 				                    	if(userName == null || "".equals(userName)) {
 				                    		return getErroResultVo(2000, "第"+(rowIndex+1)+"行,第"+(cellIndex+1)+"列姓名不能无值", null);
@@ -619,13 +625,20 @@ public class OrgBiz extends BaseBiz {
 				                    	partyMember.setUserName(userName);
 				                    }
 				                    if(cellIndex == 3) {
+				                    	cell.setCellType(CellType.STRING);
 				                    	String idCard = cell.getStringCellValue().trim();
 				                    	if(idCard == null || "".equals(idCard)) {
 				                    		return getErroResultVo(2000, "第"+(rowIndex+1)+"行,第"+(cellIndex+1)+"列身份证号不能无值", null);
 				                    	}
+				                    	List<String> userIds = orgSerivce.getUserIdByIdCard(idCard);
+				                    	if(userIds != null && userIds.size() > 0){
+				                    		isRepeat = true;
+				                    		break;
+				                    	}
 				                    	partyMember.setIdCard(idCard);
 				                    }
 				                    if(cellIndex == 4) {
+				                    	cell.setCellType(CellType.STRING);
 				                    	String nation = cell.getStringCellValue().trim();
 				                    	if(nation == null || "".equals(nation)) {
 				                    		return getErroResultVo(2000, "第"+(rowIndex+1)+"行,第"+(cellIndex+1)+"列民族不能无值", null);
@@ -633,6 +646,7 @@ public class OrgBiz extends BaseBiz {
 				                    	partyMember.setNation(nation);
 				                    }
 				                    if(cellIndex == 5) {
+				                    	cell.setCellType(CellType.STRING);
 				                    	String gender = cell.getStringCellValue().trim();
 				                    	if(gender == null || "".equals(gender)) {
 				                    		return getErroResultVo(2000, "第"+(rowIndex+1)+"行,第"+(cellIndex+1)+"列性别不能无值", null);
@@ -643,22 +657,46 @@ public class OrgBiz extends BaseBiz {
 				                    		partyMember.setGender("0");
 				                    	}
 				                    }
+				                    
 				                    if(cellIndex == 6) {
-				                    	String joinPartyTime = cell.getStringCellValue().trim();
-				                    	if(joinPartyTime == null || "".equals(joinPartyTime)) {
-				                    		return getErroResultVo(2000, "第"+(rowIndex+1)+"行,第"+(cellIndex+1)+"列入党时间不能无值", null);
+				                    	if(HSSFDateUtil.isCellDateFormatted(cell)) {
+				                    		Date date = cell.getDateCellValue();
+				                    		
+				                    		partyMember.setJoinPartyTime(sdf.format(date));
+				                    	}else {
+				                    		cell.setCellType(CellType.STRING);
+				                    		String joinPartyTime = cell.getStringCellValue().trim();
+					                    	if(joinPartyTime == null || "".equals(joinPartyTime)) {
+					                    		return getErroResultVo(2000, "第"+(rowIndex+1)+"行,第"+(cellIndex+1)+"列入党时间不能无值", null);
+					                    	}
+					                    	partyMember.setJoinPartyTime(joinPartyTime);
 				                    	}
-				                    	partyMember.setJoinPartyTime(joinPartyTime);
+				                    	
 				                    }
 				                    if(cellIndex == 7) {
+				                    	cell.setCellType(CellType.STRING);
 				                    	String phone = cell.getStringCellValue().trim();
 				                    	if(phone == null || "".equals(phone)) {
 				                    		return getErroResultVo(2000, "第"+(rowIndex+1)+"行,第"+(cellIndex+1)+"列联系电话不能无值", null);
 				                    	}
 				                    	partyMember.setPhone(phone);
 				                    }
+				                    if(cellIndex == 8) {
+				                    	if(HSSFDateUtil.isCellDateFormatted(cell)) {
+				                    		Date date = cell.getDateCellValue();
+				                    		
+				                    		partyMember.setBirthTime(sdf.format(date));
+				                    	}else {
+				                    		cell.setCellType(CellType.STRING);
+				                    		String birthTime = cell.getStringCellValue().trim();
+				                    		partyMember.setBirthTime(birthTime);
+				                    	}
+				                    	
+				                    }
 				                }
-				                dataList.add(partyMember);
+				                if(!isRepeat) {
+				                	dataList.add(partyMember);
+				                }
 				            }
 				            if(dataList.size() > 0) {
 					            orgSerivce.insertExcelUsers(dataList);

@@ -114,4 +114,5 @@ public interface OrgService extends BaseService<Organization, String> {
 	List<String> getOrgIdByName(String orgName);
 	List<OrgUser> getPartyExcelList(List<String> arrayList);
 	List<Organization> getdwjbxxExcelOrg(String orgId,boolean isSuperAdmin);
+	List<String> getUserIdByIdCard(String idCard);
 }

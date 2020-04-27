@@ -2,18 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <div th:fragment="content">
 	<div  style="width:100%;height:500px;background:url(images/sphy.png);" >
-		<el-card class="box-card" v-loading="fullscreenLoading" style="width:300px;margin: 0 auto;position: relative;
+		<el-card class="box-card" v-loading="fullscreenLoading" style="width:400px;margin: 0 auto;position: relative;
 	    top: 50%;transform: translateY(-50%);" >
 			<div style="margin-top: 2px;display: flex">
-				<span style="font-size:25px;font-weight: bolder;color:#866133;margin-left:70px">视频会议</span>
+				<span style="font-size:25px;font-weight: bolder;color:#866133;margin-left:35%">视频会议</span>
 				
 			</div>
 			
 			<div>
 		        <div style="margin-top: 10px;display: flex">
 		            <el-input placeholder="请输入会议邀请码" v-model="faceMeetCode">
-				    	<el-button slot="append" icon="el-icon-right" @click="goToFaceMeet"></el-button>
-		  				<el-button slot="append" v-if="isSuperAdmin" icon="el-icon-plus" size="mini" @click="createFaceMeet"></el-button>
+				    	<el-button slot="append"  @click="goToFaceMeet">加入会议</el-button>
+		  				<el-button slot="append" v-if="isSuperAdmin"  size="mini" @click="createFaceMeet">发起会议</el-button>
 		  			</el-input>
 		        </div>
 			 </div>
