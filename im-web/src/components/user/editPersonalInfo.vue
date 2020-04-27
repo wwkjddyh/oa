@@ -3,9 +3,9 @@
     <div slot="title" class="dialog-header"><h3>修改个人信息</h3></div>
     <el-form :model="myInfoModel" :rules="formRules" class="el-dialog-form"
       ref="userForm" label-width="80px" label-position="right" size="small">
-      <el-form-item label="用户名">
+      <!-- <el-form-item label="用户名">
         <el-col :span="16"><el-input :maxlength="32" v-model="myInfoModel.username" readonly></el-input></el-col>
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="昵称" prop="nickname">
         <el-col :span="16"><el-input ref="nickname" :maxlength="32" v-model="myInfoModel.nickname" autofocus></el-input></el-col>
       </el-form-item>

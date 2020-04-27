@@ -1,9 +1,9 @@
 <template>
   <el-dialog :modal-append-to-body="false" :visible.sync="dialogVisible" width="500px" v-loading="loadingVisible" @open="handleDialogOpen()">
-    <div slot="title" class="dialog-header"><h3>编辑频道标题</h3></div>
+    <div slot="title" class="dialog-header"><h3>编辑备注名</h3></div>
     <el-form class="el-dialog-form" ref="form" :model="model" :rules="formRules" 
       label-width="80px" label-position="right" size="small">
-      <el-form-item label="频道标题" prop="channelTitle">
+      <el-form-item label="备注名" prop="channelTitle">
         <el-col :span="16"><el-input ref="channelTitle" :maxlength="32" v-model="model.channelTitle"></el-input></el-col>
       </el-form-item>
     </el-form>
@@ -30,7 +30,7 @@ export default {
       },
       formRules: {
         channelTitle: [
-          { required: true, message: '请输入频道标题', trigger: 'blur' },
+          { required: true, message: '请输入备注名', trigger: 'blur' },
           { min: 3, max: 32, message: '长度在 3 到 32 个字符', trigger: 'blur' }
         ]
       }

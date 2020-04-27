@@ -15,17 +15,17 @@
                   <template v-if="isAdmin">
                     <el-dropdown-item command="addMember">添加成员</el-dropdown-item>
                     <el-dropdown-item command="manageMember">成员管理</el-dropdown-item>
-                    <el-dropdown-item command="editTitle" divided>编辑频道标题</el-dropdown-item>
+                    <el-dropdown-item command="editTitle" divided>编辑备注名</el-dropdown-item>
                     <el-dropdown-item command="editName">重命名频道</el-dropdown-item>
                     <el-dropdown-item command="remove" v-if="myId === userChannel.creatorId">删除频道</el-dropdown-item>
                   </template>
                   <template v-else>
-                    <el-dropdown-item command="editTitle">编辑频道标题</el-dropdown-item>
+                    <el-dropdown-item command="editTitle">编辑备注名</el-dropdown-item>
                   </template>
                   <el-dropdown-item command="leave" divided v-if="myId !== userChannel.creatorId">离开频道</el-dropdown-item>
                 </template>
                 <template v-else>
-                  <el-dropdown-item command="editTitle">编辑频道标题</el-dropdown-item>
+                  <el-dropdown-item command="editTitle">编辑备注名</el-dropdown-item>
                 </template>
               </el-dropdown-menu>   
             </el-dropdown>        
