@@ -719,6 +719,12 @@ const formStructConfig = {
         idCard: [
             { required: true, message: '请填写身份证', trigger: 'blur' },
         ],
+        orgId: [
+            { required: true, message: '请选择组织机构', trigger: 'blur' },
+        ],
+        email: [
+            { required: true, message: '请填写邮箱', trigger: 'blur' },
+        ],
     },
     chatEmojis : {
         "biaoqing0": { "emoji": "😀", "title": "", "titleEn": "", "unicode": "", },
