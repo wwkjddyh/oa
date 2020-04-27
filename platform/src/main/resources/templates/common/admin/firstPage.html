@@ -111,7 +111,7 @@
         </div>
     </el-dialog>
 	<el-dialog :title="(currNotice.newsTitle || '')" :visible.sync="dialogShow.viewNotice" lock-scroll="true" width="30%"
-			   center="true" class="firstPage-briefs-brief_dialog">
+			   center="true" class="firstPage-briefs-brief_dialog detailDialog ">
 		<div class="firstPage-briefs-brief_dialog-content" style="color: #4f4f4f;font-size: 16px;">
 			{{(currNotice.newsContent || '')}}
 		</div>

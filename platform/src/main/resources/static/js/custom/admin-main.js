@@ -7135,11 +7135,7 @@ new Vue({
         	
         	
         	if(item.url == 'chat' ){
-        		that.$message({
-                    message: '功能建设中',
-                    center:true,
-                    type: 'info'
-                });
+        		that.handleOpenChat();
         	}else if(item.url == 'pFile' ){
         		that.$message({
                     message: '功能建设中',
