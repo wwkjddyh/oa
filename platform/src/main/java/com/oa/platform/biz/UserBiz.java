@@ -19,6 +19,7 @@ import com.oa.platform.common.StatusCode;
 import com.oa.platform.entity.Organization;
 import com.oa.platform.entity.User;
 import com.oa.platform.entity.UserDtl;
+import com.oa.platform.entity.UserRole;
 import com.oa.platform.service.LogService;
 import com.oa.platform.service.OrgService;
 import com.oa.platform.service.RoleService;
@@ -401,6 +402,15 @@ public class UserBiz extends BaseBiz {
                         dtl.setPhone(phone);
                 		orgSerivce.saveOrgUser(user.getUserId(),orgId);
                 		userService.saveUserDtl(dtl);
+                		String dateTime = DateUtil.currDateFormat(null);
+                        List<UserRole> userRoles = new ArrayList<>(0);
+                        UserRole userRole = new UserRole();
+                        userRole.setRecordId(StringUtil.getRandomUUID());
+                        userRole.setUserId(user.getUserId());
+                        userRole.setRoleId("40813cfa-692a-4a00-9c2c-19a2046a1b45");
+                        userRole.setRecordTime(dateTime);
+                        userRoles.add(userRole);
+                        roleService.batchSaveUserRole(userRoles);
                         ret = this.getSuccessVo("", ""); 
                     }
                     else {
