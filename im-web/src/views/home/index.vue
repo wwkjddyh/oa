@@ -73,7 +73,7 @@
         <ul class="nav-channel">
           <li class="channel-header">
             <span>私聊</span>
-            <button class="add-channel-btn" title="创建私聊" @click="openCreatePrivateChannelDlg">+</button>
+            <button v-if="oaEnter == false || isAdmin == true" class="add-channel-btn" title="创建私聊" @click="openCreatePrivateChannelDlg">+</button>
             <create-private-channel ref="createPrivateChanneDlg" @onChannelCreated="onPrivateChannelCreated"></create-private-channel>
           </li>
           <li class="channel-item" v-for="(item, index) in this.userChannelList" v-if="item.channelType == 'P'" :key="item.channelId" :class="{'channel-item channel-item-active' : selectedChannelId === item.channelId}" @click="selectChannel(item, index)">
@@ -139,7 +139,8 @@ export default {
       searchKey: '',
       unreadMessageChannelList: [],
       channelListHeight: '',
-      oaEnter: currentUser.oaEnter || false
+      oaEnter: currentUser.oaEnter || false,
+      isAdmin: currentUser.isAdmin || false
     }
   },
   methods: {
@@ -487,7 +488,8 @@ export default {
               nickname: response.data.nickname,
               firstLetterOfName: response.data.firstLetterOfName,
               avatarUrl: response.data.avatarUrl,
-              oaEnter: true
+              oaEnter: true,
+              isAdmin: userInfoObj.isAdmin
             }))
             sessionStorage.setItem('token', response.data.token)
             updateOnlineStatus(response.data.userId, 'online')

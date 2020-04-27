@@ -5071,15 +5071,10 @@ new Vue({
                       that.currentUserStr = JSON.stringify({
 	                      id: data.data.userId,
 	                      name: data.data.username,
-	                      nickname: data.data.userNickname
+	                      nickname: data.data.userNickname,
+	                      isAdmin: that.isSuperAdmin
 	                    });
                       console.log('currentUser ==== ',that.currentUser,that.currentUserStr);
-                      // let _src = "http://chat.dzry.top/#/;"
-	                  //   if (window.location.hostname == "localhost"){
-	                  //   	_src = "http://localhost:3006/#/"
-	                  //   } else {
-	                  //   	 _src = "http://chat.dzry.top/#/;"
-	                  //   }
                       let _src = that.chatConfig.web.url || '';
                       that.chatSrc = `${_src}?data=` + that.currentUserStr;
                       console.log('oa ===== ',that.chatSrc);
