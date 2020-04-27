@@ -850,12 +850,13 @@ div[pType="elTable"] th>.cell {
 }
 
 .webchat-main-default {
-    width: 75vw;
-    height: 75vh;
+    width: 52.5vw;
+    height: 52vh;
     z-index: 2;
     position: absolute;
-    top: 15%;
-    left: 12%;
+    top: 50%;
+    left: 23.8%;
+    transform: translateY(-50%);
 }
 
 .webchat-main-show {
