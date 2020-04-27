@@ -15,7 +15,7 @@
 				    </el-aside>
 			    <el-main style="padding: 0 20px 20px 40px;height:100%;" v-if="dwjbxxMain == true" v-loading ="fullscreenLoading">
 			    	<el-row>
-			    		<el-col :span="14">
+			    		<el-col :span="19">
 			    			<el-button plain @click="edit('nddyxxcj','','',true)" type="primary" size="small" v-if="dwjbxxMainAdd"><i class="el-icon-plus"></i>新增</el-button>
 			    			<el-button plain @click="nddyxxcjImportStart" type="primary" size="small" ><i class="el-icon-upload"></i>导入</el-button>
 			    			<el-button plain @click="nddyxxcjExcelDownload" type="primary" size="small" ><i class="el-icon-download"></i>导出</el-button>
@@ -26,7 +26,7 @@
 						    	</el-button>
 						    </el-input>
 			    		</el-col>
-			    		<el-col :span="10" style="text-align: right;">
+			    		<el-col :span="5" style="text-align: right;">
 			    			<span>党员：{{pager.orgUser.totalCount}}人</span>
 			    		</el-col>
 			    	</el-row>

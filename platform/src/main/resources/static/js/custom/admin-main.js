@@ -7509,7 +7509,7 @@ new Vue({
             }
         },
         nddyxxcjExampleDownload(){
-        	
+        	window.location.href = "/api/file/dl/template.xlsx"
         },
         nddyxxcjExcelDownload(){
         	let that = this;
