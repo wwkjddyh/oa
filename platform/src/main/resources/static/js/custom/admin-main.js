@@ -2065,7 +2065,12 @@ new Vue({
     },
     methods: {
     	handleOpenChat () {
-    		this.showChat = true;
+    		// this.showChat = true;
+            let that = this;
+            let _src = that.chatConfig.web.url || '';
+            that.chatSrc = `${_src}?data=` + that.currentUserStr;
+            let chatWin = window.open(that.chatSrc,'','width=500,height=500,left=200,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
+            chatWin.focus();
     	},
     	handleCloseChat () {
     		this.showChat = false;
@@ -7140,6 +7145,7 @@ new Vue({
                     center:true,
                     type: 'info'
                 });
+
         	}
         	else{
         		that.showContent  = item.url;
