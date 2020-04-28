@@ -38,22 +38,21 @@ const router = new Router({
     }
   ]
 })
-
 // 验证token，存在才跳转
 router.beforeEach((to, from, next) => {
-  let token = sessionStorage.getItem('token')
-  
-  next()
-  // if (to.path === '/') {
-  //   if (!token) {
-  //     next({
-  //       path: '/login',
-  //       query: { redirect: to.fullPath }
-  //     })
-  //     return
-  //   }
-  // }
-
+  let token = sessionStorage.getItem('token');
+  let isOaEnter = to.query.data ? true : false; //oa 系统进入
+  if (to.path === '/') {
+    if (!token && !isOaEnter) {
+      next({
+        path: '/login',
+        query: { redirect: to.fullPath }
+      })
+      return
+    } else {
+      next();
+    }
+  }
   // if (to.meta.requiresAuth) {
   //   if (token) {
   //     next()
@@ -64,9 +63,9 @@ router.beforeEach((to, from, next) => {
   //     })
   //   }
   // }
-  // else {
-  //   next()
-  // }
+  else {
+    next()
+  }
 })
 
 export default router

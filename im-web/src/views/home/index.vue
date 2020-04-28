@@ -472,11 +472,9 @@ export default {
     }
   },
   beforeRouteEnter(to, from, next){
-    console.log('路由进入 === ',Object.keys(to.query),to,from);
     let queryLen = Object.keys(to.query).length;
-    let paramstr =  queryLen > 0 ? decodeURIComponent(window.location.href).split('?')[1] : null;
-    console.log('paramstr',paramstr);
-    if (paramstr) {
+    let paramstr =  to.query.data ? decodeURIComponent(window.location.href).split('?')[1] : null;
+    if (to.query.data) {
       let userInfoObj = JSON.parse(paramstr.replace('data=',''));
       console.log('userInfoObj === ',userInfoObj);
       login(userInfoObj.name, '123456')
@@ -493,6 +491,7 @@ export default {
             }))
             sessionStorage.setItem('token', response.data.token)
             updateOnlineStatus(response.data.userId, 'online')
+            next()
             .catch(error => {
               
             })
@@ -500,8 +499,10 @@ export default {
           .catch(error => {
             console.log('error ==== ',error);
           })
+    } else {
+      next();
     }
-    next();
+    
   },
   
   beforeCreate() {

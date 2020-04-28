@@ -10,6 +10,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './assets/icon/iconfont.css'
 import './assets/css/common.css'
 
+
 Vue.config.productionTip = false
 
 Vue.use(ElementUI)
@@ -17,12 +18,15 @@ if (window.location.protocol == 'https') {
   window.location.href = JSON.parse(JSON.stringify(window.location.href.replace('https','http')));
 }
 
-console.log('修改后 === ',window.location);
+console.log('修改后 === ',window.location.href);
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   store,
   router,
   components: { App },
-  template: '<App/>'
+  template: '<App/>',
+  
 })
