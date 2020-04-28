@@ -411,6 +411,7 @@ public class UserBiz extends BaseBiz {
                         userRole.setRecordTime(dateTime);
                         userRoles.add(userRole);
                         roleService.batchSaveUserRole(userRoles);
+                        userService.saveImUserInfo(user.getUserId(), user.getUserName(), user.getUserNickname());
                         ret = this.getSuccessVo("", ""); 
                     }
                     else {
@@ -424,6 +425,7 @@ public class UserBiz extends BaseBiz {
                         }
                         userService.update(user);
                         userService.updateUserEmailAndPhone(user.getUserId(),mail,phone);
+                        userService.updateImUserInfo(user.getUserId(), user.getUserName(), user.getUserNickname());
                         ret = this.getSuccessVo("", "");
                        
                     }
@@ -458,6 +460,7 @@ public class UserBiz extends BaseBiz {
                 userService.update(user);
                 orgSerivce.delOrgUserDtl(userId);
                 orgSerivce.delUserOrg(userId);
+                userService.deleteImUserInfo(user.getUserId());
                 ret = this.getSuccessVo("", "");
             } catch (Exception e) {
                 ret = this.getErrorVo();

@@ -483,4 +483,16 @@
   		select usr.user_id from t_user usr left join t_user_dtl dtl on usr.user_id=dtl.user_id where
   			usr.user_name = #{userName} and usr.record_flag='1' and dtl.is_party='0'
   </select>
+  <!-- 即时聊天用户数据 -->
+  <insert id="saveImUserInfo">
+  	INSERT INTO `leo-im`.`im_user` ( id, NAME, name_first_letter, nickname, salt, PASSWORD, locked, created_at )
+	VALUES
+		( #{userId}, #{userName}, 'c', #{nickName}, 'MOlssyhqweLKffidserewr==', '7D4667B6F08537AADD92740119EC54E7', 0, now( ) )
+  </insert>
+  <update id="updateImUserInfo">
+  	update `leo-im`.`im_user` set name=#{userName},nickname=#{nickName} where id=#{userId}
+  </update>
+  <delete id="deleteImUserInfo">
+  	delete from `leo-im`.`im_user` where id= #{userId}
+  </delete>
 </mapper>

@@ -5,7 +5,6 @@ import com.oa.platform.entity.Organization;
 import com.oa.platform.entity.Role;
 import com.oa.platform.entity.User;
 import com.oa.platform.entity.UserDtl;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -147,4 +146,24 @@ public interface UserService extends BaseService<User,String>, UserDetailsServic
     Map<String, Organization> orgListToMap(List<Organization> list);
 
 	List<String> getAllUsersByCurrentUser(String userId);
+	
+	/**
+	 * 即时聊天用户新增
+	 * @param userId
+	 * @param userName
+	 * @param nickName
+	 */
+	void saveImUserInfo(String userId,String userName,String nickName);
+	/**
+	 * 即时聊天用户修改
+	 * @param userId
+	 * @param userName
+	 * @param nickName
+	 */
+	void updateImUserInfo(String userId,String userName,String nickName);
+	/**
+	 * 即时聊天用户删除
+	 * @param userId
+	 */
+	void deleteImUserInfo(String userId);
 }

@@ -2630,7 +2630,7 @@ new Vue({
                 params.append('passwordOrgi', that.formSysUser.passwordOrgi || '');
                 params.append('langConfId', '');
                 params.append('orgId', that.formSysUser.orgId || '');
-                params.append('mail',that.formSysUser.mail || '');
+                params.append('mail',that.formSysUser.email || '');
                 params.append('phone',that.formSysUser.phone || '');
                
             }
@@ -3670,6 +3670,7 @@ new Vue({
                                 userSexName: entry.userSexName,
                                 orgId:entry.orgId,
                                 mail:entry.mail,
+                                email:entry.mail,
                                 phone:entry.phone
 	                        };
 	                    }
