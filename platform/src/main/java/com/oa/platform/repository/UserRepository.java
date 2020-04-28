@@ -73,4 +73,23 @@ public interface UserRepository extends BaseRepository<User,String> {
 	void updateUserEmailAndPhone(@Param("userId")String userId, @Param("mail") String mail,@Param("phone") String phone);
 
 	List<String> getuserIdByUser(@Param("userName") String userName);
+	/**
+	 * 即时聊天用户新增
+	 * @param userId
+	 * @param userName
+	 * @param nickName
+	 */
+	void saveImUserInfo(@Param("userId") String userId,@Param("userName") String userName,@Param("nickName") String nickName);
+	/**
+	 * 即时聊天用户修改
+	 * @param userId
+	 * @param userName
+	 * @param nickName
+	 */
+	void updateImUserInfo(@Param("userId") String userId,@Param("userName") String userName,@Param("nickName") String nickName);
+	/**
+	 * 即时聊天用户删除
+	 * @param userId
+	 */
+	void deleteImUserInfo(@Param("userId") String userId);
 }

@@ -351,4 +351,25 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
         }
         return map;
     }
+
+
+	@Override
+	public void saveImUserInfo(String userId, String userName, String nickName) {
+		userRepository.saveImUserInfo(userId, userName, nickName);
+		
+	}
+
+
+	@Override
+	public void updateImUserInfo(String userId, String userName, String nickName) {
+		userRepository.updateImUserInfo(userId, userName, nickName);
+		
+	}
+
+
+	@Override
+	public void deleteImUserInfo(String userId) {
+		userRepository.deleteImUserInfo(userId);
+		
+	}
 }
