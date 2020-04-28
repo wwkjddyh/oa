@@ -2068,7 +2068,7 @@ new Vue({
             let that = this;
             let _src = that.chatConfig.web.url || '';
             that.chatSrc = `${_src}?data=` + that.currentUserStr;
-            let chatWin = window.open(that.chatSrc,'','width=500,height=500,left=200,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no',true);
+            let chatWin = window.open(that.chatSrc,'','width=800,height=400,left=300,top=200,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no',true);
             chatWin.focus();
     	},
     	handleCloseChat () {
