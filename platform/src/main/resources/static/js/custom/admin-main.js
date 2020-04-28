@@ -2065,11 +2065,10 @@ new Vue({
     },
     methods: {
     	handleOpenChat () {
-    		// this.showChat = true;
             let that = this;
             let _src = that.chatConfig.web.url || '';
             that.chatSrc = `${_src}?data=` + that.currentUserStr;
-            let chatWin = window.open(that.chatSrc,'','width=500,height=500,left=200,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no');
+            let chatWin = window.open(that.chatSrc,'','width=800,height=400,left=300,top=200,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no',true);
             chatWin.focus();
     	},
     	handleCloseChat () {
@@ -2626,7 +2625,7 @@ new Vue({
                 params.append('passwordOrgi', that.formSysUser.passwordOrgi || '');
                 params.append('langConfId', '');
                 params.append('orgId', that.formSysUser.orgId || '');
-                params.append('mail',that.formSysUser.mail || '');
+                params.append('mail',that.formSysUser.email || '');
                 params.append('phone',that.formSysUser.phone || '');
                
             }
@@ -3666,6 +3665,7 @@ new Vue({
                                 userSexName: entry.userSexName,
                                 orgId:entry.orgId,
                                 mail:entry.mail,
+                                email:entry.mail,
                                 phone:entry.phone
 	                        };
 	                    }
@@ -7145,7 +7145,6 @@ new Vue({
                     center:true,
                     type: 'info'
                 });
-
         	}
         	else{
         		that.showContent  = item.url;
