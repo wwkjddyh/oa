@@ -2065,16 +2065,11 @@ new Vue({
     },
     methods: {
     	handleOpenChat () {
-    		//let that = this;
-		//let _src = 'http://www.awycjcdj.com:8090/a.html';
-		//that.chatSrc = `${_src}?data=` + that.currentUserStr;
-		//this.showChat = true;
-		let that = this;
-		let _src = that.chatConfig.web.url || '';
-		that.chatSrc = `${_src}?data=` + that.currentUserStr;
-		let chatWin = window.open(that.chatSrc,'','width=500,height=500,left=200,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no',true);
-		chatWin.focus();
-
+            let that = this;
+            let _src = that.chatConfig.web.url || '';
+            that.chatSrc = `${_src}?data=` + that.currentUserStr;
+            let chatWin = window.open(that.chatSrc,'','width=500,height=500,left=200,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no',true);
+            chatWin.focus();
     	},
     	handleCloseChat () {
     		this.showChat = false;
@@ -5088,9 +5083,8 @@ new Vue({
 	                      isAdmin: that.isSuperAdmin
 	                    });
                       console.log('currentUser ==== ',that.currentUser,that.currentUserStr);
-                     let _src = that.chatConfig.web.url || '';
-                     //let _src = 'http://www.awycjcdj.com:8090/a.html';
-			 that.chatSrc = `${_src}?data=` + that.currentUserStr;
+                      let _src = that.chatConfig.web.url || '';
+                      that.chatSrc = `${_src}?data=` + that.currentUserStr;
                       console.log('oa ===== ',that.chatSrc);
                       that.setDwjbxxAuth();
                       let __modules = data.data['modules'] || [];
@@ -7145,7 +7139,6 @@ new Vue({
         	
         	if(item.url == 'chat' ){
         		that.handleOpenChat();
-        	//	window.open('http://www.awycjcdj.com:8090/a.html', 'chat', 'width=500,height=500');
         	}else if(item.url == 'pFile' ){
         		that.$message({
                     message: '功能建设中',
