@@ -566,11 +566,11 @@ export default {
 .sidebar {
   width: 220px;
   float: left;
-  background-color: #fbb289b0;
+  background-color: #f3f3f3;
   // background: url(../../assets/images/login.jpg);
   // background-size: 100% 100%;
   .header {
-    background-color: #fbb289b0;
+    // background-color: #fbb289b0;
     height: 70px;
     width: 100%;
     position: relative;
@@ -650,7 +650,7 @@ export default {
       display: inherit;
     }
     .nickname {
-      color: #fff;
+      color: black;
       padding-top: 4px;
       margin-left: 6px;
       float: left;
@@ -677,13 +677,13 @@ export default {
     padding: 3px 5px 0 5px;
     .search {      
       padding: 0 0 0 5px;
-      background-color: #fbbda4;
+      background-color: rgb(221,221,221);
       height: 28px;
       line-height: 28px;
       vertical-align: middle;
       border-radius: 3px;
       i {
-        color: #DDDBD7;
+        color: rgb(114, 114, 116);
         cursor: pointer;
       }
       input {
@@ -695,19 +695,23 @@ export default {
         -webkit-appearance: textfield;
         -webkit-rtl-ordering: logical;
         cursor: text;
-        color: #fff;
+        // color: #fff;
       }
       input::-webkit-input-placeholder {
-        color: #DDDBD7;
+        // color: #DDDBD7;
+        color: rgb(114, 114, 116);
       }
       input::-moz-placeholder {   /* Mozilla Firefox 19+ */
-        color: #DDDBD7;
+        // color: #DDDBD7;
+        color: rgb(114, 114, 116);
       }
       input:-moz-placeholder {    /* Mozilla Firefox 4 to 18 */
-        color: #DDDBD7;
+        // color: #DDDBD7;
+        color: rgb(114, 114, 116);
       }
       input:-ms-input-placeholder {  /* Internet Explorer 10-11 */ 
-        color: #DDDBD7;
+        // color: #DDDBD7;
+        color: rgb(114, 114, 116);
       }           
     }
   }
@@ -721,7 +725,7 @@ export default {
     margin: 0;
     padding: 0;
     // color: #D0DDEC;
-    color: white;
+    color: black;
     list-style: none;
     .channel-header {
       padding: 0 2px 0 10px;
@@ -747,7 +751,7 @@ export default {
       padding-left: 3px;
       
       &:hover {
-        background-color: #fbbda4;
+        background-color: rgb(233, 231, 230);
       }
       a {
         display: block;
@@ -765,7 +769,7 @@ export default {
         overflow: hidden;
         text-overflow: ellipsis;
         font-size: 14px;
-        color: #fff;
+        color: black;
         white-space: nowrap;
         svg {
           height: 14px;
@@ -793,7 +797,7 @@ export default {
       }
       .channel-item-name-selected {
         font-weight: bold;
-        color: #F6F7C0;
+        // color: #F6F7C0;
       }
       .unread-message-count {
         display: inline-block;
@@ -823,7 +827,7 @@ export default {
           .channel-item-name {
             max-width: 131px;
             min-width: 131px;
-            background-color: #fbbda4;
+            // background-color: rgb(201,199,198);
           }
         }
       }
@@ -845,9 +849,10 @@ export default {
       }
     }
     .channel-item-active {
+      color:black;
       padding-left: 0px;
-      background-color: #fbbda4;
-      border-left: solid 3px #fbbda4;
+      background-color: rgb(201,199,198);
+      border-left: solid 3px rgb(201,199,198);
     }
   }
   .first-nav-channel {

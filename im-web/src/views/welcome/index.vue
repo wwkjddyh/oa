@@ -25,7 +25,8 @@ body {
   .content {
     font-size: 12x;
     // margin-top: 6px;
-    color: #D4D1CC;
+    // color: #D4D1CC;
+    color: black;
   }
 }
 </style>

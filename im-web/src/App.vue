@@ -17,17 +17,22 @@ html,body,#app {
   padding: 0px;
 }
 .el-button--primary {
-  background-color: #fbbda4 !important;
-  border-color:#fbbda4 !important;
+  background-color: #f3f3f3 !important;
+  border-color:#f3f3f3 !important;
+  color: #827F7A !important;
 }
 
 .el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover {
-  background-color: #fbdacdcf !important;
-  border-color: #fbdacdcf !important;
+  background-color: #f3f3f3 !important;
+  border-color: #f3f3f3 !important;
 }
 .el-button--primary:focus, .el-button--primary:hover{
-  background-color: #ec9775 !important;
-  border-color:#ec9775 !important;
+  background-color: #c9c7c6 !important;
+  border-color:#c9c7c6 !important;
 
 }
+.body-container .el-dropdown {
+  color: black !important;
+}
+
 </style>
