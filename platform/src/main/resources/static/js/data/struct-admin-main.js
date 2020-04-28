@@ -859,7 +859,7 @@ const formStructConfig = {
         activeName: 'first',
     },
     chatConfig: { /*即时聊天配置*/
-        active: 'dev',
+        active: 'prod',
         dev: {
             server: {
                 http: 'http://localhost:2006',
@@ -884,7 +884,7 @@ const formStructConfig = {
                 ws: 'ws://www.awycjcdj.com:2007'
             },
             web: {
-                url: 'http://chat.awycjcdj.com/#/'
+                url: 'http://www.awycjcdj.com:8090/#/'
             }
         }
     }
