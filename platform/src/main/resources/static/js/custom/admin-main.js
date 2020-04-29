@@ -5076,6 +5076,7 @@ new Vue({
                   	that.handleResponse(response);
                   	let data = response.data;
                       that.currentUser = data.data;
+                      that.setDwjbxxAuth();
                       that.currentUserStr = JSON.stringify({
 	                      id: data.data.userId,
 	                      name: data.data.username,
@@ -5086,7 +5087,6 @@ new Vue({
                       let _src = that.chatConfig.web.url || '';
                       that.chatSrc = `${_src}?data=` + that.currentUserStr;
                       console.log('oa ===== ',that.chatSrc);
-                      that.setDwjbxxAuth();
                       let __modules = data.data['modules'] || [];
                       //let parentArr = __modules.filter(l => (l.parentId === null || l.parentId === ''));
                       //that.userOwnedMenus = that.getMenuData(__modules,parentArr);
