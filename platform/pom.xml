@@ -41,6 +41,8 @@
 		<org.apache.tika.version>1.24</org.apache.tika.version>
         <maven-war-plugin.version>3.2.3</maven-war-plugin.version>
 		<emoji-java.version>5.1.1</emoji-java.version>
+		<thumbnailator.version>0.4.11</thumbnailator.version>
+		<cglib.version>3.3.0</cglib.version>
 	</properties>
 
 	<dependencies>
@@ -243,6 +245,21 @@
 			<artifactId>emoji-java</artifactId>
 			<version>${emoji-java.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>${thumbnailator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>${cglib.version}</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
