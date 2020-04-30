@@ -10,6 +10,8 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.session.web.http.CookieSerializer;
+import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.util.ResourceUtils;
 
@@ -49,5 +51,15 @@ public class PlatformApplication extends SpringBootServletInitializer {
 			}
 		}
 		return cacheManager;
+	}
+
+	@Bean
+	public CookieSerializer httpSessionIdResolver() {
+		DefaultCookieSerializer cookieSerializer = new DefaultCookieSerializer();
+		cookieSerializer.setSameSite(null);
+		cookieSerializer.setUseHttpOnlyCookie(false);
+		cookieSerializer.setCookieMaxAge(3600 * 24);
+		cookieSerializer.setCookieName("OA-PLATFORM-COOKIE");
+		return cookieSerializer;
 	}
 }
