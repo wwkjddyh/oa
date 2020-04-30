@@ -1,6 +1,6 @@
 package com.oa.platform.service;
 
-import com.oa.platform.entity.UserChannelDTO;
+import com.oa.platform.entity.ChatUserChannel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  * @date 2018/4/20
  */
 @Service
-public interface ChatUserChannelService extends BaseService<UserChannelDTO, String> {
+public interface ChatUserChannelService extends BaseService<ChatUserChannel, String> {
     
     /**
      * 得到用户频道列表
@@ -21,7 +21,7 @@ public interface ChatUserChannelService extends BaseService<UserChannelDTO, Stri
      * @param limit
      * @return
      */
-    List<UserChannelDTO> listUserChannel(String userId, String type, int limit);
+    List<ChatUserChannel> listUserChannel(String userId, String type, int limit);
     
     /**
      * 得到用户频道
@@ -29,7 +29,7 @@ public interface ChatUserChannelService extends BaseService<UserChannelDTO, Stri
      * @param channelId
      * @return
      */
-    UserChannelDTO get(String userId, String channelId);
+    ChatUserChannel get(String userId, String channelId);
     
     /**
      * 更新用户频道
@@ -57,6 +57,6 @@ public interface ChatUserChannelService extends BaseService<UserChannelDTO, Stri
      * @param type
      * @return
      */
-    List<UserChannelDTO> listByName(String userId, String name, String type);
+    List<ChatUserChannel> listByName(String userId, String name, String type);
 
 }

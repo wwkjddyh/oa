@@ -1,9 +1,9 @@
 package com.oa.platform.service;
 
 import com.github.pagehelper.PageInfo;
-import com.oa.platform.entity.ChannelDTO;
-import com.oa.platform.entity.ChannelListDTO;
-import com.oa.platform.entity.ChannelMemberDTO;
+import com.oa.platform.entity.ChatChannel;
+import com.oa.platform.entity.ChatChannelList;
+import com.oa.platform.entity.ChatChannelMember;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.Map;
  * @date 2018/4/11
  */
 @Service
-public interface ChannelService extends BaseService<ChannelDTO, String> {
+public interface ChatChannelService extends BaseService<ChatChannel, String> {
 
     /**
      * 得到频道列表
@@ -24,7 +24,7 @@ public interface ChannelService extends BaseService<ChannelDTO, String> {
      * @param limit
      * @return
      */
-    List<ChannelListDTO> listChannel(Map<String, Object> parameters, int limit);
+    List<ChatChannelList> listChannel(Map<String, Object> parameters, int limit);
 
     /**
      * 得到群组频道列表
@@ -32,7 +32,7 @@ public interface ChannelService extends BaseService<ChannelDTO, String> {
      * @param limit
      * @return
      */
-    List<ChannelListDTO> listGroupChannel(Map<String, Object> parameters, int limit);
+    List<ChatChannelList> listGroupChannel(Map<String, Object> parameters, int limit);
 
     /**
      * 添加频道
@@ -41,7 +41,7 @@ public interface ChannelService extends BaseService<ChannelDTO, String> {
      * @return
      */
 
-    ChannelDTO saveChannel(ChannelDTO dto, String creatorNickname);
+    ChatChannel saveChannel(ChatChannel dto, String creatorNickname);
 
     /**
      * 得到用户是否为频道的管理员
@@ -99,7 +99,7 @@ public interface ChannelService extends BaseService<ChannelDTO, String> {
      * @param offset
      * @return
      */
-    PageInfo<ChannelMemberDTO> listMember(String channelId, String username, int limit, int offset);
+    PageInfo<ChatChannelMember> listMember(String channelId, String username, int limit, int offset);
 
     /**
      * 变更频道管理员

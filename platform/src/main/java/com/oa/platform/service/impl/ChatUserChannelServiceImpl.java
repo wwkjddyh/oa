@@ -1,7 +1,7 @@
 package com.oa.platform.service.impl;
 
 
-import com.oa.platform.entity.UserChannelDTO;
+import com.oa.platform.entity.ChatUserChannel;
 import com.oa.platform.service.ChatUserChannelService;
 import com.oa.platform.repository.ChatChannelRepository;
 import com.oa.platform.repository.ChatUserRepository;
@@ -15,7 +15,7 @@ import java.util.List;
  * @author Lining
  * @date 2018/4/20
  */
-public class ChatUserChannelServiceImpl extends AbstractBaseService<UserChannelDTO, String> implements ChatUserChannelService {
+public class ChatUserChannelServiceImpl extends AbstractBaseService<ChatUserChannel, String> implements ChatUserChannelService {
 
     @Autowired
     private ChatUserRepository chatUserRepository;
@@ -24,16 +24,16 @@ public class ChatUserChannelServiceImpl extends AbstractBaseService<UserChannelD
     private ChatChannelRepository chatChannelRepository;
 
     public ChatUserChannelServiceImpl() {
-        super(UserChannelDTO.class);
+        super(ChatUserChannel.class);
     }
 
     @Override
-    public List<UserChannelDTO> listUserChannel(String userId, String type, int limit) {
+    public List<ChatUserChannel> listUserChannel(String userId, String type, int limit) {
         return null;
     }
 
     @Override
-    public UserChannelDTO get(String userId, String channelId) {
+    public ChatUserChannel get(String userId, String channelId) {
         return null;
     }
 
@@ -48,7 +48,7 @@ public class ChatUserChannelServiceImpl extends AbstractBaseService<UserChannelD
     }
 
     @Override
-    public List<UserChannelDTO> listByName(String userId, String name, String type) {
+    public List<ChatUserChannel> listByName(String userId, String name, String type) {
         return null;
     }
 }

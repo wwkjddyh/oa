@@ -1,7 +1,7 @@
 package com.oa.platform.service;
 
 import com.github.pagehelper.PageInfo;
-import com.oa.platform.entity.UserDTO;
+import com.oa.platform.entity.ChatUser;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
  * @date 2018/4/9
  */
 @Service
-public interface ChatUserService extends BaseService<UserDTO, String> {
+public interface ChatUserService extends BaseService<ChatUser, String> {
 
     /**
      * 验证用户登录
@@ -22,7 +22,7 @@ public interface ChatUserService extends BaseService<UserDTO, String> {
      * @param password
      * @return
      */
-    UserDTO verifyLogin(String loginName, String password);
+    ChatUser verifyLogin(String loginName, String password);
 
     /**
      * 添加用户
@@ -31,7 +31,7 @@ public interface ChatUserService extends BaseService<UserDTO, String> {
      * @return
      */
 
-    String saveUser(UserDTO dto);
+    String saveUser(ChatUser dto);
 
     /**
      * 根据名称或昵称分页查询用户
@@ -41,7 +41,7 @@ public interface ChatUserService extends BaseService<UserDTO, String> {
      * @param offset
      * @return
      */
-    PageInfo<UserDTO> listByNameOrNickname(String name, int limit, int offset);
+    PageInfo<ChatUser> listByNameOrNickname(String name, int limit, int offset);
     
     /**
      * 更新用户
@@ -50,7 +50,7 @@ public interface ChatUserService extends BaseService<UserDTO, String> {
      * @return
      */
 
-    UserDTO updateUser(UserDTO dto, boolean updateNullValueField);
+    ChatUser updateUser(ChatUser dto, boolean updateNullValueField);
     
     /**
      * 
@@ -60,7 +60,7 @@ public interface ChatUserService extends BaseService<UserDTO, String> {
      * @param offset
      * @return
      */
-    PageInfo<UserDTO> listNonMembers(String channelId, String username, int limit, int offset);
+    PageInfo<ChatUser> listNonMembers(String channelId, String username, int limit, int offset);
     
     /**
      * 批量下线用户

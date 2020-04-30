@@ -1,7 +1,7 @@
 package com.oa.platform.service.impl;
 
 
-import com.oa.platform.entity.UserChannelDTO;
+import com.oa.platform.entity.ChatMessage;
 import com.oa.platform.service.ChatUnreadMessageCountService;
 import com.oa.platform.repository.ChatMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +11,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Administrator
  *
  */
-public class ChatUnreadMessageCountServiceImpl extends AbstractBaseService<UserChannelDTO, String> implements ChatUnreadMessageCountService {
+public class ChatUnreadMessageCountServiceImpl extends AbstractBaseService<ChatMessage, String> implements ChatUnreadMessageCountService {
 
     @Autowired
     private ChatMessageRepository chatMessageRepository;
 
     public ChatUnreadMessageCountServiceImpl() {
-        super(UserChannelDTO.class);
+        super(ChatMessage.class);
     }
 
     @Override

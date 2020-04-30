@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author Leo
  * @date 2018/5/15
  */
-public class MessageDTO implements Serializable {
+public class ChatMessage implements Serializable {
 
     private Long id;
     

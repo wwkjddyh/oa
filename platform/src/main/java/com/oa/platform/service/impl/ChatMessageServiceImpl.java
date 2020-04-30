@@ -1,8 +1,8 @@
 package com.oa.platform.service.impl;
 
 
-import com.oa.platform.entity.FileDTO;
-import com.oa.platform.entity.MessageDTO;
+import com.oa.platform.entity.ChatFile;
+import com.oa.platform.entity.ChatMessage;
 import com.oa.platform.service.ChatMessageService;
 import com.oa.platform.repository.ChatMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,28 +15,28 @@ import java.util.List;
  * @author Leo
  * @date 2018/5/16
  */
-public class ChatMessageServiceImpl extends AbstractBaseService<MessageDTO, Long> implements ChatMessageService {
+public class ChatMessageServiceImpl extends AbstractBaseService<ChatMessage, Long> implements ChatMessageService {
 
     @Autowired
     private ChatMessageRepository chatMessageRepository;
 
     public ChatMessageServiceImpl() {
-        super(MessageDTO.class);
+        super(ChatMessage.class);
     }
 
 
     @Override
-    public List<MessageDTO> listMessage(String channelId, long maxCreateAt, int limit) {
+    public List<ChatMessage> listMessage(String channelId, long maxCreateAt, int limit) {
         return null;
     }
 
     @Override
-    public MessageDTO saveMessage(MessageDTO dto) {
+    public ChatMessage saveMessage(ChatMessage dto) {
         return null;
     }
 
     @Override
-    public int saveMessage(List<MessageDTO> dtos) {
+    public int saveMessage(List<ChatMessage> dtos) {
         return 0;
     }
 
@@ -51,12 +51,12 @@ public class ChatMessageServiceImpl extends AbstractBaseService<MessageDTO, Long
     }
 
     @Override
-    public String saveFile(FileDTO dto) {
+    public String saveFile(ChatFile dto) {
         return null;
     }
 
     @Override
-    public MessageDTO getById(Long aLong) {
+    public ChatMessage getById(Long aLong) {
         return null;
     }
 }

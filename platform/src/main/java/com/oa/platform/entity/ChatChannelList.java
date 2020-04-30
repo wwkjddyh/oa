@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author Leo
  * @date 2018/3/30
  */
-public class ChannelListDTO implements Serializable {
+public class ChatChannelList implements Serializable {
 
     private String id;
 

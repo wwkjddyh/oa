@@ -1,6 +1,6 @@
 package com.oa.platform.repository;
 
-import com.oa.platform.entity.MessageDTO;
+import com.oa.platform.entity.ChatMessage;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
  * @create 2020/04/30
  */
 @Repository
-public interface ChatMessageRepository extends BaseRepository<MessageDTO, String> {
+public interface ChatMessageRepository extends BaseRepository<ChatMessage, String> {
 }

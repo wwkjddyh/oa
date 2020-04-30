@@ -10,7 +10,7 @@ import java.util.List;
  * @author Leo
  * @date 2018/4/11
  */
-public final class ChannelDTO implements Serializable {
+public class ChatChannel implements Serializable {
 
     private String id;
 
@@ -40,7 +40,7 @@ public final class ChannelDTO implements Serializable {
     
     private String purpose;
     
-    private List<ChannelMemberDTO> members = new ArrayList<>(128);
+    private List<ChatChannelMember> members = new ArrayList<>(128);
 
     public String getId() {
         return id;
@@ -146,7 +146,7 @@ public final class ChannelDTO implements Serializable {
         this.toUserOnlineStatus = toUserOnlineStatus;
     }
 
-    public List<ChannelMemberDTO> getMembers() {
+    public List<ChatChannelMember> getMembers() {
         return members;
     }
 

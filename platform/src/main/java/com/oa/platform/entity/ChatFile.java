@@ -8,7 +8,7 @@ import java.io.Serializable;
  * @author Leo
  * @date 2018/6/13
  */
-public class FileDTO implements Serializable {
+public class ChatFile implements Serializable {
     
     private String id;
     

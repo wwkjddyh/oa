@@ -1,7 +1,7 @@
 package com.oa.platform.service;
 
-import com.oa.platform.entity.FileDTO;
-import com.oa.platform.entity.MessageDTO;
+import com.oa.platform.entity.ChatFile;
+import com.oa.platform.entity.ChatMessage;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
  * @date 2018/5/16
  */
 @Service
-public interface ChatMessageService extends BaseService<MessageDTO, Long> {
+public interface ChatMessageService extends BaseService<ChatMessage, Long> {
 
     /**
      * 得到消息列表
@@ -22,21 +22,21 @@ public interface ChatMessageService extends BaseService<MessageDTO, Long> {
      * @param limit
      * @return
      */
-    List<MessageDTO> listMessage(String channelId, long maxCreateAt, int limit);
+    List<ChatMessage> listMessage(String channelId, long maxCreateAt, int limit);
     
     /**
      * 添加消息
      * @param dto
      * @return
      */
-    MessageDTO saveMessage(MessageDTO dto);
+    ChatMessage saveMessage(ChatMessage dto);
     
     /**
      * 批量添加消息
      * @param dtos
      * @return
      */
-    int saveMessage(List<MessageDTO> dtos);
+    int saveMessage(List<ChatMessage> dtos);
     
     /**
      * 读取消息
@@ -62,6 +62,6 @@ public interface ChatMessageService extends BaseService<MessageDTO, Long> {
      * @param dto
      * @return
      */
-    String saveFile(FileDTO dto);
+    String saveFile(ChatFile dto);
     
 }

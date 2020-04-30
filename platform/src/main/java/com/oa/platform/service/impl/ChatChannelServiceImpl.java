@@ -2,10 +2,10 @@ package com.oa.platform.service.impl;
 
 
 import com.github.pagehelper.PageInfo;
-import com.oa.platform.entity.ChannelDTO;
-import com.oa.platform.entity.ChannelListDTO;
-import com.oa.platform.entity.ChannelMemberDTO;
-import com.oa.platform.service.ChannelService;
+import com.oa.platform.entity.ChatChannel;
+import com.oa.platform.entity.ChatChannelList;
+import com.oa.platform.entity.ChatChannelMember;
+import com.oa.platform.service.ChatChannelService;
 import com.oa.platform.repository.ChatChannelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,28 +18,28 @@ import java.util.Map;
  * @author Leo
  * @date 2018/4/3
  */
-public class ChannelServiceImpl extends AbstractBaseService<ChannelDTO, String> implements ChannelService {
+public class ChatChannelServiceImpl extends AbstractBaseService<ChatChannel, String> implements ChatChannelService {
 
     @Autowired
     private ChatChannelRepository chatChannelRepository;
 
-    public ChannelServiceImpl() {
-        super(ChannelDTO.class);
+    public ChatChannelServiceImpl() {
+        super(ChatChannel.class);
     }
 
 
     @Override
-    public List<ChannelListDTO> listChannel(Map<String, Object> parameters, int limit) {
+    public List<ChatChannelList> listChannel(Map<String, Object> parameters, int limit) {
         return null;
     }
 
     @Override
-    public List<ChannelListDTO> listGroupChannel(Map<String, Object> parameters, int limit) {
+    public List<ChatChannelList> listGroupChannel(Map<String, Object> parameters, int limit) {
         return null;
     }
 
     @Override
-    public ChannelDTO saveChannel(ChannelDTO dto, String creatorNickname) {
+    public ChatChannel saveChannel(ChatChannel dto, String creatorNickname) {
         return null;
     }
 
@@ -69,7 +69,7 @@ public class ChannelServiceImpl extends AbstractBaseService<ChannelDTO, String> 
     }
 
     @Override
-    public PageInfo<ChannelMemberDTO> listMember(String channelId, String username, int limit, int offset) {
+    public PageInfo<ChatChannelMember> listMember(String channelId, String username, int limit, int offset) {
         return null;
     }
 
