@@ -11,7 +11,23 @@ pids
 *.seed
 *.pid.lock
 
+/.mvn/
+.mvn
+mvnw.cmd
+mvnw
+.idea
+*.iws
+*.iml
+*.ipr
+
 .DS_Store
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
 node_modules/
 /dist/
 npm-debug.log*
