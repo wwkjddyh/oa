@@ -27,7 +27,7 @@ public class ChatMessageServiceImpl extends AbstractBaseService<ChatMessage, Lon
 
     @Override
     public List<ChatMessage> listMessage(String channelId, long maxCreateAt, int limit) {
-        return null;
+        return chatMessageRepository.listMessage(channelId, maxCreateAt, limit);
     }
 
     @Override

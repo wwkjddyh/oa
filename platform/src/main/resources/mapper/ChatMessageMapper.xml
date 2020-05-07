@@ -2,4 +2,42 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.oa.platform.repository.ChatMessageRepository" >
 
+
+	<select>
+		SELECT
+			m.id,
+			m.channel_id,
+			m.sender_id,
+			m.create_at,
+			m.type,
+			m.content,
+			m.file_id,
+			u.NAME,
+			u.nickname,
+			u.online_status,
+			u.avatar_url,
+			u.name_first_letter,
+			f.NAME AS file_name,
+			f.extension,
+			f.size,
+			f.mime_typ,
+			f.width,
+			f.height,
+			f.path,
+			f.thumb_width,
+			f.thumb_height 
+		FROM
+			im_message m
+			INNER JOIN im_user u ON m.sender_id = u.id
+			LEFT JOIN im_file f ON m.file_id = f.id 
+		WHERE
+			m.channel_id =#{channelId} 
+			AND delete_at = 0 
+			<if test="maxCreateAt > 0">
+	        	 AND m.create_at &lt; #{maxCreateAt}
+	      	</if>
+		ORDER BY
+			m.create_at DESC 
+			LIMIT #{limit}
+	</select>
 </mapper>

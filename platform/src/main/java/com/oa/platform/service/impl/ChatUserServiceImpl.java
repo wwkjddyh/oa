@@ -1,6 +1,7 @@
 package com.oa.platform.service.impl;
 
 
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.oa.platform.entity.ChatUser;
 import com.oa.platform.service.ChatUserService;
@@ -36,7 +37,8 @@ public class ChatUserServiceImpl extends AbstractBaseService<ChatUser, String> i
 
     @Override
     public PageInfo<ChatUser> listByNameOrNickname(String name, int limit, int offset) {
-        return null;
+    	PageHelper.startPage(offset, limit);
+    	return new PageInfo(chatUserRepository.listByNameOrNickname(name));
     }
 
     @Override
