@@ -2299,10 +2299,10 @@ new Vue({
         		this.$message.error('提交失败,请选择 基本信息-->本届班子当选日期');
         		return false;
         	}
-        	if(that.formdwjbxx.changeOrgRelationAuth == null || that.formdwjbxx.changeOrgRelationAuth == ''){
-        		this.$message.error('提交失败,请选择 基本信息-->转接组织关系权限');
-        		return false;
-        	}
+//        	if(that.formdwjbxx.changeOrgRelationAuth == null || that.formdwjbxx.changeOrgRelationAuth == ''){
+//        		this.$message.error('提交失败,请选择 基本信息-->转接组织关系权限');
+//        		return false;
+//        	}
         	if(that.formdwjbxx2.concatPersion == null || that.formdwjbxx2.concatPersion == ''){
         		this.$message.error('提交失败,请填写 联系方式-->党组织联系人');
         		return false;
