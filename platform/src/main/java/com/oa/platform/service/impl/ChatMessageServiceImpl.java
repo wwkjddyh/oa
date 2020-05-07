@@ -6,6 +6,7 @@ import com.oa.platform.entity.ChatMessage;
 import com.oa.platform.service.ChatMessageService;
 import com.oa.platform.repository.ChatMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @author Leo
  * @date 2018/5/16
  */
+@Service
 public class ChatMessageServiceImpl extends AbstractBaseService<ChatMessage, Long> implements ChatMessageService {
 
     @Autowired

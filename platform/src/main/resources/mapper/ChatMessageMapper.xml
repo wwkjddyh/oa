@@ -3,7 +3,7 @@
 <mapper namespace="com.oa.platform.repository.ChatMessageRepository" >
 
 
-	<select>
+	<!-- <select>
 		SELECT
 			m.id,
 			m.channel_id,
@@ -39,5 +39,5 @@
 		ORDER BY
 			m.create_at DESC 
 			LIMIT #{limit}
-	</select>
+	</select> -->
 </mapper>

@@ -8,6 +8,7 @@ import com.oa.platform.entity.ChatChannelMember;
 import com.oa.platform.service.ChatChannelService;
 import com.oa.platform.repository.ChatChannelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import java.util.Map;
  * @author Leo
  * @date 2018/4/3
  */
+@Service
 public class ChatChannelServiceImpl extends AbstractBaseService<ChatChannel, String> implements ChatChannelService {
 
     @Autowired

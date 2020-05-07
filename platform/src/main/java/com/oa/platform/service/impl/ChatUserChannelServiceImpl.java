@@ -6,6 +6,7 @@ import com.oa.platform.service.ChatUserChannelService;
 import com.oa.platform.repository.ChatChannelRepository;
 import com.oa.platform.repository.ChatUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
  * @author Lining
  * @date 2018/4/20
  */
+@Service
 public class ChatUserChannelServiceImpl extends AbstractBaseService<ChatUserChannel, String> implements ChatUserChannelService {
 
     @Autowired

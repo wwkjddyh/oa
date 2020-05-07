@@ -24,18 +24,18 @@ public class ChatUserApiController extends BaseController {
     @Autowired
     private ChatUserBiz chatUserBiz;
     
-    /**
-     * 获取用户列表
-     * @param name
-     * @param limit
-     * @param offset
-     * @return
-     */
-    @GetMapping("listUser")
-    public ResponseEntity<Page<ChatUser>> listUser(@RequestParam("name") String name, @RequestParam("limit") int limit,
-            @RequestParam("offset") int offset) {
-    	Page<ChatUser> result = chatUserBiz.listByNameOrNickname(name, limit, offset);
-    	return ResponseEntity.ok(result);
-    }
+//    /**
+//     * 获取用户列表
+//     * @param name
+//     * @param limit
+//     * @param offset
+//     * @return
+//     */
+//    @GetMapping("listUser")
+//    public ResponseEntity<Page<ChatUser>> listUser(@RequestParam("name") String name, @RequestParam("limit") int limit,
+//            @RequestParam("offset") int offset) {
+//    	Page<ChatUser> result = chatUserBiz.listByNameOrNickname(name, limit, offset);
+//    	return ResponseEntity.ok(result);
+//    }
 
 }

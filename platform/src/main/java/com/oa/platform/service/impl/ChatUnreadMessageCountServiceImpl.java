@@ -5,12 +5,14 @@ import com.oa.platform.entity.ChatMessage;
 import com.oa.platform.service.ChatUnreadMessageCountService;
 import com.oa.platform.repository.ChatMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * 未读消息数量
  * @author Administrator
  *
  */
+@Service
 public class ChatUnreadMessageCountServiceImpl extends AbstractBaseService<ChatMessage, String> implements ChatUnreadMessageCountService {
 
     @Autowired
