@@ -15,7 +15,7 @@ spring:
         max-request-size: 1000MB
 
 server:
-  port: 8090
+  port: 8099
   tomcat:
     uri-encoding: UTF-8
     max-http-post-size: 20MB
