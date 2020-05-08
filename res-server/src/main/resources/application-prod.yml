@@ -1,0 +1,31 @@
+spring:
+  banner:
+    charset: UTF-8
+  resources:
+    static-locations: file:/home/caichuanlong/data/uploads/platform/,classpath:/static/
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    cache: false
+    servlet:
+      multipart:
+        max-file-size: 100MB
+        max-request-size: 1000MB
+
+server:
+  port: 8090
+  tomcat:
+    uri-encoding: UTF-8
+    max-http-post-size: 20MB
+    max-swallow-size: 2MB
+    max-threads: 1000
+  servlet:
+    session:
+      timeout: 300m
+      cookie:
+        max-age: 18000
+        http-only: false
+        path: /
+      tracking-modes: cookie

@@ -7593,7 +7593,7 @@ new Vue({
                 /**
                  * 生产环境需要特殊设置：即设置为 https://oa.awycjcdj.com/
                  */
-                _url = "https://oa.awycjcdj.com/";
+                _url = "https://oa.awycjcdj.com:8090/";
 
                 let _accessUrl = (res.accessUrl || '').replace(/\\/g, "/");
                 if (_accessUrl.startsWith('/')) {

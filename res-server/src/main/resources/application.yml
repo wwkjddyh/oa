@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: res-server
+  profiles:
+    active: dev
