@@ -5086,7 +5086,7 @@ new Vue({
                       console.log('currentUser ==== ',that.currentUser,that.currentUserStr);
                       // let _src = that.chatConfig.web.url || '';
                       // 针对银河麒麟做特殊处理
-                      let _src = 'http://www.awycjcdj.com:8090/#/';
+                      let _src = 'http://www.awycjcdj.com:8099/#/';
                       if (that.chatConfig && that.chatConfig.web && that.chatConfig.web.url) {
                           _src = that.chatConfig.web.url || '';
                       }
