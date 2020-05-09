@@ -5084,7 +5084,12 @@ new Vue({
 	                      isAdmin: that.isSuperAdmin
 	                    });
                       console.log('currentUser ==== ',that.currentUser,that.currentUserStr);
-                      let _src = that.chatConfig.web.url || '';
+                      // let _src = that.chatConfig.web.url || '';
+                      // 针对银河麒麟做特殊处理
+                      let _src = 'http://www.awycjcdj.com:8090/#/';
+                      if (that.chatConfig && that.chatConfig.web && that.chatConfig.web.url) {
+                          _src = that.chatConfig.web.url || '';
+                      }
                       that.chatSrc = `${_src}?data=` + that.currentUserStr;
                       console.log('oa ===== ',that.chatSrc);
                       let __modules = data.data['modules'] || [];
