@@ -314,6 +314,12 @@
 		      instr(orguser.org_id,#{itemId})>0
 		    </foreach>
     	</if>
+    	<if test="isSuperAdmin != true and adminRoleUsers != null">
+    		and t.user_id not in 
+    		<foreach collection="adminRoleUsers" index="index" item="itemId" open="(" separator="," close=")">
+		      #{itemId}
+		    </foreach>
+    	</if>
       <if test="user.userId != null and user.userId != ''">
         AND t.user_id = #{user.userId}
       </if>
@@ -495,4 +501,7 @@
   <delete id="deleteImUserInfo">
   	delete from `leo-im`.`im_user` where id= #{userId}
   </delete>
+  <select id="getAdminRoleUsers" resultType="java.lang.String">
+  	select distinct user_id from t_user_role where role_id='2d3b447b-a82f-4295-9fe0-4f64f500b48b'
+  </select>
 </mapper>

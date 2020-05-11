@@ -68,7 +68,7 @@ public interface UserRepository extends BaseRepository<User,String> {
     
 	void resetPwd(@Param("userId")String userId, @Param("userDefaultPwd") String userDefaultPwd);
 
-	List searchUsersByOrgIds(@Param("user") User user, @Param("isSuperAdmin") boolean isSuperAdmin,@Param("orgIds") List<String> orgIds);
+	List searchUsersByOrgIds(@Param("user") User user, @Param("isSuperAdmin") boolean isSuperAdmin,@Param("orgIds") List<String> orgIds,@Param("adminRoleUsers") List<String> adminRoleUsers);
 
 	void updateUserEmailAndPhone(@Param("userId")String userId, @Param("mail") String mail,@Param("phone") String phone);
 
@@ -92,4 +92,9 @@ public interface UserRepository extends BaseRepository<User,String> {
 	 * @param userId
 	 */
 	void deleteImUserInfo(@Param("userId") String userId);
+	/**
+	 * 获取管理员角色用户id
+	 * @return
+	 */
+	List<String> getAdminRoleUsers();
 }

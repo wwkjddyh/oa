@@ -104,7 +104,7 @@ public interface UserService extends BaseService<User,String>, UserDetailsServic
 
 	void resetPwd(String userId, String userDefaultPwd);
 
-	PageInfo<User> searchUsersByOrgIds(User user, int pageNum, int pageSize, boolean isSuperAdmin, List<String> orgIds);
+	PageInfo<User> searchUsersByOrgIds(User user, int pageNum, int pageSize, boolean isSuperAdmin, List<String> orgIds,List<String> adminRoleUsers);
 	/**
 	 * 根据当前用户获取可见用户集合
 	 * @param userId
@@ -166,4 +166,9 @@ public interface UserService extends BaseService<User,String>, UserDetailsServic
 	 * @param userId
 	 */
 	void deleteImUserInfo(String userId);
+	/**
+	 * 获取管理员用户
+	 * @return
+	 */
+	List<String> getAdminRoleUsers();
 }

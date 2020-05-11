@@ -68,9 +68,9 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
         return new PageInfo(userRepository.selectUsers());
     }
     @Override
-	public PageInfo<User> searchUsersByOrgIds(User user, int pageNum, int pageSize, boolean isSuperAdmin, List<String> orgIds) {
+	public PageInfo<User> searchUsersByOrgIds(User user, int pageNum, int pageSize, boolean isSuperAdmin, List<String> orgIds,List<String> adminRoleUsers) {
     	PageHelper.startPage(pageNum, pageSize);
-		return new PageInfo(userRepository.searchUsersByOrgIds(user,isSuperAdmin,orgIds));
+		return new PageInfo(userRepository.searchUsersByOrgIds(user,isSuperAdmin,orgIds,adminRoleUsers));
 	}
     @Override
     public UserDtl findDetailByUserId(String userId) {
@@ -235,7 +235,7 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
 			orgIds.add(organization.getOrgId());
 		}
         
-        List<User> searchUsersByOrgIds = userRepository.searchUsersByOrgIds(user,false,orgIds);
+        List<User> searchUsersByOrgIds = userRepository.searchUsersByOrgIds(user,false,orgIds,null);
         List<String> userIds = new ArrayList<String>();
         for (User user2 : searchUsersByOrgIds) {
         	userIds.add(user2.getUserId());
@@ -258,7 +258,7 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
 			orgIds.add(organization.getOrgId());
 		}
         
-        List<User> searchUsersByOrgIds = userRepository.searchUsersByOrgIds(user,false,orgIds);
+        List<User> searchUsersByOrgIds = userRepository.searchUsersByOrgIds(user,false,orgIds,null);
         List<String> userIds = new ArrayList<String>();
         for (User user2 : searchUsersByOrgIds) {
         	userIds.add(user2.getUserId());
@@ -326,7 +326,7 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
             }
         }
 
-        List<User> searchUsersByOrgIds = userRepository.searchUsersByOrgIds(user,false, orgIds);
+        List<User> searchUsersByOrgIds = userRepository.searchUsersByOrgIds(user,false, orgIds,null);
         List<String> userIds = new ArrayList<String>();
         for (User user2 : searchUsersByOrgIds) {
             userIds.add(user2.getUserId());
@@ -371,5 +371,11 @@ public class UserServiceImpl extends AbstractBaseService<User,String> implements
 	public void deleteImUserInfo(String userId) {
 		userRepository.deleteImUserInfo(userId);
 		
+	}
+
+
+	@Override
+	public List<String> getAdminRoleUsers() {
+		return userRepository.getAdminRoleUsers();
 	}
 }

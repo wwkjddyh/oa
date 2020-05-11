@@ -282,8 +282,8 @@ public class UserBiz extends BaseBiz {
 				orgIds.add(organization.getOrgId());
 			}
         }
-
-        return getPageInfo(userService.searchUsersByOrgIds(user,getPageNum(pageNum),getPageSize(pageSize),isSuperAdmin,orgIds));
+        List<String> adminRoleUsers = userService.getAdminRoleUsers();
+        return getPageInfo(userService.searchUsersByOrgIds(user,getPageNum(pageNum),getPageSize(pageSize),isSuperAdmin,orgIds,adminRoleUsers));
     }
 
     /**
@@ -649,7 +649,7 @@ public class UserBiz extends BaseBiz {
     				orgIds.add(organization.getOrgId());
     			}
             }
-            PageInfo<User> searchUsersByOrgIds = userService.searchUsersByOrgIds(user,0,99999,isSuperAdmin,orgIds);
+            PageInfo<User> searchUsersByOrgIds = userService.searchUsersByOrgIds(user,0,99999,isSuperAdmin,orgIds,null);
             List<User> users = searchUsersByOrgIds.getList();
             users = users == null ? Lists.newArrayList() : users;
             if (!users.isEmpty()) {
