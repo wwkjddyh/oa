@@ -208,6 +208,7 @@ new Vue({
                     that.loadPartyDues('', 1, that.pager.partyDues.pageSize);
                     break;*/
                 case 'dfglzlxz':    //党费资料下载
+                    that.formSearchRes.orgId = '';  // 重置orgId为""
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '01ef5219-464e-44a3-890a-557e3bbabd4e';
                     that.formSearchRes.typeId = '01ef5219-464e-44a3-890a-557e3bbabd4e';
@@ -223,6 +224,7 @@ new Vue({
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
                 case 'zlk':    // 资料库
+                    that.formSearchRes.orgId = '';  // 重置orgId为""
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '2e9941a0-2a6f-4c2f-b74c-970d0351469f';
                     that.formSearchRes.typeId = '2e9941a0-2a6f-4c2f-b74c-970d0351469f';
@@ -238,6 +240,7 @@ new Vue({
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
                 case 'hjglzlxz':    // 换届管理资料下载
+                    that.formSearchRes.orgId = '';  // 重置orgId为""
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '3dea99ab-ec00-4633-b24c-7c44a5ce57b8';
                     that.formSearchRes.typeId = '3dea99ab-ec00-4633-b24c-7c44a5ce57b8';
@@ -253,6 +256,7 @@ new Vue({
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
                 case 'dyglzlxz':    // 党员管理资料下载
+                    that.formSearchRes.orgId = '';  // 重置orgId为""
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '1e9941a0-2a6f-4c2f-b74c-970d0351469f';
                     that.formSearchRes.typeId = '1e9941a0-2a6f-4c2f-b74c-970d0351469f';
@@ -268,6 +272,7 @@ new Vue({
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
                 case 'dyfgzd':    // 党员管理相关法规制度
+                    that.formSearchRes.orgId = '';  // 重置orgId为""
                     that.formSearchRes.key = '';
                     that.formRes.typeId = 'fa0921b0-1646-4af1-b590-d0a5d8bdce43';
                     that.formSearchRes.typeId = 'fa0921b0-1646-4af1-b590-d0a5d8bdce43';
@@ -283,6 +288,7 @@ new Vue({
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
                 case 'dzzfgzd':    // 党组织管理相关法规制度
+                    that.formSearchRes.orgId = '';  // 重置orgId为""
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '9234abe3-8999-45b8-8ad5-55409946e547';
                     that.formSearchRes.typeId = '9234abe3-8999-45b8-8ad5-55409946e547';
@@ -298,6 +304,7 @@ new Vue({
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
                 case 'dffgzd':    // 党费管理相关法规制度
+                    that.formSearchRes.orgId = '';  // 重置orgId为""
                     that.formSearchRes.key = '';
                     that.formRes.typeId = 'e78acbc2-ea9d-4589-b833-0472e532a61a';
                     that.formSearchRes.typeId = 'e78acbc2-ea9d-4589-b833-0472e532a61a';
@@ -313,6 +320,7 @@ new Vue({
                     that.loadResList('', 1, that.pager.res.pageSize);
                     break;
                 case 'hjfgzd':    // 换届管理相关法规制度
+                    that.formSearchRes.orgId = '';  // 重置orgId为""
                     that.formSearchRes.key = '';
                     that.formRes.typeId = '598f7307-104d-4cc1-b0e9-d61749286c5e';
                     that.formSearchRes.typeId = '598f7307-104d-4cc1-b0e9-d61749286c5e';
@@ -427,6 +435,7 @@ new Vue({
                     that.getCommitteeData();
                     break;
                 case 'fzdy':    // 发展党员
+                    that.formSearchRes.orgId = '';  // 重置orgId为""
                     that.getResOtherTypes();
                     that.fzdyLoading = false;
                     that.loadDwjbxx();
