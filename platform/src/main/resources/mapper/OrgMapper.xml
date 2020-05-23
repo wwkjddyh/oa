@@ -256,7 +256,8 @@
 		where org.org_id=#{orgId}
 	</select>
 	<select id="getOrgList" resultMap="orgMap">
-		( WITH recursive org_cte AS (
+		select tmp.* from 
+		(( WITH recursive org_cte AS (
 				SELECT
 					sorg.org_id,
 					sorg.org_nm,
@@ -267,7 +268,8 @@
 					sorg.is_dept,
 					sorg.upper_org,
 					sorg.root_org,
-					orgleader.leader 
+					orgleader.leader,
+					sorg.create_on
 				FROM
 					t_sys_org sorg
 					LEFT JOIN ( SELECT GROUP_CONCAT( user_name ) leader, org_id FROM t_org_leader_detail WHERE STATUS = '1' GROUP BY org_id ) orgleader ON sorg.org_id = orgleader.org_id 
@@ -287,7 +289,8 @@
 					org.is_dept,
 					org.upper_org,
 					org.root_org,
-					orgleader.leader 
+					orgleader.leader,
+					org.create_on 
 				FROM
 					t_sys_org org
 					LEFT JOIN ( SELECT GROUP_CONCAT( user_name ) leader, org_id FROM t_org_leader_detail WHERE STATUS = '1' GROUP BY org_id ) orgleader ON org.org_id = orgleader.org_id
@@ -311,7 +314,8 @@
 					sorg.is_dept,
 					sorg.upper_org,
 					sorg.root_org,
-					orgleader.leader 
+					orgleader.leader,
+					sorg.create_on 
 				FROM
 					t_sys_org sorg
 					LEFT JOIN ( SELECT GROUP_CONCAT( user_name ) leader, org_id FROM t_org_leader_detail WHERE STATUS = '1' GROUP BY org_id ) orgleader ON sorg.org_id = orgleader.org_id 
@@ -331,7 +335,8 @@
 					org.is_dept,
 					org.upper_org,
 					org.root_org,
-					orgleader.leader 
+					orgleader.leader,
+					org.create_on 
 				FROM
 					t_sys_org org
 					LEFT JOIN ( SELECT GROUP_CONCAT( user_name ) leader, org_id FROM t_org_leader_detail WHERE STATUS = '1' GROUP BY org_id ) orgleader ON org.org_id = orgleader.org_id
@@ -342,7 +347,7 @@
 				FROM
 					org_cte ote
 					 
-					)
+					)) tmp order by tmp.create_on
 	</select>
 	<select id="getOrgIdByuserId" resultMap="orgMap">
 		SELECT
