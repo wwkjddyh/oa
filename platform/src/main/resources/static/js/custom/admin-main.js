@@ -2242,7 +2242,15 @@ new Vue({
                                         		if(valid){
                                         			if(that.dwjbxxFormValidate()){
                                         				that.submitDwjbxx();
-                                        			}else{
+                                        			} else {
+                                        				that.dwjbxxViewType = `phone`;
+	                                	        		that.dwjbxxBaseInfoType = '';
+	                                	        		that.dwjbxxPhoneType = 'danger';
+	                                	        		that.dwjbxxLeaderType = '';
+	                                	        		that.$nextTick(()=>{
+	                                	        			that.$refs.formdwjbxx2.validate((_valid) => {
+		                                	        		});
+	                                	        		});
                                         				return false;
                                         			}
                                         		}else {
@@ -3625,6 +3633,8 @@ new Vue({
         		that.deptInfoList = [];
         		
         		that.dialogShow.dwjbxx = !that.dialogShow.dwjbxx;
+        		
+        		
         	}else{
 	            let that = this, entry = null, parents = [];
 	            isAdd = isAdd != undefined && isAdd == true? true : false;
@@ -3819,6 +3829,12 @@ new Vue({
 	                		that.leaderList = [];
 	                		that.rewardList = [];
 	                		that.deptInfoList = [];
+	                		//默认展示基本信息 清空联系方式数据
+	                		that.formdwjbxx2={};
+	                		that.dwjbxxViewType= 'baseInfo';
+	                		that.dwjbxxBaseInfoType = 'danger';
+	                		that.dwjbxxPhoneType = '';
+	                		that.dwjbxxLeaderType = '';
 	                	}else{
 	                		that.dwjbxxDialog={
 	                				title: scopeRow.orgName
