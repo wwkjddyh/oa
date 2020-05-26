@@ -188,9 +188,9 @@
 				sorg.org_id,
 				sorg.org_nm,
 				sorg.upper_org,
-				sorg.org_type 
+				sorg.org_type
 			FROM
-				t_sys_org sorg 
+				t_sys_org sorg
 			WHERE
 				instr(#{orgId},sorg.org_id)>0
 				AND sorg.STATUS = '1' UNION ALL
@@ -198,21 +198,27 @@
 				org.org_id,
 				org.org_nm,
 				org.upper_org,
-				org.org_type 
+				org.org_type
 			FROM
 				t_sys_org org
-				INNER JOIN org_cte sysorg ON org.upper_org = sysorg.org_id 
-				AND org.STATUS = '1' 
-			) SELECT
-			ote.org_id,
-			ote.org_nm,
-			ote.org_type,
-		CASE
-			WHEN instr(#{orgId},ote.org_id)>0 THEN
-			NULL ELSE upper_org 
-			END upper_org 
-		FROM
-		org_cte ote
+				INNER JOIN org_cte sysorg ON org.upper_org = sysorg.org_id
+				AND org.STATUS = '1'
+			)
+		SELECT t1.org_id, t1.org_nm, t1.org_type, t1.upper_org
+		FROM (
+			SELECT
+					ote.org_id,
+					ote.org_nm,
+					ote.org_type,
+				CASE
+					WHEN instr(#{orgId},ote.org_id)>0 THEN
+					NULL ELSE upper_org
+					END upper_org
+			FROM
+			org_cte ote
+		) t1, t_sys_org t2
+		WHERE t1.org_id = t2.org_id
+		ORDER BY t2.create_on ASC
 	</select>
 	<select id="getOrgIdByUserId" resultType="java.lang.String">
 		select org_id from t_org_user where user_id=#{userId} and status='1'
