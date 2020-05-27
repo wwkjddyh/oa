@@ -156,7 +156,7 @@
     </foreach>
   </select>
 
-  <!--根据用户名查询用户信息-->
+  <!--根据用户名查询用户信息(用于用户登录)-->
   <select id="findUserByName" parameterType="java.lang.String" resultMap="user">
     SELECT t1.user_id, t1.user_type, t1.user_name, t1.user_pwd, t1.user_nickname, t1.record_flag,
         DATE_FORMAT(t1.last_login_time,'%Y-%m-%d %H:%i:%s') last_login_time,
@@ -175,7 +175,7 @@
         DATE_FORMAT(t1.update_time,'%Y-%m-%d %H:%i:%s') update_time,
         t1.lang_conf_id, t1.third_party_type,t1.third_party_id,t1.user_sex,
 				t2.`name` lang_name, t2.`code` lang_code
-      FROM (select * FROM t_user WHERE user_name = #{userName} AND user_pwd = #{userPwd}) t1
+      FROM (select * FROM t_user WHERE record_flag != 0 AND user_name = #{userName} AND user_pwd = #{userPwd}) t1
       LEFT JOIN t_lang_conf t2 ON t1.lang_conf_id = t2.record_id
   </select>
 
