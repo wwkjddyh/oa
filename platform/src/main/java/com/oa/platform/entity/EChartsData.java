@@ -8,6 +8,8 @@ import java.util.List;
  *
  */
 public class EChartsData implements Serializable{
+
+	private static final long serialVersionUID = 7217498329326616488L;
 	//数据主题
 	private String title;
 	//数据选项卡

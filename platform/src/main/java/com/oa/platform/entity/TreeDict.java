@@ -3,6 +3,9 @@ package com.oa.platform.entity;
 import java.io.Serializable;
 
 public class TreeDict implements Serializable{
+
+	private static final long serialVersionUID = 2397878213645003007L;
+
 	//数据主键
 	private String staticsId;
 	//节点主键

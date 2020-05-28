@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class Module implements Serializable {
 
+    private static final long serialVersionUID = 4898344622978889140L;
+
     /**
      * 模块id，唯一标识
      */

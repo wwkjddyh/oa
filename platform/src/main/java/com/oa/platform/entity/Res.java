@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class Res implements Serializable {
 
+    private static final long serialVersionUID = -21132857663212013L;
+
     /**
      * 唯一标识
      */

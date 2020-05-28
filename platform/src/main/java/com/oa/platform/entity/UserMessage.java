@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class UserMessage implements Serializable {
 
+    private static final long serialVersionUID = 6181426293726405622L;
+    
     /**
      * 唯一标识
      */

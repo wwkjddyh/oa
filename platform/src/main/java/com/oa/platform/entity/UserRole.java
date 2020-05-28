@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class UserRole implements Serializable {
 
+    private static final long serialVersionUID = 8417723439387329691L;
+
     /**
      * 主键，唯一标识
      */

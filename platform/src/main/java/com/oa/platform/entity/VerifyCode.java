@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class VerifyCode implements Serializable {
 
+    private static final long serialVersionUID = 4316141743175154560L;
+
     /**
      * (字符串)码
      */

@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class LangConf implements Serializable {
 
+    private static final long serialVersionUID = -5068061833119291745L;
+
     /**
      * 主键，唯一标识
      */

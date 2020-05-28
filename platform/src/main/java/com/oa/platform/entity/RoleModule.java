@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class RoleModule implements Serializable {
 
+    private static final long serialVersionUID = -2146117662433246185L;
+
     /**
      * 主键，唯一标识
      */

@@ -9,7 +9,9 @@ import java.io.Serializable;
  * @date 2018/6/13
  */
 public class ChatFile implements Serializable {
-    
+
+    private static final long serialVersionUID = 7323349127869235180L;
+
     private String id;
     
     private String name;

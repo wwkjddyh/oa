@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class ResDl implements Serializable {
 
+    private static final long serialVersionUID = -231519262276606468L;
+
     /**
      * 唯一标识
      */

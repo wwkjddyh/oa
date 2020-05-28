@@ -1,11 +1,15 @@
 package com.oa.platform.entity;
 
+import java.io.Serializable;
+
 /**
  * 用户角色模块(仅用于数据库查询)
  * @author Feng
  * @date 2019/04/22
  */
-public class UserRoleModule {
+public class UserRoleModule implements Serializable {
+
+    private static final long serialVersionUID = -3515628561994834957L;
 
     /**
      * 用户Id

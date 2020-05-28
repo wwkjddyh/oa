@@ -1,10 +1,16 @@
 package com.oa.platform.entity;
+
+import java.io.Serializable;
+
 /**
  * 邮件实体类
  * @author 俞灶森
  *
  */
-public class Mail {
+public class Mail implements Serializable {
+
+	private static final long serialVersionUID = 6350202508444504059L;
+
 	//发送人
 	private String form;
 	//接收人

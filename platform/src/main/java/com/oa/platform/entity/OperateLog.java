@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class OperateLog implements Serializable {
 
+    private static final long serialVersionUID = -8017260281037446227L;
+
     /**
      * 主键，唯一标识
      */

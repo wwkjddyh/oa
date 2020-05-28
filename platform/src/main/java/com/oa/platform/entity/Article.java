@@ -10,6 +10,8 @@ import java.util.List;
  */
 public class Article implements Serializable {
 
+    private static final long serialVersionUID = -562132419649815022L;
+
     /**
      * 唯一标识
      */

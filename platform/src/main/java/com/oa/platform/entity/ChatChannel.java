@@ -12,6 +12,8 @@ import java.util.List;
  */
 public class ChatChannel implements Serializable {
 
+    private static final long serialVersionUID = -9107007858200541109L;
+
     private String id;
 
     private String name;

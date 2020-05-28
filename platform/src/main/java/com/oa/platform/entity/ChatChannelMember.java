@@ -9,7 +9,9 @@ import java.io.Serializable;
  * @date 2018/4/11
  */
 public class ChatChannelMember implements Serializable {
-    
+
+    private static final long serialVersionUID = -3841291272584627845L;
+
     private String id;
     
     private String nickname;

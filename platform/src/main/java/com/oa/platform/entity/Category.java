@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class Category implements Serializable {
 
+    private static final long serialVersionUID = -4727810835185743994L;
+    
     /**
      * 唯一标识
      */

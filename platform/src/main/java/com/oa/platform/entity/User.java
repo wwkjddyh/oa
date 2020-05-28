@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class User implements UserDetails, Serializable {
 
+    private static final long serialVersionUID = 8953822394478462389L;
+
     /**
      * 类型：管理员
      */

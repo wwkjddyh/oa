@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class Dict implements Serializable {
 
+    private static final long serialVersionUID = 5739444773386908852L;
+
     /**
      * 主键，唯一标识
      */

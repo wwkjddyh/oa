@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class LoginLog implements Serializable {
 
+    private static final long serialVersionUID = 2157468940839827056L;
+
     /**
      * 主键，唯一标识
      */

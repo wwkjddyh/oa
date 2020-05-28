@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class PrePartyMemeber implements Serializable {
 
+    private static final long serialVersionUID = 7323715269648436174L;
+
     /**
      * 唯一标识, 即预备党员ID
      */

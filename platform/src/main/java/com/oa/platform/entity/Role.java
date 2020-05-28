@@ -11,6 +11,8 @@ import java.io.Serializable;
  */
 public class Role implements GrantedAuthority,Serializable {
 
+    private static final long serialVersionUID = 7511408021840942000L;
+
     /**
      * 角色id，唯一标识
      */

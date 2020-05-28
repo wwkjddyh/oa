@@ -10,6 +10,8 @@ import java.io.Serializable;
  */
 public class ChatMessage implements Serializable {
 
+    private static final long serialVersionUID = -6985901037031580366L;
+
     private Long id;
     
     private String channelId;

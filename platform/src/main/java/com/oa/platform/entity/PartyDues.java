@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class PartyDues implements Serializable {
 
+    private static final long serialVersionUID = 40366415363229554L;
+
     /**
      * 唯一标识
      */

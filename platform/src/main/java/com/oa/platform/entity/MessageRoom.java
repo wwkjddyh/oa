@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class MessageRoom implements Serializable {
 
+    private static final long serialVersionUID = 7851132487805016148L;
+
     /**
      * 唯一标识
      */

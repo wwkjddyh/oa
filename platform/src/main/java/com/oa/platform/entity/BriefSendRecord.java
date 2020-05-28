@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class BriefSendRecord implements Serializable {
 
+    private static final long serialVersionUID = -5466908242126189943L;
+
     /**
      * 唯一标识
      */

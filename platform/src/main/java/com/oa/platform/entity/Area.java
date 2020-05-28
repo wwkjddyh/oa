@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public class Area implements Serializable {
 
+    private static final long serialVersionUID = -3068970711629131582L;
+
     /**
      * 信息唯一标识
      */
