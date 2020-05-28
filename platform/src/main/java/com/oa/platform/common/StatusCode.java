@@ -7,6 +7,10 @@ package com.oa.platform.common;
  */
 public class StatusCode {
 
+    private StatusCode() {
+
+    }
+
     /**
      * 继续：100 <br/>
      * 请求者应当继续提出请求。 服务器返回此代码表示已收到请求的第一部分，正在等待其余部分。

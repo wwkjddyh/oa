@@ -14,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class Constants {
 
+    private Constants() {}
+
     /**
      * SPRING_SECURITY框架的Session Key
      * <br>"SPRING_SECURITY_CONTEXT"</br>

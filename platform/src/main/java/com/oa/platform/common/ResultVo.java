@@ -5,12 +5,20 @@ package com.oa.platform.common;
  *
  */
 public class ResultVo {
-	
-	//状态码
+
+	/**
+	 * 状态码
+	 */
 	private Integer code;
-	//信息
+
+	/**
+	 * 信息
+	 */
 	private String msg;
-	//结果
+
+	/**
+	 * 结果
+	 */
 	private Object result;
 
 	public Integer getCode() {
@@ -31,5 +39,31 @@ public class ResultVo {
 	public void setResult(Object result) {
 		this.result = result;
 	}
-	
+
+	public ResultVo() {
+	}
+
+	public ResultVo(Integer code) {
+		this.code = code;
+	}
+
+	public ResultVo(Integer code, String msg) {
+		this.code = code;
+		this.msg = msg;
+	}
+
+	public ResultVo(Integer code, String msg, Object result) {
+		this.code = code;
+		this.msg = msg;
+		this.result = result;
+	}
+
+	@Override
+	public String toString() {
+		return "ResultVo{" +
+				"code=" + code +
+				", msg='" + msg + '\'' +
+				", result=" + result +
+				'}';
+	}
 }

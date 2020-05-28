@@ -11,6 +11,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class WebSocketCache {
 
+    private WebSocketCache() {}
+
     public static final String WEBSOCKET_USERNAME = "websocket_username";
     public static final String SESSION_USERNAME = "session_username";
 
