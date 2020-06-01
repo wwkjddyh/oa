@@ -180,7 +180,7 @@
 			upper_org,
 			org_type
 		from t_sys_org
-		where status='1' and is_dept='0'
+		where status='1' and is_dept='0' order by create_on asc
 	</select>
 	<select id="getUserUpperOrgList" resultMap="orgMap">
 		WITH recursive org_cte AS (
