@@ -211,7 +211,7 @@
 					ote.org_nm,
 					ote.org_type,
 				CASE
-					WHEN instr(sorg.org_id,#{orgId})>0 THEN
+					WHEN instr(ote.org_id,#{orgId})>0 THEN
 					NULL ELSE upper_org
 					END upper_org
 			FROM
@@ -421,7 +421,7 @@
 		WHERE
 			userdtl.is_leader = '1'
 			<if test="isSuperAdmin !=true">
-				and instr(#{orgId},sorg.org_id)>0
+				and instr(sorg.org_id,#{orgId})>0
 			</if>
 		    and userdtl.is_party='1' UNION ALL
 		SELECT
@@ -482,7 +482,7 @@
 		WHERE
 			userdtl.is_leader = '1'
 			<if test="isSuperAdmin !=true">
-				and instr(#{orgId},sorg.org_id)>0
+				and instr(sorg.org_id,#{orgId})>0
 			</if>
 			and userdtl.is_party='1' UNION ALL
 		SELECT
@@ -547,8 +547,8 @@
 			)
 	</update>
 	<insert id="saveOrgUser">
-		insert into t_org_user (user_id,org_id,status)
-		values(#{userId},#{orgId},'1')
+		insert into t_org_user (org_id,user_id,status)
+		values(#{orgId},#{userId},'1')
 	</insert>
 	<!-- 删除指定组织及下属组织的人员关联 -->
 	<update id="delOrgUser">
