@@ -192,8 +192,9 @@
 			FROM
 				t_sys_org sorg
 			WHERE
-				instr(sorg.org_id,#{orgId})>0
-				AND sorg.STATUS = '1' UNION ALL
+				FIND_IN_SET(sorg.org_id, #{orgId}) > 0
+				AND sorg.STATUS = '1'
+			UNION ALL
 			SELECT
 				org.org_id,
 				org.org_nm,
@@ -211,7 +212,7 @@
 					ote.org_nm,
 					ote.org_type,
 				CASE
-					WHEN instr(ote.org_id,#{orgId})>0 THEN
+					WHEN FIND_IN_SET(ote.org_id, #{orgId})>0 THEN
 					NULL ELSE upper_org
 					END upper_org
 			FROM
@@ -1125,35 +1126,37 @@
 		select org_id from t_sys_org where org_nm=#{orgName}
 	</select>
 	<select id="getPartyExcelList" resultMap="orgUserMap">
-		SELECT
-			usr.user_name,
-			org.org_nm,
-			dict.dict_name bachelor,
-			dict2.dict_name education,
-			case when usrdtl.gender = '1' then '男'  when usrdtl.gender = '0' then '女'  end gender,
-			usrdtl.phone,
-			usrdtl.birth_time,
-			usrdtl.nation,
-			usrdtl.join_party_time,
-			usrdtl.turn_right_time,
-			usrdtl.hometown,
-			usrdtl.office_number,
-			usrdtl.live_address,
-			usrdtl.mail,
-			usrdtl.id_card 
-		FROM
-			t_user usr
-			LEFT JOIN t_user_dtl usrdtl ON usr.user_id = usrdtl.user_id
-			LEFT JOIN t_org_user orguser ON usr.user_id = orguser.user_id
-			LEFT JOIN t_sys_org org ON orguser.org_id = org.org_id
-			LEFT JOIN t_dict dict ON usrdtl.bachelor = dict.dict_id
-			LEFT JOIN t_dict dict2 ON usrdtl.education = dict2.dict_id 
-		WHERE
-			usr.record_flag = 1 
-			AND usrdtl.is_party = '1' 
-			AND org.STATUS = '1' 
-			AND orguser.STATUS = '1'
-			AND orguser.org_id in
+		select  * FROM (
+			SELECT
+				usr.user_name,
+				org.org_id,
+				org.org_nm,
+				dict.dict_name bachelor,
+				dict2.dict_name education,
+				case when usrdtl.gender = '1' then '男'  when usrdtl.gender = '0' then '女'  end gender,
+				usrdtl.phone,
+				usrdtl.birth_time,
+				usrdtl.nation,
+				usrdtl.join_party_time,
+				usrdtl.turn_right_time,
+				usrdtl.hometown,
+				usrdtl.office_number,
+				usrdtl.live_address,
+				usrdtl.mail,
+				usrdtl.id_card
+			FROM
+				t_user usr
+				LEFT JOIN t_user_dtl usrdtl ON usr.user_id = usrdtl.user_id
+				LEFT JOIN t_org_user orguser ON usr.user_id = orguser.user_id
+				LEFT JOIN t_sys_org org ON orguser.org_id = org.org_id
+				LEFT JOIN t_dict dict ON usrdtl.bachelor = dict.dict_id
+				LEFT JOIN t_dict dict2 ON usrdtl.education = dict2.dict_id
+			WHERE
+				usr.record_flag = 1
+				AND usrdtl.is_party = '1'
+				AND org.STATUS = '1'
+				AND orguser.STATUS = '1'
+		)t WHERE org_id in
 			<foreach collection="orgIds" index="index" item="itemId" open="(" separator="," close=")">
 		      #{itemId}
 		    </foreach> 

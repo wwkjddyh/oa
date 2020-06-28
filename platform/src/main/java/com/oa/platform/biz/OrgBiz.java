@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ import com.oa.platform.service.DictService;
 import com.oa.platform.service.OrgService;
 import com.oa.platform.service.UserService;
 import com.oa.platform.util.StringUtil;
+import java.net.URLEncoder;
 
 /**
  * biz
@@ -126,7 +128,7 @@ public class OrgBiz extends BaseBiz {
 	}
 	/**
 	 * 党组织删除
-	 * @param organization
+	 * @param orgId
 	 */
 	@Transactional
 	public void orgDel(String orgId) {
@@ -751,7 +753,13 @@ public class OrgBiz extends BaseBiz {
 		if(orgIdByuserId == null || orgIdByuserId.size() == 0) {
 			LOGGER.error("ERROR");
 		}else {
-			List<Organization> orgs = orgSerivce.getUserUpperOrgList(orgIdByuserId.get(0).getOrgId());
+			List<String> orgIdList = new ArrayList<>();
+			for (Organization o: orgIdByuserId) {
+				orgIdList.add(o.getOrgId());
+			}
+			String orgIdArr = String.join(",", orgIdList);
+//			List<Organization> orgs = orgSerivce.getUserUpperOrgList(orgIdByuserId.get(0).getOrgId());
+			List<Organization> orgs = orgSerivce.getUserUpperOrgList(orgIdArr);
 			List<String> orgIds = new ArrayList<String>();
 			for (Organization organization : orgs) {
 				orgIds.add(organization.getOrgId());
@@ -785,15 +793,23 @@ public class OrgBiz extends BaseBiz {
 				row.createCell(13).setCellValue(orgUser.getMail());
 				row.createCell(14).setCellValue(orgUser.getIdCard());
 			}
-			response.setContentType("application/octet-stream");
-	        response.setHeader("Content-disposition", "attachment;filename=DYXX.xlsx");
+
+			response.setContentType("application/gorce-download");
+			response.setContentType("text/html;charset=" + Constants.DEFAULT_CHARSET);
+			String viewName = "DYXX.xls";
 	        try {
+//			response.setContentType("application/octet-stream");
+				//response.setHeader("Content-disposition", "attachment;filename=DYXX.xls");
+				response.addHeader("Content-Disposition", "attachment; fileName="
+						+ viewName +";filename*=" + Constants.DEFAULT_CHARSET + "''"
+						+ URLEncoder.encode(viewName, Constants.DEFAULT_CHARSET));
 	            OutputStream outputStream = response.getOutputStream();
 	            response.flushBuffer();
 	            hssfWorkbook.write(outputStream);
 	            outputStream.flush();
 	            outputStream.close();
 	        } catch (Exception e) {
+	        	e.printStackTrace();
 	            LOGGER.error(e.toString());
 	        }
 		}
@@ -864,9 +880,15 @@ public class OrgBiz extends BaseBiz {
 
 			}
         }
-		response.setContentType("application/octet-stream");
-        response.setHeader("Content-disposition", "attachment;filename=DWJBXX.xlsx");
+//		response.setContentType("application/octet-stream");
+//        response.setHeader("Content-disposition", "attachment;filename=DWJBXX.xlsx");
+		response.setContentType("application/gorce-download");
+		response.setContentType("text/html;charset=" + Constants.DEFAULT_CHARSET);
+		String viewName = "DWJBXX.xls";
         try {
+			response.addHeader("Content-Disposition", "attachment; fileName="
+					+ viewName +";filename*=" + Constants.DEFAULT_CHARSET + "''"
+					+ URLEncoder.encode(viewName, Constants.DEFAULT_CHARSET));
             OutputStream outputStream = response.getOutputStream();
             response.flushBuffer();
             hssfWorkbook.write(outputStream);
