@@ -192,7 +192,7 @@
 			FROM
 				t_sys_org sorg
 			WHERE
-				instr(#{orgId},sorg.org_id)>0
+				instr(sorg.org_id,#{orgId})>0
 				AND sorg.STATUS = '1' UNION ALL
 			SELECT
 				org.org_id,
@@ -211,7 +211,7 @@
 					ote.org_nm,
 					ote.org_type,
 				CASE
-					WHEN instr(#{orgId},ote.org_id)>0 THEN
+					WHEN instr(sorg.org_id,#{orgId})>0 THEN
 					NULL ELSE upper_org
 					END upper_org
 			FROM
@@ -282,7 +282,7 @@
 				WHERE
 					sorg.STATUS = '1'
 					<if test="isSuperAdmin != true">
-						and instr(#{orgId},sorg.org_id)>0
+						and instr(sorg.org_id,#{orgId})>0
 					</if>
 					 UNION ALL
 				SELECT
@@ -328,7 +328,7 @@
 				WHERE
 					sorg.STATUS = '1'
 					<if test="isSuperAdmin !=true">
-						and instr(#{orgId},sorg.org_id)>0
+						and instr(sorg.org_id,#{orgId})>0
 					</if>
 					UNION ALL
 				SELECT
