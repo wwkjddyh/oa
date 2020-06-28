@@ -63,6 +63,10 @@ spring:
     url: jdbc:p6spy:mysql://106.14.56.203:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
     username: root
     password: jianbo@Feng#CQ2020
+    # 党建OA生产
+#    url: jdbc:p6spy:mysql://10.178.12.64:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+#    username: oadbsadmin
+#    password: RWKkN648Kb$DNzW@
     hikari:
       minimum-idle: 10
       maximum-pool-size: 60
