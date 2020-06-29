@@ -303,6 +303,7 @@ public class AuthApiController extends BaseController {
             securityContext.setAuthentication(null);
             session.removeAttribute(Constants.SPRING_SECURITY_SESSION_KEY);
         }
+        session.invalidate();
         return StringUtil.getResultVo(StatusCode.SUCCESS,"登出成功","");
     }
 
