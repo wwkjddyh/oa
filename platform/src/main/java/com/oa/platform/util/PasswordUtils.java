@@ -14,6 +14,8 @@ import java.util.Base64;
  */
 public final class PasswordUtils {
 
+    private PasswordUtils() {}
+
     /**
      * 盐的长度
      */

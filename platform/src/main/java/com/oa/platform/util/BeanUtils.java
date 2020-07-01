@@ -10,6 +10,8 @@ import net.sf.cglib.beans.BeanCopier;
  */
 public final class BeanUtils {
 
+    private BeanUtils() {}
+
     /**
      * 拷贝属性
      * @param source

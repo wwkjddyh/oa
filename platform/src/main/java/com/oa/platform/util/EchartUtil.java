@@ -8,5 +8,8 @@ import java.util.List;
  *
  */
 public class EchartUtil {
+
+	private EchartUtil() {}
+
 	private List<String> ageLengends = null;
 }
