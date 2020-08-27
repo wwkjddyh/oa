@@ -107,7 +107,7 @@
             <el-card shadow="never" style="width: 100%;" type="card">
                 <el-checkbox size="small" :indeterminate="isIndeterminate.article" v-model="checkBoxAll.article" @change="handleArticleReceiversCheckAllChange">全选</el-checkbox>
                 <el-checkbox-group v-model="briefReceiveUserIds" @change="handleArticleReceiversCheckedChange">
-                    <el-checkbox v-for="(user, userId) in allSysUsersMap" :label="userId" :key="userId">{{user.userNickname}}</el-checkbox>
+                    <el-checkbox v-if="user.userName != 'user1'" v-for="(user, userId) in allSysUsersMap" :label="userId" :key="userId">{{user.userNickname}}</el-checkbox>
                 </el-checkbox-group>
                 <div style="width: 100%; margin-top: 20px; display: flex;display: -webkit-flex;">
                     <el-button @click="briefReceiveUserIds = [];dialogShow.briefReceivers = false;" type="info" round size="small" icon="el-icon-close">取消</el-button>

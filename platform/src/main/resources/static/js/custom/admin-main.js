@@ -1755,18 +1755,22 @@ new Vue({
             roleModule: true,
             userRole: true,
             sysUserRole: true,
+            article: false,
+            news: true,
         },
         checkBoxAll: {
             roleModule: false,
             userRole: false,
             sysUserRole: false,
             article: false,
+            news: false,
         },
         checkBoxOptions: {
             roleModule: [],
             userRole: [],
             sysUserRole: [],
             article: [],
+            news: []
         },
         /**
          * 复选中关联id
@@ -8251,6 +8255,23 @@ new Vue({
             let chartId = tChart.id;
             let myChart = echarts.init(document.getElementById(chartId));
             myChart.setOption(option, true);
+        },
+
+        /**
+         * 消息接收人全选
+         * @param val
+         */
+        handleNewsReceiversCheckAllChange(val) {
+            let that = this,checkIds = [];
+
+            for (let key in that.allSysUsersMap) {
+                //let entry = taht.allSysUsersMap[key];
+                checkIds.push(key);
+            }
+            console.log('handleNewsReceiversCheckAllChange', that.allSysUsersMap, val, checkIds);
+            that.newsReceiveUserIds = val ? checkIds : [];
+            that.isIndeterminate.news = false;
+            console.log('handleNewsReceiversCheckAllChange', that.newsReceiveUserIds)
         },
 
         /**
