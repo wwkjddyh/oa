@@ -22,6 +22,7 @@
                                         size="mini"
                                         :key="reUser.userId"
                                         v-for="reUser in formArticle.receiveUsers"
+                                        v-if="reUser.userName != 'user1'"
                                         closable
                                         :disable-transitions="false"
                                         @close="handleBriefRemoveReceiver(reUser.userId);">

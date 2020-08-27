@@ -50,6 +50,7 @@
                                     size="mini"
                                     :key="reUser.userId"
                                     v-for="reUser in formNews.receiveUsers"
+                                    v-if="reUser.userName != 'user1'"
                                     closable
                                     :disable-transitions="false"
                                     @close="handleNewsRemoveReceiver(reUser.userId);">
