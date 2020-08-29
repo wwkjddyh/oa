@@ -115,6 +115,10 @@
 		<div class="firstPage-briefs-brief_dialog-content" style="color: #4f4f4f;font-size: 16px;">
 			{{(currNotice.newsContent || '')}}
 		</div>
+		<el-card v-if="currNotice.attas && currNotice.attas.length > 0" shadow="hover" style="width: 100%; margin-top: 10px; padding: 20px;">
+			<div style="font-weight: bolder; font-size: 14px;">附件列表</div>
+			<div v-for="(atta, recordId) in currNotice.attas"><el-link :href="atta.dlUrl" type="primary" target="_blank">{{atta.originalName}}</el-link></div>
+		</el-card>
 	</el-dialog>
 </div>
 

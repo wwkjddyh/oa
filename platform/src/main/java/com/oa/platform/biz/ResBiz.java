@@ -2,6 +2,7 @@ package com.oa.platform.biz;
 
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.oa.platform.common.Constants;
 import com.oa.platform.entity.Organization;
 import com.oa.platform.entity.Res;
@@ -325,6 +326,44 @@ public class ResBiz extends BaseBiz {
                 res.setAttaContent(StringUtil.trim(attaContent));
                 resService.update(res);
                 ret = this.getSuccessVo("", "");
+            } catch (Exception e) {
+                loggerError(ThreadUtil.getCurrentFullMethodName(), e);
+                ret = this.getErrorVo();
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * 根据通告/公告ID获得附件信息
+     * @param newsId 通告/公告ID
+     * @return
+     */
+    public Map<String, Object> getNewsAtta(String newsId) {
+        newsId = StringUtil.trim(newsId);
+        if ("".equals(newsId)) {
+            ret = this.getParamErrorVo();
+        }
+        else {
+            try {
+                Res t = new Res();
+                t.setRecordFlag(Constants.INT_NORMAL);
+                t.setTypeId("4bfeaaa6-054f-4c1c-9399-17c957d32b09");
+                t.setAssId(newsId);
+                List<Res> rList = resService.find(t);
+                List<Map<String, Object>> data = Lists.newArrayList();
+                for (Res res : rList) {
+                    Map<String, Object> dMap = Maps.newHashMap();
+                    dMap.put("recordId", res.getRecordId());
+                    dMap.put("resName", res.getResName());
+                    dMap.put("originalName", res.getOriginalName());
+                    dMap.put("currName", res.getCurrName());
+                    dMap.put("accessUrl", res.getAccessUrl());
+                    dMap.put("dlUrl", "/api/file/dlRes/other/" + res.getCurrName() + "/" + res.getCurrName());
+                    dMap.put("newsId", newsId);
+                    data.add(dMap);
+                }
+                ret = this.getSuccessVo("", data);
             } catch (Exception e) {
                 loggerError(ThreadUtil.getCurrentFullMethodName(), e);
                 ret = this.getErrorVo();

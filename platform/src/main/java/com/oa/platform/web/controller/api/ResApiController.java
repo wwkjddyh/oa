@@ -141,4 +141,14 @@ public class ResApiController extends BaseController {
             @RequestParam(defaultValue = "", required = false) String attaContent) {
         return resBiz.uploadAttachmentInfo(recordId, originalName, currName, accessUrl, resSize, attaContent);
     }
+
+    /**
+     * 根据通告/公告ID获得附件信息
+     * @param newsId 通告/公告ID
+     * @return
+     */
+    @GetMapping("getNewsAtta")
+    public Map<String, Object> getNewsAtta(@RequestParam String newsId) {
+        return resBiz.getNewsAtta(newsId);
+    }
 }

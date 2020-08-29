@@ -4246,7 +4246,7 @@ new Vue({
         },
         handleFJSuccess(response, file, fileList){
         	let that = this;
-        	that.uploadFJUrl.push(response.data.filePath);
+        	that.uploadFJUrl.push(response.data.destName);
         	that.uploadFJName.push(response.data.fileName);
         	console.log(that.uploadFJUrl);
         	console.log(that.uploadFJName);
@@ -6472,26 +6472,38 @@ new Vue({
                     }
                 }
                 console.log('_record', _record);
-                that.currNewsSendRecord = {
-                    newId: _record.newsId || '',
-                    title: _record.newsTitle || '',
-                    content: _record.newsContent || '',
-                };
-                that.dialogShow.viewNews = !that.dialogShow.viewNews;
-                if (parseInt(_record.status) != 1) {
-                    let params = new URLSearchParams();
-                    params.append('recordId', _recordId);
-                    axios.post("/api/news/viewNews", params)
-                        .then(function(response){
-                        	that.handleResponse(response);
-                        	if(parseInt(response.data.code) === 200){
-                                that.searchForm('formSearchNews');
-                                console.log('查看成功。。。', _recordId);
+                axios.get("/api/res/getNewsAtta", {params:{
+                        newsId: _record.newsId,
+                    }})
+                    .then(function(response){
+                        that.handleResponse(response);
+                        if(parseInt(response.data.code) === 200){
+                            that.currNewsSendRecord = {
+                                newId: _record.newsId || '',
+                                title: _record.newsTitle || '',
+                                content: _record.newsContent || '',
+                                attas: response.data.data || []
+                            };
+                            that.dialogShow.viewNews = !that.dialogShow.viewNews;
+                            if (parseInt(_record.status) != 1) {
+                                let params = new URLSearchParams();
+                                params.append('recordId', _recordId);
+                                axios.post("/api/news/viewNews", params)
+                                    .then(function(response){
+                                        that.handleResponse(response);
+                                        if(parseInt(response.data.code) === 200){
+                                            that.searchForm('formSearchNews');
+                                            console.log('查看成功。。。', _recordId);
+                                        }
+                                    }).catch(function(err){
+                                    console.warn(err);
+                                });
                             }
-                        }).catch(function(err){
-                        console.warn(err);
-                    });
-                }
+                        }
+                    }).catch(function(err){
+                    console.warn(err);
+                });
+
             }
 
         },
@@ -6534,21 +6546,52 @@ new Vue({
                 for (let i = 0; i < that.currUserReceiverNewsRecordsfirstPage.length; i ++) {
                     let __notice = that.currUserReceiverNewsRecordsfirstPage[i];
                     if ((__notice.recordId || '') === _recordId) {
-                        that.currNotice = __notice;
-                        that.dialogShow.viewNotice = !that.dialogShow.viewNotice;
-                        let params = new URLSearchParams();
-                        params.append('recordId', _recordId);
-                        axios.post("/api/news/viewNews", params)
+                        //that.currNotice = __notice;
+                        axios.get("/api/res/getNewsAtta", {params:{
+                                newsId: __notice.newsId,
+                            }})
                             .then(function(response){
-                            	that.handleResponse(response);
-                            	if(parseInt(response.data.code) === 200){
-                                    //that.searchForm('formSearchNews');
-                                    console.log('查看成功。。。', _recordId);
-                                    that.loadCurrUserNewsOfFirstPage();
+                                that.handleResponse(response);
+                                if(parseInt(response.data.code) === 200){
+                                    that.currNotice = {
+                                        newId: __notice.newsId || '',
+                                        newsTitle: __notice.newsTitle || '',
+                                        newsContent: __notice.newsContent || '',
+                                        attas: response.data.data || []
+                                    };
+                                    that.dialogShow.viewNotice = !that.dialogShow.viewNotice;
+                                    let params = new URLSearchParams();
+                                    params.append('recordId', _recordId);
+                                    axios.post("/api/news/viewNews", params)
+                                        .then(function(response){
+                                            that.handleResponse(response);
+                                            if(parseInt(response.data.code) === 200){
+                                                //that.searchForm('formSearchNews');
+                                                console.log('查看成功。。。', _recordId);
+                                                that.loadCurrUserNewsOfFirstPage();
+                                            }
+                                        }).catch(function(err){
+                                        console.warn(err);
+                                    });
                                 }
                             }).catch(function(err){
                             console.warn(err);
                         });
+
+                        // that.dialogShow.viewNotice = !that.dialogShow.viewNotice;
+                        // let params = new URLSearchParams();
+                        // params.append('recordId', _recordId);
+                        // axios.post("/api/news/viewNews", params)
+                        //     .then(function(response){
+                        //     	that.handleResponse(response);
+                        //     	if(parseInt(response.data.code) === 200){
+                        //             //that.searchForm('formSearchNews');
+                        //             console.log('查看成功。。。', _recordId);
+                        //             that.loadCurrUserNewsOfFirstPage();
+                        //         }
+                        //     }).catch(function(err){
+                        //     console.warn(err);
+                        // });
                         break;
                     }
                 }

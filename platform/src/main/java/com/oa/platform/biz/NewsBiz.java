@@ -1,11 +1,14 @@
 package com.oa.platform.biz;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.oa.platform.entity.Res;
+import com.oa.platform.service.*;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,13 +20,11 @@ import com.oa.platform.common.Constants;
 import com.oa.platform.entity.Mail;
 import com.oa.platform.entity.News;
 import com.oa.platform.entity.NewsSendRecord;
-import com.oa.platform.service.MailService;
-import com.oa.platform.service.NewsService;
-import com.oa.platform.service.RoleService;
-import com.oa.platform.service.UserService;
 import com.oa.platform.util.DateUtil;
 import com.oa.platform.util.StringUtil;
 import com.oa.platform.util.ThreadUtil;
+
+import javax.annotation.Resource;
 
 /**
  * 消息业务处理
@@ -44,6 +45,10 @@ public class NewsBiz extends BaseBiz {
 
     @Autowired
     private MailService mailService;
+
+    @Resource
+    private ResService resService;
+
     //短信权限码
     @Value("${phoneCode.appKey}")
 	private String appKey;
@@ -56,6 +61,7 @@ public class NewsBiz extends BaseBiz {
     //模板id
     @Value("${phoneCode.muti_model_temp_id}")
 	private String muti_model_temp_id;
+
     /**
      * 保存信息
      * @param news 消息
@@ -77,6 +83,33 @@ public class NewsBiz extends BaseBiz {
                 String senderId = this.getUserIdOfSecurity();
                 if ("".equals(recordId)) {
                     String newsId = StringUtil.getRandomUUID();
+
+                    // 保存上传图片信息
+                    String[] attaFileNames = StringUtil.trim(news.getFileName()).split(",");
+                    String[] attaFileUrls = StringUtil.trim(news.getFileUrl()).split(",");
+                    int attaCount = attaFileNames.length;
+                    if (attaCount != 0 && attaCount == attaFileUrls.length) {
+                        for (int i = 0; i < attaCount; i ++) {
+                            String aFileName = attaFileNames[i];
+                            String aFileUrl = attaFileUrls[i];
+                            
+                            Res res = new Res();
+                            res.setRecordId(StringUtil.getRandomUUID());
+                            res.setResName(aFileName);
+                            // 分类：消息附件
+                            res.setTypeId("4bfeaaa6-054f-4c1c-9399-17c957d32b09");
+                            res.setAccessUrl(aFileUrl);
+                            res.setAssId(newsId);
+                            res.setAssTypeId("message");
+                            res.setOriginalName(aFileName);
+                            res.setCurrName(aFileUrl.substring(aFileUrl.lastIndexOf(File.separator) + 1));
+                            res.setRecordFlag(Constants.INT_NORMAL);
+                            //res.setRecordTime(DateUtil.currDateFormat(null));
+                            res.setAnnouncerId(senderId);
+                            resService.save(res);
+                        }
+                    }
+
 
                     news.setRecordId(newsId);
                     news.setRecordUserId(senderId);
