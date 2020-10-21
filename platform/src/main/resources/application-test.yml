@@ -3,7 +3,7 @@ server:
   tomcat:
     uri-encoding: UTF-8
     max-http-post-size: 20MB
-    max-swallow-size: 2MB
+    max-swallow-size: 20MB
     max-threads: 1000
   servlet:
     session:

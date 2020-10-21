@@ -3,7 +3,7 @@ server:
   tomcat:
     uri-encoding: UTF-8
     max-http-post-size: 20MB
-    max-swallow-size: 2MB
+    max-swallow-size: 20MB
     max-threads: 1000
   servlet:
     session:
@@ -18,7 +18,8 @@ spring:
   banner:
     charset: UTF-8
   resources:
-    static-locations: file:D:\work\temp\upload\,classpath:/static/
+#    static-locations: file:D:\work\temp\upload\,classpath:/static/
+    static-locations: file:/Users/jianbo/work/upload/,classpath:/static/
   application:
     name: oa-platform
   thymeleaf:
@@ -51,18 +52,18 @@ spring:
     type: com.zaxxer.hikari.HikariDataSource
     #    driver-class-name: com.mysql.cj.jdbc.Driver
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-#    url: jdbc:p6spy:mysql://localhost:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
-#    username: root
-#    password: jianbo@Feng#CQ2020
-#    url: jdbc:p6spy:mysql://106.12.179.56:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
-#    username: oaplat
-#    password: oaplat
-#    url: jdbc:p6spy:mysql://106.12.179.56:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
-#    username: oaplat
-#    password: oaplat
-    url: jdbc:p6spy:mysql://106.14.56.203:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    url: jdbc:p6spy:mysql://localhost:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
     username: root
     password: jianbo@Feng#CQ2020
+#    url: jdbc:p6spy:mysql://106.12.179.56:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+#    username: oaplat
+#    password: oaplat
+#    url: jdbc:p6spy:mysql://106.12.179.56:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+#    username: oaplat
+#    password: oaplat
+#    url: jdbc:p6spy:mysql://106.14.56.203:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+#    username: root
+#    password: jianbo@Feng#CQ2020
     # 党建OA生产
 #    url: jdbc:p6spy:mysql://10.178.12.64:3306/oaplat?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
 #    username: oadbsadmin
@@ -96,9 +97,9 @@ logging:
           repository: debug
 
 upload:
-#  save-dir: /Users/baby/work/upload/
+  save-dir: /Users/jianbo/work/upload/
 #  save-dir: G:\oaImg
-  save-dir: D:\work\temp\upload\
+#  save-dir: D:\work\temp\upload\
 phoneCode:
   appKey: 84913cd49e8744a149bc4d67
   masterSecret: 3fda59e70101c017b9f70a86

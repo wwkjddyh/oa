@@ -4217,11 +4217,11 @@ new Vue({
         },
         beforeFJAvatarUpload(file) {
 
-            let isLt2M = file.size / 1024 / 1024 < 3;
+            let isLt2M = file.size / 1024 / 1024 < 10;
 
 
             if (!isLt2M) {
-              this.$message.error('单个附件大小不能超过 3MB!');
+              this.$message.error('单个附件大小不能超过 10MB!');
               return false;
             }
             
