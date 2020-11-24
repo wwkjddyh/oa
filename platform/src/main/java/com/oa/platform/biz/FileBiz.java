@@ -28,6 +28,8 @@ import java.io.*;
 import java.net.URLEncoder;
 import java.util.*;
 
+import static com.oa.platform.common.Constants.*;
+
 /**
  * 文件上传下载
  * @author feng
@@ -378,25 +380,14 @@ public class FileBiz extends BaseBiz {
                         + viewName +";filename*=" + Constants.DEFAULT_CHARSET + "''"
                         + URLEncoder.encode(viewName, Constants.DEFAULT_CHARSET));
                 if (isDownload == 1) {
-                    response.setContentType("application/gorce-download");
+                    response.setContentType(CONTENT_TYPE_GORCE_DOWNLOAD);
                 }
                 else {
-                    if (isXls) {
-                        response.setContentType("application/x-msexcel");
-                    }
-                    else {
-                        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                    }
+                    response.setContentType(isXls ? CONTENT_TYPE_XLS : CONTENT_TYPE_XLSX);
                 }
                 //
                 List<MyFieldVo> fieldVos = initExcelDataByType(type);
-                Workbook workBook = null;
-                if (isXls) {
-                    workBook = new HSSFWorkbook();
-                }
-                else {
-                    workBook = new XSSFWorkbook();
-                }
+                Workbook workBook = isXls ? new HSSFWorkbook() : new XSSFWorkbook();
                 // 填充数据
                 PoiUtil.fillFieldVos(workBook, fieldVos);
                 OutputStream os = response.getOutputStream();

@@ -304,4 +304,19 @@ public class Constants {
      * 聊天消息状态：接收成功(10)
      */
     public static final int CHAT_MESSAGE_STATUS_RECEIVE_SUCC = 10;
+
+    /**
+     * 上下文类型：XLS （application/x-msexcel）
+     */
+    public static final String CONTENT_TYPE_XLS = "application/x-msexcel";
+
+    /**
+     * 上下文类型：XLSX （application/vnd.openxmlformats-officedocument.spreadsheetml.sheet）
+     */
+    public static final String CONTENT_TYPE_XLSX = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
+    /**
+     * 上下文类型：gorce-download （application/gorce-download）
+     */
+    public static final String CONTENT_TYPE_GORCE_DOWNLOAD = "application/gorce-download";
 }
