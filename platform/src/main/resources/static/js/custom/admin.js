@@ -22,13 +22,14 @@ new Vue({
             let nameLen = that.formLogon.username.replace(/(^\s*)|(\s*$)/g, "").length,
             pwdLen = that.formLogon.password.length,
             verifyCodeLen = _verifyCode.length;
-	        
-	        if(verifyCodeLen === 0) {
-	            error = "验证码不能为空";
-	        }
-	        else if(verifyCodeLen != 4) {
-	            error = "验证码长度必须为: 4 (个字符)";
-	        }
+
+            // 优化后：取消验证码
+	        // if(verifyCodeLen === 0) {
+	        //     error = "验证码不能为空";
+	        // }
+	        // else if(verifyCodeLen != 4) {
+	        //     error = "验证码长度必须为: 4 (个字符)";
+	        // }
 	
 	        if(error == '') {
 	        	smsFlag=true;
@@ -142,12 +143,12 @@ new Vue({
             else if(pwdLen <= 5 || pwdLen >= 65) {
                 error = "密码长度范围：6~65 (个字符)";
             }
-            else if(verifyCodeLen === 0) {
-                error = "验证码不能为空";
-            }
-            else if(verifyCodeLen != 4) {
-                error = "验证码长度必须为: 4 (个字符)";
-            }
+            // else if(verifyCodeLen === 0) {
+            //     error = "验证码不能为空";
+            // }
+            // else if(verifyCodeLen != 4) {
+            //     error = "验证码长度必须为: 4 (个字符)";
+            // }
 
             if(error != '') {
                 that.$message({
@@ -157,88 +158,138 @@ new Vue({
                 });
             }
             else {
-                axios.get("/api/verify/getCode")
-                    .then(function(response) {
+                // 优化前：需要验证码
+                // axios.get("/api/verify/getCode")
+                //     .then(function(response) {
+                //         let data = response.data;
+                //
+                //         if(parseInt(data.code) === 200) {
+                //
+                //             if (data.data.code === _verifyCode.toUpperCase()) {
+                //             	that.fullscreenLoading = true;
+                //             	axios.get("/api/auth/needSms",{params:{
+                //             		userId: that.formLogon.username
+                //                 }})
+                //                 .then(function(response){/*成功*/
+                //                     let data = response.data;
+                //                     if(parseInt(data.code) === 200) {
+                //                     	that.haveSms = data.result;
+                //                     	if(data.result==true && that.formLogon.verifySms != null
+                //                     			&& that.formLogon.verifySms != ''){
+                //                     		//that.fullscreenLoading = true;
+                //                             //document.getElementById("logonForm").submit();
+                //                     		that.login(that);
+                //                     	}else if(data.result==false){
+                //                     		//that.fullscreenLoading = true;
+                //                             document.getElementById("logonForm").submit();
+                //                     		//that.login(that);
+                //
+                //
+                //                     	}else{
+                //                     		that.$message({
+                //                                 message: '请进行短信验证',
+                //                                 center:true,
+                //                                 type: 'error'
+                //                             });
+                //                     		that.fullscreenLoading = false;
+                //                     	}
+                //                     }else{
+                //                     	that.fullscreenLoading = false;
+                //                     	that.haveSms = false;
+                //                     	that.$message({
+                //                             message: '服务异常',
+                //                             center:true,
+                //                             type: 'error'
+                //                         });
+                //                     }
+                //
+                //                 })
+                //                 .catch(function(err){/*异常*/
+                //                 	that.haveSms = false;
+                //                 	that.fullscreenLoading = false;
+                //                 	that.$message({
+                //                         message: '服务异常',
+                //                         center:true,
+                //                         type: 'error'
+                //                     });
+                //                 });
+                //
+                //             }
+                //             else {
+                //                 that.$message({
+                //                     message: '验证码错误或失效，可刷新验证码',
+                //                     center:true,
+                //                     type: 'error'
+                //                 });
+                //                 return;
+                //             }
+                //         }
+                //         else {
+                //             that.$message({
+                //                 message: '请刷新验证码',
+                //                 center:true,
+                //                 type: 'error'
+                //             });
+                //             return;
+                //         }
+                //     })
+                //     .catch(function(err) {/*异常*/
+                //         console.log(err);
+                //         that.$message({
+                //             message: '请刷新验证码',
+                //             center:true,
+                //             type: 'error'
+                //         });
+                //         return;
+                //     });
+
+                // 优化后：不需要验证码
+                that.fullscreenLoading = true;
+                axios.get("/api/auth/needSms",{params:{
+                        userId: that.formLogon.username
+                    }})
+                    .then(function(response){/*成功*/
                         let data = response.data;
-                        
                         if(parseInt(data.code) === 200) {
-                        	
-                            if (data.data.code === _verifyCode.toUpperCase()) {
-                            	that.fullscreenLoading = true;
-                            	axios.get("/api/auth/needSms",{params:{
-                            		userId: that.formLogon.username
-                                }})
-                                .then(function(response){/*成功*/
-                                    let data = response.data;
-                                    if(parseInt(data.code) === 200) {
-                                    	that.haveSms = data.result;
-                                    	if(data.result==true && that.formLogon.verifySms != null
-                                    			&& that.formLogon.verifySms != ''){
-                                    		//that.fullscreenLoading = true;
-                                            //document.getElementById("logonForm").submit();
-                                    		that.login(that);
-                                    	}else if(data.result==false){
-                                    		//that.fullscreenLoading = true;
-                                            document.getElementById("logonForm").submit();
-                                    		//that.login(that);
-                                    	
-                                    	
-                                    	}else{
-                                    		that.$message({
-                                                message: '请进行短信验证',
-                                                center:true,
-                                                type: 'error'
-                                            });
-                                    		that.fullscreenLoading = false;
-                                    	}
-                                    }else{
-                                    	that.fullscreenLoading = false;
-                                    	that.haveSms = false;
-                                    	that.$message({
-                                            message: '服务异常',
-                                            center:true,
-                                            type: 'error'
-                                        });
-                                    }
-                                    
-                                })
-                                .catch(function(err){/*异常*/
-                                	that.haveSms = false;
-                                	that.fullscreenLoading = false;
-                                	that.$message({
-                                        message: '服务异常',
-                                        center:true,
-                                        type: 'error'
-                                    });
-                                });
-                            	
-                            }
-                            else {
+                            that.haveSms = data.result;
+                            if(data.result==true && that.formLogon.verifySms != null
+                                && that.formLogon.verifySms != ''){
+                                //that.fullscreenLoading = true;
+                                //document.getElementById("logonForm").submit();
+                                that.login(that);
+                            }else if(data.result==false){
+                                //that.fullscreenLoading = true;
+                                document.getElementById("logonForm").submit();
+                                //that.login(that);
+
+
+                            }else{
                                 that.$message({
-                                    message: '验证码错误或失效，可刷新验证码',
+                                    message: '请进行短信验证',
                                     center:true,
                                     type: 'error'
                                 });
-                                return;
+                                that.fullscreenLoading = false;
                             }
-                        }
-                        else {
+                        }else{
+                            that.fullscreenLoading = false;
+                            that.haveSms = false;
                             that.$message({
-                                message: '请刷新验证码',
+                                message: '服务异常',
                                 center:true,
                                 type: 'error'
                             });
-                            return;
                         }
+
                     })
-                    .catch(function(err) {/*异常*/
-                        console.log(err);
+                    .catch(function(err){/*异常*/
+                        that.haveSms = false;
+                        that.fullscreenLoading = false;
                         that.$message({
-                            message: '请刷新验证码',
+                            message: '服务异常',
                             center:true,
                             type: 'error'
                         });
-                        return;
                     });
             }
         },
